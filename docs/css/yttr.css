@@ -175,7 +175,7 @@ video {
 	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/cash-multiple.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(2) a:before { content: "";
-	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/github.svg);
+	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/coffee.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(3):before {
 	content: "Download it";
@@ -187,7 +187,7 @@ video {
 	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/wrench.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(5) a:before { content: "";
-	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/github.svg);
+	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/coffee.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(6):before {
 	content: "Talk about it";
