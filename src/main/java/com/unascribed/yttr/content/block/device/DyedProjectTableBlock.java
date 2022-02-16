@@ -22,6 +22,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
+import net.minecraft.world.BlockView;
 
 @EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
 public class DyedProjectTableBlock extends ProjectTableBlock implements BlockColorProvider, SimpleLootBlock {
@@ -57,6 +58,11 @@ public class DyedProjectTableBlock extends ProjectTableBlock implements BlockCol
 	@Override
 	public ItemStack getLoot(BlockState state) {
 		return new ItemStack(Registry.ITEM.get(new Identifier("yttr", state.get(COLOR).name().toLowerCase(Locale.ROOT)+"_project_table")));
+	}
+	
+	@Override
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+		return getLoot(state);
 	}
 	
 	@Override

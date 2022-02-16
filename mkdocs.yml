@@ -3,7 +3,7 @@ site_url: https://unascribed.com/yttr/
 repo_url: https://github.com/unascribed/Yttr
 edit_uri: edit/trunk/docs/
 site_description: Yttr is a Fabric mod for Minecraft 1.16.5 with no particular focus.
-copyright: "Copyright &copy; 2021 Una Thompson"
+copyright: "Copyright &copy; 2021-2022 Una Thompson"
 theme: windmill
 plugins:
     - search
@@ -16,10 +16,10 @@ extra_css:
     - css/yttr.css?v=5
 nav:
     - Support Me: https://donate.unascribed.com/?project=14
-    - GitHub: https://github.com/unascribed/Yttr
+    - Gitea: https://git.sleeping.town/unascribed/Yttr
     - CurseForge: https://www.curseforge.com/minecraft/mc-mods/yttr
     - Modrinth: https://modrinth.com/mod/yttr
-    - GitHub: https://github.com/unascribed/Yttr/releases
+    - Gitea: https://git.sleeping.town/unascribed/Yttr/releases
     - Discord: https://discord.gg/8WBauq2eYK
     - Matrix: https://matrix.to/#/#unascribed:sleeping.town
     - E-Mail Me: mailto:me@unascribed.com

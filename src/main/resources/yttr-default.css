@@ -40,6 +40,9 @@
 	/*
 	 * If set to "off", the Explode rifle mode will be disabled. It provides a relatively cheap way
 	 * to create normal vanilla explosions.
+	 * 
+	 * DISABLING THIS BREAKS YTTR'S PROGRESSION. You need to provide an alternate way to create
+	 * Void Geysers and obtain Bedrock Shards.
 	 */
 	allow-explode: on;
 	/*
