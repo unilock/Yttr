@@ -1,7 +1,7 @@
 # Yttr
 
 <span style="font-size: 18px">**A huge update for Yttr is on the way, 0.5.0.** It's not currently documented on this wiki, but it's
-available now [on GitHub](https://github.com/unascribed/Yttr/releases/tag/dev). It's recommended you
+available now [on Gitea](https://git.sleeping.town/unascribed/Yttr/releases/tag/dev). It's recommended you
 use 0.5.0 as it contains many bugfixes and general improvements in addition to the new content. Once
 the new Void Filtering content is finished, 0.5.0 will be released and documented.</span>
 

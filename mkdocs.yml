@@ -1,7 +1,8 @@
 site_name: Yttr Wiki
 site_url: https://unascribed.com/yttr/
-repo_url: https://github.com/unascribed/Yttr
-edit_uri: edit/trunk/docs/
+repo_url: https://git.sleeping.town/unascribed/Yttr/
+repo_name: Gitea
+edit_uri: _edit/trunk/docs/
 site_description: Yttr is a Fabric mod for Minecraft 1.16.5 with no particular focus.
 copyright: "Copyright &copy; 2021-2022 Una Thompson"
 theme: windmill

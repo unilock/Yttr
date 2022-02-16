@@ -9,8 +9,8 @@
 	],
 	"contact": {
 		"homepage": "https://unascribed.com/yttr/",
-		"sources": "https://github.com/unascribed/Yttr",
-		"issues": "https://github.com/unascribed/Yttr/issues"
+		"sources": "https://git.sleeping.town/unascribed/Yttr",
+		"issues": "https://git.sleeping.town/unascribed/Yttr/issues"
 	},
 	"license": "Yttr License",
 	"icon": "assets/yttr/textures/icon-32.png",
