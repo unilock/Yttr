@@ -46,7 +46,7 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 	public boolean canFitOutput(Inventory inv) {
 		for (int i = 0; i < inv.size(); i++) {
 			ItemStack cur = inv.getStack(i);
-			if (cur.isEmpty() || (ItemStack.areItemsEqual(output, cur) && ItemStack.areTagsEqual(output, cur) && cur.getCount()+output.getCount() <= cur.getMaxCount())) return true;
+			if (cur.isEmpty() || (ItemStack.areItemsEqual(output, cur) && ItemStack.areNbtEqual(output, cur) && cur.getCount()+output.getCount() <= cur.getMaxCount())) return true;
 		}
 		return false;
 	}
@@ -104,7 +104,7 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 		@Override
 		public VoidFilteringRecipe read(Identifier id, JsonObject obj) {
 			String group = JsonHelper.getString(obj, "group", "");
-			ItemStack output = ShapedRecipe.getItemStack(obj.getAsJsonObject("output"));
+			ItemStack output = ShapedRecipe.outputFromJson(obj.getAsJsonObject("output"));
 			float chance = JsonHelper.getFloat(obj, "chance");
 			return new VoidFilteringRecipe(id, group, output, chance, JsonHelper.getBoolean(obj, "hidden", false));
 		}

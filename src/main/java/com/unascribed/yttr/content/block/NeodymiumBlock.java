@@ -54,13 +54,13 @@ public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock {
 	}
 	
 	@Override
-	public void addStacksForDisplay(ItemGroup group, DefaultedList<ItemStack> list) {
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
 		list.add(new ItemStack(YItems.NEODYMIUM_BLOCK));
 		list.add(new ItemStack(YItems.NEODYMIUM_SLAB));
 	}
 	
 	@Override
-	public void onSteppedOn(World world, BlockPos pos, Entity entity) {
+	public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity pe = (PlayerEntity)entity;
 			Yttr.trinketsAccess.dropMagneticTrinkets(pe);
@@ -166,6 +166,7 @@ public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock {
 			return ((AccessorVoxelShape)delegate).yttr$getCoordIndex(axis, coord);
 		}
 
+		//TODO: does this still exist?
 		@Override
 		protected boolean contains(double x, double y, double z) {
 			return ((AccessorVoxelShape)delegate).yttr$contains(x, y, z);

@@ -35,12 +35,12 @@ public class BlockCriterion extends PlacedBlockCriterion {
 
 	@Override
 	public void trigger(ServerPlayerEntity player, BlockPos pos, ItemStack stack) {
-		BlockState state = player.getServerWorld().getBlockState(pos);
+		BlockState state = player.getWorld().getBlockState(pos);
 		trigger(player, pos, state, stack);
 	}
 
 	public void trigger(ServerPlayerEntity player, BlockPos pos, BlockState state, ItemStack stack) {
-		test(player, cond -> cond.matches(state, pos, player.getServerWorld(), stack));
+		this.trigger(player, cond -> cond.matches(state, pos, player.getWorld(), stack));
 	}
 
 	@Override

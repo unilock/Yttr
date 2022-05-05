@@ -1,27 +1,16 @@
 package com.unascribed.yttr.world;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.init.YTags;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.SideShapeType;
-import net.minecraft.block.StructureBlock;
-import net.minecraft.block.WallTorchBlock;
+import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YTags;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.StructureBlockMode;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
-import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.Structure.StructureBlockInfo;
+import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
@@ -33,14 +22,18 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.Explosion.DestructionType;
-import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.world.gen.random.ChunkRandom;
+
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class WastelandPopulator {
 
 	private static final int FLAGS = 32 | 16 | 2; // SKIP_DROPS | FORCE_STATE | NOTIFY_LISTENERS
 	
 	public static boolean isEligible(ServerWorld world, WorldChunk chunk) {
-		if (world.getBiomeKey(chunk.getPos().getStartPos()).map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
+		if (world.getBiome(chunk.getPos().getStartPos()).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
 			if (chunk.getBlockState(BlockPos.ORIGIN).getBlock() == YBlocks.SPECIALTY_BEDROCK) return false;
 			return true;
 		}
@@ -49,7 +42,7 @@ public class WastelandPopulator {
 	
 	public static void populate(long worldSeed, ServerWorld world, ChunkPos chunk) {
 		BlockPos chunkStart = chunk.getStartPos();
-		if (world.getBiomeKey(chunkStart).map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
+		if (world.getBiome(chunkStart).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
 			if (world.getBlockState(chunkStart).getBlock() == YBlocks.SPECIALTY_BEDROCK) return;
 			world.setBlockState(chunkStart, YBlocks.SPECIALTY_BEDROCK.getDefaultState(), 0, 0);
 			ChunkRandom rand = new ChunkRandom(worldSeed);
@@ -299,12 +292,12 @@ public class WastelandPopulator {
 	}
 	
 	private static boolean tryPlaceSchematic(ChunkRandom rand, ServerWorld world, BlockPos pos, String id, int yOffset, boolean eatDirt, boolean fill) {
-		Structure s = world.getStructureManager().getStructure(new Identifier(id));
+		Structure s = world.getStructureManager().getStructure(new Identifier(id)).get(); //TODO: unsafe
 		BlockRotation rot = BlockRotation.random(rand);
 		StructurePlacementData spd = new StructurePlacementData();
 		spd.setRotation(rot);
 		spd.setUpdateNeighbors(false);
-		BlockPos size = s.getRotatedSize(rot);
+		BlockPos size = new BlockPos(s.getRotatedSize(rot));
 		BlockPos origin = pos.add(-size.getX()/2, 0, -size.getZ()/2);
 		if (origin.getY() == -1) {
 			origin = new BlockPos(origin.getX(), world.getTopY(Heightmap.Type.WORLD_SURFACE, origin.getX(), origin.getZ()), origin.getZ());
@@ -321,7 +314,7 @@ public class WastelandPopulator {
 		if (fill) {
 			spd.addProcessor(SimpleStructureProcessor.of((block) -> {
 				if (block.pos.getY() == originY && block.state.isSideSolid(world, block.pos, Direction.DOWN, SideShapeType.FULL)) {
-					if (block.tag == null || !"yttr:quarry_hole".equals(block.tag.getString("metadata"))) {
+					if (block.nbt == null || !"yttr:quarry_hole".equals(block.nbt.getString("metadata"))) {
 						fillIn.add(block.pos);
 					}
 				}
@@ -331,8 +324,8 @@ public class WastelandPopulator {
 		s.place(world, origin, spd, rand);
 		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
 			if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-				if (info.tag != null) {
-					if ("yttr:quarry_hole".equals(info.tag.getString("metadata"))) {
+				if (info.nbt != null) {
+					if ("yttr:quarry_hole".equals(info.nbt.getString("metadata"))) {
 						BlockPos.Mutable bp = info.pos.mutableCopy();
 						for (int y = info.pos.getY(); y >= 0; y--) {
 							bp.setY(y);
@@ -340,7 +333,7 @@ public class WastelandPopulator {
 							if (bs.isOf(Blocks.BEDROCK)) break;
 							world.setBlockState(bp, Blocks.AIR.getDefaultState());
 						}
-					} else if ("yttr:maybe_tree".equals(info.tag.getString("metadata"))) {
+					} else if ("yttr:maybe_tree".equals(info.nbt.getString("metadata"))) {
 						BlockPos.Mutable bp = info.pos.mutableCopy();
 						if (rand.nextInt(5) == 0) {
 							for (int i = 0; i < rand.nextInt(7)+1; i++) {

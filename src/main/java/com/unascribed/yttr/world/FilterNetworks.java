@@ -26,28 +26,23 @@ public class FilterNetworks extends PersistentState {
 	protected ServerWorld world;
 	private final Map<UUID, FilterNetwork> networks = Maps.newHashMap();
 	protected final Map<BlockPos, FilterNetwork> networksByPos = Maps.newHashMap();
-	
-	public FilterNetworks() {
-		super("yttr_filter_networks");
-	}
-	
+
 	public static FilterNetworks get(ServerWorld world) {
-		FilterNetworks fn = world.getPersistentStateManager().getOrCreate(FilterNetworks::new, "yttr_filter_networks");
+		FilterNetworks fn = world.getPersistentStateManager().getOrCreate(FilterNetworks::readNbt, FilterNetworks::new, "yttr_filter_networks");
 		fn.world = world;
 		return fn;
 	}
 
-	@Override
-	public void readNbt(NbtCompound tag) {
-		networks.clear();
-		networksByPos.clear();
+	public static FilterNetworks readNbt(NbtCompound tag) {
+		FilterNetworks ret = new FilterNetworks();
 		NbtCompound networks = tag.getCompound("Networks");
 		for (String k : networks.getKeys()) {
 			UUID id = UUID.fromString(k);
-			FilterNetwork fn = new FilterNetwork(this, id);
+			FilterNetwork fn = new FilterNetwork(ret, id);
 			fn.readNbt(networks.getCompound(k));
-			addNetworkDirectly(fn);
+			ret.addNetworkDirectly(fn);
 		}
+		return ret;
 	}
 
 	@Override

@@ -114,6 +114,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
+//TODO: move to tool tags
 public class YBlocks {
 
 	private static final FabricBlockSettings METALLIC_SETTINGS = FabricBlockSettings.of(Material.METAL)
@@ -613,7 +614,7 @@ public class YBlocks {
 	public static final InRedEncoderBlock INRED_ENCODER = new InRedEncoderBlock(INRED_DEVICE_SETTINGS);
 	public static final InRedOscillatorBlock INRED_OSCILLATOR = new InRedOscillatorBlock(INRED_DEVICE_SETTINGS);
 	public static final InRedDemoCyclerBlock INRED_DEMO_CYCLER = new InRedDemoCyclerBlock(INRED_DEVICE_SETTINGS);
-	
+
 	public static final LatchReference<Block> COPPER_ORE = YLatches.create();
 	
 	public static final Block CUPROSTEEL_BLOCK = new Block(METALLIC_SETTINGS);

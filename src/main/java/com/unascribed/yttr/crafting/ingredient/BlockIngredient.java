@@ -14,21 +14,23 @@ import net.minecraft.block.Block;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 
 public class BlockIngredient implements Predicate<Block> {
 
 	private final Set<Block> exacts = Sets.newHashSet();
-	private final Set<Tag<Block>> tags = Sets.newHashSet();
+	private final Set<TagKey<Block>> tags = Sets.newHashSet();
 	
 	private BlockIngredient() {}
 	
 	@Override
 	public boolean test(Block b) {
 		if (exacts.contains(b)) return true;
-		for (Tag<Block> tag : tags) {
-			if (b.isIn(tag)) return true;
+		for (TagKey<Block> tag : tags) {
+			if (b.getRegistryEntry().isIn(tag)) return true;
 		}
 		return false;
 	}
@@ -36,8 +38,10 @@ public class BlockIngredient implements Predicate<Block> {
 	public List<Block> getMatchingBlocks() {
 		List<Block> li = Lists.newArrayList();
 		li.addAll(exacts);
-		for (Tag<Block> tag : tags) {
-			li.addAll(tag.values());
+		for (TagKey<Block> tag : tags) {
+			for (RegistryEntry<Block> block : Registry.BLOCK.iterateEntries(tag)) {
+				li.add(block.value());
+			}
 		}
 		return li;
 	}
@@ -77,7 +81,7 @@ public class BlockIngredient implements Predicate<Block> {
 		if (obj.has("block")) {
 			out.exacts.add(Registry.BLOCK.get(Identifier.tryParse(obj.get("block").getAsString())));
 		} else if (obj.has("tag")) {
-			out.tags.add(BlockTags.getTagGroup().getTag(Identifier.tryParse(obj.get("tag").getAsString())));
+			out.tags.add(TagKey.of(Registry.BLOCK_KEY, Identifier.tryParse(obj.get("tag").getAsString())));
 		} else {
 			throw new IllegalArgumentException("Don't know how to parse "+ele+" without a block or tag value");
 		}

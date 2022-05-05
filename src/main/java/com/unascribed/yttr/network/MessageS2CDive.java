@@ -36,7 +36,7 @@ public class MessageS2CDive extends S2CMessage {
 	@Override
 	@Environment(EnvType.CLIENT)
 	protected void handle(MinecraftClient mc, ClientPlayerEntity player) {
-		mc.openScreen(new SuitScreen(x, z, geysers));
+		mc.setScreen(new SuitScreen(x, z, geysers));
 	}
 
 }

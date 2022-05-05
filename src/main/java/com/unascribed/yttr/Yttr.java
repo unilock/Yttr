@@ -222,7 +222,7 @@ public class Yttr implements ModInitializer {
 		
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
 			discoveries.clear();
-			Substitutes.reload(mgr.getResourceManager());
+			Substitutes.reload(mgr);
 		});
 		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (WastelandPopulator.isEligible(world, chunk)) {
@@ -272,7 +272,7 @@ public class Yttr implements ModInitializer {
 		
 		if (YConfig.WorldGen.copper == Trilean.AUTO) {
 			boolean foundCopper = false;
-			for (Map.Entry<RegistryKey<Item>, Item> id : Registry.ITEM.getEntries()) {
+			for (Map.Entry<RegistryKey<Item>, Item> id : Registry.ITEM.getEntrySet()) {
 				if (id.getKey().getValue().getPath().contains("copper_ingot")) {
 					YLog.info("Found a copper ingot supplied by {}", id.getKey().getValue().getNamespace());
 					YLog.info("Note that this check does not guarantee this copper ingot will be recognized by Yttr; if it isn't, make sure it's in the c:copper_ingots tag.");
@@ -430,7 +430,7 @@ public class Yttr implements ModInitializer {
 
 	public static void syncDive(ServerPlayerEntity p) {
 		if (!(p instanceof DiverPlayer)) return;
-		GeysersState gs = GeysersState.get(p.getServerWorld());
+		GeysersState gs = GeysersState.get(p.getWorld());
 		List<Geyser> geysers = ((DiverPlayer)p).yttr$getKnownGeysers().stream()
 				.map(gs::getGeyser).filter(g -> g != null)
 				.collect(Collectors.toList());
@@ -442,7 +442,7 @@ public class Yttr implements ModInitializer {
 		DiverPlayer diver = (DiverPlayer)player;
 		Set<UUID> knownGeysers = diver.yttr$getKnownGeysers();
 		if (!knownGeysers.contains(id)) {
-			Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
+			Geyser g = GeysersState.get(player.getWorld()).getGeyser(id);
 			if (g == null) return;
 			knownGeysers.add(id);
 			new MessageS2CDiscoveredGeyser(g).sendTo(player);
@@ -460,7 +460,7 @@ public class Yttr implements ModInitializer {
 		int falloff = 768;
 		int falloffSq = falloff*falloff;
 		for (Geyser g : gs.getGeysersInRange(x, z, falloff)) {
-			double distSq = g.pos.getSquaredDistance(x, g.pos.getY(), z, true);
+			double distSq = g.pos.getSquaredDistanceFromCenter(x, g.pos.getY(), z);
 			if (distSq < falloffSq) {
 				double effect = (falloffSq-distSq)/falloffSq;
 				pressureEffect += pressureGap*effect;

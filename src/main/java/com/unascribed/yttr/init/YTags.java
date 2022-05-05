@@ -1,28 +1,27 @@
 package com.unascribed.yttr.init;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
-import net.fabricmc.fabric.mixin.tag.extension.AccessorFluidTags;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public final class YTags {
 
 	public static final class Item {
 
-		public static final Tag<net.minecraft.item.Item> UNSNAREABLE = TagRegistry.item(new Identifier("yttr", "unsnareable"));
-		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE = TagRegistry.item(new Identifier("yttr", "void_immune"));
-		public static final Tag<net.minecraft.item.Item> FLUXES = TagRegistry.item(new Identifier("yttr", "fluxes"));
-		public static final Tag<net.minecraft.item.Item> ULTRAPURE_CUBES = TagRegistry.item(new Identifier("yttr", "ultrapure_cubes"));
-		public static final Tag<net.minecraft.item.Item> GIFTS = TagRegistry.item(new Identifier("yttr", "gifts"));
-		public static final Tag<net.minecraft.item.Item> NOT_GIFTS = TagRegistry.item(new Identifier("yttr", "not_gifts"));
-		public static final Tag<net.minecraft.item.Item> MAGNETIC = TagRegistry.item(new Identifier("yttr", "magnetic"));
-		public static final Tag<net.minecraft.item.Item> CONDUCTIVE_BOOTS = TagRegistry.item(new Identifier("yttr", "conductive_boots"));
-		public static final Tag<net.minecraft.item.Item> DSU_512 = TagRegistry.item(new Identifier("yttr", "dsu_512"));
-		public static final Tag<net.minecraft.item.Item> DSU_1024 = TagRegistry.item(new Identifier("yttr", "dsu_1024"));
-		public static final Tag<net.minecraft.item.Item> DSU_2048 = TagRegistry.item(new Identifier("yttr", "dsu_2048"));
-		public static final Tag<net.minecraft.item.Item> DSU_4096 = TagRegistry.item(new Identifier("yttr", "dsu_4096"));
-		public static final Tag<net.minecraft.item.Item> DSU_HIGHSTACK = TagRegistry.item(new Identifier("yttr", "dsu_highstack"));
+		public static final TagKey<net.minecraft.item.Item> UNSNAREABLE = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "unsnareable"));
+		public static final TagKey<net.minecraft.item.Item> VOID_IMMUNE = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "void_immune"));
+		public static final TagKey<net.minecraft.item.Item> FLUXES = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "fluxes"));
+		public static final TagKey<net.minecraft.item.Item> ULTRAPURE_CUBES = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "ultrapure_cubes"));
+		public static final TagKey<net.minecraft.item.Item> GIFTS = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "gifts"));
+		public static final TagKey<net.minecraft.item.Item> NOT_GIFTS = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "not_gifts"));
+		public static final TagKey<net.minecraft.item.Item> MAGNETIC = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "magnetic"));
+		public static final TagKey<net.minecraft.item.Item> CONDUCTIVE_BOOTS = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "conductive_boots"));
+		public static final TagKey<net.minecraft.item.Item> DSU_512 = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "dsu_512"));
+		public static final TagKey<net.minecraft.item.Item> DSU_1024 = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "dsu_1024"));
+		public static final TagKey<net.minecraft.item.Item> DSU_2048 = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "dsu_2048"));
+		public static final TagKey<net.minecraft.item.Item> DSU_4096 = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "dsu_4096"));
+		public static final TagKey<net.minecraft.item.Item> DSU_HIGHSTACK = TagKey.of(Registry.ITEM_KEY, new Identifier("yttr", "dsu_highstack"));
 		
 		private static void init() {}
 		
@@ -30,17 +29,17 @@ public final class YTags {
 	
 	public static final class Block {
 
-		public static final Tag<net.minecraft.block.Block> FIRE_MODE_INSTABREAK = TagRegistry.block(new Identifier("yttr", "fire_mode_instabreak"));
-		public static final Tag<net.minecraft.block.Block> SNAREABLE = TagRegistry.block(new Identifier("yttr", "snareable"));
-		public static final Tag<net.minecraft.block.Block> UNSNAREABLE = TagRegistry.block(new Identifier("yttr", "unsnareable"));
-		public static final Tag<net.minecraft.block.Block> UNCLEAVABLE = TagRegistry.block(new Identifier("yttr", "uncleavable"));
-		public static final Tag<net.minecraft.block.Block> GIFTS = TagRegistry.block(new Identifier("yttr", "gifts"));
-		public static final Tag<net.minecraft.block.Block> MAGTUBE_TARGETS = TagRegistry.block(new Identifier("yttr", "magtube_targets"));
-		public static final Tag<net.minecraft.block.Block> RUINED_DEVICES = TagRegistry.block(new Identifier("yttr", "ruined_devices"));
-		public static final Tag<net.minecraft.block.Block> ORES = TagRegistry.block(new Identifier("yttr", "ores"));
-		public static final Tag<net.minecraft.block.Block> LESSER_ORES = TagRegistry.block(new Identifier("yttr", "lesser_ores"));
-		public static final Tag<net.minecraft.block.Block> CLAMBER_BLOCKS = TagRegistry.block(new Identifier("yttr", "clamber_blocks"));
-		public static final Tag<net.minecraft.block.Block> MAGNETIC = TagRegistry.block(new Identifier("yttr", "magnetic"));
+		public static final TagKey<net.minecraft.block.Block> FIRE_MODE_INSTABREAK = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "fire_mode_instabreak"));
+		public static final TagKey<net.minecraft.block.Block> SNAREABLE = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "snareable"));
+		public static final TagKey<net.minecraft.block.Block> UNSNAREABLE = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "unsnareable"));
+		public static final TagKey<net.minecraft.block.Block> UNCLEAVABLE = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "uncleavable"));
+		public static final TagKey<net.minecraft.block.Block> GIFTS = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "gifts"));
+		public static final TagKey<net.minecraft.block.Block> MAGTUBE_TARGETS = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "magtube_targets"));
+		public static final TagKey<net.minecraft.block.Block> RUINED_DEVICES = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "ruined_devices"));
+		public static final TagKey<net.minecraft.block.Block> ORES = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "ores"));
+		public static final TagKey<net.minecraft.block.Block> LESSER_ORES = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "lesser_ores"));
+		public static final TagKey<net.minecraft.block.Block> CLAMBER_BLOCKS = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "clamber_blocks"));
+		public static final TagKey<net.minecraft.block.Block> MAGNETIC = TagKey.of(Registry.BLOCK_KEY, new Identifier("yttr", "magnetic"));
 		
 		private static void init() {}
 		
@@ -48,8 +47,8 @@ public final class YTags {
 	
 	public static final class Fluid {
 
-		public static final Tag<net.minecraft.fluid.Fluid> VOID = AccessorFluidTags.getRequiredTags().add("yttr:void");
-		public static final Tag<net.minecraft.fluid.Fluid> PURE_VOID = AccessorFluidTags.getRequiredTags().add("yttr:pure_void");
+		public static final TagKey<net.minecraft.fluid.Fluid> VOID = TagKey.of(Registry.FLUID_KEY, new Identifier("yttr"," void"));
+		public static final TagKey<net.minecraft.fluid.Fluid> PURE_VOID = TagKey.of(Registry.FLUID_KEY, new Identifier("yttr", "pure_void"));
 		
 		private static void init() {}
 		
@@ -57,10 +56,10 @@ public final class YTags {
 	
 	public static final class Entity {
 
-		public static final Tag<EntityType<?>> UNSNAREABLE = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
-		public static final Tag<EntityType<?>> SNAREABLE_NONLIVING = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
-		public static final Tag<EntityType<?>> BOSSES = TagRegistry.entityType(new Identifier("yttr", "bosses"));
-		public static final Tag<EntityType<?>> MAGNETIC = TagRegistry.entityType(new Identifier("yttr", "magnetic"));
+		public static final TagKey<EntityType<?>> UNSNAREABLE = TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("yttr", "unsnareable"));
+		public static final TagKey<EntityType<?>> SNAREABLE_NONLIVING = TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("yttr", "snareable_nonliving"));
+		public static final TagKey<EntityType<?>> BOSSES = TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("yttr", "bosses"));
+		public static final TagKey<EntityType<?>> MAGNETIC = TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("yttr", "magnetic"));
 		
 		private static void init() {}
 		

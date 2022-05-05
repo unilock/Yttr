@@ -10,6 +10,7 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+//TODO: ticking is weird now
 public abstract class AbstractAbominationBlockEntity extends BlockEntity implements Tickable {
 
 	protected int sayTicks = -60;
@@ -57,16 +58,15 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
 		tag.putFloat("HeadYaw", headYaw);
 		tag.putFloat("HeadPitch", headPitch);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		headYaw = prevHeadYaw = (tag.contains("Yaw") ? tag.getFloat("Yaw") : tag.getFloat("HeadYaw"));
 		headPitch = prevHeadPitch = (tag.contains("Pitch") ? tag.getFloat("Pitch") : tag.getFloat("HeadPitch"));
 	}

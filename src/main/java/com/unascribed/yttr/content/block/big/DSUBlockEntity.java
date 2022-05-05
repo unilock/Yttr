@@ -8,7 +8,6 @@ import com.unascribed.yttr.inventory.HighStackSimpleInventory;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,10 +15,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
-public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, BlockEntityClientSerializable, SideyInventory {
+public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, SideyInventory {
 
 	private final HighStackSimpleInventory contents = new HighStackSimpleInventory(9*5);
 	
@@ -56,15 +59,14 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		super.writeNbt(tag);
 		tag.put("Contents", Yttr.serializeInv(contents));
-		return tag;
 	}
-	
+
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		Yttr.deserializeInv(tag.getList("Contents", NbtType.COMPOUND), contents);
 	}
 	
@@ -96,23 +98,10 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 		}
 	}
 
+	@Nullable
 	@Override
-	public void fromClientTag(NbtCompound tag) {
-		Yttr.deserializeInv(tag.getList("Contents", NbtType.COMPOUND), contents);
-	}
-
-	@Override
-	public NbtCompound toClientTag(NbtCompound tag) {
-		tag.put("Contents", Yttr.serializeInv(contents));
-		return tag;
-	}
-	
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		if (world != null && !world.isClient) {
-			sync();
-		}
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
 	}
 
 	@Override

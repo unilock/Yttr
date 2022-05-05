@@ -138,7 +138,7 @@ public class SoakingRecipe implements Recipe<Inventory> {
 			Either<ItemStack, BlockState> result;
 			JsonObject resultJson = obj.getAsJsonObject("result");
 			if (resultJson.has("item")) {
-				result = Either.left(ShapedRecipe.getItemStack(resultJson));
+				result = Either.left(ShapedRecipe.outputFromJson(resultJson));
 			} else {
 				BlockArgumentParser bap = new BlockArgumentParser(new StringReader(resultJson.get("block").getAsString()), false);
 				try {

@@ -25,6 +25,7 @@ import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
+//TODO: oh dear god I forgot yttr has worldgen, time to ask mcwg what to do
 @SuppressWarnings("deprecation")
 public class YWorldGen {
 

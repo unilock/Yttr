@@ -21,6 +21,7 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 
 public class MessageS2CBeam extends S2CMessage {
@@ -61,12 +62,12 @@ public class MessageS2CBeam extends S2CMessage {
 		if (ent == null) return;
 		boolean fp = ent == player && mc.options.getPerspective() == Perspective.FIRST_PERSON;
 		Vec3d start = RifleItem.getMuzzlePos(ent, fp);
-		double len = MathHelper.sqrt(start.squaredDistanceTo(endX, endY, endZ));
+		double len = MathHelper.sqrt((float) start.squaredDistanceTo(endX, endY, endZ));
 		double diffX = endX-start.x;
 		double diffY = endY-start.y;
 		double diffZ = endZ-start.z;
 		int count = (int)(len*14);
-		DustParticleEffect eff = new DustParticleEffect(r, g, b, 0.2f);
+		DustParticleEffect eff = new DustParticleEffect(new Vec3f(r, g, b), 0.2f);
 		SpriteProvider sprites = ((ParticleManagerAccessor)mc.particleManager).getSpriteAwareFactories().get(Registry.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
 		for (int i = 0; i < count; i++) {
 			double t = (i/(double)count);
@@ -81,7 +82,7 @@ public class MessageS2CBeam extends S2CMessage {
 					}
 					setMaxAge((int)(Math.log10((fi*4)+5))+10);
 					setColor(r, g, b);
-					setColorAlpha(a);
+					setAlpha(a);
 					velocityX = 0;
 					velocityY = 0;
 					velocityZ = 0;

@@ -33,11 +33,11 @@ public class GeysersState extends PersistentState {
 	private final Multimap<Vec2i, Geyser> geysersByRegion = HashMultimap.create();
 	
 	public GeysersState() {
-		super("yttr_geysers");
+		super();
 	}
 	
 	public static GeysersState get(ServerWorld world) {
-		return world.getPersistentStateManager().getOrCreate(GeysersState::new, "yttr_geysers");
+		return world.getPersistentStateManager().getOrCreate(GeysersState::readNbt, GeysersState::new, "yttr_geysers");
 	}
 	
 	public void addGeyser(Geyser g) {
@@ -77,7 +77,7 @@ public class GeysersState extends PersistentState {
 			for (int rXo = -regionRadius; rXo <= regionRadius; rXo++) {
 				for (int rZo = -regionRadius; rZo <= regionRadius; rZo++) {
 					for (Geyser g : getGeysersInRegion(rX+rXo, rZ+rZo)) {
-						if (g.pos.getSquaredDistance(x, g.pos.getY(), z, true) < rangeSq) {
+						if (g.pos.getSquaredDistanceFromCenter(x, g.pos.getY(), z) < rangeSq) {
 							if (out.isEmpty()) out = Lists.newArrayList();
 							out.add(g);
 						}
@@ -92,7 +92,7 @@ public class GeysersState extends PersistentState {
 			for (int cXo = -chunkRadius; cXo <= chunkRadius; cXo++) {
 				for (int cZo = -chunkRadius; cZo <= chunkRadius; cZo++) {
 					for (Geyser g : getGeysersInChunk(new ChunkPos(cX+cXo, cZ+cZo))) {
-						if (g.pos.getSquaredDistance(x, g.pos.getY(), z, true) < rangeSq) {
+						if (g.pos.getSquaredDistanceFromCenter(x, g.pos.getY(), z) < rangeSq) {
 							if (out.isEmpty()) out = Lists.newArrayList();
 							out.add(g);
 						}
@@ -123,17 +123,13 @@ public class GeysersState extends PersistentState {
 		}
 	}
 
-	@Override
-	public void readNbt(NbtCompound tag) {
-		geysers.clear();
-		geysersById.clear();
-		geysersByPos.clear();
-		geysersByChunk.clear();
-		geysersByRegion.clear();
+	public static GeysersState readNbt(NbtCompound tag) {
+		GeysersState ret = new GeysersState();
 		NbtList li = tag.getList("Geysers", NbtType.COMPOUND);
 		for (int i = 0; i < li.size(); i++) {
-			addGeyser(Geyser.fromTag(li.getCompound(i)));
+			ret.addGeyser(Geyser.fromTag(li.getCompound(i)));
 		}
+		return ret;
 	}
 
 	@Override

@@ -30,3 +30,4 @@ run/
 
 # mkdocs
 /site
+.DS_Store

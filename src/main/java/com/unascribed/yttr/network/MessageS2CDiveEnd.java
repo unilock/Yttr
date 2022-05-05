@@ -26,7 +26,7 @@ public class MessageS2CDiveEnd extends S2CMessage {
 	protected void handle(MinecraftClient mc, ClientPlayerEntity player) {
 		if (mc.currentScreen instanceof SuitScreen) {
 			mc.getSoundManager().play(new SuitSound(YSounds.DIVE_END));
-			mc.openScreen(null);
+			mc.setScreen(null);
 		}
 	}
 

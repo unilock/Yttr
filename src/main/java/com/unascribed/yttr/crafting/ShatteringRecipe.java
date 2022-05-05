@@ -72,7 +72,7 @@ public class ShatteringRecipe implements Recipe<CraftingInventory> {
 			ItemStack itemStack = craftingInventory.getStack(j);
 			if (!itemStack.isEmpty()) {
 				++i;
-				recipeMatcher.method_20478(itemStack, 1);
+				recipeMatcher.addInput(itemStack, 1);
 			}
 		}
 
@@ -100,7 +100,7 @@ public class ShatteringRecipe implements Recipe<CraftingInventory> {
 		public ShatteringRecipe read(Identifier identifier, JsonObject jsonObject) {
 			String string = JsonHelper.getString(jsonObject, "group", "");
 			Ingredient input = Ingredient.fromJson(jsonObject.get("ingredient"));
-			ItemStack itemStack = ShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+			ItemStack itemStack = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
 			return new ShatteringRecipe(identifier, string, itemStack, input);
 		}
 

@@ -78,13 +78,13 @@ public abstract class BigBlock extends Block {
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		super.onStateReplaced(state, world, pos, newState, moved);
-		world.getBlockTickScheduler().schedule(pos, this, 1);
+		world.createAndScheduleBlockTick(pos, this, 1);
 	}
 	
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
-		world.getBlockTickScheduler().schedule(pos, this, 1);
+		world.createAndScheduleBlockTick(pos, this, 1);
 	}
 	
 	@Override

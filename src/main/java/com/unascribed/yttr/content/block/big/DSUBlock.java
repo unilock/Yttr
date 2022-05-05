@@ -97,7 +97,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 			boolean cur = state.get(OPEN).isForced();
 			if (cur != isReceivingRedstonePower(world, pos, state)) {
 				if (cur) {
-					world.getBlockTickScheduler().schedule(pos, this, 4);
+					world.createAndScheduleBlockTick(pos, this, 4);
 				} else {
 					if (!state.get(OPEN).isTrue() && !anyNeighborsMatch(world, pos, state, bs -> bs.get(OPEN).isForced())) {
 						playSound(world, null, pos, state, YSounds.DSU_OPEN, SoundCategory.BLOCKS, 1, 1);
@@ -151,7 +151,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new DSUBlockEntity();
 	}
 

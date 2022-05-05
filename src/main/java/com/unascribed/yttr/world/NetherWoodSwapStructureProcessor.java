@@ -59,7 +59,7 @@ public class NetherWoodSwapStructureProcessor extends StructureProcessor {
 						bs = bs.with(prop, block.state.get(prop));
 					}
 				}
-				return new StructureBlockInfo(block.pos, bs, block.tag);
+				return new StructureBlockInfo(block.pos, bs, block.nbt);
 			}
 		}
 		return block;

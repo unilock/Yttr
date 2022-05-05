@@ -3,6 +3,9 @@ package com.unascribed.yttr.content.block.decor;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
@@ -16,7 +19,6 @@ import com.google.common.collect.Lists;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
@@ -32,7 +34,7 @@ import net.minecraft.util.shape.BitSetVoxelSet;
 import net.minecraft.util.shape.SimpleVoxelShape;
 import net.minecraft.util.shape.VoxelShape;
 
-public class CleavedBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity {
+public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
 
 	public static int SHAPE_GRANULARITY = 8;
 	
@@ -102,7 +104,6 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 		this.polygons = ImmutableList.copyOf(polygons);
 		cachedShape = null;
 		markDirty();
-		if (!world.isClient) sync();
 	}
 	
 	public VoxelShape getShape() {
@@ -153,7 +154,6 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	public void setDonor(BlockState donor) {
 		this.donor = donor;
 		markDirty();
-		if (!world.isClient) sync();
 	}
 
 	public void fromTagInner(NbtCompound tag) {
@@ -206,15 +206,15 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		fromTagInner(tag);
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		toTagInner(tag);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 	
 	@Override
@@ -222,15 +222,10 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 		return toTagInner(super.toInitialChunkDataNbt());
 	}
 
+	@Nullable
 	@Override
-	public void fromClientTag(NbtCompound tag) {
-		fromTagInner(tag);
-	}
-
-	@Override
-	public NbtCompound toClientTag(NbtCompound tag) {
-		toTagInner(tag);
-		return tag;
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
 	}
 
 	@Override

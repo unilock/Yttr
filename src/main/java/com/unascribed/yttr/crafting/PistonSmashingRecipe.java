@@ -138,7 +138,7 @@ public class PistonSmashingRecipe implements Recipe<Inventory> {
 			String group = JsonHelper.getString(obj, "group", "");
 			BlockIngredient input = BlockIngredient.fromJson(obj.get("input"));
 			BlockIngredient catalyst = BlockIngredient.fromJson(obj.get("catalysts"));
-			ItemStack output = obj.has("output") ? ShapedRecipe.getItemStack(obj.getAsJsonObject("output")) : ItemStack.EMPTY;
+			ItemStack output = obj.has("output") ? ShapedRecipe.outputFromJson(obj.getAsJsonObject("output")) : ItemStack.EMPTY;
 			boolean hasCloud = obj.has("cloud");
 			int cloudColor = 0;
 			int cloudSize = 0;
@@ -149,7 +149,7 @@ public class PistonSmashingRecipe implements Recipe<Inventory> {
 				cloudColor = Integer.parseInt(cloud.get("color").getAsString().substring(1), 16);
 				cloudSize = JsonHelper.getInt(cloud, "size", 1);
 				if (cloud.has("output")) {
-					cloudOutput = ShapedRecipe.getItemStack(cloud.getAsJsonObject("output"));
+					cloudOutput = ShapedRecipe.outputFromJson(cloud.getAsJsonObject("output"));
 				}
 				if (cloud.has("effects")) {
 					Iterable<JsonElement> iter;

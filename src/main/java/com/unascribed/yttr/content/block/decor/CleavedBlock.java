@@ -61,7 +61,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new CleavedBlockEntity();
 	}
 	
@@ -73,7 +73,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
 		if (state.get(WATERLOGGED)) {
-			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
@@ -138,7 +138,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CleavedBlockEntity) {
 			// we don't check onGround as then you "unsnap" while going down a slope and it looks really bad
-			if (entity instanceof FlyingEntity || (entity instanceof PlayerEntity && (((PlayerEntity)entity).isFallFlying() || ((PlayerEntity)entity).abilities.flying))) {
+			if (entity instanceof FlyingEntity || (entity instanceof PlayerEntity && (((PlayerEntity)entity).isFallFlying() || ((PlayerEntity)entity).getAbilities().flying))) {
 				return;
 			}
 			List<Polygon> shape = ((CleavedBlockEntity)be).getPolygons();

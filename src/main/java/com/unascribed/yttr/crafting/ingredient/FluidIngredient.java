@@ -10,24 +10,24 @@ import com.google.gson.JsonObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import net.fabricmc.fabric.mixin.tag.extension.AccessorFluidTags;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 
 public class FluidIngredient implements Predicate<Fluid> {
 
 	private final Set<Fluid> exacts = Sets.newHashSet();
-	private final Set<Tag<Fluid>> tags = Sets.newHashSet();
+	private final Set<TagKey<Fluid>> tags = Sets.newHashSet();
 	
 	private FluidIngredient() {}
 	
 	@Override
 	public boolean test(Fluid b) {
 		if (exacts.contains(b)) return true;
-		for (Tag<Fluid> tag : tags) {
+		for (TagKey<Fluid> tag : tags) {
 			if (b.isIn(tag)) return true;
 		}
 		return false;
@@ -36,8 +36,10 @@ public class FluidIngredient implements Predicate<Fluid> {
 	public List<Fluid> getMatchingFluids() {
 		List<Fluid> li = Lists.newArrayList();
 		li.addAll(exacts);
-		for (Tag<Fluid> tag : tags) {
-			li.addAll(tag.values());
+		for (TagKey<Fluid> tag : tags) {
+			for (RegistryEntry<Fluid> fluid : Registry.FLUID.iterateEntries(tag)) {
+				li.add(fluid.value());
+			}
 		}
 		return li;
 	}
@@ -77,7 +79,7 @@ public class FluidIngredient implements Predicate<Fluid> {
 		if (obj.has("fluid")) {
 			out.exacts.add(Registry.FLUID.get(Identifier.tryParse(obj.get("fluid").getAsString())));
 		} else if (obj.has("tag")) {
-			out.tags.add(AccessorFluidTags.getRequiredTags().getGroup().getTag(Identifier.tryParse(obj.get("tag").getAsString())));
+			out.tags.add(TagKey.of(Registry.FLUID_KEY, Identifier.tryParse(obj.get("tag").getAsString())));
 		} else {
 			throw new IllegalArgumentException("Don't know how to parse "+ele+" without a fluid or tag value");
 		}

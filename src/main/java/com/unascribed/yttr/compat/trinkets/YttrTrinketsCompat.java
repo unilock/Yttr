@@ -15,6 +15,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
+//TODO: data-driven
 public class YttrTrinketsCompat {
 	
 	public static void init() {

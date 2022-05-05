@@ -35,6 +35,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class AwareHopperBlock extends Block implements BlockEntityProvider {
 
@@ -86,7 +87,7 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
 		if (state.get(BLIND)) {
-			if (player.abilities.creativeMode) {
+			if (player.getAbilities().creativeMode) {
 				// always succeed
 			} else if (stack.isEmpty()) {
 				player.setStackInHand(hand, new ItemStack(Blocks.CARVED_PUMPKIN));
@@ -100,7 +101,7 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 			return ActionResult.SUCCESS;
 		} else {
 			if (stack.getItem() == Blocks.CARVED_PUMPKIN.asItem()) {
-				if (!player.abilities.creativeMode) {
+				if (!player.getAbilities().creativeMode) {
 					stack.decrement(1);
 					player.setStackInHand(hand, stack);
 				}
@@ -110,9 +111,10 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 		}
 		return ActionResult.PASS;
 	}
-	
+
+	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new AwareHopperBlockEntity();
 	}
 	

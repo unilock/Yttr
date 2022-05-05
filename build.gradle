@@ -7,11 +7,11 @@ buildscript {
 	}
 }
 plugins {
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.toVersion(17)
+targetCompatibility = JavaVersion.toVersion(17)
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -50,7 +50,7 @@ repositories {
 	maven {
 		url 'https://ladysnake.jfrog.io/artifactory/mods'
 		content {
-			includeGroup 'io.github.onyxstudios.Cardinal-Components-API'
+			includeGroup 'dev.onyxstudios.cardinal-components-api'
 		}
 	}
 }
@@ -64,20 +64,21 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
+	//TODO: uuuuurrrrrggggghhhhh
+//	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
 	modImplementation "com.unascribed:ears-api:1.4.5"
 	
-	modImplementation "dev.emi:trinkets:2.6.7"
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.8.3"
+	modImplementation "dev.emi:trinkets:3.3.0"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.1.4"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:4.1.4"
 
-	modRuntime("com.terraformersmc:modmenu:1.16.22") {
+	modRuntimeOnly("com.terraformersmc:modmenu:3.1.0") {
 		transitive = false
 	}
 }
 
-minecraft {
-	accessWidener "src/main/resources/yttr.accesswidener"
+loom {
+	accessWidenerPath = file("src/main/resources/yttr.accesswidener")
 }
 
 processResources {

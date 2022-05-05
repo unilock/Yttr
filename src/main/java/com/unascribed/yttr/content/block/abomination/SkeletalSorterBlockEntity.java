@@ -5,7 +5,6 @@ import com.unascribed.yttr.init.YSounds;
 
 import com.google.common.collect.Iterables;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
@@ -16,6 +15,9 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -30,8 +32,9 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
+import org.jetbrains.annotations.Nullable;
 
-public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity implements BlockEntityClientSerializable {
+public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 
 	public static final int THINK_TIME = 30;
 	public static final int STOW_TIME = 15;
@@ -120,7 +123,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 			if (largestStackSlot != -1) {
 				heldItemMainHand = input.removeStack(largestStackSlot, Math.min(8, largestStackCount));
 				newAccessingInventory = null;
-				sync();
+				markDirty();
 				world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 1, 0);
 				thinkTicks = 1;
 			}
@@ -137,7 +140,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 				ItemStack templ = itemFrame.getHeldItemStack();
 				boolean matches;
 				if (getCachedState().get(SkeletalSorterBlock.ENGOGGLED)) {
-					matches = ItemStack.areItemsEqual(templ, heldItemMainHand) && ItemStack.areTagsEqual(templ, heldItemMainHand);
+					matches = ItemStack.areItemsEqual(templ, heldItemMainHand) && ItemStack.areNbtEqual(templ, heldItemMainHand);
 				} else {
 					matches = ItemStack.areItemsEqualIgnoreDamage(templ, heldItemMainHand);
 				}
@@ -154,7 +157,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 					heldItemOffHand = heldItemMainHand;
 					heldItemMainHand = ItemStack.EMPTY;
 					world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 0, 2);
-					sync();
+					markDirty();
 				}
 			}
 		} else if (stowTicks > 0) {
@@ -182,7 +185,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 						held.setCount(0);
 						success = true;
 						break;
-					} else if (ItemStack.areItemsEqual(there, held) && ItemStack.areTagsEqual(there, held) && there.getCount()+held.getCount() <= there.getMaxCount()) {
+					} else if (ItemStack.areItemsEqual(there, held) && ItemStack.areNbtEqual(there, held) && there.getCount()+held.getCount() <= there.getMaxCount()) {
 						there.increment(held.getCount());
 						out.setStack(i, there);
 						held.setCount(0);
@@ -193,7 +196,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 				if (success) {
 					stowing = null;
 					stowTicks = 0;
-					sync();
+					markDirty();
 					world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 0, 0);
 					newAccessingInventory = null;
 				}
@@ -290,23 +293,11 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 		if (stowing != null) tag.putString("Stowing", stowing.name());
 		return super.writeNbt(tag);
 	}
-	
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return toClientTag(super.toInitialChunkDataNbt());
-	}
 
+	@Nullable
 	@Override
-	public void fromClientTag(NbtCompound tag) {
-		heldItemMainHand = ItemStack.fromNbt(tag.getCompound("MainHand"));
-		heldItemOffHand = ItemStack.fromNbt(tag.getCompound("OffHand"));
-	}
-
-	@Override
-	public NbtCompound toClientTag(NbtCompound tag) {
-		tag.put("MainHand", heldItemMainHand.writeNbt(new NbtCompound()));
-		tag.put("OffHand", heldItemOffHand.writeNbt(new NbtCompound()));
-		return tag;
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
 	}
 
 }

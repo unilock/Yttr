@@ -27,6 +27,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 
+//TODO: oh dear god I forgot yttr has worldgen, time to ask mcwg what to do
 @SuppressWarnings("deprecation")
 public class YBiomes {
 

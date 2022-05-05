@@ -82,7 +82,7 @@ public class LampRecipe extends ShapedRecipe {
 		LampBlockItem.setInverted(stack, inputLampInverted == null ? containsTorch : inputLampInverted ^ containsTorch);
 		LampBlockItem.setColor(stack, color == null ? inputLampColor == null ? LampColor.COLORLESS : inputLampColor : color);
 		for (String s : stripTags) {
-			stack.getTag().remove(s);
+			stack.getNbt().remove(s);
 		}
 		return stack;
 	}

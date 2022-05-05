@@ -52,7 +52,7 @@ public class VoidUndoCommand {
 				.then(CommandManager.literal("clean")
 					.executes((ctx) -> {
 						try {
-							Path dir = VoidLogic.getUndoDirectory(ctx.getSource().getMinecraftServer());
+							Path dir = VoidLogic.getUndoDirectory(ctx.getSource().getServer());
 							long count;
 							if (Files.exists(dir)) {
 								count = Files.list(dir).count();
@@ -72,7 +72,7 @@ public class VoidUndoCommand {
 					.then(CommandManager.argument("file", StringArgumentType.greedyString())
 						.suggests((ctx, bldr) -> {
 							ServerCommandSource scs = ctx.getSource();
-							Path root = VoidLogic.getUndoDirectory(scs.getMinecraftServer());
+							Path root = VoidLogic.getUndoDirectory(scs.getServer());
 							String dim = scs.getWorld().getRegistryKey().getValue().toString();
 							BlockPos pos = new BlockPos(scs.getPosition());
 							ChunkPos chunkPos = new ChunkPos(pos);
@@ -95,7 +95,7 @@ public class VoidUndoCommand {
 														BlockPos entryPos = new ChunkPos(chunkPos.x+x, chunkPos.z+z).getStartPos().add((hpos>>4)&0xF, entry.getInt("YPos"), hpos&0xF);
 														double dist = entryPos.getSquaredDistance(pos);
 														if (dist < 32*32) {
-															suggestorsByDistance.add(Pair.of(dist, () -> bldr.suggest(entry.getString("Name"), new TranslatableText("commands.yttr.void_undo.location", entryPos.getX(), entryPos.getY(), entryPos.getZ(), (int)MathHelper.sqrt(dist)))));
+															suggestorsByDistance.add(Pair.of(dist, () -> bldr.suggest(entry.getString("Name"), new TranslatableText("commands.yttr.void_undo.location", entryPos.getX(), entryPos.getY(), entryPos.getZ(), (int)MathHelper.sqrt((float)dist)))));
 														}
 													}
 												}
@@ -114,14 +114,14 @@ public class VoidUndoCommand {
 							});
 						})
 						.executes((ctx) -> {
-							Path root = VoidLogic.getUndoDirectory(ctx.getSource().getMinecraftServer());
+							Path root = VoidLogic.getUndoDirectory(ctx.getSource().getServer());
 							Path indexFile = root.resolve("index.dat");
 							String fname = StringArgumentType.getString(ctx, "file");
 							Path file = root.resolve(fname+".dat");
 							if (Files.exists(file)) {
 								try {
 									NbtCompound data = NbtIo.readCompressed(file.toFile());
-									int count = undo(ctx.getSource().getMinecraftServer(), data);
+									int count = undo(ctx.getSource().getServer(), data);
 									if (Files.exists(indexFile)) {
 										NbtCompound index = NbtIo.readCompressed(indexFile.toFile());
 										removeFromIndex(index, Collections.singleton(fname));
@@ -144,7 +144,7 @@ public class VoidUndoCommand {
 					.then(CommandManager.argument("user", StringArgumentType.greedyString())
 						.suggests((ctx, bldr) -> {
 							ServerCommandSource scs = ctx.getSource();
-							Path root = VoidLogic.getUndoDirectory(scs.getMinecraftServer());
+							Path root = VoidLogic.getUndoDirectory(scs.getServer());
 							return CompletableFuture.supplyAsync(() -> {
 								try {
 									Path indexFile = root.resolve("index.dat");
@@ -164,7 +164,7 @@ public class VoidUndoCommand {
 							});
 						})
 						.executes((ctx) -> {
-							Path root = VoidLogic.getUndoDirectory(ctx.getSource().getMinecraftServer());
+							Path root = VoidLogic.getUndoDirectory(ctx.getSource().getServer());
 							Path indexFile = root.resolve("index.dat");
 							String user = StringArgumentType.getString(ctx, "user");
 							Set<String> fnames = Sets.newHashSet();
@@ -188,7 +188,7 @@ public class VoidUndoCommand {
 											try {
 												Path file = root.resolve(fname+".dat");
 												NbtCompound data = NbtIo.readCompressed(file.toFile());
-												count += undo(ctx.getSource().getMinecraftServer(), data);
+												count += undo(ctx.getSource().getServer(), data);
 												success++;
 												if (Files.exists(indexFile)) {
 													Files.delete(file);
@@ -247,9 +247,9 @@ public class VoidUndoCommand {
 			if (block.contains("Entity", NbtType.COMPOUND)) {
 				NbtCompound tag = block.getCompound("Entity");
 				if (world.getBlockEntity(mut) != null) {
-					world.getBlockEntity(mut).readNbt(bs, tag);
+					world.getBlockEntity(mut).readNbt(tag);
 				} else {
-					world.setBlockEntity(mut, BlockEntity.createFromNbt(bs, tag));
+					world.addBlockEntity(BlockEntity.createFromNbt(mut, bs, tag));
 				}
 			}
 		}

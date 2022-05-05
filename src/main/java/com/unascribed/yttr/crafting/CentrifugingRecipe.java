@@ -78,7 +78,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 			ItemStack out = outputs.get(i);
 			ItemStack cur = inv.getStack(i+1);
 			if (cur.isEmpty()) continue;
-			if (!ItemStack.areItemsEqual(out, cur) || !ItemStack.areTagsEqual(out, cur)) return false;
+			if (!ItemStack.areItemsEqual(out, cur) || !ItemStack.areNbtEqual(out, cur)) return false;
 			if (cur.getCount()+out.getCount() > cur.getMaxCount()) return false;
 		}
 		return true;
@@ -152,7 +152,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 			if (resultsJson.size() > 4) throw new IllegalArgumentException("A centrifuging recipe can only have up to 4 outputs");
 			List<ItemStack> results = Lists.newArrayList();
 			for (JsonElement je : resultsJson) {
-				results.add(ShapedRecipe.getItemStack(je.getAsJsonObject()));
+				results.add(ShapedRecipe.outputFromJson(je.getAsJsonObject()));
 			}
 			int time = JsonHelper.getInt(obj, "time", 400);
 			return new CentrifugingRecipe(id, group, ingredient, inputCount, results, time);

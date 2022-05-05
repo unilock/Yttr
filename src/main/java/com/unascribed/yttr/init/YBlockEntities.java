@@ -83,7 +83,8 @@ public class YBlockEntities {
 	public static final BlockEntityType<InRedEncoderBlockEntity> INRED_ENCODER = create(InRedEncoderBlockEntity::new, YBlocks.INRED_ENCODER);
 	public static final BlockEntityType<InRedOscillatorBlockEntity> INRED_OSCILLATOR = create(InRedOscillatorBlockEntity::new, YBlocks.INRED_OSCILLATOR);
 	public static final BlockEntityType<InRedDemoCyclerBlockEntity> INRED_DEMO_CYCLER = create(InRedDemoCyclerBlockEntity::new, YBlocks.INRED_DEMO_CYCLER);
-	
+
+	//TODO: figure out why this can't infer
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);
 	}

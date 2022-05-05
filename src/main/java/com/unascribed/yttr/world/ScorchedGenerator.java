@@ -34,8 +34,8 @@ import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.random.ChunkRandom;
 
 public class ScorchedGenerator {
 
@@ -43,7 +43,7 @@ public class ScorchedGenerator {
 		if (!YConfig.WorldGen.scorched) return;
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
-			Chunk chunk = region.getChunk(region.getCenterChunkX(), region.getCenterChunkZ());
+			Chunk chunk = region.getChunk(region.getCenterPos().x, region.getCenterPos().z);
 			ChunkRandom rand = new ChunkRandom(worldSeed);
 			OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
 			OctaveSimplexNoiseSampler terminusBNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 3, 6));
@@ -74,7 +74,7 @@ public class ScorchedGenerator {
 			}
 			rand.setPopulationSeed(31*worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
 			if (accessor.shouldGenerateStructures() && rand.nextInt(40) == 0) {
-				Structure s = region.toServerWorld().getStructureManager().getStructure(new Identifier("yttr", "terminus_house"));
+				Structure s = region.toServerWorld().getStructureManager().getStructure(new Identifier("yttr", "terminus_house")).get(); //TODO: unsafe
 				BlockRotation rot = BlockRotation.random(rand);
 				List<BlockPos> chains = Lists.newArrayList();
 				StructurePlacementData spd = new StructurePlacementData();
@@ -105,7 +105,7 @@ public class ScorchedGenerator {
 				boolean foundAllAnchors = true;
 				for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
 					if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-						if (info.tag != null && "yttr:chain".equals(info.tag.getString("metadata"))) {
+						if (info.nbt != null && "yttr:chain".equals(info.nbt.getString("metadata"))) {
 							bp.set(info.pos);
 							boolean foundAnchor = false;
 							for (int i = 0; i < 10; i++) {
@@ -157,7 +157,7 @@ public class ScorchedGenerator {
 						ItemStack potion = new ItemStack(Items.SPLASH_POTION);
 						potion.setCustomName(new TranslatableText("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
 						PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
-						potion.getTag().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
+						potion.getNbt().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
 						((DispenserBlockEntity)be).setStack(4, potion);
 					}
 				}

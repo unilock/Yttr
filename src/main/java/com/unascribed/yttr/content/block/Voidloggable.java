@@ -2,12 +2,14 @@ package com.unascribed.yttr.content.block;
 
 import com.unascribed.yttr.init.YFluids;
 
+import com.unascribed.yttr.init.YItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.FluidFillable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
@@ -26,7 +28,7 @@ public interface Voidloggable extends FluidDrainable, FluidFillable {
 		if (!state.get(VOIDLOGGED) && fluidState.getFluid() == YFluids.VOID) {
 			if (!world.isClient()) {
 				world.setBlockState(pos, state.with(VOIDLOGGED, true), 3);
-				world.getFluidTickScheduler().schedule(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
+				world.createAndScheduleFluidTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
 			}
 
 			return true;
@@ -36,12 +38,12 @@ public interface Voidloggable extends FluidDrainable, FluidFillable {
 	}
 
 	@Override
-	default Fluid tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
+	default ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
 		if (state.get(VOIDLOGGED)) {
 			world.setBlockState(pos, state.with(VOIDLOGGED, false), 3);
-			return YFluids.VOID;
+			return new ItemStack(YItems.VOID_BUCKET);
 		} else {
-			return Fluids.EMPTY;
+			return ItemStack.EMPTY;
 		}
 	}
 }

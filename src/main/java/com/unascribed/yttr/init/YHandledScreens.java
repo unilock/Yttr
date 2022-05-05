@@ -31,29 +31,30 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class YHandledScreens {
 
 	@Screen(CentrifugeScreen.class)
-	public static final ScreenHandlerType<CentrifugeScreenHandler> CENTRIFUGE = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "centrifuge"), CentrifugeScreenHandler::new);
+	public static final ScreenHandlerType<CentrifugeScreenHandler> CENTRIFUGE = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "centrifuge"), new ScreenHandlerType<>(CentrifugeScreenHandler::new));
 	@Screen(SuitStationScreen.class)
-	public static final ScreenHandlerType<SuitStationScreenHandler> SUIT_STATION = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "suit_station"), SuitStationScreenHandler::new);
+	public static final ScreenHandlerType<SuitStationScreenHandler> SUIT_STATION = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "suit_station"), new ScreenHandlerType<>(SuitStationScreenHandler::new));
 	@Screen(VoidFilterScreen.class)
-	public static final ScreenHandlerType<VoidFilterScreenHandler> VOID_FILTER = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "void_filter"), VoidFilterScreenHandler::new);
+	public static final ScreenHandlerType<VoidFilterScreenHandler> VOID_FILTER = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "void_filter"), new ScreenHandlerType<>(VoidFilterScreenHandler::new));
 	@Screen(DSUScreen.class)
-	public static final ScreenHandlerType<DSUScreenHandler> DSU = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "dsu"), DSUScreenHandler::new);
+	public static final ScreenHandlerType<DSUScreenHandler> DSU = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "dsu"), new ScreenHandlerType<>(DSUScreenHandler::new));
 	@Screen(MagtankScreen.class)
-	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "magtank"), MagtankScreenHandler::new);
+	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "magtank"), new ScreenHandlerType<>(MagtankScreenHandler::new));
 	@Screen(CanFillerScreen.class)
-	public static final ScreenHandlerType<CanFillerScreenHandler> CAN_FILLER = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "can_filler"), CanFillerScreenHandler::new);
+	public static final ScreenHandlerType<CanFillerScreenHandler> CAN_FILLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "can_filler"), new ScreenHandlerType<>(CanFillerScreenHandler::new));
 	@Screen(AmmoPackScreen.class)
-	public static final ScreenHandlerType<AmmoPackScreenHandler> AMMO_PACK = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "ammo_pack"), AmmoPackScreenHandler::new);
+	public static final ScreenHandlerType<AmmoPackScreenHandler> AMMO_PACK = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "ammo_pack"), new ScreenHandlerType<>(AmmoPackScreenHandler::new));
 	@Screen(InRedOscillatorScreen.class)
-	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "inred_oscillator"), InRedOscillatorScreenHandler::new);
+	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "inred_oscillator"), new ScreenHandlerType<>(InRedOscillatorScreenHandler::new));
 	@Screen(RafterScreen.class)
-	public static final ScreenHandlerType<RafterScreenHandler> RAFTING = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "rafter"), RafterScreenHandler::new);
+	public static final ScreenHandlerType<RafterScreenHandler> RAFTING = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "rafter"), new ScreenHandlerType<>(RafterScreenHandler::new));
 	@Screen(ProjectTableScreen.class)
-	public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "project_table"), ProjectTableScreenHandler::new);
+	public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE = Registry.register(Registry.SCREEN_HANDLER, new Identifier("yttr", "project_table"), new ScreenHandlerType<>(ProjectTableScreenHandler::new));
 	
 	public static void init() {}
 	

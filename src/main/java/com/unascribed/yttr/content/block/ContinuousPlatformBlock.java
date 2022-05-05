@@ -123,10 +123,10 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return getDefaultState().with(AGE, Age.IMMORTAL).with(LOGGED, LogFluid.by(ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid()));
 	}
-	
+
 	@Override
-	public void onSteppedOn(World world, BlockPos pos, Entity entity) {
-		if (world.getBlockState(pos).get(AGE) != Age.IMMORTAL) {
+	public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
+		if (state.get(AGE) != Age.IMMORTAL) {
 			world.setBlockState(pos, world.getBlockState(pos).with(AGE, Age._0));
 		}
 	}
@@ -153,7 +153,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		if (state.get(AGE) != Age.IMMORTAL) {
-			world.getBlockTickScheduler().schedule(pos, this, 200+world.random.nextInt(40));
+			world.createAndScheduleBlockTick(pos, this, 200+world.random.nextInt(40));
 		}
 	}
 	

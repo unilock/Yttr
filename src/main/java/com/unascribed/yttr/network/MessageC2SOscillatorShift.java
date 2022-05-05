@@ -33,7 +33,7 @@ public class MessageC2SOscillatorShift extends C2SMessage {
 
 	@Override
 	protected void handle(ServerPlayerEntity player) {
-		BlockEntity be = player.getServerWorld().getBlockEntity(new BlockPos(x, y, z));
+		BlockEntity be = player.getWorld().getBlockEntity(new BlockPos(x, y, z));
 		if (be instanceof InRedOscillatorBlockEntity) {
 			InRedOscillatorBlockEntity oscillator = ((InRedOscillatorBlockEntity) be);
 			oscillator.maxRefreshTicks += shiftValue;

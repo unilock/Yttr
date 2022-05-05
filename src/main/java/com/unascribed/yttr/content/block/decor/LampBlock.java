@@ -71,7 +71,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 		}
 		if (state.get(COLOR) != newColor) {
 			world.setBlockState(pos, state.with(COLOR, newColor));
-			if (!player.abilities.creativeMode) {
+			if (!player.getAbilities().creativeMode) {
 				stack.decrement(1);
 			}
 			return ActionResult.SUCCESS;
@@ -80,7 +80,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new LampBlockEntity();
 	}
 	
@@ -114,7 +114,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 			boolean cur = state.get(LIT);
 			if (cur != (world.isReceivingRedstonePower(pos) ^ state.get(INVERTED))) {
 				if (cur) {
-					world.getBlockTickScheduler().schedule(pos, this, 4);
+					world.createAndScheduleBlockTick(pos, this, 4);
 				} else {
 					world.setBlockState(pos, state.cycle(LIT), 2);
 				}
@@ -131,7 +131,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	}
 	
 	@Override
-	public void addStacksForDisplay(ItemGroup group, DefaultedList<ItemStack> list) {
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
 		int rem = 9-(LampColor.values().length%9);
 		for (LampColor color : LampColor.VALUES) {
 			list.add(getLoot(getDefaultState().with(COLOR, color)));

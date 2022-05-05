@@ -65,7 +65,7 @@ public class MessageC2SDivePos extends C2SMessage {
 				return;
 			}
 			double dist = MathHelper.sqrt(distSq);
-			int pressure = Yttr.calculatePressure(player.getServerWorld(), diver.yttr$getDivePos().x, diver.yttr$getDivePos().z);
+			int pressure = Yttr.calculatePressure(player.getWorld(), diver.yttr$getDivePos().x, diver.yttr$getDivePos().z);
 			for (SuitResource sr : SuitResource.VALUES) {
 				sai.consumeResource(is, sr, sr.getConsumptionPerBlock(pressure)*(int)dist);
 			}

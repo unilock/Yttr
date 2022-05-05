@@ -84,7 +84,7 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new SkeletalSorterBlockEntity();
 	}
 	
@@ -115,12 +115,12 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
-		if (stack.getItem().isIn(ItemTags.WOOL) && !state.get(MUTED)) {
+		if (stack.isIn(ItemTags.WOOL) && !state.get(MUTED)) {
 			world.playSound(player, pos, SoundEvents.BLOCK_WOOL_PLACE, SoundCategory.BLOCKS, 1, 1.2f);
 			world.setBlockState(pos, state.with(MUTED, true));
 			return ActionResult.SUCCESS;
 		} else if (stack.getItem() == YItems.GOGGLES && !state.get(ENGOGGLED)) {
-			if (!player.abilities.creativeMode) {
+			if (!player.getAbilities().creativeMode) {
 				stack.decrement(1);
 				player.setStackInHand(hand, stack);
 			}
@@ -128,11 +128,11 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 			world.setBlockState(pos, state.with(ENGOGGLED, true));
 			return ActionResult.SUCCESS;
 		} else {
-			if (state.get(ENGOGGLED) && !stack.getItem().isIn(ItemTags.WOOL)) {
+			if (state.get(ENGOGGLED) && !stack.isIn(ItemTags.WOOL)) {
 				if (stack.isEmpty()) {
 					player.setStackInHand(hand, new ItemStack(YItems.GOGGLES));
 				} else {
-					player.inventory.offerOrDrop(world, new ItemStack(YItems.GOGGLES));
+					player.getInventory().offerOrDrop(new ItemStack(YItems.GOGGLES));
 				}
 				world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1.2f);
 				world.setBlockState(pos, state.with(ENGOGGLED, false));

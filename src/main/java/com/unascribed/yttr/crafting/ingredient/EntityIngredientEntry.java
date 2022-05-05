@@ -31,11 +31,11 @@ public class EntityIngredientEntry implements Entry {
 	@Override
 	public Collection<ItemStack> getStacks() {
 		ItemStack is = new ItemStack(YItems.SNARE);
-		is.getOrCreateSubTag("Contents").putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
+		is.getOrCreateSubNbt("Contents").putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
 		if (mainHand != null) {
 			NbtList lore = new NbtList();
 			lore.add(NbtString.of("\"§7"+(mainHand == Arm.LEFT ? "Left" : "Right")+"-Handed\""));
-			is.getOrCreateSubTag("display").put("Lore", lore);
+			is.getOrCreateSubNbt("display").put("Lore", lore);
 		}
 		return Collections.singleton(is);
 	}
