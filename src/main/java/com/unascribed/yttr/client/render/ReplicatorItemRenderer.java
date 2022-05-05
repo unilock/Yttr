@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 public class ReplicatorItemRenderer extends IHasAClient {
 
 	public static void render(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		NbtCompound entityTag = stack.getSubTag("BlockEntityTag");
+		NbtCompound entityTag = stack.getSubNbt("BlockEntityTag");
 		ItemStack item = ItemStack.EMPTY;
 		int seed = 100;
 		if (entityTag != null) {

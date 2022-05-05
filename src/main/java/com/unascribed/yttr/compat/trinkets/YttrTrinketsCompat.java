@@ -35,7 +35,7 @@ public class YttrTrinketsCompat {
 			public void dropMagneticTrinkets(PlayerEntity pe) {
 				Inventory inv = TrinketsApi.getTrinketsInventory(pe);
 				for (int i = 0; i < inv.size(); i++) {
-					if (inv.getStack(i).getItem().isIn(YTags.Item.MAGNETIC)) {
+					if (inv.getStack(i).isIn(YTags.Item.MAGNETIC)) {
 						ItemEntity ie = pe.dropStack(inv.removeStack(i));
 						if (ie != null) ie.setVelocity(0, -1, 0);
 					}

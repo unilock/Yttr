@@ -95,12 +95,12 @@ public class EffectorItem extends Item {
 	}
 	
 	public int getFuel(ItemStack stack) {
-		return stack.hasTag() ? stack.getTag().getInt("Fuel") : 0;
+		return stack.hasNbt() ? stack.getNbt().getInt("Fuel") : 0;
 	}
 	
 	public void setFuel(ItemStack stack, int fuel) {
-		if (!stack.hasTag()) stack.setTag(new NbtCompound());
-		stack.getTag().putInt("Fuel", fuel);
+		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+		stack.getNbt().putInt("Fuel", fuel);
 	}
 
 	public interface RenderUpdateCallback {

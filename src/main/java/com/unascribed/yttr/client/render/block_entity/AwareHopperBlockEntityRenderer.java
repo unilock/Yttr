@@ -8,23 +8,18 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
-public class AwareHopperBlockEntityRenderer extends BlockEntityRenderer<AwareHopperBlockEntity> {
+public class AwareHopperBlockEntityRenderer implements BlockEntityRenderer<AwareHopperBlockEntity> {
 
 	private static final Identifier ZENDERMIE_TEX = new Identifier("yttr", "textures/entity/zendermie.png");
 	private static final Identifier EYES_TEX = new Identifier("minecraft", "textures/entity/enderman/enderman_eyes.png");
 	
 	private final ZendermieModel zendermie = new ZendermieModel();
-	
-	public AwareHopperBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-	}
 
 	@Override
 	public void render(AwareHopperBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

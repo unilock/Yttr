@@ -89,7 +89,7 @@ public class CleavedBlockMeshes {
 		QuadEmitter qe = bldr.getEmitter();
 		Random rand = new Random(7);
 		BakedQuad firstNullQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), null, rand), null);
-		Sprite particle = donor.getSprite();
+		Sprite particle = donor.getParticleSprite();
 		for (Polygon p : entity.getPolygons()) {
 			Plane plane = p.plane();
 			Direction face = findClosestFace(plane.normal());

@@ -165,7 +165,7 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 		}
 		for (int slot : slots) {
 			ItemStack there = inv.getStack(slot);
-			if ((there.isEmpty() || (there.isItemEqual(stack) && Objects.equal(there.getTag(), stack.getTag()))) && inv.isValid(slot, stack)
+			if ((there.isEmpty() || (there.isItemEqual(stack) && Objects.equal(there.getNbt(), stack.getNbt()))) && inv.isValid(slot, stack)
 					&& (there.getCount()+stack.getCount()) <= there.getMaxCount()) {
 				return slot;
 			}

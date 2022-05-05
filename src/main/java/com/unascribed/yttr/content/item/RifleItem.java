@@ -86,9 +86,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 			if (!mode.isEnabled()) return TypedActionResult.fail(stack);
 			SlotReference can = getAmmoCanSlot(user, mode);
 			if (can == null) {
-				if (stack.hasTag()) {
-					stack.getTag().remove("FiringFromCan");
-					stack.getTag().remove("LastCanFullness");
+				if (stack.hasNbt()) {
+					stack.getNbt().remove("FiringFromCan");
+					stack.getNbt().remove("LastCanFullness");
 				}
 				int ammo = getRemainingAmmo(stack);
 				int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
@@ -146,9 +146,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				}
 				setRemainingAmmo(stack, ammo);
 			} else {
-				if (!stack.hasTag()) stack.setTag(new NbtCompound());
-				stack.getTag().putBoolean("FiringFromCan", true);
-				stack.getTag().putFloat("LastCanFullness", can.getStack().getTag().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
+				if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+				stack.getNbt().putBoolean("FiringFromCan", true);
+				stack.getNbt().putFloat("LastCanFullness", can.getStack().getNbt().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
 			}
 			user.playSound(YSounds.RIFLE_FIRE_DUD, 1, 1.75f);
 			float speed = mode.speed*speedMod;
@@ -167,9 +167,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	@Override
 	public void attack(PlayerEntity user) {
 		ItemStack held = user.getStackInHand(Hand.MAIN_HAND);
-		if (!held.hasTag()) held.setTag(new NbtCompound());
-		boolean scoped = held.getTag().getBoolean("Scoped");
-		held.getTag().putBoolean("Scoped", !scoped);
+		if (!held.hasNbt()) held.setNbt(new NbtCompound());
+		boolean scoped = held.getNbt().getBoolean("Scoped");
+		held.getNbt().putBoolean("Scoped", !scoped);
 		if (!scoped && user instanceof ServerPlayerEntity) {
 			YCriteria.RIFLE_SCOPE.trigger((ServerPlayerEntity)user);
 		}
@@ -180,7 +180,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		if (user.isCreative()) return -1;
 		SlotReference can = getAmmoCanSlot(user, mode);
 		if (can != null) {
-			return can.getStack().getTag().getInt("Shots");
+			return can.getStack().getNbt().getInt("Shots");
 		}
 		int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
 		int ammo = 0;
@@ -232,12 +232,12 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	private boolean isMatchingCan(ItemStack is, RifleMode mode) {
-		return is.getItem() == YItems.AMMO_CAN && is.hasTag() && mode.name().equals(is.getTag().getString("Mode")) && is.getTag().getInt("Shots") > 0;
+		return is.getItem() == YItems.AMMO_CAN && is.hasNbt() && mode.name().equals(is.getNbt().getString("Mode")) && is.getNbt().getInt("Shots") > 0;
 	}
 
 	public void changeMode(PlayerEntity user, RifleMode mode) {
 		ItemStack stack = user.getMainHandStack();
-		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;
+		if (stack.hasNbt() && stack.getNbt().getBoolean("ModeLocked")) return;
 		RifleMode oldMode = getMode(stack);
 		if (setMode(stack, mode)) {
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 0.75f);
@@ -252,14 +252,14 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		}
 		SlotReference can = getAmmoCanSlot(user, mode);
 		if (can == null) {
-			if (stack.hasTag()) {
-				stack.getTag().remove("FiringFromCan");
-				stack.getTag().remove("LastCanFullness");
+			if (stack.hasNbt()) {
+				stack.getNbt().remove("FiringFromCan");
+				stack.getNbt().remove("LastCanFullness");
 			}
 		} else {
-			if (!stack.hasTag()) stack.setTag(new NbtCompound());
-			stack.getTag().putBoolean("FiringFromCan", true);
-			stack.getTag().putFloat("LastCanFullness", can.getStack().getTag().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
+			if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+			stack.getNbt().putBoolean("FiringFromCan", true);
+			stack.getNbt().putFloat("LastCanFullness", can.getStack().getNbt().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
 		}
 		user.setStackInHand(Hand.MAIN_HAND, stack);
 		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
@@ -305,22 +305,22 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				ammo--;
 				setRemainingAmmo(stack, ammo);
 			}
-			if (stack.hasTag()) {
-				stack.getTag().remove("FiringFromCan");
-				stack.getTag().remove("LastCanFullness");
+			if (stack.hasNbt()) {
+				stack.getNbt().remove("FiringFromCan");
+				stack.getNbt().remove("LastCanFullness");
 			}
 		} else {
 			if (useTicks > 30) {
-				int shots = can.getStack().getTag().getInt("Shots");
+				int shots = can.getStack().getNbt().getInt("Shots");
 				shots--;
 				if (shots <= 0) {
 					can.setStack(new ItemStack(YItems.EMPTY_AMMO_CAN));
 				} else {
-					can.getStack().getTag().putInt("Shots", shots);
+					can.getStack().getNbt().putInt("Shots", shots);
 				}
-				if (!stack.hasTag()) stack.setTag(new NbtCompound());
-				stack.getTag().putBoolean("FiringFromCan", true);
-				stack.getTag().putFloat("LastCanFullness", shots/(float)AmmoCanItem.CAPACITY);
+				if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+				stack.getNbt().putBoolean("FiringFromCan", true);
+				stack.getNbt().putFloat("LastCanFullness", shots/(float)AmmoCanItem.CAPACITY);
 			}
 		}
 		if (!mode.canFire(user, stack, power)) {
@@ -357,7 +357,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 							return;
 						}
 					}
-				} else if (user instanceof ServerPlayerEntity && stack.hasTag() && stack.getTag().getBoolean("Scoped") && ehr.getEntity().squaredDistanceTo(user) > 100*100) {
+				} else if (user instanceof ServerPlayerEntity && stack.hasNbt() && stack.getNbt().getBoolean("Scoped") && ehr.getEntity().squaredDistanceTo(user) > 100*100) {
 					YCriteria.SHOOT_SOMETHING_FAR_AWAY.trigger((ServerPlayerEntity)user);
 				}
 				YStats.add(user, YStats.RIFLE_SHOTS_FIRED, 1);
@@ -411,28 +411,28 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 
 	public RifleMode getMode(ItemStack stack) {
-		return Enums.getIfPresent(RifleMode.class, stack.hasTag() ? stack.getTag().getString("Mode") : RifleMode.DAMAGE.name()).or(RifleMode.DAMAGE);
+		return Enums.getIfPresent(RifleMode.class, stack.hasNbt() ? stack.getNbt().getString("Mode") : RifleMode.DAMAGE.name()).or(RifleMode.DAMAGE);
 	}
 	
 	public boolean setMode(ItemStack stack, RifleMode mode) {
-		if (!stack.hasTag()) stack.setTag(new NbtCompound());
+		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		RifleMode cur = getMode(stack);
 		if (cur == mode) return false;
-		stack.getTag().putString("Mode", mode.name());
-		stack.getTag().putBoolean("WasSelected", false);
-		stack.getTag().putBoolean("FiringFromCan", false);
+		stack.getNbt().putString("Mode", mode.name());
+		stack.getNbt().putBoolean("WasSelected", false);
+		stack.getNbt().putBoolean("FiringFromCan", false);
 		int ammo = getRemainingAmmo(stack);
 		setRemainingAmmo(stack, 0);
 		return ammo > 0;
 	}
 	
 	public int getRemainingAmmo(ItemStack stack) {
-		return stack.hasTag() ? stack.getTag().getInt("RemainingAmmo") : 0;
+		return stack.hasNbt() ? stack.getNbt().getInt("RemainingAmmo") : 0;
 	}
 	
 	public void setRemainingAmmo(ItemStack stack, int ammo) {
-		if (!stack.hasTag()) stack.setTag(new NbtCompound());
-		stack.getTag().putInt("RemainingAmmo", ammo);
+		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+		stack.getNbt().putInt("RemainingAmmo", ammo);
 	}
 	
 	public int getMaxAmmo(ItemStack stack) {
@@ -478,21 +478,21 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		user.playSound(YSounds.RIFLE_OVERCHARGE, 1, 1);
 		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8*speedMod);
 		user.setOnFireFor((int)(3*speedMod));
-		if (!stack.hasTag()) stack.setTag(new NbtCompound());
+		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		SlotReference can = getAmmoCanSlot(user, getMode(stack));
 		if (can == null) {
 			setRemainingAmmo(stack, 0);
 		} else {
-			int shots = can.getStack().getTag().getInt("Shots");
+			int shots = can.getStack().getNbt().getInt("Shots");
 			shots -= 10;
 			if (shots <= 0) {
 				can.setStack(new ItemStack(YItems.EMPTY_AMMO_CAN));
 			} else {
-				can.getStack().getTag().putInt("Shots", shots);
+				can.getStack().getNbt().putInt("Shots", shots);
 			}
-			if (!stack.hasTag()) stack.setTag(new NbtCompound());
-			stack.getTag().putBoolean("FiringFromCan", true);
-			stack.getTag().putFloat("LastCanFullness", shots/(float)AmmoCanItem.CAPACITY);
+			if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+			stack.getNbt().putBoolean("FiringFromCan", true);
+			stack.getNbt().putFloat("LastCanFullness", shots/(float)AmmoCanItem.CAPACITY);
 		}
 		if (!world.isClient) {
 			getMode(stack).handleBackfire(user, stack);
@@ -525,10 +525,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		super.inventoryTick(stack, world, entity, slot, selected);
-		boolean wasSelected = stack.hasTag() && stack.getTag().getBoolean("WasSelected");
+		boolean wasSelected = stack.hasNbt() && stack.getNbt().getBoolean("WasSelected");
 		if (selected != wasSelected) {
-			if (!stack.hasTag()) stack.setTag(new NbtCompound());
-			stack.getTag().putBoolean("WasSelected", selected);
+			if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+			stack.getNbt().putBoolean("WasSelected", selected);
 			if (!wasSelected) {
 				if (entity instanceof PlayerEntity && !world.isClient) {
 					RifleMode mode = getMode(stack);
@@ -553,7 +553,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		Vec3d down = look.crossProduct(right);
 		if (entity instanceof LivingEntity) {
 			ItemStack stack = ((LivingEntity) entity).getStackInHand(Hand.MAIN_HAND);
-			if (stack.getItem() instanceof RifleItem && stack.hasTag() && stack.getTag().getBoolean("Scoped")) {
+			if (stack.getItem() instanceof RifleItem && stack.hasNbt() && stack.getNbt().getBoolean("Scoped")) {
 				return eyes.add(down.multiply(0.075));
 			}
 		}
@@ -568,8 +568,8 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		RifleItem item = ((RifleItem)stack.getItem());
 		RifleMode mode = ((RifleItem)stack.getItem()).getMode(stack);
 		float v;
-		if (stack.hasTag() && stack.getTag().getBoolean("FiringFromCan")) {
-			v = stack.getTag().getFloat("LastCanFullness");
+		if (stack.hasNbt() && stack.getNbt().getBoolean("FiringFromCan")) {
+			v = stack.getNbt().getFloat("LastCanFullness");
 		} else {
 			v = (item.getRemainingAmmo(stack)/(float)(item.getMaxAmmo(stack)));
 		}

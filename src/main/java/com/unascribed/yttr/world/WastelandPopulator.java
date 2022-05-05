@@ -23,6 +23,7 @@ import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.gen.random.ChunkRandom;
+import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 import java.util.List;
 import java.util.Random;
@@ -30,7 +31,7 @@ import java.util.Set;
 
 public class WastelandPopulator {
 
-	private static final int FLAGS = 32 | 16 | 2; // SKIP_DROPS | FORCE_STATE | NOTIFY_LISTENERS
+	private static final int FLAGS = Block.SKIP_DROPS | Block.FORCE_STATE | Block.NOTIFY_LISTENERS;
 	
 	public static boolean isEligible(ServerWorld world, WorldChunk chunk) {
 		if (world.getBiome(chunk.getPos().getStartPos()).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
@@ -45,7 +46,7 @@ public class WastelandPopulator {
 		if (world.getBiome(chunkStart).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
 			if (world.getBlockState(chunkStart).getBlock() == YBlocks.SPECIALTY_BEDROCK) return;
 			world.setBlockState(chunkStart, YBlocks.SPECIALTY_BEDROCK.getDefaultState(), 0, 0);
-			ChunkRandom rand = new ChunkRandom(worldSeed);
+			ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(worldSeed));
 			rand.setPopulationSeed(worldSeed, chunk.getStartX(), chunk.getStartZ());
 			BlockPos.Mutable mut = new BlockPos.Mutable();
 			BlockPos.Mutable mut2 = new BlockPos.Mutable();
@@ -321,7 +322,7 @@ public class WastelandPopulator {
 				return block;
 			}));
 		}
-		s.place(world, origin, spd, rand);
+		s.place(world, origin, origin, spd, rand, 0);
 		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
 			if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
 				if (info.nbt != null) {

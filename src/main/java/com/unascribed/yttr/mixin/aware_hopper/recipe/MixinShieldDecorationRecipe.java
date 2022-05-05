@@ -14,7 +14,7 @@ public class MixinShieldDecorationRecipe implements SpecialInputsRecipe {
 
 	@Override
 	public boolean yttr$isInputValid(Inventory inv, int slot, ItemStack input) {
-		if (slot == 0) return input.getItem() == Items.SHIELD && input.getSubTag("BlockEntityTag") == null;
+		if (slot == 0) return input.getItem() == Items.SHIELD && input.getSubNbt("BlockEntityTag") == null;
 		if (slot == 1) return input.getItem() instanceof BannerItem;
 		return false;
 	}

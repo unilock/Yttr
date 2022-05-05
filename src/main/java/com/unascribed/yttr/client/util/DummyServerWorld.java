@@ -983,8 +983,8 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public TagManager getTagManager() {
-		return getDelegate().getTagManager();
+	public TagManager getNbtManager() {
+		return getDelegate().getNbtManager();
 	}
 
 	@Override

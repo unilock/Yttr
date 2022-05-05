@@ -8,7 +8,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -16,13 +15,9 @@ import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 
-public class PowerMeterBlockEntityRenderer extends BlockEntityRenderer<PowerMeterBlockEntity> {
+public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerMeterBlockEntity> {
 
 	private static final Identifier LCD = new Identifier("yttr", "textures/block/lcd.png");
-	
-	public PowerMeterBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-	}
 	
 	@Override
 	public void render(PowerMeterBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -63,8 +58,8 @@ public class PowerMeterBlockEntityRenderer extends BlockEntityRenderer<PowerMete
 			for (int i = readout.length()-1; i >= 0; i--) {
 				char c = readout.charAt(i);
 				float u = Character.digit(c, 10)/10f;
-				Matrix4f mat = matrices.peek().getModel();
-				Matrix3f nrm = matrices.peek().getNormal();
+				Matrix4f mat = matrices.peek().getPositionMatrix();
+				Matrix3f nrm = matrices.peek().getNormalMatrix();
 				vc.vertex(mat, 0, 7/16f, 0).color(1f, 1f, 1f, a).texture(u+0.1f, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
 				vc.vertex(mat, 4/16f, 7/16f, 0).color(1f, 1f, 1f, a).texture(u, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
 				vc.vertex(mat, 4/16f, 0, 0).color(1f, 1f, 1f, a).texture(u, 1).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();

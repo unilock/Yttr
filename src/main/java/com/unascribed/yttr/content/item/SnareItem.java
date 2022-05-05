@@ -110,7 +110,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			end = ehr.getPos();
 			hit = ehr.getEntity();
 		}
-		if (stack.hasTag() && stack.getTag().contains("Contents")) {
+		if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
 			if (world.isClient) return TypedActionResult.success(stack, false);
 			boolean miss = ehr == null && hr.getType() == Type.MISS;
 			if (miss) {
@@ -175,7 +175,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (e != null && miss) {
 				e.setVelocity(user.getRotationVec(1).multiply(0.75).add(user.getVelocity()));
 			}
-			stack.getTag().remove("Contents");
+			stack.getNbt().remove("Contents");
 			world.playSound(null, end.x, end.y, end.z, YSounds.SNARE_PLOP, SoundCategory.PLAYERS, 1.0f, 0.75f);
 			world.playSound(null, end.x, end.y, end.z, YSounds.SNARE_PLOP, SoundCategory.PLAYERS, 1.0f, 0.95f);
 			world.playSound(null, end.x, end.y, end.z, YSounds.SNARE_RELEASE, SoundCategory.PLAYERS, 0.3f, 1.75f);
@@ -211,7 +211,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (!hit.isAlive()) return TypedActionResult.fail(stack);
 			if (hit instanceof PlayerEntity || hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE) || hit.hasPassengers()) return TypedActionResult.fail(stack);
 			if (!hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING) && !(hit instanceof LivingEntity) && !(hit instanceof FallingBlockEntity)) return TypedActionResult.fail(stack);
-			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().getItem().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE)) return TypedActionResult.fail(stack);
+			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE)) return TypedActionResult.fail(stack);
 			NbtCompound data = new NbtCompound();
 			if (hit.saveSelfNbt(data)) {
 				boolean tryingToCheatSnareTimer = checkForCheating(data);
@@ -222,12 +222,12 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					world.removeBlockEntity(toDelete);
 					world.setBlockState(toDelete, deleteState);
 				}
-				stack.getTag().remove("AmbientSound");
-				stack.getTag().remove("AmbientSoundTimer");
-				stack.getTag().remove("AmbientSoundDelay");
-				stack.getTag().remove("AmbientSoundPitches");
-				stack.getTag().remove("AmbientSoundVolumes");
-				stack.getTag().remove("AmbientSoundCategory");
+				stack.getNbt().remove("AmbientSound");
+				stack.getNbt().remove("AmbientSoundTimer");
+				stack.getNbt().remove("AmbientSoundDelay");
+				stack.getNbt().remove("AmbientSoundPitches");
+				stack.getNbt().remove("AmbientSoundVolumes");
+				stack.getNbt().remove("AmbientSoundCategory");
 				if (hit instanceof LivingEntity) {
 					((AccessorLivingEntity)hit).yttr$playHurtSound(DamageSource.GENERIC);
 					if (user instanceof ServerPlayerEntity) {
@@ -242,26 +242,26 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					SoundEvent sound = ((AccessorMobEntity)hit).yttr$getAmbientSound();
 					if (sound != null) {
 						Identifier id = Registry.SOUND_EVENT.getId(sound);
-						stack.getTag().putString("AmbientSound", id.toString());
-						stack.getTag().putInt("AmbientSoundTimer", -mob.getMinAmbientSoundDelay());
-						stack.getTag().putInt("AmbientSoundDelay", mob.getMinAmbientSoundDelay());
+						stack.getNbt().putString("AmbientSound", id.toString());
+						stack.getNbt().putInt("AmbientSoundTimer", -mob.getMinAmbientSoundDelay());
+						stack.getNbt().putInt("AmbientSoundDelay", mob.getMinAmbientSoundDelay());
 						int[] soundPitches = new int[10];
 						int[] soundVolumes = new int[10];
 						for (int i = 0; i < soundPitches.length; i++) {
 							soundPitches[i] = Float.floatToIntBits(((AccessorLivingEntity)hit).yttr$getSoundPitch());
 							soundVolumes[i] = Float.floatToIntBits(((AccessorLivingEntity)hit).yttr$getSoundVolume());
 						}
-						stack.getTag().putIntArray("AmbientSoundPitches", soundPitches);
-						stack.getTag().putIntArray("AmbientSoundVolumes", soundVolumes);
-						stack.getTag().putString("AmbientSoundCategory", hit.getSoundCategory().name());
+						stack.getNbt().putIntArray("AmbientSoundPitches", soundPitches);
+						stack.getNbt().putIntArray("AmbientSoundVolumes", soundVolumes);
+						stack.getNbt().putString("AmbientSoundCategory", hit.getSoundCategory().name());
 					}
 				}
 				boolean baby = hit instanceof LivingEntity && ((LivingEntity)hit).isBaby();
 				hit.remove();
-				if (!stack.hasTag()) stack.setTag(new NbtCompound());
-				stack.getTag().putLong("LastUpdate", user.world.getServer().getTicks());
-				stack.getTag().put("Contents", data);
-				stack.getTag().putBoolean("Baby", baby);
+				if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+				stack.getNbt().putLong("LastUpdate", user.world.getServer().getTicks());
+				stack.getNbt().put("Contents", data);
+				stack.getNbt().putBoolean("Baby", baby);
 				return TypedActionResult.success(stack, true);
 			} else {
 				return TypedActionResult.fail(stack);
@@ -300,9 +300,9 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type != null) {
 			if (type == EntityType.ITEM) {
-				return new TranslatableText("item.yttr.snare.filled", ItemStack.fromNbt(stack.getTag().getCompound("Contents").getCompound("Item")).getName());
+				return new TranslatableText("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
 			} else if (type == EntityType.FALLING_BLOCK) {
-				return new TranslatableText("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getTag().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
+				return new TranslatableText("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
 			}
 			return new TranslatableText("item.yttr.snare.filled", type.getName());
 		}
@@ -332,7 +332,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				return new TranslatableText("tip.yttr.snare.unstable", minutes, Integer.toString(seconds+100).substring(1))
 						.formatted(minutes <= 1 ? minutes == 0 && seconds <= 30 ? Formatting.RED : Formatting.YELLOW : Formatting.GRAY);
 			}
-		} else if (stack.hasTag() && stack.getTag().contains("Contents")) {
+		} else if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
 			return new TranslatableText("tip.yttr.snare.stable").formatted(Formatting.GRAY);
 		} else {
 			return null;
@@ -341,7 +341,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 
 	private int getCheatedTicks(World world, ItemStack stack) {
 		if (world.isClient) return 0;
-		long lastUpdate = stack.hasTag() ? stack.getTag().getLong("LastUpdate") : 0;
+		long lastUpdate = stack.hasNbt() ? stack.getNbt().getLong("LastUpdate") : 0;
 		if (lastUpdate == 0) return 0;
 		long cheatedTicks = world.getServer().getTicks()-lastUpdate;
 		if (cheatedTicks < 5) return 0;
@@ -363,8 +363,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				release((entity instanceof PlayerEntity) ? (PlayerEntity)entity : null, world, stack, entity.getPos(), entity.getYaw(1), true);
 			}
 		}
-		if (stack.hasTag() && stack.getTag().contains("Contents")) {
-			stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
+		if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
+			stack.getNbt().putLong("LastUpdate", world.getServer().getTicks());
 		}
 		if (entity instanceof PlayerEntity && selected) {
 			Text msg = getContainmentMessage(world, stack);
@@ -388,36 +388,36 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				release(null, world, stack, Vec3d.ofBottomCenter(pos.up()), 0, true);
 			}
 		}
-		if (stack.hasTag() && stack.getTag().contains("Contents")) {
-			stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
+		if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
+			stack.getNbt().putLong("LastUpdate", world.getServer().getTicks());
 		}
 	}
 	
 	private void handleAmbientSound(ItemStack stack, World world, Vec3d pos, boolean selected) {
-		if (stack.hasTag() && stack.getTag().contains("AmbientSound") && stack.getTag().contains("Contents")) {
-			int ambientSoundTimer = stack.getTag().getInt("AmbientSoundTimer");
+		if (stack.hasNbt() && stack.getNbt().contains("AmbientSound") && stack.getNbt().contains("Contents")) {
+			int ambientSoundTimer = stack.getNbt().getInt("AmbientSoundTimer");
 			ambientSoundTimer += getCheatedTicks(world, stack)+1;
 			if (RANDOM.nextInt(1000) < ambientSoundTimer) {
-				ambientSoundTimer = -stack.getTag().getInt("AmbientSoundDelay");
-				int[] pitches = stack.getTag().getIntArray("AmbientSoundPitches");
-				int[] volumes = stack.getTag().getIntArray("AmbientSoundVolumes");
-				Identifier id = Identifier.tryParse(stack.getTag().getString("AmbientSound"));
+				ambientSoundTimer = -stack.getNbt().getInt("AmbientSoundDelay");
+				int[] pitches = stack.getNbt().getIntArray("AmbientSoundPitches");
+				int[] volumes = stack.getNbt().getIntArray("AmbientSoundVolumes");
+				Identifier id = Identifier.tryParse(stack.getNbt().getString("AmbientSound"));
 				if (id == null) return;
 				SoundEvent sound = Registry.SOUND_EVENT.getOrEmpty(id).orElse(null);
 				if (sound == null) return;
-				SoundCategory category = Enums.getIfPresent(SoundCategory.class, stack.getTag().getString("AmbientSoundCategory")).or(SoundCategory.MASTER);
+				SoundCategory category = Enums.getIfPresent(SoundCategory.class, stack.getNbt().getString("AmbientSoundCategory")).or(SoundCategory.MASTER);
 				world.playSound(null, pos.x, pos.y, pos.z, sound, category, Float.intBitsToFloat(volumes[RANDOM.nextInt(volumes.length)])/(selected ? 2 : 3), Float.intBitsToFloat(pitches[RANDOM.nextInt(pitches.length)]));
 			}
-			stack.getTag().putInt("AmbientSoundTimer", ambientSoundTimer);
+			stack.getNbt().putInt("AmbientSoundTimer", ambientSoundTimer);
 		}
 	}
 
 	private int calculateDamageRate(World world, ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().getBoolean("Unbreakable")) return 0;
+		if (stack.hasNbt() && stack.getNbt().getBoolean("Unbreakable")) return 0;
 		EntityType<?> type = getEntityType(stack);
 		if (type != null) {
 			if (type == EntityType.ARMOR_STAND || type == EntityType.ITEM) return 0;
-			NbtCompound data = stack.getTag().getCompound("Contents");
+			NbtCompound data = stack.getNbt().getCompound("Contents");
 			int dmg = MathHelper.ceil(data.getFloat("Health")*MathHelper.sqrt(type.getDimensions().height*type.getDimensions().width));
 			switch (type.getSpawnGroup()) {
 				case AMBIENT:
@@ -434,7 +434,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (type.isIn(com.unascribed.yttr.init.YTags.Entity.BOSSES)) {
 				dmg *= 4;
 			}
-			if (stack.getTag().getBoolean("Baby")) {
+			if (stack.getNbt().getBoolean("Baby")) {
 				dmg /= 2;
 			}
 			return dmg;
@@ -443,7 +443,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	}
 
 	public EntityType<?> getEntityType(ItemStack stack) {
-		NbtCompound data = stack.getTag().getCompound("Contents");
+		NbtCompound data = stack.getNbt().getCompound("Contents");
 		Identifier id = Identifier.tryParse(data.getString("id"));
 		if (id == null) return null;
 		return Registry.ENTITY_TYPE.getOrEmpty(id).orElse(null);
@@ -469,7 +469,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				e.damage(DamageSource.player(player), 0);
 				e.age = 0;
 			}
-			if (spawn) stack.getTag().remove("Contents");
+			if (spawn) stack.getNbt().remove("Contents");
 			return e;
 		}
 		return null;
@@ -479,7 +479,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type == null) return null;
 		Entity e = type.create(world);
-		e.readNbt(stack.getTag().getCompound("Contents"));
+		e.readNbt(stack.getNbt().getCompound("Contents"));
 		return e;
 	}
 	

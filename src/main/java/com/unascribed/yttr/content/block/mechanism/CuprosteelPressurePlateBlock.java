@@ -104,7 +104,7 @@ public class CuprosteelPressurePlateBlock extends AbstractPressurePlateBlock {
 	}
 
 	private boolean isConductive(PlayerEntity e) {
-		return e.getEquippedStack(EquipmentSlot.FEET).getItem().isIn(YTags.Item.CONDUCTIVE_BOOTS) || Yttr.isWearingCoil(e);
+		return e.getEquippedStack(EquipmentSlot.FEET).isIn(YTags.Item.CONDUCTIVE_BOOTS) || Yttr.isWearingCoil(e);
 	}
 
 }

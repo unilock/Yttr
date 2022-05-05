@@ -193,7 +193,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 
 			@Override
 			public int hashCode(ItemStack o) {
-				return Objects.hash(o.getItem(), o.getCount(), o.getTag());
+				return Objects.hash(o.getItem(), o.getCount(), o.getNbt());
 			}
 
 			@Override

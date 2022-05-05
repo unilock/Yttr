@@ -38,22 +38,22 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	}
 
 	public static LampColor getColor(ItemStack stack) {
-		if (!stack.hasTag()) return LampColor.COLORLESS;
-		return Enums.getIfPresent(LampColor.class, stack.getTag().getString("LampColor").toUpperCase(Locale.ROOT)).or(LampColor.COLORLESS);
+		if (!stack.hasNbt()) return LampColor.COLORLESS;
+		return Enums.getIfPresent(LampColor.class, stack.getNbt().getString("LampColor").toUpperCase(Locale.ROOT)).or(LampColor.COLORLESS);
 	}
 
 	public static boolean isInverted(ItemStack stack) {
-		return stack.hasTag() && stack.getTag().getBoolean("Inverted");
+		return stack.hasNbt() && stack.getNbt().getBoolean("Inverted");
 	}
 
 	public static void setInverted(ItemStack is, boolean inverted) {
-		if (!is.hasTag()) is.setTag(new NbtCompound());
-		is.getTag().putBoolean("Inverted", inverted);
+		if (!is.hasNbt()) is.setNbt(new NbtCompound());
+		is.getNbt().putBoolean("Inverted", inverted);
 	}
 	
 	public static void setColor(ItemStack is, LampColor color) {
-		if (!is.hasTag()) is.setTag(new NbtCompound());
-		is.getTag().putString("LampColor", color.asString());
+		if (!is.hasNbt()) is.setNbt(new NbtCompound());
+		is.getNbt().putString("LampColor", color.asString());
 	}
 
 	@Override

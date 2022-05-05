@@ -28,7 +28,7 @@ public class BasicCriterion extends AbstractCriterion<BasicCriterion.Conditions>
 	}
 	
 	public void trigger(ServerPlayerEntity player) {
-		test(player, cond -> true);
+		trigger(player, cond -> true);
 	}
 
 	public class Conditions extends AbstractCriterionConditions {

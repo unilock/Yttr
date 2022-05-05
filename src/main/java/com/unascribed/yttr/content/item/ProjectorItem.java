@@ -59,7 +59,7 @@ public class ProjectorItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
-		if (stack.hasTag()) stack.getTag().remove("LastBlock");
+		if (stack.hasNbt()) stack.getNbt().remove("LastBlock");
 		user.setCurrentHand(hand);
 		if (user instanceof ServerPlayerEntity) {
 			YCriteria.PROJECT.trigger((ServerPlayerEntity)user);
@@ -124,11 +124,11 @@ public class ProjectorItem extends Item {
 	@Override
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
 		if (world.isClient) return;
-		if (!stack.hasTag()) stack.setTag(new NbtCompound());
+		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		int ticks = getMaxUseTime(stack)-remainingUseTicks;
 		if (ticks != 0 && ticks < 20) return;
 		if (ticks > 0) ticks -= 20;
-		BlockPos lastPos = stack.getTag().contains("LastBlock") ? NbtHelper.toBlockPos(stack.getTag().getCompound("LastBlock")) : null;
+		BlockPos lastPos = stack.getNbt().contains("LastBlock") ? NbtHelper.toBlockPos(stack.getNbt().getCompound("LastBlock")) : null;
 		BlockPos pos = new BlockPos(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/4f, ticks/2f)));
 		if (lastPos != null) {
 			double len = MathHelper.sqrt(lastPos.getSquaredDistance(pos));
@@ -148,7 +148,7 @@ public class ProjectorItem extends Item {
 		} else {
 			createPlatform(world, pos);
 		}
-		stack.getTag().put("LastBlock", NbtHelper.fromBlockPos(pos));
+		stack.getNbt().put("LastBlock", NbtHelper.fromBlockPos(pos));
 		if (ticks == 0) {
 			if (user.fallDistance > 20 && user instanceof ServerPlayerEntity) {
 				YCriteria.PROJECT_WITH_LONG_FALL.trigger((ServerPlayerEntity)user);

@@ -36,6 +36,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.random.ChunkRandom;
+import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class ScorchedGenerator {
 
@@ -44,7 +45,7 @@ public class ScorchedGenerator {
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
 			Chunk chunk = region.getChunk(region.getCenterPos().x, region.getCenterPos().z);
-			ChunkRandom rand = new ChunkRandom(worldSeed);
+			ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(worldSeed));
 			OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
 			OctaveSimplexNoiseSampler terminusBNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 3, 6));
 			OctaveSimplexNoiseSampler terminusTNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 4));
@@ -127,7 +128,7 @@ public class ScorchedGenerator {
 					boolean warped = rand.nextBoolean();
 					spd.addProcessor(new NetherWoodSwapStructureProcessor(warped));
 					spd.addProcessor(new LootTableFromPaperStructureProcessor());
-					s.place(region, origin, spd, rand);
+					s.place(region, origin, origin, spd, rand, 0);
 					for (BlockPos chain : chains) {
 						bp.set(chain);
 						for (int i = 0; i < 10; i++) {
@@ -186,7 +187,7 @@ public class ScorchedGenerator {
 			}
 			bp.setY(127);
 			if (YConfig.WorldGen.scorched && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
-				ChunkRandom rand = new ChunkRandom(region.getSeed());
+				ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(region.getSeed()));
 				OctaveSimplexNoiseSampler noise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(1, 4, 8));
 				OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
 				for (int x = 0; x < 16; x++) {

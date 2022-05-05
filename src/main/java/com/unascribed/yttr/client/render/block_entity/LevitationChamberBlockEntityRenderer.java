@@ -5,28 +5,29 @@ import com.unascribed.yttr.content.block.mechanism.LevitationChamberBlockEntity;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ShulkerBulletEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.util.math.Vec3d;
 
-public class LevitationChamberBlockEntityRenderer extends BlockEntityRenderer<LevitationChamberBlockEntity> {
+public class LevitationChamberBlockEntityRenderer implements BlockEntityRenderer<LevitationChamberBlockEntity> {
 
-	private final ShulkerBulletEntityRenderer bullet;
+	private final ShulkerBulletEntityRenderer bullet = new ShulkerBulletEntityRenderer(new EntityRendererFactory.Context(
+			MinecraftClient.getInstance().getEntityRenderDispatcher(),
+			MinecraftClient.getInstance().getItemRenderer(),
+			MinecraftClient.getInstance().getResourceManager(),
+			MinecraftClient.getInstance().getEntityModelLoader(),
+			MinecraftClient.getInstance().textRenderer
+		));
 	private final ShulkerBulletEntity dummy = new ShulkerBulletEntity(EntityType.SHULKER_BULLET, null) {
 		@Override
 		public boolean shouldRenderName() {
 			return false;
 		}
 	};
-	
-	public LevitationChamberBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-		bullet = new ShulkerBulletEntityRenderer(MinecraftClient.getInstance().getEntityRenderDispatcher());
-	}
 
 	@Override
 	public void render(LevitationChamberBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

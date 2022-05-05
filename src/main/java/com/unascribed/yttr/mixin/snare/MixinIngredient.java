@@ -33,7 +33,7 @@ public class MixinIngredient {
 					EntityIngredientEntry eie = ((EntityIngredientEntry)en);
 					if (itemStack.getItem() == YItems.SNARE && YItems.SNARE.getEntityType(itemStack) == eie.entityType) {
 						if (eie.mainHand != null) {
-							boolean leftHanded = itemStack.getSubTag("Contents").getBoolean("LeftHanded");
+							boolean leftHanded = itemStack.getSubNbt("Contents").getBoolean("LeftHanded");
 							ci.setReturnValue(leftHanded == (eie.mainHand == Arm.LEFT));
 						} else {
 							ci.setReturnValue(true);

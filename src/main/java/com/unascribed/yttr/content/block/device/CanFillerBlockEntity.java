@@ -74,12 +74,12 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 			if (isRifleAmmo(ammo) && isPropellant(propellant) && isCan(can)) {
 				RifleMode ammoType = getRifleAmmoType(ammo);
 				maxWorkTime = can.getItem() == YItems.EMPTY_AMMO_CAN ? 160 : 80;
-				if (can.getItem() == YItems.AMMO_CAN && can.hasTag()) {
-					if (!ammoType.name().equals(can.getTag().getString("Mode"))) {
+				if (can.getItem() == YItems.AMMO_CAN && can.hasNbt()) {
+					if (!ammoType.name().equals(can.getNbt().getString("Mode"))) {
 						workTime = 0;
 						return;
 					}
-					int shots = can.getTag().getInt("Shots");
+					int shots = can.getNbt().getInt("Shots");
 					if (shots >= AmmoCanItem.CAPACITY) {
 						workTime = 0;
 						return;
@@ -118,17 +118,17 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 					}
 					propellant.decrement(1);
 					ItemStack result = can.split(1);
-					if (result.getItem() != YItems.AMMO_CAN || !result.hasTag()) {
+					if (result.getItem() != YItems.AMMO_CAN || !result.hasNbt()) {
 						result = new ItemStack(YItems.AMMO_CAN);
-						result.setTag(new NbtCompound());
-						result.getTag().putString("Mode", ammoType.name());
+						result.setNbt(new NbtCompound());
+						result.getNbt().putString("Mode", ammoType.name());
 					}
-					int shots = result.getTag().getInt("Shots");
+					int shots = result.getNbt().getInt("Shots");
 					shots += ((ammoType.shotsPerItem*3)+1)/2;
 					if (shots > AmmoCanItem.CAPACITY) {
 						shots = AmmoCanItem.CAPACITY;
 					}
-					result.getTag().putInt("Shots", shots);
+					result.getNbt().putInt("Shots", shots);
 					if (can.isEmpty() && !ammo.isEmpty() && !propellant.isEmpty() && shots < AmmoCanItem.CAPACITY) {
 						setStack(2, result);
 					} else {
@@ -198,7 +198,7 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 	
 	public static boolean isCan(ItemStack stack) {
 		if (stack.getItem() == YItems.EMPTY_AMMO_CAN) return true;
-		return stack.getItem() == YItems.AMMO_CAN && (!stack.hasTag() || stack.getTag().getInt("Shots") < AmmoCanItem.CAPACITY);
+		return stack.getItem() == YItems.AMMO_CAN && (!stack.hasNbt() || stack.getNbt().getInt("Shots") < AmmoCanItem.CAPACITY);
 	}
 	
 	public static boolean isPropellant(ItemStack stack) {

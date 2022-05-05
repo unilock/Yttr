@@ -117,7 +117,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 			}
 			if (sai.getResourceAmount(chest, SuitResource.INTEGRITY) < SuitResource.INTEGRITY.getMaximum()) {
 				int pct = (sai.getResourceAmount(chest, SuitResource.INTEGRITY)*100)/SuitResource.INTEGRITY.getMaximum();
-				if (fluxLeft <= 0 && getStack(7).getItem().isIn(YTags.Item.FLUXES)) {
+				if (fluxLeft <= 0 && getStack(7).isIn(YTags.Item.FLUXES)) {
 					removeStack(7, 1);
 					fluxLeft = 100;
 					maxFluxLeft = fluxLeft;
@@ -196,7 +196,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 		if (slot == 4) return stack.getItem() == Items.GLOWSTONE_DUST;
 		if (slot == 5) return FurnaceBlockEntity.canUseAsFuel(stack);
 		if (slot == 6) return stack.getItem() == YItems.ARMOR_PLATING;
-		if (slot == 7) return stack.getItem().isIn(YTags.Item.FLUXES);
+		if (slot == 7) return stack.isIn(YTags.Item.FLUXES);
 		return false;
 	}
 	

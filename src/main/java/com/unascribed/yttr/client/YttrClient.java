@@ -150,7 +150,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		ArmorRenderingRegistry.registerTexture((entity, stack, slot, secondLayer, suffix, defaultTexture) -> {
 			String namespace = "minecraft";
 			String name = "diamond";
-			if (stack.hasTag() && stack.getTag().getInt("yttr:DurabilityBonus") > 0) {
+			if (stack.hasNbt() && stack.getNbt().getInt("yttr:DurabilityBonus") > 0) {
 				namespace = "yttr";
 				name = "ultrapure_diamond";
 			}
@@ -190,13 +190,13 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
-			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
+			return stack.hasNbt() && stack.getNbt().contains("Contents") ? 1 : 0;
 		});
 		FabricModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), new Identifier("yttr", "halo"), (stack, world, entity) -> {
 			return retrievingHalo ? 1 : 0;
 		});
 		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "durability_bonus"), (stack, world, entity) -> {
-			return stack.hasTag() ? stack.getTag().getInt("yttr:DurabilityBonus") : 0;
+			return stack.hasNbt() ? stack.getNbt().getInt("yttr:DurabilityBonus") : 0;
 		});
 		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "gui"), (stack, world, entity) -> {
 			return renderingGui ? 1 : 0;

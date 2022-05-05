@@ -23,7 +23,7 @@ public class MixinRecipeManager {
 			ItemStack is = inventory.getStack(i);
 			if (is.getItem() == YItems.SNARE) {
 				ItemStack copy = is.copy();
-				copy.getTag().remove("Contents");
+				copy.getNbt().remove("Contents");
 				ci.getReturnValue().set(i, copy);
 			} else if (is.getItem() == YItems.SHEARS) {
 				ItemStack copy = is.copy();

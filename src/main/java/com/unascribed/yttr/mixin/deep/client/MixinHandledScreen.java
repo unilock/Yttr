@@ -11,7 +11,6 @@ import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -30,7 +29,7 @@ public class MixinHandledScreen {
 	@Inject(at=@At("HEAD"), method="drawSlot(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/screen/slot/Slot;)V")
 	public void drawSlotHead(MatrixStack matrices, Slot slot, CallbackInfo ci) {
 		Object self = this;
-		if (self instanceof DSUScreen && slot.getMaxItemCount() == 4096 && slot.getStack().getItem().isIn(YTags.Item.DSU_HIGHSTACK) && slot.getStack().getCount() > 1) {
+		if (self instanceof DSUScreen && slot.getMaxItemCount() == 4096 && slot.getStack().isIn(YTags.Item.DSU_HIGHSTACK) && slot.getStack().getCount() > 1) {
 			yttr$storedStack = slot.getStack();
 			ItemStack copy = yttr$storedStack.copy();
 			copy.setCount(1);
@@ -44,16 +43,16 @@ public class MixinHandledScreen {
 			ItemStack stack = yttr$storedStack;
 			slot.setStack(stack);
 			yttr$storedStack = null;
-			MinecraftClient.getInstance().getTextureManager().bindTexture(YTTR$TINYNUMBERS);
+			RenderSystem.setShaderTexture(0, YTTR$TINYNUMBERS);
 			String str = Integer.toString(stack.getCount());
 			int w = str.length()*4;
 			for (int p = 0; p < 2; p++) {
 				int x = slot.x+18-w;
 				int y = slot.y+16-4;
 				if (p == 0) {
-					RenderSystem.color3f(0.25f, 0.25f, 0.25f);
+					RenderSystem.setShaderColor(0.25f, 0.25f, 0.25f, 1);
 				} else {
-					RenderSystem.color3f(1, 1, 1);
+					RenderSystem.setShaderColor(1, 1, 1, 1);
 					x--;
 					y--;
 				}
@@ -65,7 +64,7 @@ public class MixinHandledScreen {
 					x += 4;
 				}
 			}
-			RenderSystem.color3f(1, 1, 1);
+			RenderSystem.setShaderColor(1, 1, 1, 1);
 		}
 	}
 	

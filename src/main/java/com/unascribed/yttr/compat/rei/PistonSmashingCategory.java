@@ -91,7 +91,7 @@ public class PistonSmashingCategory extends DrawableHelper implements RecipeCate
 			}));
 			outX += 14;
 			ItemStack output = recipe.getCloudOutput().getItemStack().copy();
-			if (!output.hasTag()) output.setTag(new NbtCompound());
+			if (!output.hasNbt()) output.setNbt(new NbtCompound());
 			NbtList lore = new NbtList();
 			lore.add(NbtString.of(Text.Serializer.toJson(new TranslatableText("category.yttr.piston_smashing.cloud_output_hint").setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.YELLOW)))));
 			output.getOrCreateSubTag("display").put("Lore", lore);

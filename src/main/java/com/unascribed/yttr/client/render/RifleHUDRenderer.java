@@ -45,7 +45,7 @@ public class RifleHUDRenderer extends IHasAClient {
 	public static void render(MatrixStack matrices, float delta) {
 		if (mc.player == null || rifleStack == null || rifleItem == null) return;
 		if (scopeTime > 0) {
-			boolean scoped = rifleStack.hasTag() && rifleStack.getTag().getBoolean("Scoped");
+			boolean scoped = rifleStack.hasNbt() && rifleStack.getNbt().getBoolean("Scoped");
 			scopeA = Interp.sCurve5(MathHelper.clamp((scopeTime+(scoped ? delta : -delta))/ANIM_TIMEf, 0, 1));
 			mc.getTextureManager().bindTexture(SCOPE);
 			matrices.push();
@@ -268,7 +268,7 @@ public class RifleHUDRenderer extends IHasAClient {
 				ticksSinceClose++;
 			}
 		}
-		boolean scoped = rifleStack.hasTag() && rifleStack.getTag().getBoolean("Scoped");
+		boolean scoped = rifleStack.hasNbt() && rifleStack.getNbt().getBoolean("Scoped");
 		if (scoped) {
 			if (scopeTime < ANIM_TIME) scopeTime++;
 		} else {

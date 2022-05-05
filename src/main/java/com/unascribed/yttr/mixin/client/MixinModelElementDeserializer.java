@@ -9,11 +9,10 @@ import com.google.gson.JsonObject;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.model.json.ModelElement;
 import net.minecraft.util.JsonHelper;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ModelElement.Deserializer.class)
+@Mixin(targets="net/minecraft/client/render/model/json/ModelElement$Deserializer")
 public class MixinModelElementDeserializer {
 
 	@Inject(at=@At("HEAD"), method="deserializeRotation", cancellable=true)

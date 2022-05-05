@@ -16,7 +16,6 @@ import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
@@ -33,7 +32,7 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.world.LightType;
 
-public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> {
+public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntity> {
 
 	private static final Identifier TEX = new Identifier("yttr", "textures/block/dsu/front_inside_contents.png");
 	
@@ -50,10 +49,6 @@ public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> 
 			.put(YItems.ULTRAPURE_NETHERITE, 0x5A575A)
 			.put(YItems.ULTRAPURE_WOLFRAM, 0x7E6059)
 			.build();
-	
-	public DSUBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-	}
 	
 	@Override
 	public void render(DSUBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -115,19 +110,19 @@ public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> 
 			matrices.translate(-dsu.xSize/2D, -dsu.ySize/2D, -dsu.zSize/2D);
 			matrices.translate(2, 2, 0);
 			matrices.scale(-1/16f, -1/16f, 1/16f);
-			Matrix4f mat = matrices.peek().getModel();
-			Matrix3f nmat = matrices.peek().getNormal();
+			Matrix4f mat = matrices.peek().getPositionMatrix();
+			Matrix3f nmat = matrices.peek().getNormalMatrix();
 			matrices.translate(2.5, 2, -0.0025);
 			for (int y = 0; y < 5; y++) {
 				for (int x = 0; x < 9; x++) {
 					ItemStack item = entity.getStack((y*9)+x);
 					if (item.isEmpty()) continue;
-					if (item.getItem().isIn(YTags.Item.ULTRAPURE_CUBES)) {
+					if (item.isIn(YTags.Item.ULTRAPURE_CUBES)) {
 						int color;
 						if (CUBE_COLORS.containsKey(item.getItem())) {
 							color = CUBE_COLORS.get(item.getItem());
 						} else {
-							Identifier spriteId = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null).getSprite().getId();
+							Identifier spriteId = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0).getParticleSprite().getId();
 							Identifier id = new Identifier(spriteId.getNamespace(), "textures/"+spriteId.getPath()+".png");
 							color = TextureColorThief.getPrimaryColor(id);
 						}
@@ -150,7 +145,7 @@ public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> 
 					} else {
 						matrices.push();
 							matrices.scale(3, -3, -3);
-							Matrix3f nmat2 = matrices.peek().getNormal();
+							Matrix3f nmat2 = matrices.peek().getNormalMatrix();
 						matrices.pop();
 						matrices.push();
 							matrices.translate(x*3, y*6, 0);
@@ -159,9 +154,9 @@ public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> 
 							MinecraftClient.getInstance().getItemRenderer().renderItem(item, Mode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 								@Override
 								public void quad(Entry matrixEntry, BakedQuad quad, float red, float green, float blue, int light, int overlay) {
-									super.quad(new Entry(matrixEntry.getModel(), nmat2), quad, red, green, blue, light, overlay);
+									super.quad(new Entry(matrixEntry.getPositionMatrix(), nmat2), quad, red, green, blue, light, overlay);
 								}
-							});
+							}, 0);
 						matrices.pop();
 					}
 				}

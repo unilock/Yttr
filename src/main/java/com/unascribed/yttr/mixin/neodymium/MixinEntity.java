@@ -55,14 +55,14 @@ public class MixinEntity implements Magnetized {
 			receptiveAbove = true;
 		} else if (self instanceof LivingEntity) {
 			LivingEntity le = (LivingEntity)self;
-			if (le.getEquippedStack(EquipmentSlot.FEET).getItem().isIn(YTags.Item.MAGNETIC)) {
+			if (le.getEquippedStack(EquipmentSlot.FEET).isIn(YTags.Item.MAGNETIC)) {
 				receptiveBelow = true;
 			}
-			if (le.getEquippedStack(EquipmentSlot.HEAD).getItem().isIn(YTags.Item.MAGNETIC)) {
+			if (le.getEquippedStack(EquipmentSlot.HEAD).isIn(YTags.Item.MAGNETIC)) {
 				receptiveAbove = true;
 			}
 		} else if (self instanceof ItemEntity) {
-			if (((ItemEntity)self).getStack().getItem().isIn(YTags.Item.MAGNETIC)) {
+			if (((ItemEntity)self).getStack().isIn(YTags.Item.MAGNETIC)) {
 				receptiveBelow = true;
 				receptiveAbove = true;
 			}

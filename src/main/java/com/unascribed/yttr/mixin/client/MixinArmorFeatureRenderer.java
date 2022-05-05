@@ -56,7 +56,7 @@ public class MixinArmorFeatureRenderer {
 		if (storedEntity == null || storedSlot == null) return orig;
 		ItemStack stack = storedEntity.getEquippedStack(storedSlot);
 		if (stack.getItem() == YItems.SUIT_HELMET ||
-				((stack.hasTag() && stack.getTag().getInt("yttr:DurabilityBonus") > 0) && (
+				((stack.hasNbt() && stack.getNbt().getInt("yttr:DurabilityBonus") > 0) && (
 					stack.getItem() == Items.DIAMOND_HELMET ||
 					stack.getItem() == Items.DIAMOND_CHESTPLATE ||
 					stack.getItem() == Items.DIAMOND_LEGGINGS ||

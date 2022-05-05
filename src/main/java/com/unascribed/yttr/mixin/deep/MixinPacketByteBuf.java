@@ -24,7 +24,7 @@ public class MixinPacketByteBuf {
 			buf.writeVarInt(stack.getCount()); // here's the change: count is a varint, not a byte
 			NbtCompound compoundTag = null;
 			if (item.isDamageable() || item.shouldSyncTagToClient()) {
-				compoundTag = stack.getTag();
+				compoundTag = stack.getNbt();
 			}
 			buf.writeNbt(compoundTag);
 			ci.setReturnValue(buf);
@@ -41,7 +41,7 @@ public class MixinPacketByteBuf {
 			int item = buf.readVarInt();
 			int count = buf.readVarInt();
 			ItemStack stack = new ItemStack(Item.byRawId(item), count);
-			stack.setTag(buf.readNbt());
+			stack.setNbt(buf.readNbt());
 			ci.setReturnValue(stack);
 		}
 	}

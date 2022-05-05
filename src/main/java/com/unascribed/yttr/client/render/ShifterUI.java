@@ -41,9 +41,9 @@ public class ShifterUI extends IHasAClient {
 				ShifterItem si = (ShifterItem)held.getItem();
 				VoxelShape shanpe = VoxelShapes.empty();
 				Set<BlockPos> positions = si.getAffectedBlocks(mc.player, mc.world, boc.blockPos(), mc.crosshairTarget instanceof BlockHitResult ? ((BlockHitResult)mc.crosshairTarget).getSide() : Direction.UP,
-						held.hasTag() && held.getTag().getBoolean("ReplaceDisconnected"),
-						held.hasTag() && held.getTag().getBoolean("ReplaceHidden"),
-						held.hasTag() && held.getTag().getBoolean("PlaneRestrict"));
+						held.hasNbt() && held.getNbt().getBoolean("ReplaceDisconnected"),
+						held.hasNbt() && held.getNbt().getBoolean("ReplaceHidden"),
+						held.hasNbt() && held.getNbt().getBoolean("PlaneRestrict"));
 				if (lastPositions != null && lastPositions.equals(positions)) {
 					shanpe = lastShape;
 				} else {
@@ -110,9 +110,9 @@ public class ShifterUI extends IHasAClient {
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
 				RenderSystem.color4f(1, 1, 1, mainA);
 				mc.getTextureManager().bindTexture(MODES);
-				boolean disconnected = shifterStack.hasTag() && shifterStack.getTag().getBoolean("ReplaceDisconnected");
-				boolean hidden = shifterStack.hasTag() && shifterStack.getTag().getBoolean("ReplaceHidden");
-				boolean plane = shifterStack.hasTag() && shifterStack.getTag().getBoolean("PlaneRestrict");
+				boolean disconnected = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceDisconnected");
+				boolean hidden = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceHidden");
+				boolean plane = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("PlaneRestrict");
 				DrawableHelper.drawTexture(matrices, -24, -8, 0, disconnected ? 16 : 0, 16, 16, 48, 32);
 				DrawableHelper.drawTexture(matrices, -8, -24, 16, hidden ? 16 : 0, 16, 16, 48, 32);
 				DrawableHelper.drawTexture(matrices, 8, -8, 32, plane ? 16 : 0, 16, 16, 48, 32);
@@ -158,9 +158,9 @@ public class ShifterUI extends IHasAClient {
 				ticksSinceOpen++;
 				ticksSinceClose = -1;
 			}
-			boolean disconnected = stack.hasTag() && stack.getTag().getBoolean("ReplaceDisconnected");
-			boolean hidden = stack.hasTag() && stack.getTag().getBoolean("ReplaceHidden");
-			boolean plane = stack.hasTag() && stack.getTag().getBoolean("PlaneRestrict");
+			boolean disconnected = stack.hasNbt() && stack.getNbt().getBoolean("ReplaceDisconnected");
+			boolean hidden = stack.hasNbt() && stack.getNbt().getBoolean("ReplaceHidden");
+			boolean plane = stack.hasNbt() && stack.getNbt().getBoolean("PlaneRestrict");
 			boolean changed = false;
 			// drain timesPressed to prevent vanilla behavior
 			while (mc.options.keySwapHands.wasPressed()) {}
@@ -186,10 +186,10 @@ public class ShifterUI extends IHasAClient {
 				changed = true;
 			}
 			if (changed) {
-				if (!stack.hasTag()) stack.setTag(new NbtCompound());
-				stack.getTag().putBoolean("ReplaceDisconnected", disconnected);
-				stack.getTag().putBoolean("ReplaceHidden", hidden);
-				stack.getTag().putBoolean("PlaneRestrict", plane);
+				if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+				stack.getNbt().putBoolean("ReplaceDisconnected", disconnected);
+				stack.getNbt().putBoolean("ReplaceHidden", hidden);
+				stack.getNbt().putBoolean("PlaneRestrict", plane);
 				new MessageC2SShifterMode(disconnected, hidden, plane).sendToServer();
 			}
 		} else if (ticksSinceOpen > 0 || ticksSinceClose >= 0) {

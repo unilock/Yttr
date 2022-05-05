@@ -65,7 +65,7 @@ public class SqueezeLogBlock extends PillarBlock {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
-		if (stack.getItem().isIn(FabricToolTags.AXES) && this != YBlocks.STRIPPED_SQUEEZE_LOG) {
+		if (stack.isIn(FabricToolTags.AXES) && this != YBlocks.STRIPPED_SQUEEZE_LOG) {
 			world.playSound(player, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			if (!world.isClient) {
 				world.setBlockState(pos, YBlocks.STRIPPED_SQUEEZE_LOG.getDefaultState()

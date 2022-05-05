@@ -119,7 +119,7 @@ public class Substitutes {
 		if (item == null) return stack.copy();
 		ItemStack copy = new ItemStack(item);
 		copy.setCount(stack.getCount());
-		copy.setTag(stack.getTag());
+		copy.setNbt(stack.getNbt());
 		return copy;
 	}
 	

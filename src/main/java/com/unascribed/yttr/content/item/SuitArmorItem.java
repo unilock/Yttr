@@ -45,7 +45,7 @@ public class SuitArmorItem extends ArmorItem {
 	
 	public int getResourceAmount(ItemStack stack, SuitResource resource) {
 //		setResourceAmount(stack, resource, resource.getMaximum());
-		NbtCompound resources = stack.getSubTag("Resources");
+		NbtCompound resources = stack.getSubNbt("Resources");
 		if (resources == null || !resources.contains(resource.name())) return resource.getDefaultAmount();
 		return resources.getInt(resource.name());
 	}

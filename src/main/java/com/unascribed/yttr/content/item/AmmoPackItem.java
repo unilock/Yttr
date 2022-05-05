@@ -58,18 +58,18 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 	public void setStack(ItemStack pack, int i, ItemStack stack) {
 		int size = getSize(pack);
 		if (i < 0 || i >= size) throw new IndexOutOfBoundsException(""+i);
-		if (!pack.hasTag()) pack.setTag(new NbtCompound());
-		NbtList inv = pack.getTag().getList("Contents", NbtType.COMPOUND);
+		if (!pack.hasNbt()) pack.setNbt(new NbtCompound());
+		NbtList inv = pack.getNbt().getList("Contents", NbtType.COMPOUND);
 		ensureSize(inv, size);
 		inv.set(i, stack.isEmpty() ? new NbtCompound() : stack.writeNbt(new NbtCompound()));
-		pack.getTag().put("Contents", inv);
+		pack.getNbt().put("Contents", inv);
 	}
 
 	public ItemStack getStack(ItemStack pack, int i) {
 		int size = getSize(pack);
 		if (i < 0 || i >= size) throw new IndexOutOfBoundsException(""+i);
-		if (!pack.hasTag()) return ItemStack.EMPTY;
-		NbtList inv = pack.getTag().getList("Contents", NbtType.COMPOUND);
+		if (!pack.hasNbt()) return ItemStack.EMPTY;
+		NbtList inv = pack.getNbt().getList("Contents", NbtType.COMPOUND);
 		ensureSize(inv, size);
 		NbtCompound comp = inv.getCompound(i);
 		if (comp.getSize() == 0) return ItemStack.EMPTY;
@@ -111,7 +111,7 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 	}
 	
 	public void clear(ItemStack pack) {
-		if (pack.hasTag()) pack.getTag().remove("Contents");
+		if (pack.hasNbt()) pack.getNbt().remove("Contents");
 	}
 	
 	@Override

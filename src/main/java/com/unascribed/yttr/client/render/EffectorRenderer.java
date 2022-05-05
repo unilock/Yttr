@@ -27,6 +27,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
@@ -77,7 +78,7 @@ public class EffectorRenderer extends IHasAClient {
 					drawVoidCap(w, ms, mut, hole.length, axisX, axisY, a, hole.start, hole.dir);
 					drawVoidCap(w, ms, mut, 0, axisX, axisY, a, hole.start.offset(hole.dir, hole.length-1), hole.dir.getOpposite());
 				}
-				bb.begin(GL11.GL_QUADS, RenderLayer.getSolid().getVertexFormat());
+				bb.begin(DrawMode.QUADS, RenderLayer.getSolid().getVertexFormat());
 				for (int z = 0; z < hole.length; z++) {
 					mut.set(hole.start).move(hole.dir, z);
 					EffectorItem.move(mut, axisY, -2);

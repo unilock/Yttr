@@ -29,10 +29,10 @@ public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
 			if (!out.hasCustomName()) {
 				out.setCustomName(new TranslatableText("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
 			}
-			if (!out.hasTag()) {
-				out.setTag(new NbtCompound());
+			if (!out.hasNbt()) {
+				out.setNbt(new NbtCompound());
 			}
-			out.getTag().putInt("yttr:DurabilityBonus", out.getTag().getInt("yttr:DurabilityBonus")+1);
+			out.getNbt().putInt("yttr:DurabilityBonus", out.getNbt().getInt("yttr:DurabilityBonus")+1);
 		}
 	}
 	

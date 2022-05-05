@@ -21,7 +21,7 @@ public class MixinCraftingResultSlot {
 	
 	@Inject(at=@At("HEAD"), method="onCrafted(Lnet/minecraft/item/ItemStack;)V")
 	protected void onCrafted(ItemStack stack, CallbackInfo ci) {
-		if (stack.hasTag() && stack.getTag().getBoolean("yttr:Ultrapure")) {
+		if (stack.hasNbt() && stack.getNbt().getBoolean("yttr:Ultrapure")) {
 			YStats.add(player, YStats.ULTRAPURE_ITEMS_CRAFTED, 1);
 		}
 	}

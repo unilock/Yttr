@@ -88,13 +88,13 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 			stack.setCount(0);
 			return;
 		}
-		if (!stack.hasTag()) {
-			stack.setTag(new NbtCompound());
+		if (!stack.hasNbt()) {
+			stack.setNbt(new NbtCompound());
 		}
-		if (!stack.getTag().contains("CreatedAt")) {
-			stack.getTag().putLong("CreatedAt", System.currentTimeMillis());
+		if (!stack.getNbt().contains("CreatedAt")) {
+			stack.getNbt().putLong("CreatedAt", System.currentTimeMillis());
 		}
-		if (System.currentTimeMillis()-stack.getTag().getLong("CreatedAt") > TimeUnit.HOURS.toMillis(6)) {
+		if (System.currentTimeMillis()-stack.getNbt().getLong("CreatedAt") > TimeUnit.HOURS.toMillis(6)) {
 			playVanishEffect(entity);
 			stack.setCount(0);
 		}

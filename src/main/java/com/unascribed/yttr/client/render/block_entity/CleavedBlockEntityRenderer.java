@@ -10,17 +10,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 
-public class CleavedBlockEntityRenderer extends BlockEntityRenderer<CleavedBlockEntity> {
-
-	public CleavedBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-	}
+public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBlockEntity> {
 
 	@Override
 	public void render(CleavedBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -30,7 +25,7 @@ public class CleavedBlockEntityRenderer extends BlockEntityRenderer<CleavedBlock
 		float g = rand.nextFloat();
 		float b = rand.nextFloat();
 		VertexConsumer lines = vertexConsumers.getBuffer(RenderLayer.getLines());
-		Matrix4f mat = matrices.peek().getModel();
+		Matrix4f mat = matrices.peek().getPositionMatrix();
 		for (Polygon polygon : entity.getPolygons()) {
 			float cX = 0;
 			float cY = 0;

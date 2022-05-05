@@ -118,7 +118,7 @@ public class SuitStationScreenHandler extends ScreenHandler {
 		addSlot(new Slot(station, 7, 77, 63) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				return stack.getItem().isIn(YTags.Item.FLUXES);
+				return stack.isIn(YTags.Item.FLUXES);
 			}
 		});
 		
@@ -175,7 +175,7 @@ public class SuitStationScreenHandler extends ScreenHandler {
 					if (!insertItem(slotStack, 5, 6, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (slotStack.getItem().isIn(YTags.Item.FLUXES)) {
+				} else if (slotStack.isIn(YTags.Item.FLUXES)) {
 					// try to put valid fluxes into the flux slot
 					if (!insertItem(slotStack, 7, 8, false)) {
 						return ItemStack.EMPTY;

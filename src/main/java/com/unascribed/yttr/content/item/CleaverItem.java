@@ -123,15 +123,15 @@ public class CleaverItem extends Item implements Attackable {
 	
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-		if (entity instanceof PlayerEntity && stack.hasTag()) {
-			boolean wasSelected = stack.getTag().getBoolean("Selected");
+		if (entity instanceof PlayerEntity && stack.hasNbt()) {
+			boolean wasSelected = stack.getNbt().getBoolean("Selected");
 			if (selected && !wasSelected) {
-				if (stack.getTag().contains("LastCut")) {
+				if (stack.getNbt().contains("LastCut")) {
 					((PlayerEntity)entity).sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")+".post"), true);
 				}
-				stack.getTag().putBoolean("Selected", true);
+				stack.getNbt().putBoolean("Selected", true);
 			} else if (!selected && wasSelected) {
-				stack.getTag().putBoolean("Selected", false);
+				stack.getNbt().putBoolean("Selected", false);
 			}
 		}
 	}
@@ -260,29 +260,29 @@ public class CleaverItem extends Item implements Attackable {
 	}
 	
 	public @Nullable BlockPos getCleaveBlock(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().contains("CleaveBlock", NbtType.LIST)) {
-			return NBTUtils.listToBlockPos(stack.getTag().getList("CleaveBlock", NbtType.INT));
+		if (stack.hasNbt() && stack.getNbt().contains("CleaveBlock", NbtType.LIST)) {
+			return NBTUtils.listToBlockPos(stack.getNbt().getList("CleaveBlock", NbtType.INT));
 		}
 		return null;
 	}
 	
 	public @Nullable Vec3d getCleaveStart(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().contains("CleaveStart", NbtType.LIST)) {
-			return NBTUtils.listToVec(stack.getTag().getList("CleaveStart", NbtType.DOUBLE));
+		if (stack.hasNbt() && stack.getNbt().contains("CleaveStart", NbtType.LIST)) {
+			return NBTUtils.listToVec(stack.getNbt().getList("CleaveStart", NbtType.DOUBLE));
 		}
 		return null;
 	}
 	
 	public @Nullable Vec3d getCleaveCorner(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().contains("CleaveCorner", NbtType.LIST)) {
-			return NBTUtils.listToVec(stack.getTag().getList("CleaveCorner", NbtType.DOUBLE));
+		if (stack.hasNbt() && stack.getNbt().contains("CleaveCorner", NbtType.LIST)) {
+			return NBTUtils.listToVec(stack.getNbt().getList("CleaveCorner", NbtType.DOUBLE));
 		}
 		return null;
 	}
 	
 	public @Nullable Plane getLastCut(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().contains("LastCut", NbtType.COMPOUND)) {
-			NbtCompound tag = stack.getTag().getCompound("LastCut");
+		if (stack.hasNbt() && stack.getNbt().contains("LastCut", NbtType.COMPOUND)) {
+			NbtCompound tag = stack.getNbt().getCompound("LastCut");
 			Vec3d normal = NBTUtils.listToVec(tag.getList("Normal", NbtType.DOUBLE));
 			if (normal == null) return null;
 			double distance = tag.getDouble("Distance");
@@ -293,14 +293,14 @@ public class CleaverItem extends Item implements Attackable {
 	}
 	
 	public void setCleaveBlock(ItemStack stack, @Nullable BlockPos pos) {
-		if (!stack.hasTag()) {
+		if (!stack.hasNbt()) {
 			if (pos == null) return;
-			stack.setTag(new NbtCompound());
+			stack.setNbt(new NbtCompound());
 		}
 		if (pos == null) {
-			stack.getTag().remove("CleaveBlock");
+			stack.getNbt().remove("CleaveBlock");
 		} else {
-			stack.getTag().put("CleaveBlock", NBTUtils.blockPosToList(pos));
+			stack.getNbt().put("CleaveBlock", NBTUtils.blockPosToList(pos));
 		}
 	}
 	
@@ -313,30 +313,30 @@ public class CleaverItem extends Item implements Attackable {
 	}
 	
 	public void setLastCut(ItemStack stack, @Nullable Plane plane) {
-		if (!stack.hasTag()) {
+		if (!stack.hasNbt()) {
 			if (plane == null) return;
-			stack.setTag(new NbtCompound());
+			stack.setNbt(new NbtCompound());
 		}
 		if (plane == null) {
-			stack.getTag().remove("LastCut");
+			stack.getNbt().remove("LastCut");
 		} else {
 			NbtCompound tag = new NbtCompound();
 			tag.put("Normal", NBTUtils.vecToList(plane.normal()));
 			tag.putDouble("Distance", plane.distance());
 			tag.putDouble("Epsilon", plane.epsilon());
-			stack.getTag().put("LastCut", tag);
+			stack.getNbt().put("LastCut", tag);
 		}
 	}
 
 	private void setVec(ItemStack stack, String key, @Nullable Vec3d pos) {
-		if (!stack.hasTag()) {
+		if (!stack.hasNbt()) {
 			if (pos == null) return;
-			stack.setTag(new NbtCompound());
+			stack.setNbt(new NbtCompound());
 		}
 		if (pos == null) {
-			stack.getTag().remove(key);
+			stack.getNbt().remove(key);
 		} else {
-			stack.getTag().put(key, NBTUtils.vecToList(pos));
+			stack.getNbt().put(key, NBTUtils.vecToList(pos));
 		}
 	}
 	

@@ -20,12 +20,8 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-public class SqueezedLeavesBlockEntityRenderer extends BlockEntityRenderer<SqueezedLeavesBlockEntity> {
+public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<SqueezedLeavesBlockEntity> {
 
-	public SqueezedLeavesBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-	}
-	
 	@Override
 	public void render(SqueezedLeavesBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		if (entity.getCachedState().get(SqueezedLeavesBlock.SQUEEZING)) {

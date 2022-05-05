@@ -17,11 +17,12 @@ public class FallingDelicaceParticle extends BlockLeakParticle {
 		gravityStrength = 0.01f;
 		maxAge = 100;
 		setColor(0.998f, 0.564f, 0.994f);
-		setColorAlpha(0.5f);
+		setAlpha(0.5f);
 		SpriteProvider sprites = ((ParticleManagerAccessor)MinecraftClient.getInstance().particleManager).getSpriteAwareFactories().get(Registry.PARTICLE_TYPE.getKey(ParticleTypes.FALLING_HONEY).get().getValue());
 		setSprite(sprites);
 	}
 	
+	@Override
 	public void setVelocity(double x, double y, double z) {
 		velocityX = x;
 		velocityY = y;

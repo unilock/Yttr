@@ -66,7 +66,7 @@ public class ReplicatorBlockItem extends BlockItem {
 	}
 	
 	public static ItemStack getHeldItem(ItemStack stack) {
-		NbtCompound entityTag = stack.getSubTag("BlockEntityTag");
+		NbtCompound entityTag = stack.getSubNbt("BlockEntityTag");
 		if (entityTag != null) {
 			return ItemStack.fromNbt(entityTag.getCompound("Item"));
 		}

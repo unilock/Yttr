@@ -11,8 +11,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.SkeletonEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,17 +24,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
-public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<SkeletalSorterBlockEntity> {
+public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<SkeletalSorterBlockEntity> {
 
 	private static final Identifier SKELETON_TEXTURE = new Identifier("minecraft", "textures/entity/skeleton/skeleton.png");
 	private static final Identifier GOGGLES_TEXTURE = new Identifier("yttr", "textures/models/armor/goggles_layer_1.png");
 	
-	private final SkeletonEntityModel<SkeletonEntity> skeletonModel = new SkeletonEntityModel<>();
+	private final SkeletonEntityModel<SkeletonEntity> skeletonModel = new SkeletonEntityModel<>(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(EntityModelLayers.SKELETON));
 	
-	public SkeletalSorterBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
-	}
-
 	@Override
 	public void render(SkeletalSorterBlockEntity entity, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
@@ -155,7 +151,7 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 			matrices.scale(0.5f, 0.5f, 0.5f);
 			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-50));
 			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(40));
-			mc.getItemRenderer().renderItem(null, left, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay);
+			mc.getItemRenderer().renderItem(null, left, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
 			matrices.pop();
 			
 			matrices.push();
@@ -164,7 +160,7 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 			matrices.scale(0.5f, 0.5f, 0.5f);
 			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-50));
 			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-40));
-			mc.getItemRenderer().renderItem(null, right, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay);
+			mc.getItemRenderer().renderItem(null, right, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
 			matrices.pop();
 		}
 		

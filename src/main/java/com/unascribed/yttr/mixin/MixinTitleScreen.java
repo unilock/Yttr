@@ -6,12 +6,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec3f;
 
 @Environment(EnvType.CLIENT)
 @Mixin(TitleScreen.class)
@@ -24,7 +23,7 @@ public class MixinTitleScreen {
 			method="render")
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
 		if ("Vertical!".equals(splashText)) {
-			RenderSystem.rotatef(90, 0, 0, 1);
+			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
 		}
 	}
 	

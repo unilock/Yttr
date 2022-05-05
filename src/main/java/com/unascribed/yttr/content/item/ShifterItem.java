@@ -70,9 +70,9 @@ public class ShifterItem extends Item {
 
 	public void changeMode(ServerPlayerEntity player, boolean disconnected, boolean hidden, boolean plane) {
 		ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
-		boolean curDisconnected = stack.hasTag() && stack.getTag().getBoolean("ReplaceDisconnected");
-		boolean curHidden = stack.hasTag() && stack.getTag().getBoolean("ReplaceHidden");
-		boolean curPlane = stack.hasTag() && stack.getTag().getBoolean("PlaneRestrict");
+		boolean curDisconnected = stack.hasNbt() && stack.getNbt().getBoolean("ReplaceDisconnected");
+		boolean curHidden = stack.hasNbt() && stack.getNbt().getBoolean("ReplaceHidden");
+		boolean curPlane = stack.hasNbt() && stack.getNbt().getBoolean("PlaneRestrict");
 		if (disconnected != curDisconnected) {
 			player.sendMessage(new TranslatableText("tip.yttr.shifter.disconnected."+(disconnected ? "en" : "dis")+"abled"), true);
 		}
@@ -82,10 +82,10 @@ public class ShifterItem extends Item {
 		if (plane != curPlane) {
 			player.sendMessage(new TranslatableText("tip.yttr.shifter.plane."+(plane ? "en" : "dis")+"abled"), true);
 		}
-		if (!stack.hasTag()) stack.setTag(new NbtCompound());
-		stack.getTag().putBoolean("ReplaceDisconnected", disconnected);
-		stack.getTag().putBoolean("ReplaceHidden", hidden);
-		stack.getTag().putBoolean("PlaneRestrict", plane);
+		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
+		stack.getNbt().putBoolean("ReplaceDisconnected", disconnected);
+		stack.getNbt().putBoolean("ReplaceHidden", hidden);
+		stack.getNbt().putBoolean("PlaneRestrict", plane);
 	}
 	
 	@Override
@@ -94,9 +94,9 @@ public class ShifterItem extends Item {
 		ItemStack stack = context.getStack();
 		ItemStack repl = context.getPlayer().getStackInHand(Hand.OFF_HAND);
 		Set<BlockPos> blocks = getAffectedBlocks(context.getPlayer(), context.getWorld(), context.getBlockPos(), context.getSide(),
-				stack.hasTag() && stack.getTag().getBoolean("ReplaceDisconnected"),
-				stack.hasTag() && stack.getTag().getBoolean("ReplaceHidden"),
-				stack.hasTag() && stack.getTag().getBoolean("PlaneRestrict"));
+				stack.hasNbt() && stack.getNbt().getBoolean("ReplaceDisconnected"),
+				stack.hasNbt() && stack.getNbt().getBoolean("ReplaceHidden"),
+				stack.hasNbt() && stack.getNbt().getBoolean("PlaneRestrict"));
 		scheduleMultiReplace(stack, context.getPlayer(), context.getBlockPos(), context.getWorld(), repl.copy(), blocks);
 		return ActionResult.SUCCESS;
 	}
