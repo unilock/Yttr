@@ -60,7 +60,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 		BlockPos ahead = pos.offset(state.get(FACING));
 		BlockState behindState = world.getBlockState(behind);
 		BlockState aheadState = world.getBlockState(ahead);
-		if (!isEmitter() && (!(behindState.getBlock() instanceof AbstractLazorBlock) || behindState.get(COLOR) != state.get(COLOR))) {
+		if (!isEmitter() && (!(behindState.getBlock() instanceof AbstractLazorBlock) || behindState.get(COLOR) != state.get(COLOR) || behindState.get(FACING) != state.get(FACING))) {
 			world.setBlockState(pos, state.getFluidState().getBlockState());
 		} else if (aheadState.isAir() || aheadState.getMaterial().isReplaceable()) {
 			if (isEmitter()) {
@@ -91,7 +91,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 
 	@Override
 	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
-		return state.get(COLOR).glowColor;
+		return state.get(COLOR).baseLitColor;
 	}
 
 }
