@@ -1,0 +1,19 @@
+{
+	"type": "yttr:lamp_crafting",
+	"yttr:discovered_via": "yttr:lamp",
+	"pattern": [
+		"YBY",
+		"YLY",
+		"YYY"
+	],
+	"key": {
+		"B": { "item": "yttr:brookite" },
+		"Y": { "item": "yttr:yttrium_ingot" },
+		"L": { "item": "yttr:lamp" }
+	},
+	"result": {
+		"item": "yttr:lazor_emitter",
+		"count": 4
+	},
+	"yttr:important": true
+}

@@ -298,7 +298,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 					DefaultCraftingDisplay disp = cons.construct(lr,
 							Lists.transform(fin, c -> Lists.newArrayList(Iterables.transform(c, is -> EntryStack.create(is).setting(Settings.CHECK_TAGS, is.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)))),
 							Collections.singletonList(EntryStack.create(result)
-									.setting(Settings.CHECK_TAGS, !lr.isImportant() && result.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)
+									.setting(Settings.CHECK_TAGS, (!lr.isImportant() && result.getItem() instanceof LampBlockItem) || result.getItem() == YItems.LAZOR_EMITTER ? Settings.TRUE : Settings.FALSE)
 									.setting(Settings.TOOLTIP_APPEND_EXTRA, (es) -> tip)),
 							w, h);
 					recipeHelper.registerDisplay(disp);
