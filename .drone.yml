@@ -3,9 +3,9 @@ name: default
 
 steps:
 - name: build
-  image: openjdk:17
+  image: gradle:7.4-jdk17
   commands:
-  - ./gradlew clean build
+  - gradle clean build
   - "echo 10 most recent commits: > note.txt"
   - "git log --pretty=tformat:%B -n10 >> note.txt"
   - "rm build/libs/*-dev.jar"
