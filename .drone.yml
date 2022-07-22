@@ -8,7 +8,6 @@ steps:
   - gradle clean build
   - "echo 10 most recent commits: > note.txt"
   - "git log --pretty=tformat:%B -n10 >> note.txt"
-  - "rm build/libs/*-dev.jar"
 - name: release
   image: unascribed/drone-gitea-release
   settings:
