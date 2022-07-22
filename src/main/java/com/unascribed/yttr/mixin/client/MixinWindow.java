@@ -15,7 +15,7 @@ public class MixinWindow {
 
 	@ModifyConstant(method="<init>", constant=@Constant(intValue=GLFW_OPENGL_CORE_PROFILE),
 			require=0) // if someone else changed this, they probably made the same change
-	public static int modifyOpenGlProfile(int orig) {
+	private static int modifyOpenGlProfile(int orig) {
 		return GLFW_OPENGL_COMPAT_PROFILE;
 	}
 	

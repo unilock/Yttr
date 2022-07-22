@@ -1,6 +1,5 @@
 package com.unascribed.yttr.mixin.cleaver.client;
 
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,6 +9,7 @@ import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.BlockDustParticle;
@@ -25,13 +25,11 @@ public abstract class MixinBlockDustParticle extends SpriteBillboardParticle {
 		super(clientWorld, d, e, f);
 	}
 	
-	@Inject(at=@At("HEAD"), method="updateColor")
-	protected void updateColor(@Nullable BlockPos bp, CallbackInfo ci) {
-		if (bp != null) {
-			BlockEntity be = world.getBlockEntity(bp);
-			if (be instanceof CleavedBlockEntity) {
-				setSprite(MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModelParticleSprite(((CleavedBlockEntity) be).getDonor()));
-			}
+	@Inject(at=@At("TAIL"), method="<init>(Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;)V")
+	protected void construct(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
+		BlockEntity be = world.getBlockEntity(blockPos);
+		if (be instanceof CleavedBlockEntity) {
+			setSprite(MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModelParticleSprite(((CleavedBlockEntity) be).getDonor()));
 		}
 	}
 

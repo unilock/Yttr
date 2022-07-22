@@ -4,6 +4,7 @@ import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +20,7 @@ import com.unascribed.yttr.content.block.mechanism.FlopperBlockEntity;
 public class MixinHopperBlockEntity {
 
 	@Inject(at=@At("HEAD"), method="getInputInventory", cancellable=true)
-	private static void getInputInventory(Hopper hopper, CallbackInfoReturnable<Inventory> ci) {
+	private static void getInputInventory(World world, Hopper hopper, CallbackInfoReturnable<Inventory> ci) {
 		if (hopper instanceof FlopperBlockEntity) {
 			FlopperBlockEntity flopper = (FlopperBlockEntity)hopper;
 			ci.setReturnValue(HopperBlockEntity.getInventoryAt(flopper.getWorld(), flopper.getPos().offset(flopper.getRealState().get(FlopperBlock.FACING))));
@@ -27,7 +28,7 @@ public class MixinHopperBlockEntity {
 	}
 	
 	@ModifyVariable(at=@At(value="FIELD", target="net/minecraft/util/math/Direction.DOWN:Lnet/minecraft/util/math/Direction;", shift=Shift.BY, by=3), method="extract")
-	private static Direction modifyExtractDirection(Direction in, Hopper hopper) {
+	private static Direction modifyExtractDirection(Direction in, World world, Hopper hopper) {
 		if (hopper instanceof FlopperBlockEntity) {
 			return ((FlopperBlockEntity)hopper).getRealState().get(FlopperBlock.FACING).getOpposite();
 		}

@@ -22,21 +22,28 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.TypeFilter;
 
 public class TickAlwaysItemHandler {
 
 	public static void startServerWorldTick(ServerWorld world) {
 		for (ChunkHolder ch : ((AccessorThreadedAnvilChunkStorage)world.getChunkManager().threadedAnvilChunkStorage).yttr$getChunkHolders().values()) {
 			if (world.random.nextInt(40) == 0) {
-				for (BlockEntity be : ch.getWorldChunk().getBlockEntities().values()) {
-					if (world.random.nextInt(3) == 0) {
-						if (be instanceof Inventory && world.random.nextInt(40) == 0) {
-							Inventory inv = (Inventory)be;
-							for (int i = 0; i < inv.size(); i++) {
-								ItemStack is = inv.getStack(i);
-								if (is.getItem() instanceof TicksAlwaysItem) {
-									((TicksAlwaysItem)is.getItem()).blockInventoryTick(is, world, be.getPos(), i);
-									inv.setStack(i, is);
+				var wc = ch.getWorldChunk();
+				if (wc != null) {
+					var bes = wc.getBlockEntities();
+					if (bes != null) {
+						for (BlockEntity be : bes.values()) {
+							if (world.random.nextInt(3) == 0) {
+								if (be instanceof Inventory && world.random.nextInt(40) == 0) {
+									Inventory inv = (Inventory)be;
+									for (int i = 0; i < inv.size(); i++) {
+										ItemStack is = inv.getStack(i);
+										if (is.getItem() instanceof TicksAlwaysItem) {
+											((TicksAlwaysItem)is.getItem()).blockInventoryTick(is, world, be.getPos(), i);
+											inv.setStack(i, is);
+										}
+									}
 								}
 							}
 						}
@@ -44,7 +51,7 @@ public class TickAlwaysItemHandler {
 				}
 			}
 		}
-		for (Entity e : world.getEntitiesByType(null, Predicates.alwaysTrue())) {
+		for (Entity e : world.getEntitiesByType(TypeFilter.instanceOf(Entity.class), Predicates.alwaysTrue())) {
 			if (e instanceof PlayerEntity) {
 				EnderChestInventory inv = ((PlayerEntity) e).getEnderChestInventory();
 				for (int i = 0; i < inv.size(); i++) {

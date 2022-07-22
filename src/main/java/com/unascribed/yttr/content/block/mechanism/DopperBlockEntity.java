@@ -28,13 +28,13 @@ public class DopperBlockEntity extends HopperBlockEntity implements YTickable {
 			acc.yttr$setTransferCooldown(acc.yttr$getTransferCooldown()-1);
 			acc.yttr$setLastTickTime(world.getTime());
 			if (!acc.yttr$needsCooldown()) {
-				acc.yttr$setCooldown(0);
+				acc.yttr$setTransferCooldown(0);
 				BlockState realState = getCachedState();
 				try {
 					if (tock) {
 						((AccessorBlockEntity)this).yttr$setCachedState(realState.with(DopperBlock.FACING, realState.get(DopperBlock.FACING).getOpposite()));
 					}
-					if (acc.yttr$insertAndExtract(() -> extract(getWorld(), this))) {
+					if (AccessorHopperBlockEntity.yttr$insertAndExtract(getWorld(), pos, getCachedState(), this, () -> extract(getWorld(), this))) {
 						tock = !tock;
 					}
 				} finally {

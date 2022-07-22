@@ -79,7 +79,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -394,10 +393,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Yttr.eachRegisterableField(YBlockEntities.class, BlockEntityType.class, YBlockEntities.Renderer.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
-					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render.block_entity."+ann.value()), MethodType.methodType(void.class, BlockEntityRenderDispatcher.class));
+					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render.block_entity."+ann.value()), MethodType.methodType(void.class));
 					BlockEntityRendererRegistry.register(type, berd -> {
 						try {
-							return (BlockEntityRenderer<?>)handle.invoke(berd);
+							return (BlockEntityRenderer<?>)handle.invoke();
 						} catch (RuntimeException | Error e) {
 							throw e;
 						} catch (Throwable e) {

@@ -5,9 +5,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 
@@ -18,7 +15,7 @@ public class MixinAbstractFurnaceBlockEntity {
 	private int burnTime;
 	
 	@Inject(at=@At("TAIL"), method="writeNbt")
-	public void writeNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> ci) {
+	public void writeNbt(NbtCompound nbt, CallbackInfo ci) {
 		if (burnTime > 32767) {
 			nbt.putInt("BurnTime", burnTime);
 		}

@@ -177,7 +177,7 @@ public class DelicaceBlock extends Block {
 	);
 
 	private static VoxelShape createInvCuboidShape(double xMin, double yMin, double zMin, double xMax, double yMax, double zMax) {
-		return createCuboidShape(xMin, 16-yMin, zMin, xMax, 16-yMax, zMax);
+		return createCuboidShape(xMin, 16-yMax, zMin, xMax, 16-yMin, zMax);
 	}
 	
 }

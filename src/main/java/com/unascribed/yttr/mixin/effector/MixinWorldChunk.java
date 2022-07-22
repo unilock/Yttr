@@ -18,16 +18,25 @@ import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.chunk.UpgradeData;
 import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.gen.chunk.BlendingData;
 
 @Mixin(WorldChunk.class)
-public class MixinWorldChunk {
+public abstract class MixinWorldChunk extends Chunk {
+
+	public MixinWorldChunk(ChunkPos pos, UpgradeData upgradeData, HeightLimitView heightLimitView, Registry<Biome> biome, long inhabitedTime, ChunkSection[] sectionArrayInitializer, BlendingData blendingData) {
+		super(pos, upgradeData, heightLimitView, biome, inhabitedTime, sectionArrayInitializer, blendingData);
+	}
 
 	@Shadow @Final
 	private World world;
-	@Shadow @Final
-	private ChunkPos pos;
 	
 	@Inject(at=@At("HEAD"), method="getBlockEntity(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/chunk/WorldChunk$CreationType;)Lnet/minecraft/block/entity/BlockEntity;", cancellable=true)
 	public void getBlockEntity(BlockPos pos, WorldChunk.CreationType creationType, CallbackInfoReturnable<BlockEntity> ci) {

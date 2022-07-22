@@ -23,8 +23,6 @@ public interface AccessorVoxelShape {
 	DoubleList yttr$getPointPositions(Axis a);
 	@Invoker("getCoordIndex")
 	int yttr$getCoordIndex(Axis a, double d);
-	@Invoker("contains")
-	boolean yttr$contains(double x, double y, double z);
 	@Invoker("calculateMaxDistance")
 	double yttr$calculateMaxDistance(AxisCycleDirection acd, Box b, double d);
 	

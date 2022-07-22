@@ -25,7 +25,6 @@ public abstract class MixinClientWorld extends World implements YttrWorld {
 
 	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
 		super(properties, registryRef, registryEntry, profiler, isClient, debugWorld, seed);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Shadow

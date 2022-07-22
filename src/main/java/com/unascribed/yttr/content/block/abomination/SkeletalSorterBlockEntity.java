@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.abomination;
 
+import com.mojang.authlib.GameProfile;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YSounds;
 
@@ -7,10 +8,10 @@ import com.google.common.collect.Iterables;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
@@ -32,6 +33,10 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
+import net.minecraft.world.World;
+
+import java.util.UUID;
+
 import org.jetbrains.annotations.Nullable;
 
 public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
@@ -205,8 +210,9 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 		
 		if (newAccessingInventory != accessingInventory) {
 			cleanUpAccessingInventory();
+			accessingInventory = newAccessingInventory;
+			startAccessingInventory();
 		}
-		accessingInventory = newAccessingInventory;
 	}
 	
 	public ItemFrameEntity getItemFrame() {
@@ -230,12 +236,17 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 		if (accessingInventory == null) return;
 		Inventory inventory = obtainInventory(accessingInventory);
 		accessingInventory = null;
-		if (inventory instanceof ChestBlockEntity) {
-			ChestBlockEntity cbe = (ChestBlockEntity)inventory;
-			if (cbe.getCachedState().getBlock() instanceof ChestBlock) {
-				world.addSyncedBlockEvent(cbe.getPos(), cbe.getCachedState().getBlock(), 1, 0);
-				world.updateNeighborsAlways(cbe.getPos(), cbe.getCachedState().getBlock());
-			}
+		if (inventory instanceof ChestBlockEntity cbe) {
+			cbe.onClose(new DummyPlayer(world));
+		}
+	}
+
+	private void startAccessingInventory() {
+		if (accessingInventory == null) return;
+		Inventory inventory = obtainInventory(accessingInventory);
+		accessingInventory = null;
+		if (inventory instanceof ChestBlockEntity cbe) {
+			cbe.onOpen(new DummyPlayer(world));
 		}
 	}
 
@@ -296,6 +307,24 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.create(this);
+	}
+	
+	private static final class DummyPlayer extends PlayerEntity {
+		
+		public DummyPlayer(World world) {
+			super(world, BlockPos.ORIGIN, 0, new GameProfile(new UUID(0, 0), "Skeletal Sorter"));
+		}
+
+		@Override
+		public boolean isSpectator() {
+			return false;
+		}
+
+		@Override
+		public boolean isCreative() {
+			return false;
+		}
+		
 	}
 
 }

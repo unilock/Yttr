@@ -5,12 +5,13 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.mixin.accessor.AccessorDyeColor;
 import com.unascribed.yttr.util.Resolvable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -56,11 +57,12 @@ public enum LampColor implements StringIdentifiable {
 	private final String lowerName;
 	
 	LampColor(DyeColor inherit) {
-		this(inherit, ((AccessorDyeColor)(Object)inherit).yttr$getSignColor());
+		this(inherit, inherit.getSignColor());
 	}
 	
 	LampColor(DyeColor inherit, int glowColor) {
-		this(inherit, null, ((AccessorDyeColor)(Object)inherit).yttr$getColor(), glowColor);
+		this(inherit, null, NativeImage.packColor(1, (int)(inherit.getColorComponents()[0]*255),
+				(int)(inherit.getColorComponents()[1]*255), (int)(inherit.getColorComponents()[2]*255)), glowColor);
 	}
 	
 	LampColor(String item, int baseColor, int glowColor) {

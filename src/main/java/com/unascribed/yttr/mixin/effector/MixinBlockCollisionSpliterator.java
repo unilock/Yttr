@@ -10,7 +10,6 @@ import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockCollisionSpliterator;
 import net.minecraft.world.CollisionView;
@@ -19,14 +18,12 @@ import net.minecraft.world.CollisionView;
 public class MixinBlockCollisionSpliterator {
 
 	@Shadow @Final
-	private Entity entity;
-	@Shadow @Final
 	private BlockPos.Mutable pos;
 	@Shadow @Final
 	private CollisionView world;
 	
 	@ModifyVariable(at=@At(value="INVOKE_ASSIGN", target="net/minecraft/world/BlockView.getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"),
-			ordinal=0, method="offerBlockShape")
+			ordinal=0, method="computeNext")
 	public BlockState replaceBlockState(BlockState in) {
 		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(pos)) {
 			return Blocks.VOID_AIR.getDefaultState();

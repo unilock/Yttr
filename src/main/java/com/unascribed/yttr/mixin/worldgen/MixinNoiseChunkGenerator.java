@@ -17,6 +17,7 @@ import net.minecraft.util.registry.RegistryEntryList;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 
@@ -31,7 +32,7 @@ public abstract class MixinNoiseChunkGenerator extends ChunkGenerator {
 	private long seed;
 	
 	@Inject(at=@At("TAIL"), method="buildSurface")
-	public void buildSurface(ChunkRegion region, Chunk chunk, CallbackInfo ci) {
+	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk, CallbackInfo ci) {
 		ScorchedGenerator.buildSurface(region, chunk);
 	}
 	

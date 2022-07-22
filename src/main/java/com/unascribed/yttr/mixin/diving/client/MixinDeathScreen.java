@@ -26,7 +26,7 @@ public class MixinDeathScreen {
 	@Shadow @Final
 	private Text message;
 	
-	@Inject(at=@At(value="INVOKE", target="com/mojang/blaze3d/systems/RenderSystem.pushMatrix()V"), method="render")
+	@Inject(at=@At(value="INVOKE", target="net/minecraft/client/util/math/MatrixStack.push()V"), method="render")
 	public void render(CallbackInfo ci) {
 		PlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null && player.getEquippedStack(EquipmentSlot.CHEST).getItem() == YItems.SUIT_CHESTPLATE && player.getY() < 0) {

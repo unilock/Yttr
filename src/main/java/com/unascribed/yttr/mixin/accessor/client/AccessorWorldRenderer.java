@@ -13,7 +13,7 @@ import net.minecraft.client.render.WorldRenderer.ChunkInfo;
 @Mixin(WorldRenderer.class)
 public interface AccessorWorldRenderer {
 
-	@Accessor("needsTerrainUpdate")
+	@Accessor("field_34810")
 	void yttr$setNeedsTerrainUpdate(boolean b);
 	
 	@Accessor("chunkInfos")

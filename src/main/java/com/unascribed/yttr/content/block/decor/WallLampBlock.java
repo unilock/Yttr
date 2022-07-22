@@ -34,27 +34,31 @@ public class WallLampBlock extends LampBlock implements Waterloggable {
 		int lightHrz = (16-lightSize)/2;
 		int baseHrz = (16-baseSize)/2;
 		SHAPES.put(Direction.DOWN, VoxelShapes.union(
-				createCuboidShape(baseHrz, 0, baseHrz, 16-baseHrz, baseHeight, 16-baseHrz),
-				createCuboidShape(lightHrz, baseHeight, lightHrz, 16-lightHrz, baseHeight+lightHeight, 16-lightHrz)));
+				createLenientCuboidShape(baseHrz, 0, baseHrz, 16-baseHrz, baseHeight, 16-baseHrz),
+				createLenientCuboidShape(lightHrz, baseHeight, lightHrz, 16-lightHrz, baseHeight+lightHeight, 16-lightHrz)));
 		SHAPES.put(Direction.UP, VoxelShapes.union(
-				createCuboidShape(baseHrz, 16, baseHrz, 16-baseHrz, 16-baseHeight, 16-baseHrz),
-				createCuboidShape(lightHrz, 16-baseHeight, lightHrz, 16-lightHrz, 16-baseHeight-lightHeight, 16-lightHrz)));
+				createLenientCuboidShape(baseHrz, 16, baseHrz, 16-baseHrz, 16-baseHeight, 16-baseHrz),
+				createLenientCuboidShape(lightHrz, 16-baseHeight, lightHrz, 16-lightHrz, 16-baseHeight-lightHeight, 16-lightHrz)));
 		
 		SHAPES.put(Direction.SOUTH, VoxelShapes.union(
-				createCuboidShape(baseHrz, baseHrz, 16, 16-baseHrz, 16-baseHrz, 16-baseHeight),
-				createCuboidShape(lightHrz, lightHrz, 16-baseHeight, 16-lightHrz, 16-lightHrz, 16-baseHeight-lightHeight)));
+				createLenientCuboidShape(baseHrz, baseHrz, 16, 16-baseHrz, 16-baseHrz, 16-baseHeight),
+				createLenientCuboidShape(lightHrz, lightHrz, 16-baseHeight, 16-lightHrz, 16-lightHrz, 16-baseHeight-lightHeight)));
 		SHAPES.put(Direction.NORTH, VoxelShapes.union(
-				createCuboidShape(baseHrz, baseHrz, 0, 16-baseHrz, 16-baseHrz, baseHeight),
-				createCuboidShape(lightHrz, lightHrz, baseHeight, 16-lightHrz, 16-lightHrz, 2+lightHeight)));
+				createLenientCuboidShape(baseHrz, baseHrz, 0, 16-baseHrz, 16-baseHrz, baseHeight),
+				createLenientCuboidShape(lightHrz, lightHrz, baseHeight, 16-lightHrz, 16-lightHrz, 2+lightHeight)));
 		
 		SHAPES.put(Direction.EAST, VoxelShapes.union(
-				createCuboidShape(16, baseHrz, baseHrz, 16-baseHeight, 16-baseHrz, 16-baseHrz),
-				createCuboidShape(16-baseHeight, lightHrz, lightHrz, 16-baseHeight-lightHeight, 16-lightHrz, 16-lightHrz)));
+				createLenientCuboidShape(16, baseHrz, baseHrz, 16-baseHeight, 16-baseHrz, 16-baseHrz),
+				createLenientCuboidShape(16-baseHeight, lightHrz, lightHrz, 16-baseHeight-lightHeight, 16-lightHrz, 16-lightHrz)));
 		SHAPES.put(Direction.WEST, VoxelShapes.union(
-				createCuboidShape(0, baseHrz, baseHrz, baseHeight, 16-baseHrz, 16-baseHrz),
-				createCuboidShape(baseHeight, lightHrz, lightHrz, baseHeight+lightHeight, 16-lightHrz, 16-lightHrz)));
+				createLenientCuboidShape(0, baseHrz, baseHrz, baseHeight, 16-baseHrz, 16-baseHrz),
+				createLenientCuboidShape(baseHeight, lightHrz, lightHrz, baseHeight+lightHeight, 16-lightHrz, 16-lightHrz)));
 		
 		setDefaultState(getDefaultState().with(WATERLOGGED, false));
+	}
+	
+	private static VoxelShape createLenientCuboidShape(double x1, double y1, double z1, double x2, double y2, double z2) {
+		return createCuboidShape(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2), Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
 	}
 	
 	@Override

@@ -47,7 +47,7 @@ public final class YTags {
 	
 	public static final class Fluid {
 
-		public static final TagKey<net.minecraft.fluid.Fluid> VOID = TagKey.of(Registry.FLUID_KEY, new Identifier("yttr"," void"));
+		public static final TagKey<net.minecraft.fluid.Fluid> VOID = TagKey.of(Registry.FLUID_KEY, new Identifier("yttr", "void"));
 		public static final TagKey<net.minecraft.fluid.Fluid> PURE_VOID = TagKey.of(Registry.FLUID_KEY, new Identifier("yttr", "pure_void"));
 		
 		private static void init() {}

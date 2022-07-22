@@ -155,8 +155,8 @@ public class CleaverUI extends IHasAClient {
 				for (Polygon pg : polys.subList(0, polys.size()-1)) {
 					pg.forEachDEdge((de) -> {
 						VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
-						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
-						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
+						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).normal(0, 0, 0).next();
+						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).normal(0, 0, 0).next();
 					});
 				}
 				wrc.matrixStack().pop();

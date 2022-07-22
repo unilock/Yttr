@@ -13,13 +13,13 @@ import net.minecraft.nbt.NbtCompound;
 public class MixinItemStack {
 
 	@Shadow
-	private NbtCompound tag;
+	private NbtCompound nbt;
 	
 	@Inject(at=@At("RETURN"), method="getMaxDamage", cancellable=true)
 	public void getMaxDamage(CallbackInfoReturnable<Integer> ci) {
-		if (tag != null && tag.contains("yttr:DurabilityBonus")) {
+		if (nbt != null && nbt.contains("yttr:DurabilityBonus")) {
 			// every level of durability bonus is +25%
-			ci.setReturnValue((ci.getReturnValueI()*(4+(tag.getInt("yttr:DurabilityBonus"))))/4);
+			ci.setReturnValue((ci.getReturnValueI()*(4+(nbt.getInt("yttr:DurabilityBonus"))))/4);
 		}
 	}
 	

@@ -27,6 +27,9 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class YttrMixin implements IMixinConfigPlugin {
 
+	private int applied = 0;
+	private int total = 0;
+	
 	@Override
 	public void onLoad(String mixinPackage) {
 		
@@ -49,7 +52,9 @@ public class YttrMixin implements IMixinConfigPlugin {
 
 	@Override
 	public List<String> getMixins() {
-		return discoverClassesInPackage("com.unascribed.yttr.mixin", true);
+		List<String> mixins = discoverClassesInPackage("com.unascribed.yttr.mixin", true);
+		total = mixins.size();
+		return mixins;
 	}
 
 	public static List<String> discoverClassesInPackage(String pkg, boolean truncate) {
@@ -122,12 +127,12 @@ public class YttrMixin implements IMixinConfigPlugin {
 
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		
 	}
 
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		
+		applied++;
+		YLog.info("{}/{} mixins applied ({}%)", applied, total, (applied*100)/total);
 	}
 	
 	private interface ClassInfo {
