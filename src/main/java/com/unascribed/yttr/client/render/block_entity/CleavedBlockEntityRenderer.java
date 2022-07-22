@@ -35,8 +35,8 @@ public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBl
 				cY += de.srcPoint().y;
 				cZ += de.srcPoint().z;
 				
-				lines.vertex(mat, (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(r, g, b, 1).next();
-				lines.vertex(mat, (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(r, g, b, 1).next();
+				lines.vertex(mat, (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(r, g, b, 1).normal(0, 0, 0).next();
+				lines.vertex(mat, (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(r, g, b, 1).normal(0, 0, 0).next();
 			}
 			cX /= polygon.nPoints();
 			cY /= polygon.nPoints();
@@ -46,8 +46,8 @@ public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBl
 			float nY = (float)normal.y/2;
 			float nZ = (float)normal.z/2;
 			
-			lines.vertex(mat, cX, cY, cZ).color(r, g, b, 1).next();
-			lines.vertex(mat, cX+nX, cY+nY, cZ+nZ).color(r, g, b, 1).next();
+			lines.vertex(mat, cX, cY, cZ).color(r, g, b, 1).normal(0, 0, 0).next();
+			lines.vertex(mat, cX+nX, cY+nY, cZ+nZ).color(r, g, b, 1).normal(0, 0, 0).next();
 		}
 	}
 
