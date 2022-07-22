@@ -22,6 +22,7 @@ if (version.contains("{COMMIT}")) {
 if (version.contains("{COMMITNUM}")) {
 	version = version.replace("{COMMITNUM}", 'git rev-list --count HEAD'.execute().getText().trim())
 }
+version += "+"+project.minecraft_version
 group = project.maven_group
 
 repositories {
