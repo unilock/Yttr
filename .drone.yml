@@ -15,8 +15,8 @@ steps:
       from_secret: gitea_key
   commands:
   - "git tag -d dev-1.18 || true"
-  - git tag dev-1.18
-  - "git push -f https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git 1.18.2"
+  - git tag dev-1.18 1.18.2
+  - "git push -f https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git dev-1.18"
 - name: release
   image: unascribed/drone-gitea-release
   settings:
