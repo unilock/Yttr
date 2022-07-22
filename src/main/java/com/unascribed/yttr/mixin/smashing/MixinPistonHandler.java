@@ -36,7 +36,7 @@ public class MixinPistonHandler {
 	
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/BlockState.getPistonBehavior()Lnet/minecraft/block/piston/PistonBehavior;"), method="tryMove", cancellable=true,
 			locals=LocalCapture.CAPTURE_FAILHARD)
-	public void tryMove(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, BlockState state, Block b, int i, int j, int k, BlockPos moving) {
+	public void tryMove(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, BlockState state, int i, int j, int k, BlockPos moving) {
 		BlockState surrounding1 = world.getBlockState(moving.offset(dir));
 		BlockState surrounding2 = world.getBlockState(moving.offset(dir.getOpposite()));
 		if (surrounding1.getBlock() != surrounding2.getBlock()) return;

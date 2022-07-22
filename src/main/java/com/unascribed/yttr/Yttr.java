@@ -75,6 +75,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -384,6 +386,12 @@ public class Yttr implements ModInitializer {
 			is.setCount(count);
 			inv.setStack(c.getInt("Slot"), is);
 		}
+	}
+	
+	public static void sync(BlockEntity be) {
+		if (!be.hasWorld()) return;
+		if (be.getWorld().isClient) return;
+		be.getWorld().updateListeners(be.getPos(), Blocks.AIR.getDefaultState(), be.getCachedState(), 3);
 	}
 
 	/**

@@ -3,7 +3,6 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"0": "yttr:block/panel",
-		"1": "yttr:block/panel_glint",
 		"2": "yttr:block/panel_bottom",
 		"particle": "yttr:block/panel"
 	},
@@ -30,18 +29,6 @@
 				"south": {"uv": [3, 12, 15, 13], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [3, 12, 15, 13], "texture": "#0", "tintindex": 0},
 				"up": {"uv": [3, 0, 15, 12], "texture": "#0", "tintindex": 0}
-			}
-		},
-		{
-			"name": "top glint",
-			"from": [2, 1, 2],
-			"to": [14, 2, 14],
-			"faces": {
-				"north": {"uv": [3, 12, 15, 13], "texture": "#1"},
-				"east": {"uv": [3, 12, 15, 13], "texture": "#1"},
-				"south": {"uv": [3, 12, 15, 13], "texture": "#1"},
-				"west": {"uv": [3, 12, 15, 13], "texture": "#1"},
-				"up": {"uv": [3, 0, 15, 12], "texture": "#1"}
 			}
 		},
 		{

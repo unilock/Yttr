@@ -3,7 +3,6 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"0": "yttr:block/cage_lamp",
-		"1": "yttr:block/cage_lamp_glint",
 		"2": "yttr:block/cage_lamp_bottom",
 		"particle": "yttr:block/cage_lamp"
 	},
@@ -42,19 +41,6 @@
 				"south": {"uv": [6, 0, 14, 11], "texture": "#0"},
 				"west": {"uv": [6, 0, 14, 11], "texture": "#0"},
 				"up": {"uv": [6, 0, 14, 8], "texture": "#0"}
-			}
-		},
-		{
-			"name": "top glint",
-			"from": [5, 2, 5],
-			"to": [11, 12, 11],
-			"faces": {
-				"north": {"uv": [0, 6, 6, 16], "texture": "#1"},
-				"east": {"uv": [0, 6, 6, 16], "texture": "#1"},
-				"south": {"uv": [0, 6, 6, 16], "texture": "#1"},
-				"west": {"uv": [0, 6, 6, 16], "texture": "#1"},
-				"up": {"uv": [0, 0, 6, 6], "texture": "#1"},
-				"down": {"uv": [0, 0, 0, 0], "texture": "#1"}
 			}
 		},
 		{

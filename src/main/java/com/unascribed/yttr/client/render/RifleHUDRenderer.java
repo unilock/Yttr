@@ -174,10 +174,10 @@ public class RifleHUDRenderer extends IHasAClient {
 									cy--;
 								}
 								if (canned) {
-									MinecraftClient.getInstance().getTextureManager().bindTexture(CANICON);
+									RenderSystem.setShaderTexture(0, CANICON);
 									DrawableHelper.drawTexture(matrices, x+18-5, y+12-7, 300, 0, 0, 5, 5, 5, 5);
 								}
-								MinecraftClient.getInstance().getTextureManager().bindTexture(TINYNUMBERS);
+								RenderSystem.setShaderTexture(0, TINYNUMBERS);
 								for (int ci = 0; ci < str.length(); ci++) {
 									int cj = str.charAt(ci)-'0';
 									int u = (cj%5)*3;

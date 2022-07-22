@@ -1,7 +1,5 @@
 package com.unascribed.yttr.client;
 
-import java.util.OptionalDouble;
-
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -33,24 +31,6 @@ public class YRenderLayers extends RenderPhase {
 				.writeMaskState(new RenderPhase.WriteMaskState(true, false))
 				.build(false));
 	
-	private static final RenderLayer SHIFTER_LINES = RenderLayer.of("yttr_shifter_lines", VertexFormats.POSITION_COLOR, DrawMode.LINES, 256, RenderLayer.MultiPhaseParameters.builder()
-			.lineWidth(new LineWidth(OptionalDouble.empty()))
-			.layering(VIEW_OFFSET_Z_LAYERING)
-			.transparency(TRANSLUCENT_TRANSPARENCY)
-			.depthTest(LEQUAL_DEPTH_TEST)
-			.target(ITEM_TARGET)
-			.writeMaskState(COLOR_MASK)
-			.build(false));
-	
-	private static final RenderLayer SHIFTER_LINES_HIDDEN = RenderLayer.of("yttr_shifter_lines", VertexFormats.POSITION_COLOR, DrawMode.LINES, 256, RenderLayer.MultiPhaseParameters.builder()
-			.lineWidth(new LineWidth(OptionalDouble.empty()))
-			.layering(VIEW_OFFSET_Z_LAYERING)
-			.transparency(TRANSLUCENT_TRANSPARENCY)
-			.depthTest(ALWAYS_DEPTH_TEST)
-			.target(ITEM_TARGET)
-			.writeMaskState(COLOR_MASK)
-			.build(false));
-	
 	public static RenderLayer getArmorTranslucentNoCull(Identifier tex) {
 		return RenderLayer.of("yttr_armor_translucent_no_cull",
 					VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
@@ -62,19 +42,12 @@ public class YRenderLayers extends RenderPhase {
 				.lightmap(ENABLE_LIGHTMAP)
 				.overlay(ENABLE_OVERLAY_COLOR)
 				.layering(VIEW_OFFSET_Z_LAYERING)
+				.shader(ARMOR_CUTOUT_NO_CULL_SHADER)
 				.build(true));
 	}
 	
 	public static RenderLayer getLampHalo() {
 		return LAMP_HALO;
-	}
-	
-	public static RenderLayer getShifterLines() {
-		return SHIFTER_LINES;
-	}
-	
-	public static RenderLayer getShifterLinesHidden() {
-		return SHIFTER_LINES_HIDDEN;
 	}
 	
 	private YRenderLayers() {

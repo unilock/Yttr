@@ -10,8 +10,6 @@ import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.mechanics.HaloBlockEntity;
-import com.unascribed.yttr.mixin.accessor.client.AccessorChunkInfo;
-import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.util.MysticSet;
 
 import com.google.common.collect.Multimap;
@@ -30,7 +28,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexFormat.DrawMode;
-import net.minecraft.client.render.WorldRenderer.ChunkInfo;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -187,8 +184,6 @@ public class LampRenderer extends IHasAClient {
 			wrc.profiler().swap("render");
 			MatrixStack matrices = wrc.matrixStack();
 			matrices.push();
-			matrices.loadIdentity();
-			matrices.push();
 			Vec3d cam = wrc.camera().getPos();
 			matrices.translate(-cam.x, -cam.y, -cam.z);
 			for (ChunkSectionPos pos : buffers.keySet()) {
@@ -210,7 +205,6 @@ public class LampRenderer extends IHasAClient {
 					}
 				}
 			}
-			matrices.pop();
 			matrices.pop();
 			wrc.profiler().pop();
 		}

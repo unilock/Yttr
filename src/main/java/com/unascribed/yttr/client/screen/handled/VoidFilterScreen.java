@@ -158,7 +158,7 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 			double interpPosX = prevPosX + (posX - prevPosX) * delta;
 			double interpPosY = prevPosY + (posY - prevPosY) * delta;
 
-			MinecraftClient.getInstance().getTextureManager().bindTexture(BG);
+			RenderSystem.setShaderTexture(0, BG);
 			float u = (7 - age * 8 / maxAge)*8;
 			float v = 166;
 			DrawableHelper.drawTexture(matrices, (int)interpPosX-4, (int)interpPosY-4, 0, u, v, 8, 8, 256, 256);

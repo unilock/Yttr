@@ -8,6 +8,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
@@ -105,6 +106,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		this.polygons = ImmutableList.copyOf(polygons);
 		cachedShape = null;
 		markDirty();
+		Yttr.sync(this);
 	}
 	
 	public VoxelShape getShape() {
@@ -155,6 +157,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	public void setDonor(BlockState donor) {
 		this.donor = donor;
 		markDirty();
+		Yttr.sync(this);
 	}
 
 	public void fromTagInner(NbtCompound tag) {

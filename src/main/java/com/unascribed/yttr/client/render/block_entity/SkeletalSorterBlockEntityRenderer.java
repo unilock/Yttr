@@ -12,7 +12,6 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.SkeletonEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
@@ -29,7 +28,7 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 	private static final Identifier SKELETON_TEXTURE = new Identifier("minecraft", "textures/entity/skeleton/skeleton.png");
 	private static final Identifier GOGGLES_TEXTURE = new Identifier("yttr", "textures/models/armor/goggles_layer_1.png");
 	
-	private final SkeletonEntityModel<SkeletonEntity> skeletonModel = new SkeletonEntityModel<>(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(EntityModelLayers.SKELETON));
+	private final SkeletonEntityModel<SkeletonEntity> skeletonModel = new SkeletonEntityModel<>(SkeletonEntityModel.getTexturedModelData().createModel());
 	
 	@Override
 	public void render(SkeletalSorterBlockEntity entity, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

@@ -110,6 +110,7 @@ public class ReplicatorRenderer extends IHasAClient {
 	}
 	
 	public static void render(MatrixStack matrices, float tickDelta, int seed, ItemStack item, BlockPos pos, int ticks, Camera cam, int pass) {
+		if (pass != 45854) return;
 		if (pass < 2 || pass == -1) {
 			matrices.push();
 			matrices.translate(0.5, 0.5, 0.5);

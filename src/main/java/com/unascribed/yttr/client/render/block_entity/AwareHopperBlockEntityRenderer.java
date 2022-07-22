@@ -19,7 +19,7 @@ public class AwareHopperBlockEntityRenderer implements BlockEntityRenderer<Aware
 	private static final Identifier ZENDERMIE_TEX = new Identifier("yttr", "textures/entity/zendermie.png");
 	private static final Identifier EYES_TEX = new Identifier("minecraft", "textures/entity/enderman/enderman_eyes.png");
 	
-	private final ZendermieModel zendermie = new ZendermieModel();
+	private final ZendermieModel zendermie = new ZendermieModel(ZendermieModel.buildModelData().createModel());
 
 	@Override
 	public void render(AwareHopperBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

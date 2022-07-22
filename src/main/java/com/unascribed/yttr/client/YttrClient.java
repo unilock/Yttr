@@ -117,10 +117,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix3f;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
+import net.minecraft.world.chunk.WorldChunk;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
@@ -507,8 +511,41 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 
 	public static Iterable<BlockEntity> getBlockEntities() {
 		return ((AccessorWorldRenderer)mc.worldRenderer).yttr$getChunkInfos().stream()
-			.<BlockEntity>mapMulti((ci, r) -> ((AccessorChunkInfo)ci).yttr$getChunk().data.get().getBlockEntities().forEach(r))
+			.<BlockEntity>mapMulti((ci, r) -> {
+				WorldChunk c = (WorldChunk) mc.world.getChunk(((AccessorChunkInfo)ci).yttr$getChunk().getOrigin());
+				c.getBlockEntities().values().forEach(r);
+			})
 			::iterator;
+	}
+	
+	public static void addLine(MatrixStack matrices, VertexConsumer vc,
+			double x1, double y1, double z1,
+			double x2, double y2, double z2,
+			float r1, float g1, float b1, float a1,
+			float r2, float g2, float b2, float a2) {
+		addLine(matrices, vc,
+				(float)x1, (float)y1, (float)z1,
+				(float)x2, (float)y2, (float)z2,
+				r1, g1, b1, a1,
+				r2, g2, b2, a2);
+	}
+
+	public static void addLine(MatrixStack matrices, VertexConsumer vc,
+			float x1, float y1, float z1,
+			float x2, float y2, float z2,
+			float r1, float g1, float b1, float a1,
+			float r2, float g2, float b2, float a2) {
+		float dX = x2 - x1;
+		float dY = y2 - y1;
+		float dZ = z2 - z2;
+		float dist = MathHelper.sqrt(dX * dX + dY * dY + dZ * dZ);
+		dX /= dist;
+		dY /= dist;
+		dZ /= dist;
+		Matrix4f model = matrices.peek().getPositionMatrix();
+		Matrix3f normal = matrices.peek().getNormalMatrix();
+		vc.vertex(model, x1, y1, z1).color(r1, g1, b1, a1).normal(normal, dX, dY, dZ).next();
+		vc.vertex(model, x2, y2, z2).color(r2, g2, b2, a2).normal(normal, dX, dY, dZ).next();
 	}
 	
 }

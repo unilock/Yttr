@@ -2,6 +2,7 @@ package com.unascribed.yttr.client.render.block_entity;
 
 import java.util.Random;
 
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
@@ -12,7 +13,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 
 public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBlockEntity> {
@@ -25,7 +25,6 @@ public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBl
 		float g = rand.nextFloat();
 		float b = rand.nextFloat();
 		VertexConsumer lines = vertexConsumers.getBuffer(RenderLayer.getLines());
-		Matrix4f mat = matrices.peek().getPositionMatrix();
 		for (Polygon polygon : entity.getPolygons()) {
 			float cX = 0;
 			float cY = 0;
@@ -35,8 +34,11 @@ public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBl
 				cY += de.srcPoint().y;
 				cZ += de.srcPoint().z;
 				
-				lines.vertex(mat, (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(r, g, b, 1).normal(0, 0, 0).next();
-				lines.vertex(mat, (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(r, g, b, 1).normal(0, 0, 0).next();
+				YttrClient.addLine(matrices, lines,
+						de.srcPoint().x, de.srcPoint().y, de.srcPoint().z,
+						de.dstPoint().x, de.dstPoint().y, de.dstPoint().z,
+						r, g, b, 1,
+						r, g, b, 1);
 			}
 			cX /= polygon.nPoints();
 			cY /= polygon.nPoints();
@@ -46,8 +48,11 @@ public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBl
 			float nY = (float)normal.y/2;
 			float nZ = (float)normal.z/2;
 			
-			lines.vertex(mat, cX, cY, cZ).color(r, g, b, 1).normal(0, 0, 0).next();
-			lines.vertex(mat, cX+nX, cY+nY, cZ+nZ).color(r, g, b, 1).normal(0, 0, 0).next();
+			YttrClient.addLine(matrices, lines,
+					cX, cY, cZ,
+					cX+nX, cY+nY, cZ+nZ,
+					r, g, b, 1,
+					r, g, b, 1);
 		}
 	}
 

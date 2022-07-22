@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.block.abomination;
 
-import com.mojang.authlib.GameProfile;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YSounds;
 
@@ -11,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
@@ -33,10 +32,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
-import net.minecraft.world.World;
-
-import java.util.UUID;
-
 import org.jetbrains.annotations.Nullable;
 
 public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
@@ -130,6 +125,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 				newAccessingInventory = null;
 				markDirty();
 				world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 1, 0);
+				Yttr.sync(this);
 				thinkTicks = 1;
 			}
 		} else if (thinkTicks > 0) {
@@ -163,6 +159,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 					heldItemMainHand = ItemStack.EMPTY;
 					world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 0, 2);
 					markDirty();
+					Yttr.sync(this);
 				}
 			}
 		} else if (stowTicks > 0) {
@@ -202,6 +199,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 					stowing = null;
 					stowTicks = 0;
 					markDirty();
+					Yttr.sync(this);
 					world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 0, 0);
 					newAccessingInventory = null;
 				}
@@ -218,7 +216,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	public ItemFrameEntity getItemFrame() {
 		Direction facing = getCachedState().get(SkeletalSorterBlock.FACING);
 		ItemFrameEntity frame = Iterables.getFirst(world.getEntitiesByClass(ItemFrameEntity.class,
-				new Box(pos.up()).union(new Box(pos.up().offset(facing, 2))), null), null);
+				new Box(pos.up()).union(new Box(pos.up().offset(facing, 2))), (e) -> true), null);
 		if (frame == null) return null;
 		if (frame.getHeldItemStack().isEmpty()) return null;
 		RaycastContext ctx = new RaycastContext(getHeadPos(), frame.getBoundingBox().getCenter(), ShapeType.VISUAL, FluidHandling.NONE, frame) {
@@ -237,16 +235,15 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 		Inventory inventory = obtainInventory(accessingInventory);
 		accessingInventory = null;
 		if (inventory instanceof ChestBlockEntity cbe) {
-			cbe.onClose(new DummyPlayer(world));
+			world.createAndScheduleBlockTick(cbe.getPos(), cbe.getCachedState().getBlock(), 0);
 		}
 	}
 
 	private void startAccessingInventory() {
 		if (accessingInventory == null) return;
 		Inventory inventory = obtainInventory(accessingInventory);
-		accessingInventory = null;
 		if (inventory instanceof ChestBlockEntity cbe) {
-			cbe.onOpen(new DummyPlayer(world));
+			world.createAndScheduleBlockTick(cbe.getPos(), cbe.getCachedState().getBlock(), 0);
 		}
 	}
 
@@ -309,22 +306,12 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 		return BlockEntityUpdateS2CPacket.create(this);
 	}
 	
-	private static final class DummyPlayer extends PlayerEntity {
-		
-		public DummyPlayer(World world) {
-			super(world, BlockPos.ORIGIN, 0, new GameProfile(new UUID(0, 0), "Skeletal Sorter"));
-		}
-
-		@Override
-		public boolean isSpectator() {
-			return false;
-		}
-
-		@Override
-		public boolean isCreative() {
-			return false;
-		}
-		
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound tag = super.toInitialChunkDataNbt();
+		tag.put("MainHand", heldItemMainHand.writeNbt(new NbtCompound()));
+		tag.put("OffHand", heldItemOffHand.writeNbt(new NbtCompound()));
+		return tag;
 	}
 
 }

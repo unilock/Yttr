@@ -1,10 +1,11 @@
 package com.unascribed.yttr.client.render;
 
+import static com.unascribed.yttr.client.RenderBridge.*;
+
 import java.util.Set;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
-import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.content.item.ShifterItem;
 import com.unascribed.yttr.network.MessageC2SShifterMode;
 import com.unascribed.yttr.util.math.Interp;
@@ -12,9 +13,6 @@ import com.unascribed.yttr.util.math.Interp;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -25,7 +23,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
@@ -55,13 +52,23 @@ public class ShifterUI extends IHasAClient {
 				}
 				lastPositions = positions;
 				lastShape = shanpe;
-				Matrix4f matrix4f = wrc.matrixStack().peek().getPositionMatrix();
-				VertexConsumerProvider.Immediate vcp = mc.getBufferBuilders().getEntityVertexConsumers();vcp.draw(YRenderLayers.getShifterLines());
+				
+				glShadeModel(GL_SMOOTH);
+				glEnable(GL_LINE_SMOOTH);
+				glLineWidth(2);
+				glEnable(GL_BLEND);
+				glDisable(GL_TEXTURE_2D);
+				glDisable(GL_LIGHTING);
+				glDefaultBlendFunc();
+				glPushMCMatrix(wrc.matrixStack());
 				for (int p = 0; p < 2; p++) {
-					// ideally we'd do this in one pass, but since we're using a custom render layer, everything gets lumped together if we do that
-					RenderLayer l = p == 0 ? YRenderLayers.getShifterLines() : YRenderLayers.getShifterLinesHidden();
+					if (p == 0) {
+						glEnable(GL_DEPTH_TEST);
+					} else {
+						glDisable(GL_DEPTH_TEST);
+					}
+					glBegin(GL_LINES);
 					int a = (p == 0 ? 255 : 96);
-					VertexConsumer vc = vcp.getBuffer(l);
 					double x = -wrc.camera().getPos().x;
 					double y = -wrc.camera().getPos().y;
 					double z = -wrc.camera().getPos().z;
@@ -73,12 +80,15 @@ public class ShifterUI extends IHasAClient {
 						if (h2 < 0) h2 += 1;
 						int c1 = MathHelper.hsvToRgb(h1, 0.3f, 1);
 						int c2 = MathHelper.hsvToRgb(h2, 0.3f, 1);
-						vc.vertex(matrix4f, (float)(x1 + x), (float)(y1 + y), (float)(z1 + z)).color((c1 >> 16)&0xFF, (c1 >> 8)&0xFF, c1&0xFF, a).next();
-						vc.vertex(matrix4f, (float)(x2 + x), (float)(y2 + y), (float)(z2 + z)).color((c2 >> 16)&0xFF, (c2 >> 8)&0xFF, c2&0xFF, a).next();
+						glColor4f(((c1 >> 16)&0xFF)/255f, ((c1 >> 8)&0xFF)/255f, ((c1&0xFF))/255f, a/255f);
+						glVertex3d(x1+x, y1+y, z1+z);
+						glColor4f(((c2 >> 16)&0xFF)/255f, ((c2 >> 8)&0xFF)/255f, ((c2&0xFF))/255f, a/255f);
+						glVertex3d(x2+x, y2+y, z2+z);
 					});
-					vcp.draw(l);
+					glEnd();
 				}
-				return true;
+				glPopMCMatrix();
+				return false;
 			}
 		}
 		return true;

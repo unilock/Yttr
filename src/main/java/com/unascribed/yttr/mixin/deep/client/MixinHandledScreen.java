@@ -60,7 +60,7 @@ public class MixinHandledScreen {
 					int j = str.charAt(i)-'0';
 					int u = (j%5)*3;
 					int v = (j/5)*5;
-					DrawableHelper.drawTexture(matrices, x, y, 300, u, v, 3, 5, 10, 15);
+					DrawableHelper.drawTexture(matrices, x, y, 300, u, v, 3, 5, 15, 10);
 					x += 4;
 				}
 			}

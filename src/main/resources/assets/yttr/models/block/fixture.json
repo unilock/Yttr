@@ -3,7 +3,6 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"0": "yttr:block/fixture",
-		"1": "yttr:block/fixture_glint",
 		"2": "yttr:block/fixture_bottom",
 		"particle": "yttr:block/fixture"
 	},
@@ -30,19 +29,6 @@
 				"south": {"uv": [3, 10, 13, 16], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [3, 10, 13, 16], "texture": "#0", "tintindex": 0},
 				"up": {"uv": [3, 0, 13, 10], "texture": "#0", "tintindex": 0}
-			}
-		},
-		{
-			"name": "top glint",
-			"from": [3, 2, 3],
-			"to": [13, 8, 13],
-			"faces": {
-				"north": {"uv": [3, 10, 13, 16], "texture": "#1"},
-				"east": {"uv": [3, 10, 13, 16], "texture": "#1"},
-				"south": {"uv": [3, 10, 13, 16], "texture": "#1"},
-				"west": {"uv": [3, 10, 13, 16], "texture": "#1"},
-				"up": {"uv": [3, 0, 13, 10], "texture": "#1"},
-				"down": {"uv": [0, 0, 0, 0], "texture": "#1"}
 			}
 		},
 		{

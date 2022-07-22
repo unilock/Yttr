@@ -5,6 +5,7 @@ import java.util.List;
 import static com.unascribed.yttr.client.RenderBridge.*;
 
 import com.unascribed.yttr.client.IHasAClient;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.init.YBlocks;
@@ -38,8 +39,7 @@ public class CleaverUI extends IHasAClient {
 					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
 					BlockState bs = wrc.world().getBlockState(pos);
 					if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
-						glPushMatrix();
-						glMultMatrixf(wrc.matrixStack().peek().getPositionMatrix());
+						glPushMCMatrix(wrc.matrixStack());
 						glTranslated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
 						glDisable(GL_TEXTURE_2D);
 						glDefaultBlendFunc();
@@ -135,7 +135,7 @@ public class CleaverUI extends IHasAClient {
 							glEnable(GL_CULL_FACE);
 						}
 						glDisable(GL_BLEND);
-						glPopMatrix();
+						glPopMCMatrix();
 						glEnable(GL_TEXTURE_2D);
 					}
 				}
@@ -152,11 +152,14 @@ public class CleaverUI extends IHasAClient {
 				// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
 				// TODO why does the line happen? is the joiner polygon invalid?
 				// I think it *is*, because enabling multi-cuts causes game crashes if the cut intersects the joiner polygon
+				VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
 				for (Polygon pg : polys.subList(0, polys.size()-1)) {
 					pg.forEachDEdge((de) -> {
-						VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
-						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).normal(0, 0, 0).next();
-						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).normal(0, 0, 0).next();
+						YttrClient.addLine(wrc.matrixStack(), vc,
+								(float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z,
+								(float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z,
+								0, 0, 0, 0.4f,
+								0, 0, 0, 0.4f);
 					});
 				}
 				wrc.matrixStack().pop();

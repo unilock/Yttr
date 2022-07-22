@@ -56,7 +56,7 @@ public class SuitRenderer {
 	public void setUp() {
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
-		MinecraftClient.getInstance().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
+		RenderSystem.setShaderTexture(0, SuitRenderer.SUIT_TEX);
 	}
 	
 	public void tearDown() {

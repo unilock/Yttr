@@ -1,5 +1,6 @@
 package com.unascribed.yttr.network;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.init.YNetwork;
@@ -36,9 +37,9 @@ public class MessageS2CDiscoveredGeyser extends S2CMessage {
 		} else {
 			String name = geyser.name;
 			mc.getToastManager().add((matrices, manager, startTime) -> {
-				manager.getClient().getTextureManager().bindTexture(Toast.TEXTURE);
+				RenderSystem.setShaderTexture(0, Toast.TEXTURE);
 				manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
-				manager.getClient().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
+				RenderSystem.setShaderTexture(0, SuitRenderer.SUIT_TEX);
 				DrawableHelper.drawTexture(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 				manager.getClient().textRenderer.draw(matrices, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1);
 				manager.getClient().textRenderer.draw(matrices, name, 30, 18, -1);
