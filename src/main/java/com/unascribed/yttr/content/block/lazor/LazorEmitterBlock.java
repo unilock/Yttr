@@ -8,6 +8,7 @@ import com.unascribed.yttr.mechanics.LampColor;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
@@ -49,6 +50,11 @@ public class LazorEmitterBlock extends AbstractLazorBlock {
 			LampBlockItem.setColor(stack, color);
 			list.add(stack);
 		}
+	}
+	
+	@Override
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.DESTROY;
 	}
 
 }

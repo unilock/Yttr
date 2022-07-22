@@ -1,8 +1,10 @@
 package com.unascribed.yttr.content.block.lazor;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -18,7 +20,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class LazorBeamBlock extends AbstractLazorBlock {
+public class LazorBeamBlock extends AbstractLazorBlock implements BlockEntityProvider {
 
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	
@@ -57,4 +59,9 @@ public class LazorBeamBlock extends AbstractLazorBlock {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getDefaultState() : Fluids.EMPTY.getDefaultState();
 	}
 
+	@Override
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new LazorBeamBlockEntity(pos, state);
+	}
+	
 }

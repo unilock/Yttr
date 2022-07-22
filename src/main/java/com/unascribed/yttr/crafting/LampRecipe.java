@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
 import com.unascribed.yttr.util.Resolvable;
@@ -79,7 +80,9 @@ public class LampRecipe extends ShapedRecipe {
 				if (thisColor != null) color = thisColor;
 			}
 		}
-		LampBlockItem.setInverted(stack, inputLampInverted == null ? containsTorch : inputLampInverted ^ containsTorch);
+		if (stack.getItem() != YItems.LAZOR_EMITTER) {
+			LampBlockItem.setInverted(stack, inputLampInverted == null ? containsTorch : inputLampInverted ^ containsTorch);
+		}
 		LampBlockItem.setColor(stack, color == null ? inputLampColor == null ? LampColor.COLORLESS : inputLampColor : color);
 		for (String s : stripTags) {
 			stack.getNbt().remove(s);

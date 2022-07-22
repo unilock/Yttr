@@ -26,6 +26,7 @@ import com.unascribed.yttr.content.block.inred.InRedOscillatorBlockEntity;
 import com.unascribed.yttr.content.block.inred.InRedShifterBlockEntity;
 import com.unascribed.yttr.content.block.inred.InRedTransistorBlockEntity;
 import com.unascribed.yttr.content.block.inred.InRedXorGateBlockEntity;
+import com.unascribed.yttr.content.block.lazor.LazorBeamBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.DopperBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.FlopperBlockEntity;
@@ -70,6 +71,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
 	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
 	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE, YBlocks.DYED_PROJECT_TABLE);
+	public static final BlockEntityType<LazorBeamBlockEntity> LAZOR_BEAM = create(LazorBeamBlockEntity::new, YBlocks.LAZOR_BEAM);
 	
 	
 	//TODO: rendering for all of these, probably (and there might be a way to make them not have to all be ticking BEs)

@@ -351,7 +351,7 @@ public class YBlocks {
 			.collidable(false)
 			.dropsNothing()
 			.ticksRandomly()
-			.strength(-1, 10000)
+			.strength(0, 10000)
 			.luminance(15)
 		);
 	
