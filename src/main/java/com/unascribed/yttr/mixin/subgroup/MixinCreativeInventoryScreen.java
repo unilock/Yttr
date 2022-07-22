@@ -58,12 +58,12 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 			int tw = 56;
 			for (ItemSubGroup child : parent.yttr$getChildren()) {
 				RenderSystem.setShaderColor(1, 1, 1, 1);
-				mc.getTextureManager().bindTexture(new Identifier("yttr", "textures/gui/subtab.png"));
+				RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/subtab.png"));
 				boolean childSelected = child == parent.yttr$getSelectedChild();
 				int bgV = childSelected ? 11 : 0;
 				drawTexture(matrices, x-tw, y, 0, bgV, tw+ofs, 11, 70, 22);
 				drawTexture(matrices, this.x, y, 64, bgV, 6, 11, 70, 22);
-				mc.getTextureManager().bindTexture(new Identifier("yttr", "textures/gui/tinyfont.png"));
+				RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/tinyfont.png"));
 				String str = child.getDisplayName().getString();
 				for (int i = str.length()-1; i >= 0; i--) {
 					char c = str.charAt(i);

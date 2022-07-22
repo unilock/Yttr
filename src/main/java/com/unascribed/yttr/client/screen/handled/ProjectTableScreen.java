@@ -75,7 +75,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
-		this.client.getTextureManager().bindTexture(TEXTURE);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		int x = this.x;
 		int y = (this.height - this.backgroundHeight) / 2;
 		drawTexture(matrices, x+0, y+0, 0, 0, backgroundWidth, backgroundHeight);

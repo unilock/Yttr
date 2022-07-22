@@ -41,7 +41,7 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 		super.drawForeground(matrices, mouseX, mouseY);
 		
 		if (isEntireSuitPresent()) {
-			client.getTextureManager().bindTexture(BG);
+			RenderSystem.setShaderTexture(0, BG);
 			LampColor color = LampBlockItem.getColor(handler.getSlot(0).getStack());
 			RenderSystem.setShaderColor(((color.glowColor>>16)&0xFF)/255f, ((color.glowColor>>8)&0xFF)/255f, (color.glowColor&0xFF)/255f, 1);
 			drawTexture(matrices, 129, 9, 231, 0, 16, 16, 256, 256);
@@ -51,7 +51,7 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
-		client.getTextureManager().bindTexture(BG);
+		RenderSystem.setShaderTexture(0, BG);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);

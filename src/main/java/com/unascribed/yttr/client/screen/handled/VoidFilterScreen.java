@@ -43,14 +43,14 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		
-		client.getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+		RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		for (int xo = 0; xo < 2; xo++) {
 			for (int yo = 0; yo < 2; yo++) {
 				drawSprite(matrices, x+4+(xo*32), y+14+(yo*32), 0, 32, 32, FluidRenderHandlerRegistry.INSTANCE.get(YFluids.VOID).getFluidSprites(null, null, YFluids.VOID.getDefaultState())[0]);
 			}
 		}
 		
-		client.getTextureManager().bindTexture(BG);
+		RenderSystem.setShaderTexture(0, BG);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);

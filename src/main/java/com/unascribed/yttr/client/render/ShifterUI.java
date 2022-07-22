@@ -108,7 +108,7 @@ public class ShifterUI extends IHasAClient {
 			matrices.push();
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
 				RenderSystem.setShaderColor(1, 1, 1, mainA);
-				mc.getTextureManager().bindTexture(MODES);
+				RenderSystem.setShaderTexture(0, MODES);
 				boolean disconnected = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceDisconnected");
 				boolean hidden = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceHidden");
 				boolean plane = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("PlaneRestrict");

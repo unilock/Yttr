@@ -48,7 +48,7 @@ public class RifleHUDRenderer extends IHasAClient {
 		if (scopeTime > 0) {
 			boolean scoped = rifleStack.hasNbt() && rifleStack.getNbt().getBoolean("Scoped");
 			scopeA = Interp.sCurve5(MathHelper.clamp((scopeTime+(scoped ? delta : -delta))/ANIM_TIMEf, 0, 1));
-			mc.getTextureManager().bindTexture(SCOPE);
+			RenderSystem.setShaderTexture(0, SCOPE);
 			matrices.push();
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
 				int minDim = Math.min(mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight());
@@ -68,7 +68,7 @@ public class RifleHUDRenderer extends IHasAClient {
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
 				for (int p = 0; p < 2; p++) {
 					RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA/(p+1));
-					mc.getTextureManager().bindTexture(MODES);
+					RenderSystem.setShaderTexture(0, MODES);
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
 					{
@@ -96,7 +96,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						bufferBuilder.end();
 						BufferRenderer.draw(bufferBuilder);
 					}
-					mc.getTextureManager().bindTexture(SCOPEAMMO);
+					RenderSystem.setShaderTexture(0, SCOPEAMMO);
 					matrices.push(); {
 						float mH = 1.8f;
 						float f = (1-(rifleItem.getRemainingAmmo(rifleStack)/(float)rifleItem.getMaxAmmo(rifleStack)))*mH;
@@ -141,7 +141,7 @@ public class RifleHUDRenderer extends IHasAClient {
 					float f = (float)((1-((i+t)/8f))*Math.PI);
 					float a = (1-(Math.abs(i+t)/4f))*mainA;
 					if (a < 0) a = 0;
-					mc.getTextureManager().bindTexture(MODES);
+					RenderSystem.setShaderTexture(0, MODES);
 					int ammo = rifleItem.getPotentialAmmoCount(mc.player, mode);
 					boolean canned = rifleItem.isAmmoCanned(mc.player, mode);
 					if (ammo == 0) {

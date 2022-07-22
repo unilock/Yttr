@@ -255,228 +255,228 @@ public class ReplicatorShapes {
 	
 	public static void octahedronOutline(MatrixStack m, VertexConsumer vc, float r, float g, float b, float a) {
 		Matrix4f mod = m.peek().getPositionMatrix();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, -1.000000f, 0.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 	}
 	
 	public static void dodecahedronOutline(MatrixStack m, VertexConsumer vc, float r, float g, float b, float a) {
 		Matrix4f mod = m.peek().getPositionMatrix();
-		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.491000f, -0.357000f, 0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.491000f, -0.357000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.491000f, -0.357000f, 0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.188000f, -0.577000f, 0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.491000f, -0.357000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.188000f, -0.577000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.188000f, -0.577000f, 0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).color(r, g, b, a).next();
-		
-		
-		
-		vc.vertex(mod, 0.982000f, 0.000000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.795000f, 0.577000f, -0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, 0.795000f, 0.577000f, -0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.304000f, 0.934000f, 0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, 0.304000f, 0.934000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, 0.982000f, 0.000000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.188000f, -0.577000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
 		
 		
-		vc.vertex(mod, 0.304000f, 0.934000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.304000f, 0.934000f, -0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.982000f, 0.000000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.795000f, 0.577000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.304000f, 0.934000f, -0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.795000f, 0.577000f, 0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.795000f, 0.577000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.304000f, 0.934000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.795000f, 0.577000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.304000f, 0.934000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		
-		vc.vertex(mod, -0.795000f, 0.577000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.982000f, 0.000000f, -0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, -0.982000f, 0.000000f, -0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.795000f, -0.577000f, 0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, -0.795000f, -0.577000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.491000f, -0.357000f, 0.795000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, -0.795000f, -0.577000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.304000f, -0.934000f, -0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, -0.304000f, -0.934000f, -0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.304000f, -0.934000f, 0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, 0.304000f, -0.934000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.188000f, -0.577000f, 0.795000f).color(r, g, b, a).next();
-		
-		
-		vc.vertex(mod, 0.304000f, -0.934000f, 0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.795000f, -0.577000f, -0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, 0.795000f, -0.577000f, -0.188000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.982000f, 0.000000f, 0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.982000f, 0.000000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
 		
 		
-		vc.vertex(mod, 0.491000f, 0.357000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.188000f, 0.577000f, -0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.304000f, 0.934000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.304000f, 0.934000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.188000f, 0.577000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.304000f, 0.934000f, -0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.304000f, 0.934000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.795000f, 0.577000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.491000f, 0.357000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.795000f, 0.577000f, -0.188000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, -0.188000f, 0.577000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.607000f, 0.000000f, -0.795000f).color(r, g, b, a).next();
-		
-		vc.vertex(mod, -0.607000f, 0.000000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.982000f, 0.000000f, -0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.795000f, 0.577000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
 		
+		vc.vertex(mod, -0.795000f, 0.577000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.982000f, 0.000000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.607000f, 0.000000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.188000f, -0.577000f, -0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.982000f, 0.000000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.795000f, -0.577000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.188000f, -0.577000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.304000f, -0.934000f, -0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.795000f, -0.577000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.491000f, -0.357000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, -0.795000f, -0.577000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.304000f, -0.934000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, -0.304000f, -0.934000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.304000f, -0.934000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, 0.304000f, -0.934000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.188000f, -0.577000f, 0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		
+		vc.vertex(mod, 0.304000f, -0.934000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.795000f, -0.577000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, 0.795000f, -0.577000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.982000f, 0.000000f, 0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
 		
 		
-		vc.vertex(mod, -0.188000f, -0.577000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.491000f, -0.357000f, -0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.491000f, 0.357000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.188000f, 0.577000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.491000f, -0.357000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.795000f, -0.577000f, -0.188000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.188000f, 0.577000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.304000f, 0.934000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.491000f, -0.357000f, -0.795000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.491000f, 0.357000f, -0.795000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.491000f, 0.357000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.795000f, 0.577000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, -0.188000f, 0.577000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.607000f, 0.000000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, -0.607000f, 0.000000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.982000f, 0.000000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		
+		
+		vc.vertex(mod, -0.607000f, 0.000000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.188000f, -0.577000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, -0.188000f, -0.577000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.304000f, -0.934000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		
+		
+		vc.vertex(mod, -0.188000f, -0.577000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.491000f, -0.357000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, 0.491000f, -0.357000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.795000f, -0.577000f, -0.188000f).color(r, g, b, a).normal(0, 0, 0).next();
+		
+		vc.vertex(mod, 0.491000f, -0.357000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.491000f, 0.357000f, -0.795000f).color(r, g, b, a).normal(0, 0, 0).next();
 	}
 	
 	public static void icosahedronOutline(MatrixStack m, VertexConsumer vc, float r, float g, float b, float a) {
 		Matrix4f mod = m.peek().getPositionMatrix();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.000000f, 0.000000f, -1.000000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, 0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.894000f, 0.000000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.724000f, 0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, -0.276000f, -0.851000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, -0.724000f, -0.526000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, -0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.276000f, -0.851000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 		
-		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).next();
-		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).next();
+		vc.vertex(mod, 0.724000f, 0.526000f, -0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
+		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).color(r, g, b, a).normal(0, 0, 0).next();
 	}
 	
 

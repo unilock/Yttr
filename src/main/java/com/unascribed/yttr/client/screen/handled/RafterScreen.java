@@ -81,7 +81,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(TEXTURE);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		int x = this.x;
 		int y = (this.height - this.backgroundHeight) / 2;
 		drawTexture(matrices, x+36, y+36, 36, 36, 165, 168);
@@ -133,11 +133,13 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 			Slot slot = this.handler.slots.get(i);
 			if (slot instanceof FloatingSlot) {
 				FloatingSlot fs = (FloatingSlot)slot;
-				matrices.push();
-					matrices.translate(fs.floatingX, fs.floatingY, 0);
-					matrices.translate(9, 9, 0);
-					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(fs.ang));
-					matrices.translate(-8, -8, 0);
+				MatrixStack mv = RenderSystem.getModelViewStack();
+				mv.push();
+					mv.translate(fs.floatingX, fs.floatingY, 0);
+					mv.translate(9, 9, 0);
+					mv.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(fs.ang));
+					mv.translate(-8, -8, 0);
+					RenderSystem.applyModelViewMatrix();
 					((AccessorHandledScreen)this).yttr$drawSlot(matrices, slot);
 	
 					Path2D.Float path = getPathFor(fs);
@@ -149,9 +151,10 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 						RenderSystem.colorMask(true, true, true, true);
 						RenderSystem.enableDepthTest();
 					}
-				matrices.pop();
+				mv.pop();
 			}
 		}
+		RenderSystem.applyModelViewMatrix();
 		super.drawForeground(matrices, mouseX, mouseY);
 	}
 	

@@ -179,7 +179,7 @@ public class EffectorRenderer extends IHasAClient {
 			RenderSystem.enableTexture();
 		}
 		ms.pop();
-		mc.getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+		RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		bb.begin(DrawMode.QUADS, RenderLayer.getSolid().getVertexFormat());
 //		DiffuseLighting.enable();
 		Random r = new Random();

@@ -29,7 +29,7 @@ public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		client.getTextureManager().bindTexture(BG);
+		RenderSystem.setShaderTexture(0, BG);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);

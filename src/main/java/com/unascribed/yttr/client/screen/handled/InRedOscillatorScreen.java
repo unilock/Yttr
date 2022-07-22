@@ -47,7 +47,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(TEXTURE);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		int guiX = (this.backgroundWidth - this.width) / 2;
 		int guiY = (this.backgroundHeight - this.height) / 2;
 		this.drawTexture(matrices, guiX, guiY, 0, 0, this.width, this.height);
@@ -88,7 +88,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 			if (this.visible) {
 				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getTextureManager().bindTexture(this.tex);
+				RenderSystem.setShaderTexture(0, this.tex);
 				RenderSystem.disableDepthTest();
 				int hotV = this.v;
 				if (this.hovered) {

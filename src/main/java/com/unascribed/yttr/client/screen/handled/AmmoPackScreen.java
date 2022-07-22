@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client.screen.handled;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -31,7 +32,7 @@ public class AmmoPackScreen extends HandledScreen<AmmoPackScreenHandler> {
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		client.getTextureManager().bindTexture(BG);
+		RenderSystem.setShaderTexture(0, BG);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
