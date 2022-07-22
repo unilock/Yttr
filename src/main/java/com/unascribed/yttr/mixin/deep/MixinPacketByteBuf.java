@@ -23,7 +23,7 @@ public class MixinPacketByteBuf {
 			buf.writeVarInt(Item.getRawId(item));
 			buf.writeVarInt(stack.getCount()); // here's the change: count is a varint, not a byte
 			NbtCompound compoundTag = null;
-			if (item.isDamageable() || item.shouldSyncTagToClient()) {
+			if (item.isDamageable() || item.isNbtSynced()) {
 				compoundTag = stack.getNbt();
 			}
 			buf.writeNbt(compoundTag);

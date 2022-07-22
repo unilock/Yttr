@@ -79,7 +79,7 @@ public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 	}
 
 	@Override
-	public Sprite getSprite() {
+	public Sprite getParticleSprite() {
 		return MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(new Identifier("minecraft", "block/soul_sand"));
 	}
 

@@ -2,16 +2,19 @@ package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.content.fluid.VoidFluid;
 import com.unascribed.yttr.init.YBlockEntities;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 
 public class VoidCauldronBlockEntity extends BlockEntity implements Inventory {
 
-	public VoidCauldronBlockEntity() {
-		super(YBlockEntities.VOID_CAULDRON);
+	public VoidCauldronBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.VOID_CAULDRON, pos, state);
 	}
 
 	@Override

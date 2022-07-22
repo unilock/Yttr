@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client.screen.handled;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.content.block.inred.InRedOscillatorBlockEntity;
 import com.unascribed.yttr.inventory.InRedOscillatorScreenHandler;
 import com.unascribed.yttr.network.MessageC2SOscillatorShift;
@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -29,7 +28,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		this.pos = handler.getPos();
 		this.state = handler.getState();
 		this.be = handler.getOscillator();
-		be.readNbt(state, inventory.player.getEntityWorld().getBlockEntity(pos).writeNbt(new NbtCompound()));
+		be.readNbt(inventory.player.getEntityWorld().getBlockEntity(pos).createNbt());
 		this.width = 138;
 		this.height = 74;
 	}
@@ -39,15 +38,15 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		super.init();
 		int topPadded = ((this.backgroundHeight - this.height) / 2 + 5);
 		int leftPadded = ((this.backgroundWidth - this.width) / 2) + 5;
-		this.addButton(new OscillatorButtonWidget(leftPadded+72, topPadded+32, "tick_up", button -> new MessageC2SOscillatorShift(be, 1).sendToServer()));
-		this.addButton(new OscillatorButtonWidget(leftPadded+40, topPadded+32, "tick_down", button -> new MessageC2SOscillatorShift(be, -1).sendToServer()));
-		this.addButton(new OscillatorButtonWidget(leftPadded+104, topPadded+32, "second_up", button -> new MessageC2SOscillatorShift(be, 10).sendToServer()));
-		this.addButton(new OscillatorButtonWidget(leftPadded+8, topPadded+32, "second_down", button -> new MessageC2SOscillatorShift(be, -10).sendToServer()));
+		this.addDrawableChild(new OscillatorButtonWidget(leftPadded+72, topPadded+32, "tick_up", button -> new MessageC2SOscillatorShift(be, 1).sendToServer()));
+		this.addDrawableChild(new OscillatorButtonWidget(leftPadded+40, topPadded+32, "tick_down", button -> new MessageC2SOscillatorShift(be, -1).sendToServer()));
+		this.addDrawableChild(new OscillatorButtonWidget(leftPadded+104, topPadded+32, "second_up", button -> new MessageC2SOscillatorShift(be, 10).sendToServer()));
+		this.addDrawableChild(new OscillatorButtonWidget(leftPadded+8, topPadded+32, "second_down", button -> new MessageC2SOscillatorShift(be, -10).sendToServer()));
 	}
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		this.client.getTextureManager().bindTexture(TEXTURE);
 		int guiX = (this.backgroundWidth - this.width) / 2;
 		int guiY = (this.backgroundHeight - this.height) / 2;
@@ -90,14 +89,14 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 				MinecraftClient client = MinecraftClient.getInstance();
 				client.getTextureManager().bindTexture(this.tex);
-				GlStateManager.disableDepthTest();
+				RenderSystem.disableDepthTest();
 				int hotV = this.v;
 				if (this.hovered) {
 					hotV += this.hoverVOffset;
 				}
 
 				this.drawTexture(matrices, this.x, this.y, this.u, hotV, this.width, this.height);
-				GlStateManager.enableDepthTest();
+				RenderSystem.enableDepthTest();
 			}
 		}
 	}

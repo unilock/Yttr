@@ -19,9 +19,9 @@ public class ContinuityItemColorProvider implements ItemColorProvider {
 		}
 		float yaw;
 		if (holderYawValid) {
-			yaw = holderYaw*MinecraftClient.getInstance().player.yaw;
+			yaw = holderYaw*MinecraftClient.getInstance().player.headYaw;
 		} else if (MinecraftClient.getInstance().player != null) {
-			yaw = MinecraftClient.getInstance().player.yaw;
+			yaw = MinecraftClient.getInstance().player.headYaw;
 		} else {
 			yaw = 0;
 		}

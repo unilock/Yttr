@@ -3,8 +3,8 @@
   "yttr:discovered_via": "yttr:cuprosteel_ingot",
   "group": "cuprosteel_ingot",
   "ingredients": [
-    { "tag": "yttr:copper_ingots" },
-    { "tag": "yttr:copper_ingots" },
+    { "item": "minecraft:copper_ingot" },
+    { "item": "minecraft:copper_ingot" },
     { "item": "minecraft:iron_ingot" }
   ],
   "result": {

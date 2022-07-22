@@ -22,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
@@ -31,12 +32,9 @@ import net.minecraft.world.dimension.DimensionType;
 @Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World {
 
-	protected MixinClientWorld(MutableWorldProperties properties,
-			RegistryKey<World> registryRef, DimensionType dimensionType,
-			Supplier<Profiler> profiler, boolean isClient, boolean debugWorld,
-			long seed) {
-		super(properties, registryRef, dimensionType, profiler, isClient, debugWorld,
-				seed);
+	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
+		super(properties, registryRef, registryEntry, profiler, isClient, debugWorld, seed);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Inject(at=@At("HEAD"), method="playSoundFromEntity", cancellable=true)

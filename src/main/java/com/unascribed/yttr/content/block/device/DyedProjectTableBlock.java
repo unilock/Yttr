@@ -66,7 +66,7 @@ public class DyedProjectTableBlock extends ProjectTableBlock implements BlockCol
 	}
 	
 	@Override
-	public void addStacksForDisplay(ItemGroup group, DefaultedList<ItemStack> list) {
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 	}
-
+	
 }

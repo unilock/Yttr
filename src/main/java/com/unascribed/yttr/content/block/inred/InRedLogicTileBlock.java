@@ -1,11 +1,15 @@
 package com.unascribed.yttr.content.block.inred;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inred.InRedLogic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.state.StateManager;
@@ -41,6 +45,11 @@ public abstract class InRedLogicTileBlock extends InRedDeviceBlock implements Wa
 				//TODO: are these conditions even necessary?
 				|| world.getBlockState(pos.down()).getBlock() == YBlocks.INRED_SCAFFOLD
 				|| world.getBlockState(pos.down()).getBlock() == YBlocks.INRED_BLOCK;
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 
 	@Override

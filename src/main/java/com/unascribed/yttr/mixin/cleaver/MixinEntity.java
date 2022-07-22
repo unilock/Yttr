@@ -50,7 +50,7 @@ public class MixinEntity implements SlopeStander {
 							} catch (Throwable t) {
 								CrashReport report = CrashReport.create(t, "[Yttr] Performing cleaved block slope adjustment");
 								CrashReportSection section = report.addElement("Block being collided with");
-								CrashReportSection.addBlockInfo(section, mut, bs);
+								CrashReportSection.addBlockInfo(section, self.getWorld(), mut, bs);
 								throw new CrashException(report);
 							}
 						}

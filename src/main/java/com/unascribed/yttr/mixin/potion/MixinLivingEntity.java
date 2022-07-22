@@ -11,8 +11,8 @@ import com.unascribed.yttr.mixin.accessor.AccessorStatusEffectInstance;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectType;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
@@ -32,7 +32,7 @@ public abstract class MixinLivingEntity {
 			return;
 		}
 		if (hasStatusEffect(YStatusEffects.POTION_SICKNESS)) {
-			if (in.getEffectType().getType() != StatusEffectType.HARMFUL) {
+			if (in.getEffectType().getCategory() != StatusEffectCategory.HARMFUL) {
 				ci.setReturnValue(false);
 			}
 		}
@@ -41,9 +41,9 @@ public abstract class MixinLivingEntity {
 			if (d != null) {
 				float potency = (d.getAmplifier()+1)*0.10f;
 				float mod = 1;
-				if (in.getEffectType().getType() == StatusEffectType.BENEFICIAL) {
+				if (in.getEffectType().getCategory() == StatusEffectCategory.BENEFICIAL) {
 					mod = 1+potency;
-				} else if (in.getEffectType().getType() == StatusEffectType.HARMFUL) {
+				} else if (in.getEffectType().getCategory() == StatusEffectCategory.HARMFUL) {
 					mod = 1-potency;
 				}  else {
 					return;

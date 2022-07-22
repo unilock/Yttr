@@ -23,7 +23,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
 public abstract class AbstractLazorBlock extends Block implements Waterloggable, BlockColorProvider {
@@ -70,22 +69,6 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 				state = state.with(Properties.WATERLOGGED, aheadState.getFluidState().isIn(FluidTags.WATER));
 			}
 			world.setBlockState(ahead, state);
-		}
-	}
-
-	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		super.neighborUpdate(state, world, pos, block, fromPos, notify);
-		if (!world.getBlockTickScheduler().isScheduled(pos, state.getBlock())) {
-			world.getBlockTickScheduler().schedule(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
-		}
-	}
-
-	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-		super.onBlockAdded(state, world, pos, oldState, notify);
-		if (!world.getBlockTickScheduler().isScheduled(pos, state.getBlock())) {
-			world.getBlockTickScheduler().schedule(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}
 

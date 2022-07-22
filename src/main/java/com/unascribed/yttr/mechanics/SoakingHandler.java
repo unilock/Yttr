@@ -97,7 +97,7 @@ public class SoakingHandler {
 						is.decrement(toCraft);
 						ie.setStack(is);
 						if (is.isEmpty()) {
-							ie.remove();
+							ie.discard();
 						}
 					}
 					recipe.getResult()

@@ -45,10 +45,10 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 		if (parent.yttr$getChildren() != null && !parent.yttr$getChildren().isEmpty()) {
 			if (!selected.shouldRenderName()) {
 				ItemGroup child = parent.yttr$getSelectedChild();
-				float x = textRenderer.draw(matrices, selected.getTranslationKey(), this.x+8, this.y+6, 4210752);
+				float x = textRenderer.draw(matrices, selected.getName(), this.x+8, this.y+6, 4210752);
 				if (child != null) {
 					x = textRenderer.draw(matrices, " ", x, this.y+6, 4210752);
-					x = textRenderer.draw(matrices, child.getTranslationKey(), x, this.y+6, 4210752);
+					x = textRenderer.draw(matrices, child.getName(), x, this.y+6, 4210752);
 				}
 			}
 			MinecraftClient mc = MinecraftClient.getInstance();
@@ -57,20 +57,20 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 			int y = this.y+6;
 			int tw = 56;
 			for (ItemSubGroup child : parent.yttr$getChildren()) {
-				RenderSystem.color3f(1, 1, 1);
+				RenderSystem.setShaderColor(1, 1, 1, 1);
 				mc.getTextureManager().bindTexture(new Identifier("yttr", "textures/gui/subtab.png"));
 				boolean childSelected = child == parent.yttr$getSelectedChild();
 				int bgV = childSelected ? 11 : 0;
 				drawTexture(matrices, x-tw, y, 0, bgV, tw+ofs, 11, 70, 22);
 				drawTexture(matrices, this.x, y, 64, bgV, 6, 11, 70, 22);
 				mc.getTextureManager().bindTexture(new Identifier("yttr", "textures/gui/tinyfont.png"));
-				String str = child.getTranslationKey().getString();
+				String str = child.getDisplayName().getString();
 				for (int i = str.length()-1; i >= 0; i--) {
 					char c = str.charAt(i);
 					if (c > 0x7F) continue;
 					int u = (c%16)*4;
 					int v = (c/16)*6;
-					RenderSystem.color3f(0, 0, 0);
+					RenderSystem.setShaderColor(0, 0, 0, 0);
 					drawTexture(matrices, x, y+3, u, v, 4, 6, 64, 48);
 					x -= 4;
 				}

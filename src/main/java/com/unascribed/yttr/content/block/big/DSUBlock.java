@@ -35,7 +35,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class DSUBlock extends BigBlock implements BlockEntityProvider {
@@ -152,7 +151,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return new DSUBlockEntity();
+		return new DSUBlockEntity(pos, state);
 	}
 
 	@Override

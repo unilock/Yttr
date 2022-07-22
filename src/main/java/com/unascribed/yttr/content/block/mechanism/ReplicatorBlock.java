@@ -10,7 +10,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -26,8 +25,8 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new ReplicatorBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new ReplicatorBlockEntity(pos, state);
 	}
 	
 	@Override
@@ -47,7 +46,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 				world.playSound(null, pos, YSounds.REPLICATOR_VEND, SoundCategory.BLOCKS, 1, 1);
 				return ActionResult.SUCCESS;
 			} else if (player.isCreative() || player.getUuid().equals(rbe.owner)) {
-				if (!ItemStack.areItemsEqual(held, rbe.item) || !ItemStack.areTagsEqual(held, rbe.item)) {
+				if (!ItemStack.areItemsEqual(held, rbe.item) || !ItemStack.areNbtEqual(held, rbe.item)) {
 					rbe.item = held.copy();
 					world.playSound(null, pos, YSounds.REPLICATOR_UPDATE, SoundCategory.BLOCKS, 1, rbe.item.isEmpty() ? 1f : 1.25f);
 					rbe.sync();
@@ -82,7 +81,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 		ItemStack stack = new ItemStack(this);
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ReplicatorBlockEntity) {
-			stack.putSubTag("BlockEntityTag", be.writeNbt(new NbtCompound()));
+			stack.setSubNbt("BlockEntityTag", be.createNbt());
 		}
 		return stack;
 	}

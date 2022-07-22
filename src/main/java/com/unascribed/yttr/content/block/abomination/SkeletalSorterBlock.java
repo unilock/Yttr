@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unascribed.yttr.content.block.decor.TableBlock;
 import com.unascribed.yttr.content.item.block.SkeletalSorterBlockItem;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 
@@ -14,6 +15,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -85,7 +88,12 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return new SkeletalSorterBlockEntity();
+		return new SkeletalSorterBlockEntity(pos, state);
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 	
 	@Override

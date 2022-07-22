@@ -12,6 +12,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedShifterBlockEntity extends InRedDeviceBlockEntity {
@@ -19,8 +20,8 @@ public class InRedShifterBlockEntity extends InRedDeviceBlockEntity {
 	private InRedHandler eject = new InRedHandler();
 	public ShifterSelection selection = ShifterSelection.LEFT;
 
-	public InRedShifterBlockEntity() {
-		super(YBlockEntities.INRED_SHIFTER);
+	public InRedShifterBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_SHIFTER, pos, state);
 	}
 
 	@Override
@@ -114,20 +115,17 @@ public class InRedShifterBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 		if (tag.contains("Eject")) eject.deserialize(tag.getCompound("Eject"));
 		selection = ShifterSelection.forName(tag.getString("Selection"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
 		tag.put("Eject", signal.serialize());
 		tag.putString("Selection", selection.toString());
-		return tag;
 	}
 
 }

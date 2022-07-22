@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -55,7 +56,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
@@ -120,7 +120,7 @@ public class ShifterItem extends Item {
 		ServerWorld world = (ServerWorld) _world;
 		Multiset<Integer> delays = HashMultiset.create();
 		for (BlockPos pos : positions) {
-			int delay = pos.equals(center) ? 0 : (int) ((MathHelper.sqrt(pos.getSquaredDistance(center)*4))+RANDOM.nextInt(5));
+			int delay = pos.equals(center) ? 0 : (int) ((Math.sqrt(pos.getSquaredDistance(center)*4))+ThreadLocalRandom.current().nextInt(5));
 			while (delays.count(delay) > 4) {
 				delay++;
 			}
@@ -150,7 +150,7 @@ public class ShifterItem extends Item {
 		BlockEntity be = world.getBlockEntity(pos);
 		BlockState curState = getEffectiveBlockState(world, pos);
 		if (curState.isAir()) return;
-		int consumed = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, true);
+		int consumed = Inventories.remove(player.getInventory(), (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areNbtEqual(is, replacement), 1, true);
 		if (consumed == 0) return;
 		Item i = replacement.getItem();
 		BlockState replState;
@@ -171,7 +171,7 @@ public class ShifterItem extends Item {
 		if (replState == null) return;
 		if (replState == curState) return;
 		if (!replState.canPlaceAt(world, pos)) return;
-		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, curState.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null, player, shifter);
+		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, world.getBlockEntity(pos), player, shifter);
 		if (curState.getHardness(world, pos) < 0 && !curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) return;
 		BlockSoundGroup curSg = curState.getSoundGroup();
 		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
@@ -197,14 +197,14 @@ public class ShifterItem extends Item {
 					world.spawnEntity(ie);
 					ie.onPlayerCollision(player);
 					if (ie.getStack().isEmpty()) {
-						ie.remove();
+						ie.discard();
 					} else {
 						ie.setToDefaultPickupDelay();
 					}
 				}
 			}
 			if (!(i instanceof ProjectorItem)) {
-				int rm = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, false);
+				int rm = Inventories.remove(player.getInventory(), (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areNbtEqual(is, replacement), 1, false);
 				if (rm == 0) {
 					YLog.warn("Couldn't consume a replacement item after verifying it with a dry run?? Forcefully decrementing off-hand stack!");
 					ItemStack off = player.getStackInHand(Hand.OFF_HAND);
@@ -222,7 +222,7 @@ public class ShifterItem extends Item {
 		} else {
 			world.setBlockState(pos, replState);
 		}
-		world.playSound(null, pos, YSounds.SHIFT, SoundCategory.PLAYERS, 0.75f, (RANDOM.nextFloat())+1f);
+		world.playSound(null, pos, YSounds.SHIFT, SoundCategory.PLAYERS, 0.75f, (ThreadLocalRandom.current().nextFloat())+1f);
 		world.spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 		world.spawnParticles(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 	}

@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.device;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.AmmoCanItem;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
@@ -21,10 +22,10 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Nameable;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class CanFillerBlockEntity extends BlockEntity implements SideyInventory, Tickable, Nameable, DelegatingInventory {
+public class CanFillerBlockEntity extends BlockEntity implements SideyInventory, YTickable, Nameable, DelegatingInventory {
 
 	private final SimpleInventory inv = new SimpleInventory(5);
 	
@@ -56,8 +57,8 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 		}
 	};
 	
-	public CanFillerBlockEntity() {
-		super(YBlockEntities.CAN_FILLER);
+	public CanFillerBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.CAN_FILLER, pos, state);
 		inv.addListener(i -> markDirty());
 	}
 	
@@ -143,17 +144,14 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("WorkTime", workTime);
 		tag.putInt("MaxWorkTime", maxWorkTime);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		workTime = tag.getInt("WorkTime");
 		maxWorkTime = tag.getInt("MaxWorkTime");

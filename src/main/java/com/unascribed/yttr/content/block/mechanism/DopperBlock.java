@@ -1,10 +1,14 @@
 package com.unascribed.yttr.content.block.mechanism;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +16,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public class DopperBlock extends HopperBlock {
 
@@ -75,8 +80,13 @@ public class DopperBlock extends HopperBlock {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new DopperBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new DopperBlockEntity(pos, state);
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 
 }

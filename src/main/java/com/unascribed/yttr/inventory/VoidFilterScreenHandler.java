@@ -29,7 +29,7 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 		}
 		
 		@Override
-		public boolean doDrawHoveringEffect() {
+		public boolean isEnabled() {
 			return isIndependent();
 		}
 		

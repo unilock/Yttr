@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YCriteria;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
@@ -18,7 +19,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,8 +55,8 @@ public class EffectorItem extends Item {
 		if (hr.getType() == Type.BLOCK) {
 			BlockState bs = world.getBlockState(hr.getBlockPos());
 			if (bs.getBlock() instanceof FluidDrainable && bs.getFluidState().getFluid().isIn(YTags.Fluid.VOID)) {
-				Fluid fluid = ((FluidDrainable)bs.getBlock()).tryDrainFluid(world, hr.getBlockPos(), bs);
-				if (fluid.isIn(YTags.Fluid.VOID)) {
+				ItemStack fuckingGodDamnItMojangYOUBROKEYOUROWNAPI = ((FluidDrainable)bs.getBlock()).tryDrainFluid(world, hr.getBlockPos(), bs);
+				if (fuckingGodDamnItMojangYOUBROKEYOUROWNAPI.getItem() == YItems.VOID_BUCKET) {
 					user.playSound(SoundEvents.ITEM_BUCKET_FILL, 1, 1);
 					if (world.isClient) return TypedActionResult.success(stack, true);
 					setFuel(stack, MAX_FUEL);
@@ -79,7 +79,7 @@ public class EffectorItem extends Item {
 		BlockPos pos = context.getBlockPos();
 		Direction dir = context.getSide().getOpposite();
 		ItemStack stack = context.getStack();
-		int fuel = context.getPlayer().abilities.creativeMode ? MAX_FUEL : getFuel(stack);
+		int fuel = context.getPlayer().getAbilities().creativeMode ? MAX_FUEL : getFuel(stack);
 		if (fuel <= 0) {
 			context.getPlayer().sendMessage(new TranslatableText("tip.yttr.effector.no_fuel"), true);
 			return ActionResult.FAIL;
@@ -89,7 +89,7 @@ public class EffectorItem extends Item {
 		if (context.getPlayer() instanceof ServerPlayerEntity) {
 			YCriteria.EFFECT_BLOCK.trigger((ServerPlayerEntity)context.getPlayer(), pos, stack);
 		}
-		if (!context.getPlayer().abilities.creativeMode) setFuel(stack, fuel-amt);
+		if (!context.getPlayer().getAbilities().creativeMode) setFuel(stack, fuel-amt);
 		new MessageS2CEffectorHole(pos, dir, amt).sendToAllWatching(context.getPlayer());
 		return ActionResult.SUCCESS;
 	}

@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
@@ -57,6 +58,7 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
@@ -93,12 +95,12 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				int ammo = getRemainingAmmo(stack);
 				int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
 				if (ammo <= 0) {
-					if (user.abilities.creativeMode) {
+					if (user.getAbilities().creativeMode) {
 						ammo = mode.shotsPerItem;
 					} else {
-						for (int i = 0; i < user.inventory.size(); i++) {
+						for (int i = 0; i < user.getInventory().size(); i++) {
 							boolean replicator = false;
-							ItemStack is = user.inventory.getStack(i);
+							ItemStack is = user.getInventory().getStack(i);
 							if (is.getItem() == YItems.REPLICATOR) {
 								is = ReplicatorBlockItem.getHeldItem(is);
 								is.setCount(64);
@@ -108,10 +110,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 								Item remainder = is.getItem().getRecipeRemainder();
 								if (!replicator && remainder != null) {
 									if (is.getCount() == need) {
-										user.inventory.setStack(i, new ItemStack(remainder));
+										user.getInventory().setStack(i, new ItemStack(remainder));
 									} else {
 										is.decrement(need);
-										user.inventory.offerOrDrop(user.world, new ItemStack(remainder));
+										user.getInventory().offerOrDrop(new ItemStack(remainder));
 									}
 								} else {
 									is.decrement(need);
@@ -184,9 +186,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		}
 		int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
 		int ammo = 0;
-		for (int i = 0; i < user.inventory.size(); i++) {
+		for (int i = 0; i < user.getInventory().size(); i++) {
 			boolean replicator = false;
-			ItemStack is = user.inventory.getStack(i);
+			ItemStack is = user.getInventory().getStack(i);
 			if (is.getItem() == YItems.REPLICATOR) {
 				is = ReplicatorBlockItem.getHeldItem(is);
 				is.setCount(64);
@@ -224,7 +226,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 			SlotReference ref = Yttr.scanInventory(inv, isMatchingCan(mode));
 			if (ref != null) return ref;
 		}
-		return Yttr.scanInventory(user.inventory, isMatchingCan(mode));
+		return Yttr.scanInventory(user.getInventory(), isMatchingCan(mode));
 	}
 	
 	private Predicate<ItemStack> isMatchingCan(RifleMode mode) {
@@ -247,7 +249,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				float r = (oldMode.color >> 16 & 255)/255f;
 				float g = (oldMode.color >> 8 & 255)/255f;
 				float b = (oldMode.color >> 0 & 255)/255f;
-				((ServerWorld)user.world).spawnParticles(new DustParticleEffect(r, g, b, 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
+				((ServerWorld)user.world).spawnParticles(new DustParticleEffect(new Vec3f(r, g, b), 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
 			}
 		}
 		SlotReference can = getAmmoCanSlot(user, mode);
@@ -349,7 +351,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				} else {
 					color |= (int)Math.min(255, power*255)<<24;
 				}
-				new MessageS2CBeam(user.getEntityId(), color, (float)hr.getPos().x, (float)hr.getPos().y, (float)hr.getPos().z).sendToAllWatching(user);
+				new MessageS2CBeam(user.getId(), color, (float)hr.getPos().x, (float)hr.getPos().y, (float)hr.getPos().z).sendToAllWatching(user);
 				if (ehr == null) {
 					BlockState bs = world.getBlockState(bhr.getBlockPos());
 					if (bs.getBlock() instanceof Shootable) {
@@ -540,7 +542,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		}
 		if (entity.age % 4 == 0 && entity instanceof PlayerEntity) {
 			if (((PlayerEntity)entity).getItemCooldownManager().isCoolingDown(this)) {
-				entity.playSound(YSounds.RIFLE_VENT, selected ? 0.5f : 0.2f, 0.6f+RANDOM.nextFloat()/3);
+				entity.playSound(YSounds.RIFLE_VENT, selected ? 0.5f : 0.2f, 0.6f+ThreadLocalRandom.current().nextFloat()/3);
 			}
 		}
 	}
@@ -591,7 +593,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		float r = rF+((rE-rF)*a);
 		float g = gF+((gE-gF)*a);
 		float b = bF+((bE-bF)*a);
-		return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
+		return NativeImage.packColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.item.EffectorItem;
@@ -20,7 +19,6 @@ import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -109,15 +107,15 @@ public class EffectorRenderer extends IHasAClient {
 						EffectorItem.move(mut, axisY, 1);
 					}
 				}
-				GlStateManager.depthMask(false);
-				GlStateManager.disableTexture();
-				GlStateManager.enablePolygonOffset();
-				GlStateManager.polygonOffset(-3, -3);
+				RenderSystem.depthMask(false);
+				RenderSystem.disableTexture();
+				RenderSystem.enablePolygonOffset();
+				RenderSystem.polygonOffset(-3, -3);
 				tess.draw();
-				GlStateManager.enableTexture();
-				GlStateManager.depthMask(true);
-				GlStateManager.depthFunc(GL11.GL_LESS);
-				GlStateManager.disablePolygonOffset();
+				RenderSystem.enableTexture();
+				RenderSystem.depthMask(true);
+				RenderSystem.depthFunc(GL11.GL_LESS);
+				RenderSystem.disablePolygonOffset();
 			}
 		} finally {
 			((YttrWorld)w).yttr$setUnmask(false);
@@ -131,16 +129,16 @@ public class EffectorRenderer extends IHasAClient {
 		ms.translate(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
 		ms.translate(dir.getOffsetX()*-0.5, dir.getOffsetY()*-0.5, dir.getOffsetZ()*-0.5);
 		ms.multiply(dir.getRotationQuaternion());
-		Matrix4f mat = ms.peek().getModel();
+		Matrix4f mat = ms.peek().getPositionMatrix();
 		if (a != 0) {
 			float s = a*1.5f;
-			GlStateManager.disableTexture();
+			RenderSystem.disableTexture();
 			if (l > 0) {
-				GlStateManager.enableBlend();
+				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
-				GlStateManager.color4f(0, 0, 0, a > 0.75f ? (1-a)*4 : 1);
-				GlStateManager.depthMask(false);
-				bb.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+				RenderSystem.setShaderColor(0, 0, 0, a > 0.75f ? (1-a)*4 : 1);
+				RenderSystem.depthMask(false);
+				bb.begin(DrawMode.QUADS, VertexFormats.POSITION);
 				bb.vertex(mat,  s, 0,  s).next();
 				bb.vertex(mat,  s, l,  s).next();
 				bb.vertex(mat,  s, l, -s).next();
@@ -161,29 +159,29 @@ public class EffectorRenderer extends IHasAClient {
 				bb.vertex(mat, -s, l, -s).next();
 				bb.vertex(mat, -s, 0, -s).next();
 				tess.draw();
-				GlStateManager.disableBlend();
-				GlStateManager.depthMask(true);
+				RenderSystem.disableBlend();
+				RenderSystem.depthMask(true);
 			}
-			GlStateManager.colorMask(false, false, false, false);
-			GlStateManager.enablePolygonOffset();
-			GlStateManager.polygonOffset(-3, -3);
-			GlStateManager.disableCull();
-			bb.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+			RenderSystem.colorMask(false, false, false, false);
+			RenderSystem.enablePolygonOffset();
+			RenderSystem.polygonOffset(-3, -3);
+			RenderSystem.disableCull();
+			bb.begin(DrawMode.QUADS, VertexFormats.POSITION);
 			bb.vertex(mat, -s, 0, -s).next();
 			bb.vertex(mat,  s, 0, -s).next();
 			bb.vertex(mat,  s, 0,  s).next();
 			bb.vertex(mat, -s, 0,  s).next();
 			tess.draw();
-			GlStateManager.disablePolygonOffset();
-			GlStateManager.colorMask(true, true, true, true);
-			GlStateManager.color4f(1, 1, 1, 1);
-			GlStateManager.enableCull();
-			GlStateManager.enableTexture();
+			RenderSystem.disablePolygonOffset();
+			RenderSystem.colorMask(true, true, true, true);
+			RenderSystem.setShaderColor(1, 1, 1, 1);
+			RenderSystem.enableCull();
+			RenderSystem.enableTexture();
 		}
 		ms.pop();
 		mc.getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-		bb.begin(GL11.GL_QUADS, RenderLayer.getSolid().getVertexFormat());
-		DiffuseLighting.enable();
+		bb.begin(DrawMode.QUADS, RenderLayer.getSolid().getVertexFormat());
+//		DiffuseLighting.enable();
 		Random r = new Random();
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
@@ -209,19 +207,19 @@ public class EffectorRenderer extends IHasAClient {
 			}
 		}
 		tess.draw();
-		DiffuseLighting.disable();
-		GlStateManager.colorMask(false, false, false, false);
-		GlStateManager.disableCull();
-		GlStateManager.disableTexture();
-		bb.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+//		DiffuseLighting.disable();
+		RenderSystem.colorMask(false, false, false, false);
+		RenderSystem.disableCull();
+		RenderSystem.disableTexture();
+		bb.begin(DrawMode.QUADS, VertexFormats.POSITION);
 		bb.vertex(mat, -1.5f, 0, -1.5f).next();
 		bb.vertex(mat,  1.5f, 0, -1.5f).next();
 		bb.vertex(mat,  1.5f, 0,  1.5f).next();
 		bb.vertex(mat, -1.5f, 0,  1.5f).next();
 		tess.draw();
-		GlStateManager.colorMask(true, true, true, true);
-		GlStateManager.enableTexture();
-		GlStateManager.enableCull();
+		RenderSystem.colorMask(true, true, true, true);
+		RenderSystem.enableTexture();
+		RenderSystem.enableCull();
 	}
 	
 	private static void drawVoidFace(World w, MatrixStack ms, VertexConsumer vc, BlockPos pos, Direction face) {

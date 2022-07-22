@@ -3,10 +3,10 @@
 <span class="aside">Namespaced ID: <span>yttr:cage_lamp</span></span><br/>
 # Cage Lamp
 
-Cage Lamps are smaller versions of [Lamps](/lamp) which can be placed on any of the 6 block faces,
+Cage Lamps are smaller versions of [Lamps](../lamp) which can be placed on any of the 6 block faces,
 enclosed in a decorative industrial cage.
 
-See the [Lamp](/lamp) page for more information on how lamps work, including these.
+See the [Lamp](../lamp) page for more information on how lamps work, including these.
 
 ## Screenshots
 ![A few cage lamps hanging around.](../img/cage_lamp.png)

@@ -24,12 +24,12 @@ public class MixinServerPlayNetworkHandler {
 	@Inject(at=@At("HEAD"), method="onPickFromInventory", cancellable=true)
 	public void onPickFromInventory(PickFromInventoryC2SPacket packet, CallbackInfo ci) {
 		if (player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof ShifterItem) {
-			if (packet.getSlot() < 0 || packet.getSlot() >= player.inventory.size()) return;
-			ItemStack desired = player.inventory.getStack(packet.getSlot());
-			player.inventory.setStack(packet.getSlot(), player.getStackInHand(Hand.OFF_HAND));
+			if (packet.getSlot() < 0 || packet.getSlot() >= player.getInventory().size()) return;
+			ItemStack desired = player.getInventory().getStack(packet.getSlot());
+			player.getInventory().setStack(packet.getSlot(), player.getStackInHand(Hand.OFF_HAND));
 			player.setStackInHand(Hand.OFF_HAND, desired);
-			player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, packet.getSlot(), player.inventory.getStack(packet.getSlot())));
-			player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, 40, player.inventory.getStack(40)));
+			player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, 0, packet.getSlot(), player.getInventory().getStack(packet.getSlot())));
+			player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, 0, 40, player.getInventory().getStack(40)));
 			ci.cancel();
 		}
 	}

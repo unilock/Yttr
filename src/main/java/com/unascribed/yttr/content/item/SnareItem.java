@@ -2,6 +2,8 @@ package com.unascribed.yttr.content.item;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
 
@@ -116,7 +118,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (miss) {
 				end = start.add(user.getRotationVec(1).multiply(3));
 			}
-			Entity e = release(user, world, stack, end, -user.yaw, false);
+			Entity e = release(user, world, stack, end, -user.getHeadYaw(), false);
 			if (e instanceof FallingBlockEntity) {
 				FallingBlockEntity fbe = (FallingBlockEntity)e;
 				if (ehr == null && hr.getType() == Type.BLOCK) {
@@ -129,7 +131,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						}
 					};
 					if (world.getBlockState(target).canReplace(ctx) && fbe.getBlockState().canPlaceAt(world, target)) {
-						fbe.remove();
+						fbe.discard();
 						try {
 							BlockState placement = bs.getBlock().getPlacementState(ctx);
 							if (placement.getBlock() == bs.getBlock()) {
@@ -150,13 +152,13 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						if (fbe.blockEntityData != null) {
 							BlockEntity be = world.getBlockEntity(target);
 							if (be != null) {
-								NbtCompound data = be.writeNbt(new NbtCompound());
+								NbtCompound data = be.createNbt();
 								NbtCompound incoming = fbe.blockEntityData.copy();
 								incoming.remove("x");
 								incoming.remove("y");
 								incoming.remove("z");
 								data.copyFrom(incoming);
-								be.readNbt(bs, data);
+								be.readNbt(data);
 							}
 						}
 					} else if (fbe.blockEntityData != null) {
@@ -196,7 +198,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						fbe.dropItem = true;
 						fbe.timeFalling = 2;
 						if (be != null) {
-							NbtCompound data = be.writeNbt(new NbtCompound());
+							NbtCompound data = be.createNbt();
 							fbe.blockEntityData = data;
 						}
 						hit = fbe;
@@ -257,7 +259,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					}
 				}
 				boolean baby = hit instanceof LivingEntity && ((LivingEntity)hit).isBaby();
-				hit.remove();
+				hit.discard();
 				if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 				stack.getNbt().putLong("LastUpdate", user.world.getServer().getTicks());
 				stack.getNbt().put("Contents", data);
@@ -354,7 +356,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		handleAmbientSound(stack, world, entity.getPos(), selected);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), RANDOM, null)) {
+			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), ThreadLocalRandom.current(), null)) {
 				stack.decrement(1);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.75f);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.95f);
@@ -379,7 +381,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		handleAmbientSound(stack, world, Vec3d.ofCenter(pos), false);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), RANDOM, null)) {
+			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), ThreadLocalRandom.current(), null)) {
 				stack.decrement(1);
 				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.75f);
 				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.95f);
@@ -397,7 +399,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		if (stack.hasNbt() && stack.getNbt().contains("AmbientSound") && stack.getNbt().contains("Contents")) {
 			int ambientSoundTimer = stack.getNbt().getInt("AmbientSoundTimer");
 			ambientSoundTimer += getCheatedTicks(world, stack)+1;
-			if (RANDOM.nextInt(1000) < ambientSoundTimer) {
+			if (ThreadLocalRandom.current().nextInt(1000) < ambientSoundTimer) {
 				ambientSoundTimer = -stack.getNbt().getInt("AmbientSoundDelay");
 				int[] pitches = stack.getNbt().getIntArray("AmbientSoundPitches");
 				int[] volumes = stack.getNbt().getIntArray("AmbientSoundVolumes");
@@ -406,7 +408,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				SoundEvent sound = Registry.SOUND_EVENT.getOrEmpty(id).orElse(null);
 				if (sound == null) return;
 				SoundCategory category = Enums.getIfPresent(SoundCategory.class, stack.getNbt().getString("AmbientSoundCategory")).or(SoundCategory.MASTER);
-				world.playSound(null, pos.x, pos.y, pos.z, sound, category, Float.intBitsToFloat(volumes[RANDOM.nextInt(volumes.length)])/(selected ? 2 : 3), Float.intBitsToFloat(pitches[RANDOM.nextInt(pitches.length)]));
+				world.playSound(null, pos.x, pos.y, pos.z, sound, category, Float.intBitsToFloat(volumes[ThreadLocalRandom.current().nextInt(volumes.length)])/(selected ? 2 : 3), Float.intBitsToFloat(pitches[ThreadLocalRandom.current().nextInt(pitches.length)]));
 			}
 			stack.getNbt().putInt("AmbientSoundTimer", ambientSoundTimer);
 		}
@@ -456,8 +458,9 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (e instanceof ItemEntity && ((ItemEntity)e).getStack().getItem() instanceof ArrowItem && ((ItemEntity)e).getStack().getCount() == 1 && player != null) {
 				e = ((ArrowItem)((ItemEntity)e).getStack().getItem()).createArrow(world, ((ItemEntity)e).getStack(), player);
 			} else {
-				e.yaw = yaw;
-				e.pitch = 0;
+				e.setBodyYaw(yaw);
+				e.setHeadYaw(yaw);
+				e.setPitch(0);
 				e.setVelocity(0, 0, 0);
 				e.fallDistance = 0;
 			}
@@ -487,12 +490,12 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);
 		if (group == YItemGroups.SNARE) {
-			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
+			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntrySet()) {
 				EntityType<?> e = en.getValue();
 				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
 				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {
 					ItemStack is = new ItemStack(this);
-					is.getOrCreateSubTag("Contents").putString("id", en.getKey().getValue().toString());
+					is.getOrCreateSubNbt("Contents").putString("id", en.getKey().getValue().toString());
 					stacks.add(is);
 				}
 			}
@@ -517,7 +520,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					primary = spi.getColor(0);
 					secondary = spi.getColor(1);
 				} else {
-					primary = Hashing.murmur3_32().hashString(Registry.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
+					primary = Hashing.murmur3_32_fixed().hashString(Registry.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
 					secondary = ~primary;
 				}
 			}

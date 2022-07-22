@@ -37,8 +37,8 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new PowerMeterBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new PowerMeterBlockEntity(pos, state);
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.updateNeighborsAlways(pos, this);
 		if (getWeakRedstonePower(state, world, pos, null) > 0) {
-			world.getBlockTickScheduler().schedule(pos, this, 20);
+			world.createAndScheduleBlockTick(pos, this, 20);
 		}
 	}
 	

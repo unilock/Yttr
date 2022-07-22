@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock.Mode;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 
@@ -15,16 +16,15 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.FluidTags;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tickable {
+public class ChuteBlockEntity extends BlockEntity implements SidedInventory, YTickable {
 
-	public ChuteBlockEntity() {
-		super(YBlockEntities.CHUTE);
+	public ChuteBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.CHUTE, pos, state);
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 			for (ItemEntity ent : world.getEntitiesByClass(ItemEntity.class, box, e -> true)) {
 				ItemStack stack = ent.getStack();
 				if (transfer(world, pos, Direction.DOWN, stack, false)) {
-					ent.remove();
+					ent.discard();
 				}
 			}
 		}

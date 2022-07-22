@@ -11,14 +11,15 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedDiodeBlockEntity extends InRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 	private int mask = 0b11_1111;
 
-	public InRedDiodeBlockEntity() {
-		super(YBlockEntities.INRED_DIODE);
+	public InRedDiodeBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_DIODE, pos, state);
 	}
 
 	@Override
@@ -83,18 +84,15 @@ public class InRedDiodeBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		mask = tag.getInt("Mask");
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.putInt("Mask", mask);
 		tag.put("Signal", signal.serialize());
-		return tag;
 	}
 
 }

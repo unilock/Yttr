@@ -78,7 +78,7 @@ public class DelicaceBlock extends Block {
 		if (stage > 2) {
 			Box box = new Box(pos).expand(8);
 			if (!world.getEntitiesByClass(PlayerEntity.class, box, e -> true).isEmpty()) {
-				world.getBlockTickScheduler().schedule(pos, this, 1);
+				world.createAndScheduleBlockTick(pos, this, 1);
 			}
 		}
 	}
@@ -92,7 +92,7 @@ public class DelicaceBlock extends Block {
 			for (PlayerEntity pe : players) {
 				pe.addStatusEffect(new StatusEffectInstance(YStatusEffects.DELICACENESS, (20*15)+19, potency));
 			}
-			world.getBlockTickScheduler().schedule(pos, this, 18);
+			world.createAndScheduleBlockTick(pos, this, 18);
 		}
 	}
 	

@@ -24,6 +24,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.util.NbtType;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -63,7 +64,7 @@ public class CleaverItem extends Item implements Attackable {
 	
 	@Override
 	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-		return !miner.abilities.creativeMode;
+		return !miner.getAbilities().creativeMode;
 	}
 	
 	@Override
@@ -118,7 +119,7 @@ public class CleaverItem extends Item implements Attackable {
 		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
 		//if (state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
 		if (state.isIn(YTags.Block.UNCLEAVABLE)) return false;
-		return !state.getBlock().hasBlockEntity() && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
+		return !(state.getBlock() instanceof BlockEntityProvider) && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
 	}
 	
 	@Override

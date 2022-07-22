@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorHopperBlockEntity;
@@ -10,10 +11,15 @@ import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 
-public class DopperBlockEntity extends HopperBlockEntity {
+public class DopperBlockEntity extends HopperBlockEntity implements YTickable {
 
 	private boolean tock = false;
+
+	public DopperBlockEntity(BlockPos pos, BlockState state) {
+		super(pos, state);
+	}
 	
 	@Override
 	public void tick() {
@@ -28,7 +34,7 @@ public class DopperBlockEntity extends HopperBlockEntity {
 					if (tock) {
 						((AccessorBlockEntity)this).yttr$setCachedState(realState.with(DopperBlock.FACING, realState.get(DopperBlock.FACING).getOpposite()));
 					}
-					if (acc.yttr$insertAndExtract(() -> extract(this))) {
+					if (acc.yttr$insertAndExtract(() -> extract(getWorld(), this))) {
 						tock = !tock;
 					}
 				} finally {
@@ -39,15 +45,12 @@ public class DopperBlockEntity extends HopperBlockEntity {
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		tag.putBoolean("Tock", tock);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		tock = tag.getBoolean("Tock");
 	}
 	

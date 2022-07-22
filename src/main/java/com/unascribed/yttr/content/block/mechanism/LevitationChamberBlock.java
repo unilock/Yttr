@@ -92,8 +92,8 @@ public class LevitationChamberBlock extends Block implements BlockEntityProvider
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new LevitationChamberBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new LevitationChamberBlockEntity(pos, state);
 	}
 	
 	@Override

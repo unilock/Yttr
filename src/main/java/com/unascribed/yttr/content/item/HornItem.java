@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.item;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.unascribed.yttr.init.YSounds;
 
 import net.minecraft.block.Block;
@@ -36,7 +38,7 @@ public class HornItem extends BlockItem {
 	
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		user.playSound(YSounds.HONK, 6, 0.9f+(RANDOM.nextFloat()*0.2f));
+		user.playSound(YSounds.HONK, 6, 0.9f+(ThreadLocalRandom.current().nextFloat()*0.2f));
 		return stack;
 	}
 

@@ -14,7 +14,7 @@
       "item": "yttr:centrifuge"
     },
     "C": {
-      "tag": "yttr:copper_ingots"
+      "item": "minecraft:copper_ingot"
     },
     "Y": {
       "item": "yttr:yttrium_ingot"

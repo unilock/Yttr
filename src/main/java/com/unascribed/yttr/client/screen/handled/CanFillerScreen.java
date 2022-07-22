@@ -12,9 +12,11 @@ import net.minecraft.util.Identifier;
 public class CanFillerScreen extends HandledScreen<CanFillerScreenHandler> {
 
 	private static final Identifier BG = new Identifier("yttr", "textures/gui/can_filler.png");
+	private final PlayerInventory playerInventory;
 	
 	public CanFillerScreen(CanFillerScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		playerInventory = inventory;
 		backgroundWidth = 176;
 		backgroundHeight = 201;
 		playerInventoryTitleY = 107;
@@ -58,9 +60,9 @@ public class CanFillerScreen extends HandledScreen<CanFillerScreenHandler> {
 	}
 
 	private void drawShadowedTexture(MatrixStack matrices, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		RenderSystem.color4f(0.4f, 0.4f, 0.4f, 1);
+		RenderSystem.setShaderColor(0.4f, 0.4f, 0.4f, 1);
 		drawTexture(matrices, x, y+1, u, v, width, height, textureWidth, textureHeight);
-		RenderSystem.color4f(1, 1, 1, 1);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		drawTexture(matrices, x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 	

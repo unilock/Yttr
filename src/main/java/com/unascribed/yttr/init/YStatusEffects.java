@@ -5,7 +5,6 @@ import com.unascribed.yttr.content.effect.BleedingStatusEffect;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.util.registry.Registry;
 
 public class YStatusEffects {

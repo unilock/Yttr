@@ -23,3 +23,14 @@ accessible class net/minecraft/recipe/Ingredient$Entry
 accessible class net/minecraft/village/TradeOffers$SellItemFactory
 
 mutable field net/minecraft/item/Item group Lnet/minecraft/item/ItemGroup;
+
+accessible class net/minecraft/client/render/WorldRenderer$ChunkInfo
+accessible class net/minecraft/client/texture/ResourceTexture$TextureData
+accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
+
+accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
+accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;ILnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
+
+accessible method net/minecraft/entity/FallingBlockEntity <init> (Lnet/minecraft/world/World;DDDLnet/minecraft/block/BlockState;)V
+
+accessible class net/minecraft/block/entity/BlockEntityType$BlockEntityFactory

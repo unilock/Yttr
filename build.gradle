@@ -64,9 +64,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	//TODO: uuuuurrrrrggggghhhhh
-//	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
 	modImplementation "com.unascribed:ears-api:1.4.5"
+	modImplementation("dev.emi:emi:0.2.0+1.18.2") { transitive = false }
 	
 	modImplementation "dev.emi:trinkets:3.3.0"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.1.4"

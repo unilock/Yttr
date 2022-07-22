@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.void_;
 
 import java.util.Random;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.world.GeysersState;
@@ -11,6 +12,8 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.server.world.ServerWorld;
@@ -41,15 +44,20 @@ public class VoidGeyserBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new VoidGeyserBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new VoidGeyserBlockEntity(pos, state);
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 	
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		super.onEntityCollision(state, world, pos, entity);
 		// so the client and server get the same result (assuming their clocks are synced within 5 seconds)
-		Random consistent = new Random((System.currentTimeMillis()/5000L)+entity.getEntityId());
+		Random consistent = new Random((System.currentTimeMillis()/5000L)+entity.getId());
 		entity.setVelocity(consistent.nextGaussian()/2, 1, consistent.nextGaussian()/2);
 	}
 	

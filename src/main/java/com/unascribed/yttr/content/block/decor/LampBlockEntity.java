@@ -5,13 +5,15 @@ import org.jetbrains.annotations.Nullable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mechanics.HaloBlockEntity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class LampBlockEntity extends BlockEntity implements HaloBlockEntity {
 
-	public LampBlockEntity() {
-		super(YBlockEntities.LAMP);
+	public LampBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.LAMP, pos, state);
 	}
 
 	@Override

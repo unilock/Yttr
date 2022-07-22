@@ -29,7 +29,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -159,10 +158,10 @@ public class ReplicatorRenderer extends IHasAClient {
 				VertexBuffer solid2 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
 				
 				RenderSystem.disableTexture();
-				RenderSystem.enableRescaleNormal();
+//				RenderSystem.enableRescaleNormal();
 				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
-				RenderSystem.disableAlphaTest();
+//				RenderSystem.disableAlphaTest();
 				
 				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(t*(rand.nextFloat()*2)));
 				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(t*(rand.nextFloat()*2)));
@@ -179,14 +178,14 @@ public class ReplicatorRenderer extends IHasAClient {
 				float r = rand.nextFloat()/2;
 				float g = rand.nextFloat()/2;
 				float b = (0.25f+(rand.nextFloat()*0.75f))/2;
-				RenderSystem.disableLighting();
+//				RenderSystem.disableLighting();
 				solid1.bind();
 				matrices.push();
 				for (int i = 0; i < (MinecraftClient.isFancyGraphicsOrBetter() ? 6 : 1); i++) {
-					RenderSystem.color4f(r, g, b, i == 0 ? 0.4f : 0.1f);
-					ReplicatorShapes.POSITION_NORMAL.startDrawing(0);
-					YttrClient.drawBufferWithoutClobberingGLMatrix(solid1, matrices.peek().getModel(), GL11.GL_TRIANGLES);
-					ReplicatorShapes.POSITION_NORMAL.endDrawing();
+					RenderSystem.setShaderColor(r, g, b, i == 0 ? 0.4f : 0.1f);
+//					ReplicatorShapes.POSITION_NORMAL.startDrawing(0);
+//					YttrClient.drawBufferWithoutClobberingGLMatrix(solid1, matrices.peek().getPositionMatrix(), GL11.GL_TRIANGLES);
+//					ReplicatorShapes.POSITION_NORMAL.endDrawing();
 					matrices.scale(1.05f, 1.05f, 1.05f);
 				}
 				matrices.pop();
@@ -195,21 +194,21 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.scale(0.9f-(rand.nextFloat()*0.25f), 0.9f-(rand.nextFloat()*0.25f), 0.9f-(rand.nextFloat()*0.25f));
 
 				RenderSystem.defaultBlendFunc();
-				DiffuseLighting.enable();
-				RenderSystem.color4f(rand.nextFloat(), 0.25f+(rand.nextFloat()*0.75f), rand.nextFloat(), 0.25f);
+//				DiffuseLighting.enable();
+				RenderSystem.setShaderColor(rand.nextFloat(), 0.25f+(rand.nextFloat()*0.75f), rand.nextFloat(), 0.25f);
 				solid2.bind();
-				ReplicatorShapes.POSITION_NORMAL.startDrawing(0);
-				YttrClient.drawBufferWithoutClobberingGLMatrix(solid2, matrices.peek().getModel(), GL11.GL_TRIANGLES);
-				ReplicatorShapes.POSITION_NORMAL.endDrawing();
+//				ReplicatorShapes.POSITION_NORMAL.startDrawing(0);
+//				YttrClient.drawBufferWithoutClobberingGLMatrix(solid2, matrices.peek().getPositionMatrix(), GL11.GL_TRIANGLES);
+//				ReplicatorShapes.POSITION_NORMAL.endDrawing();
 				VertexBuffer.unbind();
 				
 				RenderSystem.enableTexture();
-				RenderSystem.disableRescaleNormal();
+//				RenderSystem.disableRescaleNormal();
 				RenderSystem.disableBlend();
 				RenderSystem.defaultBlendFunc();
-				RenderSystem.enableAlphaTest();
-				
-				RenderSystem.color3f(1, 1, 1);
+//				RenderSystem.enableAlphaTest();
+//
+//				RenderSystem.setShaderColor(1, 1, 1);
 			}
 			matrices.pop();
 		}
@@ -219,7 +218,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			if (bhr.getBlockPos().equals(pos)) {
 				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
-				RenderSystem.disableLighting();
+//				RenderSystem.disableLighting();
 				matrices.push();
 				matrices.translate(0.5, 0.5, 0.5);
 				if (cam != null) matrices.multiply(cam.getRotation());
@@ -251,7 +250,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			wrc.profiler().push("prepare");
 			for (ReplicatorBlockEntity rbe : renderList) {
 				if (rbe.clientAge < 1) continue;
-				double dist = rbe.getPos().getSquaredDistance(wrc.camera().getPos(), false);
+				double dist = rbe.getPos().getSquaredDistance(wrc.camera().getPos());
 				if (dist < 64*64 && wrc.frustum().isVisible(new Box(rbe.getPos()))) {
 					rbe.distTmp = dist;
 				}
@@ -260,8 +259,8 @@ public class ReplicatorRenderer extends IHasAClient {
 			Collections.sort(renderList, (a, b) -> Double.compare(b.distTmp, a.distTmp));
 			wrc.profiler().swap("render");
 			MatrixStack matrices = wrc.matrixStack();
-			RenderSystem.pushMatrix();
-			RenderSystem.loadIdentity();
+//			RenderSystem.pushMatrix();
+//			RenderSystem.loadIdentity();
 			matrices.push();
 			Vec3d cam = wrc.camera().getPos();
 			matrices.translate(-cam.x, -cam.y, -cam.z);
@@ -287,19 +286,19 @@ public class ReplicatorRenderer extends IHasAClient {
 				wrc.profiler().pop();
 			}
 			matrices.pop();
-			RenderSystem.popMatrix();
+//			RenderSystem.popMatrix();
 			wrc.profiler().pop();
 		}
 		RenderSystem.depthFunc(GL11.GL_LEQUAL);
-		RenderSystem.color4f(1, 1, 1, 1);
-		RenderSystem.disableLighting();
+		RenderSystem.setShaderColor(1, 1, 1, 1);
+//		RenderSystem.disableLighting();
 		wrc.profiler().swap("particles");
 	}
 	
 	public static void tick() {
 		Set<ReplicatorBlockEntity> valid = Sets.newHashSet();
 		if (mc.world != null) {
-			for (BlockEntity be : mc.world.blockEntities) {
+			for (BlockEntity be : YttrClient.getBlockEntities()) {
 				if (be instanceof ReplicatorBlockEntity) {
 					ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
 					valid.add(rbe);

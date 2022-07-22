@@ -57,9 +57,9 @@ public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 	}
 
 	private void drawShadowedTexture(MatrixStack matrices, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		RenderSystem.color4f(0.4f, 0.4f, 0.4f, 1);
+		RenderSystem.setShaderColor(0.4f, 0.4f, 0.4f, 1);
 		drawTexture(matrices, x, y+1, u, v, width, height, textureWidth, textureHeight);
-		RenderSystem.color4f(1, 1, 1, 1);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		drawTexture(matrices, x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 	

@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedDemoCyclerBlockEntity extends InRedDeviceBlockEntity {
@@ -17,8 +18,8 @@ public class InRedDemoCyclerBlockEntity extends InRedDeviceBlockEntity {
 	private boolean increasing;
 	private int pauseTicks;
 
-	public InRedDemoCyclerBlockEntity() {
-		super(YBlockEntities.INRED_DEMO_CYCLER);
+	public InRedDemoCyclerBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_DEMO_CYCLER, pos, state);
 	}
 
 	@Override
@@ -78,8 +79,7 @@ public class InRedDemoCyclerBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 		active = tag.getBoolean("Active");
 		increasing = tag.getBoolean("Increasing");
@@ -87,13 +87,11 @@ public class InRedDemoCyclerBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
 		tag.putBoolean("Active", active);
 		tag.putBoolean("Increasing", increasing);
 		tag.putInt("Pause", pauseTicks);
-		return tag;
 	}
 
 }

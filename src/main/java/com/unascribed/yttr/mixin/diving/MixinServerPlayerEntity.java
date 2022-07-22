@@ -68,7 +68,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 			ItemStack chest = self.getEquippedStack(EquipmentSlot.CHEST);
 			if (Yttr.isWearingFullSuit(self)) {
 				SuitArmorItem sai = (SuitArmorItem)chest.getItem();
-				int pressure = Yttr.calculatePressure(self.getServerWorld(), yttr$divePos.x, yttr$divePos.z);
+				int pressure = Yttr.calculatePressure(self.getWorld(), yttr$divePos.x, yttr$divePos.z);
 				for (SuitResource sr : SuitResource.VALUES) {
 					int amt = sai.getResourceAmount(chest, sr);
 					if (amt <= 0) {
@@ -85,7 +85,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 				BlockPos pos = yttr$fastDiveTarget;
 				if (yttr$fastDiveTime > 0) {
 					yttr$fastDiveTime--;
-					if (pos.getSquaredDistance(self.getPos(), false) > 5000*5000) {
+					if (pos.getSquaredDistance(self.getPos()) > 5000*5000) {
 						YCriteria.DIVE_FAR.trigger(self);
 					}
 					// teleport prematurely to load chunks
@@ -114,7 +114,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 					}
 				}
 			} else {
-				GeysersState gs = GeysersState.get(self.getServerWorld());
+				GeysersState gs = GeysersState.get(self.getWorld());
 				for (Geyser g : gs.getGeysersInRange(yttr$divePos.x, yttr$divePos.z, 64)) {
 					if (!yttr$knownGeysers.contains(g.id)) {
 						Yttr.discoverGeyser(g.id, self);

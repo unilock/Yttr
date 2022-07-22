@@ -1,16 +1,15 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -27,6 +26,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class DropOfContinuityItem extends Item {
@@ -59,7 +60,7 @@ public class DropOfContinuityItem extends Item {
 		if (world instanceof ServerWorld) {
 			Box box = user.getBoundingBox();
 			Vec3d center = box.getCenter();
-			if (RANDOM.nextInt(remainingUseTicks) < 40) {
+			if (ThreadLocalRandom.current().nextInt(remainingUseTicks) < 40) {
 				int m = 1;
 				if (remainingUseTicks < 20) {
 					m = 4;
@@ -67,8 +68,8 @@ public class DropOfContinuityItem extends Item {
 					m = 2;
 				}
 				((ServerWorld)world).spawnParticles(ParticleTypes.FIREWORK, center.x, center.y, center.z, 1*m, box.getXLength()/3, box.getYLength()/3, box.getZLength()/3, 0.05);
-				float f = RANDOM.nextFloat()/2;
-				((ServerWorld)world).spawnParticles(new DustParticleEffect(1, 0.75f-f, 0.5f, 0.5f), center.x, center.y, center.z, 3*m, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0);
+				float f = ThreadLocalRandom.current().nextFloat()/2;
+				((ServerWorld)world).spawnParticles(new DustParticleEffect(new Vec3f(1, 0.75f-f, 0.5f), 0.5f), center.x, center.y, center.z, 3*m, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0);
 			}
 		}
 	}
@@ -88,12 +89,12 @@ public class DropOfContinuityItem extends Item {
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
 			Set<Item> possibilities = getPossibilities();
-			ItemStack gift = new ItemStack(Iterables.get(possibilities, RANDOM.nextInt(possibilities.size())));
-			gift.setCount(Math.min(gift.getMaxCount(), RANDOM.nextInt(3)+1));
+			ItemStack gift = new ItemStack(Iterables.get(possibilities, ThreadLocalRandom.current().nextInt(possibilities.size())));
+			gift.setCount(Math.min(gift.getMaxCount(), ThreadLocalRandom.current().nextInt(3)+1));
 			if (user.isUsingItem()) {
 				user.setStackInHand(user.getActiveHand(), gift);
 			} else if (user instanceof PlayerEntity && ((PlayerEntity) user).isCreative()) {
-				((PlayerEntity) user).inventory.offerOrDrop(world, gift);
+				((PlayerEntity) user).getInventory().offerOrDrop(gift);
 			} else {
 				user.dropStack(gift);
 				stack.setCount(0);
@@ -106,10 +107,11 @@ public class DropOfContinuityItem extends Item {
 			Box box = user.getBoundingBox();
 			Vec3d center = box.getCenter();
 			((ServerWorld)world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, stack), center.x, center.y, center.z, 30, 0.25, 0.25, 0.25, 0.05);
-			((ServerWorld)world).spawnParticles(new DustParticleEffect(1, 0.75f, 0.5f, 0.5f), center.x, center.y, center.z, 10, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0.0125);
+			((ServerWorld)world).spawnParticles(new DustParticleEffect(new Vec3f(1, 0.75f, 0.5f), 0.5f), center.x, center.y, center.z, 10, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0.0125);
+			ThreadLocalRandom r = ThreadLocalRandom.current();
 			for (int i = 0; i < 50; i++) {
-				((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, center.x, center.y, center.z, 0, RANDOM.nextGaussian(), RANDOM.nextGaussian(), RANDOM.nextGaussian(), 0.25);
-				((ServerWorld)world).spawnParticles(ParticleTypes.FIREWORK, center.x, center.y, center.z, 0, RANDOM.nextGaussian(), RANDOM.nextGaussian(), RANDOM.nextGaussian(), 0.25);
+				((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, center.x, center.y, center.z, 0, r.nextGaussian(), r.nextGaussian(), r.nextGaussian(), 0.25);
+				((ServerWorld)world).spawnParticles(ParticleTypes.FIREWORK, center.x, center.y, center.z, 0, r.nextGaussian(), r.nextGaussian(), r.nextGaussian(), 0.25);
 			}
 		}
 		return super.finishUsing(stack, world, user);
@@ -117,9 +119,9 @@ public class DropOfContinuityItem extends Item {
 	
 	public static Set<Item> getPossibilities() {
 		Set<Item> possibilities = Sets.newHashSet();
-		possibilities.addAll(YTags.Item.GIFTS.values());
-		possibilities.addAll(Collections2.transform(YTags.Block.GIFTS.values(), Block::asItem));
-		possibilities.removeAll(YTags.Item.NOT_GIFTS.values());
+		Registry.ITEM.getEntryList(YTags.Item.GIFTS).get().stream().map(re -> re.value()).forEach(possibilities::add);
+		Registry.BLOCK.getEntryList(YTags.Block.GIFTS).get().stream().map(re -> re.value().asItem()).forEach(possibilities::add);
+		Registry.ITEM.getEntryList(YTags.Item.NOT_GIFTS).get().stream().map(re -> re.value()).forEach(possibilities::remove);
 		possibilities.remove(null);
 		possibilities.remove(Items.AIR);
 		return possibilities;

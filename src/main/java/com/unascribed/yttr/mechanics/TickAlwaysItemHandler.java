@@ -3,9 +3,9 @@ package com.unascribed.yttr.mechanics;
 import java.util.Set;
 
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
+import com.unascribed.yttr.mixin.accessor.AccessorThreadedAnvilChunkStorage;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.entity.BlockEntity;
@@ -20,20 +20,26 @@ import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerWorld;
 
 public class TickAlwaysItemHandler {
 
 	public static void startServerWorldTick(ServerWorld world) {
-		// TODO pick random chunks
-		for (BlockEntity be : ImmutableList.copyOf(world.blockEntities)) {
-			if (be instanceof Inventory && world.random.nextInt(40) == 0) {
-				Inventory inv = (Inventory)be;
-				for (int i = 0; i < inv.size(); i++) {
-					ItemStack is = inv.getStack(i);
-					if (is.getItem() instanceof TicksAlwaysItem) {
-						((TicksAlwaysItem)is.getItem()).blockInventoryTick(is, world, be.getPos(), i);
-						inv.setStack(i, is);
+		for (ChunkHolder ch : ((AccessorThreadedAnvilChunkStorage)world.getChunkManager().threadedAnvilChunkStorage).yttr$getChunkHolders().values()) {
+			if (world.random.nextInt(40) == 0) {
+				for (BlockEntity be : ch.getWorldChunk().getBlockEntities().values()) {
+					if (world.random.nextInt(3) == 0) {
+						if (be instanceof Inventory && world.random.nextInt(40) == 0) {
+							Inventory inv = (Inventory)be;
+							for (int i = 0; i < inv.size(); i++) {
+								ItemStack is = inv.getStack(i);
+								if (is.getItem() instanceof TicksAlwaysItem) {
+									((TicksAlwaysItem)is.getItem()).blockInventoryTick(is, world, be.getPos(), i);
+									inv.setStack(i, is);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -54,7 +60,7 @@ public class TickAlwaysItemHandler {
 				ItemStack is = ((ItemEntity) e).getStack();
 				if (is.getItem() instanceof TicksAlwaysItem) {
 					((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, 0, false);
-					if (is.isEmpty()) e.remove();
+					if (is.isEmpty()) e.discard();
 				}
 				continue;
 			}

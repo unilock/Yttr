@@ -22,6 +22,7 @@ import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
@@ -130,11 +131,11 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 			addSlot(new Slot(playerInventory, i, 8 + i * 18, 191));
 		}
 		
-		updateResult(syncId, player.world, player, input, result);
+		updateResult(syncId, player.world, player, input, result, this);
 
 	}
 
-	protected static void updateResult(int syncId, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+	protected static void updateResult(int syncId, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory, ScreenHandler sh) {
 		if (!world.isClient) {
 			ServerPlayerEntity spe = (ServerPlayerEntity)player;
 			ItemStack res = ItemStack.EMPTY;
@@ -147,14 +148,14 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 			}
 
 			resultInventory.setStack(0, res);
-			spe.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 0, res));
+			spe.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, sh.nextRevision(), 0, res));
 		}
 	}
 
 	@Override
 	public void onContentChanged(Inventory inventory) {
 		context.run((world, blockPos) -> {
-			updateResult(syncId, world, player, input, result);
+			updateResult(syncId, world, player, input, result, this);
 		});
 	}
 
@@ -193,21 +194,12 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 				// handle player inventory
 				super.fillInputSlot(slot, stack);
 			}
-			
-			@Override
-			protected void returnSlot(int slotId) {
-				if (slotId == 0) return;
-				Slot slot = getSlot(slotId);
-				ItemStack is = slot.getStack();
-				is = tryTransfer(slot, is, inv, 9);
-				is = tryTransfer(slot, is, player.inventory, 0);
-			}
 
 			private ItemStack tryTransfer(Slot from, ItemStack is, Inventory inv, int start) {
 				for (int i = start; i < inv.size(); i++) {
 					if (is.isEmpty()) return is;
 					ItemStack there = inv.getStack(i);
-					if (there.isEmpty() || canStacksCombine(is, there) && inv.isValid(i, is)) {
+					if (there.isEmpty() || ItemStack.canCombine(is, there) && inv.isValid(i, is)) {
 						int canTransfer = there.getMaxCount()-there.getCount();
 						if (canTransfer > 0) {
 							if (there.isEmpty()) {
@@ -284,10 +276,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 				return ItemStack.EMPTY;
 			}
 
-			ItemStack itemStack3 = slot.onTakeItem(player, itemStack2);
-			if (index == 0) {
-				player.dropItem(itemStack3, false);
-			}
+			slot.onTakeItem(player, itemStack2);
 		}
 
 		return itemStack;
@@ -323,5 +312,10 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 	@Environment(EnvType.CLIENT)
 	public RecipeBookCategory getCategory() {
 		return RecipeBookCategory.CRAFTING;
+	}
+
+	@Override
+	public boolean canInsertIntoSlot(int index) {
+		return index != this.getCraftingResultSlotIndex();
 	}
 }

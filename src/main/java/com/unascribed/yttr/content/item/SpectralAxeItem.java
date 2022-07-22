@@ -32,6 +32,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
@@ -135,7 +136,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 			ServerPlayerEntity spe = (ServerPlayerEntity)e;
 			PlaySoundFromEntityS2CPacket spkt = new PlaySoundFromEntityS2CPacket(YSounds.SPECTRAL_AXE_DISAPPEAR, SoundCategory.PLAYERS, e, 1f, 1);
 			Vec3d hand = RifleItem.getMuzzlePos(e, true);
-			ParticleS2CPacket ppkt = new ParticleS2CPacket(new DustParticleEffect(0.95f, 0.95f, 1, 0.6f), false, hand.x, hand.y, hand.z, 0.25f, 0.125f, 0.25f, 0, 20);
+			ParticleS2CPacket ppkt = new ParticleS2CPacket(new DustParticleEffect(new Vec3f(0.95f, 0.95f, 1), 0.6f), false, hand.x, hand.y, hand.z, 0.25f, 0.125f, 0.25f, 0, 20);
 			spe.networkHandler.sendPacket(spkt);
 			spe.networkHandler.sendPacket(ppkt);
 		}
@@ -144,7 +145,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 	private void playGlobalVanishEffect(World w, double x, double y, double z) {
 		w.playSound(null, x, y, z, YSounds.SPECTRAL_AXE_DISAPPEAR, SoundCategory.PLAYERS, 1, 1);
 		if (w instanceof ServerWorld) {
-			((ServerWorld)w).spawnParticles(new DustParticleEffect(0.95f, 0.95f, 1, 0.6f), x, y, z, 20, 0.5f, 0.5f, 0.5f, 0);
+			((ServerWorld)w).spawnParticles(new DustParticleEffect(new Vec3f(0.95f, 0.95f, 1), 0.6f), x, y, z, 20, 0.5f, 0.5f, 0.5f, 0);
 		}
 	}
 

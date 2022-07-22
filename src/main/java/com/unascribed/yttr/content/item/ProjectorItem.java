@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.item;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
@@ -28,7 +30,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.world.World;
 
@@ -38,7 +39,7 @@ public class ProjectorItem extends Item {
 		super(settings);
 		DispenserBlock.registerBehavior(this, (ptr, stack) -> {
 			World w = ptr.getWorld();
-			BlockPos.Mutable mut = ptr.getBlockPos().mutableCopy();
+			BlockPos.Mutable mut = ptr.getPos().mutableCopy();
 			Direction face = ptr.getBlockState().get(DispenserBlock.FACING);
 			mut.move(face, face.getAxis() == Axis.Y ? 1 : 2);
 			int i = 0;
@@ -47,7 +48,7 @@ public class ProjectorItem extends Item {
 				BlockPos pos = mut.toImmutable();
 				Yttr.delayedServerTasks.add(new DelayedTask(i*2, () -> {
 					createPlatform(w, pos);
-					w.playSound(null, pos, YSounds.PROJECT, SoundCategory.BLOCKS, 1.2f, 0.5f+(RANDOM.nextFloat()/2));
+					w.playSound(null, pos, YSounds.PROJECT, SoundCategory.BLOCKS, 1.2f, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				}));
 				mut.move(face);
 				i++;
@@ -76,13 +77,13 @@ public class ProjectorItem extends Item {
 			if (!world.isClient) {
 				if (bs.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
 					world.breakBlock(pos, false);
-					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 0.5f+(RANDOM.nextFloat()/2));
+					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				} else {
 					world.setBlockState(pos, bs.with(ContinuousPlatformBlock.AGE, Age.IMMORTAL));
 					if (world instanceof ServerWorld) {
 						((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 14, 0.5, 0.5, 0.5, 0.05);
 					}
-					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 1.5f+(RANDOM.nextFloat()/2));
+					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 1.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				}
 			}
 			return ActionResult.SUCCESS;
@@ -131,7 +132,7 @@ public class ProjectorItem extends Item {
 		BlockPos lastPos = stack.getNbt().contains("LastBlock") ? NbtHelper.toBlockPos(stack.getNbt().getCompound("LastBlock")) : null;
 		BlockPos pos = new BlockPos(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/4f, ticks/2f)));
 		if (lastPos != null) {
-			double len = MathHelper.sqrt(lastPos.getSquaredDistance(pos));
+			double len = Math.sqrt(lastPos.getSquaredDistance(pos));
 			double diffX = pos.getX()-lastPos.getX();
 			double diffY = pos.getY()-lastPos.getY();
 			double diffZ = pos.getZ()-lastPos.getZ();
@@ -157,11 +158,11 @@ public class ProjectorItem extends Item {
 			if (user.getPos().y < pos.getY()+1) {
 				user.requestTeleport(user.getPos().x, pos.getY()+1, user.getPos().z);
 			}
-			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1f+(RANDOM.nextFloat()/2));
-			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1.5f+(RANDOM.nextFloat()/2));
+			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1f+(ThreadLocalRandom.current().nextFloat()/2));
+			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1.5f+(ThreadLocalRandom.current().nextFloat()/2));
 		}
 		if (ticks % 2 == 0) {
-			world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1.2f, 0.5f+(RANDOM.nextFloat()/2));
+			world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1.2f, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
 		}
 	}
 	

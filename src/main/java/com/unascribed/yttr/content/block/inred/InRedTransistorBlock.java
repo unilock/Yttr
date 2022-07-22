@@ -19,8 +19,8 @@ public class InRedTransistorBlock extends InRedLogicTileBlock {
 
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new InRedTransistorBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new InRedTransistorBlockEntity(pos, state);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class InRedTransistorBlock extends InRedLogicTileBlock {
 			}
 		} else {
 			if (state.get(WATERLOGGED)) {
-				world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+				world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 		}
 	}

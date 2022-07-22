@@ -13,9 +13,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EquipmentSlot.Type;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -69,8 +68,8 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 	}
 	
 	@Override
-	public Fluid tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
-		return Fluids.EMPTY;
+	public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
+		return ItemStack.EMPTY;
 	}
 	
 }

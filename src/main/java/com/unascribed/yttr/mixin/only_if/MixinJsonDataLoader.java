@@ -29,9 +29,7 @@ public class MixinJsonDataLoader {
 			if (ele instanceof JsonObject && ele.getAsJsonObject().has("yttr:only_if")) {
 				String when = ele.getAsJsonObject().get("yttr:only_if").getAsString();
 				boolean active = false;
-				if ("copper_fallback".equals(when)) {
-					active = Yttr.COPPER_FALLBACK_ACTIVE;
-				} else if ("trinkets".equals(when)) {
+				if ("trinkets".equals(when)) {
 					active = FabricLoader.getInstance().isModLoaded("trinkets");
 				}
 				if (!active) {

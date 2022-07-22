@@ -43,7 +43,7 @@ public class LazorEmitterBlock extends AbstractLazorBlock {
 	}
 	
 	@Override
-	public void addStacksForDisplay(ItemGroup group, DefaultedList<ItemStack> list) {
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
 		for (LampColor color : LampColor.VALUES) {
 			ItemStack stack = new ItemStack(this);
 			LampBlockItem.setColor(stack, color);

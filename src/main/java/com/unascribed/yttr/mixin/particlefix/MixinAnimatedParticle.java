@@ -22,7 +22,7 @@ public abstract class MixinAnimatedParticle extends SpriteBillboardParticle {
 
 	@Inject(at=@At("RETURN"), method="getType", cancellable=true)
 	public void getType(CallbackInfoReturnable<ParticleTextureSheet> ci) {
-		if (ci.getReturnValue() == ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT && colorAlpha == 0.99f) {
+		if (ci.getReturnValue() == ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT && alpha == 0.99f) {
 			// firework particle
 			ci.setReturnValue(ParticleTextureSheet.PARTICLE_SHEET_OPAQUE);
 		}

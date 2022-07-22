@@ -26,7 +26,7 @@ public class SmashCloudLogic {
 				PistonSmashingRecipe r = (PistonSmashingRecipe) world.getRecipeManager().get(id).filter(o -> o instanceof PistonSmashingRecipe).orElse(null);
 				if (r != null && !r.getCloudOutput().isEmpty()) {
 					cloud.setRadius(cloud.getRadius() - 0.25f);
-					if (cloud.getRadius() < 0.25f) cloud.remove();
+					if (cloud.getRadius() < 0.25f) cloud.discard();
 					Vec3d center = box.getCenter();
 					world.playSound(null, center.x, center.y, center.z, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, SoundCategory.NEUTRAL, 1, 1);
 					return r;

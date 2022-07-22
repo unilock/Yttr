@@ -45,4 +45,14 @@ public class DelegatingVertexConsumer implements VertexConsumer {
 		delegate.next();
 	}
 
+	@Override
+	public void fixedColor(int var1, int var2, int var3, int var4) {
+		delegate.fixedColor(var1, var2, var3, var4);
+	}
+
+	@Override
+	public void unfixColor() {
+		delegate.unfixColor();
+	}
+
 }

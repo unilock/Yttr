@@ -24,12 +24,13 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -64,11 +65,13 @@ public class MixinBlock {
 		yttr$shattering = false;
 	}
 	
-	@Inject(at=@At(value="INVOKE", target="net/minecraft/world/World.spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals=LocalCapture.CAPTURE_FAILHARD, method="dropStack", cancellable=true)
-	private static void dropStack(World world, BlockPos pos, ItemStack stack, CallbackInfo ci, float f, double x, double y, double z, ItemEntity entity) {
+	@Inject(at=@At(value="INVOKE", target="net/minecraft/entity/ItemEntity.setToDefaultPickupDelay()V", shift=Shift.AFTER),
+			method="dropStack(Lnet/minecraft/world/World;Ljava/util/function/Supplier;Lnet/minecraft/item/ItemStack;)V", cancellable=true,
+			locals=LocalCapture.CAPTURE_FAILHARD)
+	private static void dropStack(World world, Supplier<ItemEntity> sup, ItemStack stack, CallbackInfo ci, ItemEntity entity) {
 		if (yttr$shattering) {
 			if (yttr$shatteringDepth > 0) {
-				entity.setVelocity(entity.getPos().subtract(Vec3d.ofCenter(pos)).normalize().multiply(0.2));
+				entity.setVelocity(entity.getPos().subtract(Vec3d.ofCenter(entity.getBlockPos())).normalize().multiply(0.2));
 				if (ThreadLocalRandom.current().nextInt(10*yttr$shatteringDepth) != 0) {
 					return;
 				}
@@ -101,14 +104,14 @@ public class MixinBlock {
 					for (int i = 0; i < result.getCount(); i++) {
 						ItemStack copy = result.copy();
 						copy.setCount(1);
-						dropStack(world, pos, copy);
+						dropStack(world, entity.getBlockPos(), copy);
 					}
 					if (remainder != null) {
 						for (ItemStack is : remainder) {
 							for (int i = 0; i < is.getCount(); i++) {
 								ItemStack copy = is.copy();
 								copy.setCount(1);
-								dropStack(world, pos, copy);
+								dropStack(world, entity.getBlockPos(), copy);
 							}
 						}
 					}
@@ -121,15 +124,6 @@ public class MixinBlock {
 	}
 	
 	@Shadow
-	public static void dropStack(World world, BlockPos pos, ItemStack stack) { }
-	
-	@ModifyVariable(at=@At(value="INVOKE_ASSIGN", target="net/minecraft/entity/ExperienceOrbEntity.roundToOrbSize(I)I"),
-			method="dropExperience", ordinal=1)
-	protected int dropExperience(int orig) {
-		if (yttr$shattering) {
-			return Math.min(orig, 3);
-		}
-		return orig;
-	}
+	public static void dropStack(World world, BlockPos pos, ItemStack stack) {}
 	
 }

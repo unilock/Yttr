@@ -3,8 +3,6 @@ package com.unascribed.yttr.client.suit;
 import java.util.Map;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -56,9 +54,6 @@ public class SuitRenderer {
 	}
 	
 	public void setUp() {
-		// Desyncing the state manager for fun and profit
-		RenderSystem.enableAlphaTest();
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
@@ -67,8 +62,6 @@ public class SuitRenderer {
 	public void tearDown() {
 		RenderSystem.disableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.disableAlphaTest();
-		RenderSystem.enableAlphaTest();
 	}
 	
 	public void tick() {
@@ -136,13 +129,13 @@ public class SuitRenderer {
 			a *= 0.85f;
 		}
 
-		RenderSystem.color4f(r, g, b, a * 0.1f);
+		RenderSystem.setShaderColor(r, g, b, a * 0.1f);
 		for (int xo = -1; xo <= 1; xo++) {
 			for (int yo = -1; yo <= 1; yo++) {
 				DrawableHelper.drawTexture(matrices, x+xo, y+yo, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 			}
 		}
-		RenderSystem.color4f(r, g, b, a);
+		RenderSystem.setShaderColor(r, g, b, a);
 		DrawableHelper.drawTexture(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 	}
 

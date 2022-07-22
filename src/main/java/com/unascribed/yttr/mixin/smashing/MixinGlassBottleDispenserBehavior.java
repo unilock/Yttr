@@ -19,7 +19,7 @@ public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDisp
 
 	@Inject(at=@At("HEAD"), method="dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", cancellable=true)
 	public void dispenseSilently(BlockPointer ptr, ItemStack stack, CallbackInfoReturnable<ItemStack> ci) {
-		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(ptr.getWorld(), new Box(ptr.getBlockPos()).expand(0.5));
+		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(ptr.getWorld(), new Box(ptr.getPos()).expand(0.5));
 		if (r != null) {
 			setSuccess(true);
 			ci.setReturnValue(method_22141(ptr, stack, r.getCloudOutput().copy()));

@@ -81,7 +81,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return new LampBlockEntity();
+		return new LampBlockEntity(pos, state);
 	}
 	
 	@Override

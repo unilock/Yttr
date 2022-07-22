@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.unascribed.yttr.Substitutes;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
 
@@ -16,6 +17,8 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.entity.Entity;
@@ -98,8 +101,13 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new ChuteBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new ChuteBlockEntity(pos, state);
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 	
 	@Override
@@ -117,7 +125,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 		ItemStack stack = player.getStackInHand(hand);
 		if (!state.get(PLATED)) {
 			if (stack.getItem() == Items.IRON_INGOT || Substitutes.getPrime(stack.getItem()) == Items.IRON_INGOT) {
-				if (!player.abilities.creativeMode) {
+				if (!player.getAbilities().creativeMode) {
 					stack.decrement(1);
 					player.setStackInHand(hand, stack);
 				}
@@ -212,7 +220,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 			state = state.with(MODE, mode);
 		}
 		if (state.get(WATERLOGGED)) {
-			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return state;
 	}

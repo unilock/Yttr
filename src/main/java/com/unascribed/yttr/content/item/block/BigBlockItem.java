@@ -38,7 +38,7 @@ public class BigBlockItem extends BlockItem {
 			origin = origin.down(b.ySize-1);
 		}
 		Box box = new Box(origin, origin.add(b.xSize-1, b.ySize-1, b.zSize-1));
-		if (w.getEntityCollisions(null, box, e -> true).anyMatch(s -> true)) {
+		if (!w.getEntityCollisions(null, box).isEmpty()) {
 			return false;
 		}
 		for (int p = 0; p < 2; p++) {

@@ -11,6 +11,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedXorGateBlockEntity extends InRedDeviceBlockEntity {
@@ -19,8 +20,8 @@ public class InRedXorGateBlockEntity extends InRedDeviceBlockEntity {
 	private int valRight;
 	public boolean booleanMode;
 
-	public InRedXorGateBlockEntity() {
-		super(YBlockEntities.INRED_XOR_GATE);
+	public InRedXorGateBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_XOR_GATE, pos, state);
 	}
 
 	@Override
@@ -111,8 +112,7 @@ public class InRedXorGateBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 		booleanMode = tag.getBoolean("BooleanMode");
 		valLeft = tag.getInt("Left");
@@ -120,13 +120,11 @@ public class InRedXorGateBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
 		tag.putBoolean("BooleanMode", booleanMode);
 		tag.putInt("Left", valLeft);
 		tag.putInt("Right", valRight);
-		return tag;
 	}
 
 }

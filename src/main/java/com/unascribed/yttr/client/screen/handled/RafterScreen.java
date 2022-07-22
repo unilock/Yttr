@@ -45,20 +45,19 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 		super.init();
 		this.narrow = this.width < 379;
 		this.recipeBook.initialize(this.width-40, this.height, this.client, this.narrow, this.handler);
-		this.x = this.recipeBook.findLeftEdge(this.narrow, this.width, this.backgroundWidth);
-		this.children.add(this.recipeBook);
+		this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
+		addDrawable(this.recipeBook);
 		this.setInitialFocus(this.recipeBook);
-		this.addButton(new TexturedButtonWidget(this.x + 113, this.y + 97, 20, 18, 0, 0, 19, RECIPE_BUTTON_TEXTURE, (buttonWidget) -> {
-			this.recipeBook.reset(this.narrow);
+		this.addDrawableChild(new TexturedButtonWidget(this.x + 113, this.y + 97, 20, 18, 0, 0, 19, RECIPE_BUTTON_TEXTURE, (buttonWidget) -> {
+			this.recipeBook.reset();
 			this.recipeBook.toggleOpen();
-			this.x = this.recipeBook.findLeftEdge(this.narrow, this.width, this.backgroundWidth);
+			this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
 			((TexturedButtonWidget)buttonWidget).setPos(this.x + 113, this.y + 97);
 		}));
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
+	public void handledScreenTick() {
 		ticks++;
 		this.recipeBook.update();
 	}
@@ -81,7 +80,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		this.client.getTextureManager().bindTexture(TEXTURE);
 		int x = this.x;
 		int y = (this.height - this.backgroundHeight) / 2;
@@ -134,11 +133,11 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 			Slot slot = this.handler.slots.get(i);
 			if (slot instanceof FloatingSlot) {
 				FloatingSlot fs = (FloatingSlot)slot;
-				RenderSystem.pushMatrix();
-					RenderSystem.translatef(fs.floatingX, fs.floatingY, 0);
-					RenderSystem.translatef(9, 9, 0);
-					RenderSystem.rotatef(fs.ang, 0, 0, 1);
-					RenderSystem.translatef(-8, -8, 0);
+				matrices.push();
+					matrices.translate(fs.floatingX, fs.floatingY, 0);
+					matrices.translate(9, 9, 0);
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(fs.ang));
+					matrices.translate(-8, -8, 0);
 					((AccessorHandledScreen)this).yttr$drawSlot(matrices, slot);
 	
 					Path2D.Float path = getPathFor(fs);
@@ -150,7 +149,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 						RenderSystem.colorMask(true, true, true, true);
 						RenderSystem.enableDepthTest();
 					}
-				RenderSystem.popMatrix();
+				matrices.pop();
 			}
 		}
 		super.drawForeground(matrices, mouseX, mouseY);

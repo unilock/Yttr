@@ -76,8 +76,8 @@ public class CentrifugeBlock extends Block implements BlockEntityProvider {
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new CentrifugeBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new CentrifugeBlockEntity(pos, state);
 	}
 	
 	@Override

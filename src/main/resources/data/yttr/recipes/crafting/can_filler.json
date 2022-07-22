@@ -8,7 +8,7 @@
 	],
 	"key": {
 		"Y": { "item": "yttr:yttrium_ingot" },
-		"C": { "tag": "yttr:copper_ingots" },
+		"C": { "item": "minecraft:copper_ingot" },
 		"c": { "item": "yttr:empty_ammo_can" }
 	},
 	"result": {

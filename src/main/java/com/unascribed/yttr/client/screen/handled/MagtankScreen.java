@@ -31,7 +31,7 @@ public class MagtankScreen extends HandledScreen<MagtankScreenHandler> {
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1, 1, 1, 1);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		

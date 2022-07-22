@@ -11,6 +11,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedNotGateBlockEntity extends InRedDeviceBlockEntity {
@@ -18,8 +19,8 @@ public class InRedNotGateBlockEntity extends InRedDeviceBlockEntity {
 	public boolean booleanMode;
 	public boolean backActive;
 
-	public InRedNotGateBlockEntity() {
-		super(YBlockEntities.INRED_NOT_GATE);
+	public InRedNotGateBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_NOT_GATE, pos, state);
 	}
 
 	@Override
@@ -94,20 +95,17 @@ public class InRedNotGateBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 		booleanMode = tag.getBoolean("BooleanMode");
 		backActive = tag.getBoolean("BackActive");
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
 		tag.putBoolean("BooleanMode", booleanMode);
 		tag.putBoolean("BackActive", backActive);
-		return tag;
 	}
 
 }

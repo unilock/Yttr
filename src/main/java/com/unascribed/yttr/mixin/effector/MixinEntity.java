@@ -17,7 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -40,7 +40,7 @@ public abstract class MixinEntity {
 	
 	private BlockPos yttr$currentlyCollidingPos = null;
 	
-	@Inject(at=@At(value="INVOKE", target="net/minecraft/world/World.isRegionLoaded(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;)Z"),
+	@Inject(at=@At(value="INVOKE", target="net/minecraft/util/math/BlockPos.getX()I"),
 			method="checkBlockCollision", locals=LocalCapture.CAPTURE_FAILHARD)
 	public void storeMutableForBlock(CallbackInfo ci, Box box, BlockPos start, BlockPos end, BlockPos.Mutable mut) {
 		yttr$currentlyCollidingPos = mut;
@@ -79,7 +79,7 @@ public abstract class MixinEntity {
 	}
 	
 	@Inject(at=@At("RETURN"), method="updateMovementInFluid")
-	public void forgetMutableForFluid(Tag<Fluid> tag, double d, CallbackInfoReturnable<Boolean> ci) {
+	public void forgetMutableForFluid(TagKey<Fluid> tag, double d, CallbackInfoReturnable<Boolean> ci) {
 		yttr$currentlyCollidingPos = null;
 	}
 	

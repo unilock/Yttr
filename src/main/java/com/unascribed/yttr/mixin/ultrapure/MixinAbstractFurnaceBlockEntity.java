@@ -25,7 +25,7 @@ public class MixinAbstractFurnaceBlockEntity {
 	}
 	
 	@Inject(at=@At("TAIL"), method="readNbt")
-	public void readNbt(BlockState state, NbtCompound tag, CallbackInfo ci) {
+	public void readNbt(NbtCompound tag, CallbackInfo ci) {
 		if (tag.getInt("BurnTime") != this.burnTime) {
 			burnTime = tag.getInt("BurnTime");
 		}

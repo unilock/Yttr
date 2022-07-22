@@ -49,8 +49,8 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	
 	public Direction accessingInventory;
 	
-	public SkeletalSorterBlockEntity() {
-		super(YBlockEntities.SKELETAL_SORTER);
+	public SkeletalSorterBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.SKELETAL_SORTER, pos, state);
 	}
 
 	@Override
@@ -275,8 +275,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		heldItemMainHand = ItemStack.fromNbt(tag.getCompound("MainHand"));
 		heldItemOffHand = ItemStack.fromNbt(tag.getCompound("OffHand"));
 		thinkTicks = tag.getInt("ThinkTicks");
@@ -285,13 +284,12 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.put("MainHand", heldItemMainHand.writeNbt(new NbtCompound()));
 		tag.put("OffHand", heldItemOffHand.writeNbt(new NbtCompound()));
 		tag.putInt("ThinkTicks", thinkTicks);
 		tag.putInt("StowTicks", stowTicks);
 		if (stowing != null) tag.putString("Stowing", stowing.name());
-		return super.writeNbt(tag);
 	}
 
 	@Nullable

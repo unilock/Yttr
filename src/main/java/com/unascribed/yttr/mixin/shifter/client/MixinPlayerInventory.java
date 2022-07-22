@@ -32,8 +32,8 @@ public abstract class MixinPlayerInventory {
 		if (player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof ShifterItem) {
 			int slot = getSlotWithStack(stack);
 			if (slot != -1) {
-				stack = player.inventory.getStack(slot);
-				player.inventory.setStack(slot, player.getStackInHand(Hand.OFF_HAND));
+				stack = player.getInventory().getStack(slot);
+				player.getInventory().setStack(slot, player.getStackInHand(Hand.OFF_HAND));
 			}
 			player.setStackInHand(Hand.OFF_HAND, stack);
 			MinecraftClient.getInstance().interactionManager.clickCreativeStack(player.getStackInHand(Hand.OFF_HAND), 36+9);

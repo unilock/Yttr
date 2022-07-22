@@ -29,6 +29,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.BitSetVoxelSet;
 import net.minecraft.util.shape.SimpleVoxelShape;
@@ -92,8 +93,8 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	
 	private VoxelShape cachedShape;
 	
-	public CleavedBlockEntity() {
-		super(YBlockEntities.CLEAVED_BLOCK);
+	public CleavedBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.CLEAVED_BLOCK, pos, state);
 	}
 	
 	public List<Polygon> getPolygons() {
@@ -135,7 +136,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 						}
 					}
 					if (inside) {
-						voxels.set(x, y, z, true, true);
+						voxels.set(x, y, z);
 					}
 				}
 			}

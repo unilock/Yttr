@@ -25,8 +25,8 @@ public class InRedXorGateBlock extends InRedLogicTileBlock {
 
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new InRedXorGateBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new InRedXorGateBlockEntity(pos, state);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class InRedXorGateBlock extends InRedLogicTileBlock {
 			}
 		} else {
 			if (state.get(WATERLOGGED)) {
-				world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+				world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof InRedXorGateBlockEntity) {

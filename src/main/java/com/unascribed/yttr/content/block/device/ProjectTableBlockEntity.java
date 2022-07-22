@@ -16,26 +16,24 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 
 public class ProjectTableBlockEntity extends LockableContainerBlockEntity implements DelegatingInventory {
 
 	private final SimpleInventory inv = new SimpleInventory(27);
 	
-	public ProjectTableBlockEntity() {
-		super(YBlockEntities.PROJECT_TABLE);
+	public ProjectTableBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.PROJECT_TABLE, pos, state);
 		inv.addListener(i -> markDirty());
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
+	public void writeNbt(NbtCompound nbt) {
 		nbt.put("Inventory", Yttr.serializeInv(inv));
-		return nbt;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 	}
 

@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.device;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.util.DelegatingInventory;
@@ -21,11 +22,11 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Nameable;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 
-public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory, Tickable, Nameable, DelegatingInventory {
+public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory, YTickable, Nameable, DelegatingInventory {
 
 	private final SimpleInventory inv = new SimpleInventory(6);
 	
@@ -63,8 +64,8 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 		}
 	};
 	
-	public CentrifugeBlockEntity() {
-		super(YBlockEntities.CENTRIFUGE);
+	public CentrifugeBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.CENTRIFUGE, pos, state);
 		inv.addListener(i -> markDirty());
 	}
 	
@@ -127,19 +128,16 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("FuelTime", fuelTime);
 		tag.putInt("MaxFuelTime", maxFuelTime);
 		tag.putInt("SpinTime", spinTime);
 		tag.putInt("MaxSpinTime", maxSpinTime);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		fuelTime = tag.getInt("FuelTime");
 		maxFuelTime = tag.getInt("MaxFuelTime");

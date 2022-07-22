@@ -51,7 +51,7 @@ public class SuitArmorItem extends ArmorItem {
 	}
 	
 	public void setResourceAmount(ItemStack stack, SuitResource resource, int amount) {
-		stack.getOrCreateSubTag("Resources").putInt(resource.name(), amount);
+		stack.getOrCreateSubNbt("Resources").putInt(resource.name(), amount);
 	}
 	
 	public void consumeResource(ItemStack stack, SuitResource resource, int amount) {

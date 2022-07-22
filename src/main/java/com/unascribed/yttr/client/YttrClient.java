@@ -12,7 +12,6 @@ import java.util.function.Supplier;
 
 import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
@@ -37,10 +36,11 @@ import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.mixin.accessor.client.AccessorChunkInfo;
 import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
-import com.unascribed.yttr.mixin.accessor.client.AccessorVertexBuffer;
+import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
@@ -54,28 +54,27 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
-import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -102,7 +101,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.resource.ReloadableResourceManager;
+import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourcePackProfile;
@@ -119,7 +118,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -147,15 +145,15 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			additionalSprites.forEach(registry::register);
 		});
 		doReflectionMagic();
-		ArmorRenderingRegistry.registerTexture((entity, stack, slot, secondLayer, suffix, defaultTexture) -> {
-			String namespace = "minecraft";
-			String name = "diamond";
-			if (stack.hasNbt() && stack.getNbt().getInt("yttr:DurabilityBonus") > 0) {
-				namespace = "yttr";
-				name = "ultrapure_diamond";
-			}
-			return new Identifier(namespace, "textures/models/armor/" + name + "_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
-		}, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS);
+//		ArmorRenderingRegistry.registerTexture((entity, stack, slot, secondLayer, suffix, defaultTexture) -> {
+//			String namespace = "minecraft";
+//			String name = "diamond";
+//			if (stack.hasNbt() && stack.getNbt().getInt("yttr:DurabilityBonus") > 0) {
+//				namespace = "yttr";
+//				name = "ultrapure_diamond";
+//			}
+//			return new Identifier(namespace, "textures/models/armor/" + name + "_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
+//		}, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS);
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))
@@ -172,7 +170,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					}
 				}
 			});
-			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
+			ReloadableResourceManagerImpl rm = (ReloadableResourceManagerImpl)mc.getResourceManager();
 			rm.registerReloader(reloader("yttr:clear_caches", (manager) -> {
 				TextureColorThief.clearCache();
 				LampRenderer.clearCache();
@@ -188,17 +186,16 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			});
 		}
 		
-		
-		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
+		ModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity, seed) -> {
 			return stack.hasNbt() && stack.getNbt().contains("Contents") ? 1 : 0;
 		});
-		FabricModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), new Identifier("yttr", "halo"), (stack, world, entity) -> {
+		ModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), new Identifier("yttr", "halo"), (stack, world, entity, seed) -> {
 			return retrievingHalo ? 1 : 0;
 		});
-		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "durability_bonus"), (stack, world, entity) -> {
+		ModelPredicateProviderRegistry.register(new Identifier("yttr", "durability_bonus"), (stack, world, entity, seed) -> {
 			return stack.hasNbt() ? stack.getNbt().getInt("yttr:DurabilityBonus") : 0;
 		});
-		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "gui"), (stack, world, entity) -> {
+		ModelPredicateProviderRegistry.register(new Identifier("yttr", "gui"), (stack, world, entity, seed) -> {
 			return renderingGui ? 1 : 0;
 		});
 		
@@ -206,7 +203,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
 					hasCheckedRegistry = true;
-					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
+					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntrySet()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
@@ -224,12 +221,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							}
 						}
 					}
-					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
+					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntrySet()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
-					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
+					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntrySet()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
@@ -296,9 +293,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			@Override
 			public void register(Consumer<ResourcePackProfile> consumer, Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("", false, f, f.get(),
-						new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
-						InsertionPosition.TOP, ResourcePackSource.method_29486("Yttr built-in")));
+				consumer.accept(factory.create("", new LiteralText("dfgplokyhjwrst7yoiuawhrkyijt"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
+						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 			}
 		};
 		
@@ -333,17 +329,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			YLog.error("Translation "+key+" is missing for "+id);
 		}
 	}
-
-	public static void drawBufferWithoutClobberingGLMatrix(VertexBuffer buf, Matrix4f mat, int mode) {
-		if (mat != null) {
-			RenderSystem.pushMatrix();
-			RenderSystem.multMatrix(mat);
-		}
-		RenderSystem.drawArrays(mode, 0, ((AccessorVertexBuffer)buf).yttr$getVertexCount());
-		if (mat != null) {
-			RenderSystem.popMatrix();
-		}
-	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doReflectionMagic() {
@@ -372,7 +357,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 			YItems.SimpleArmorTexture satAnn = f.getAnnotation(YItems.SimpleArmorTexture.class);
-			if (satAnn != null) ArmorRenderingRegistry.registerSimpleTexture(new Identifier(satAnn.value()), i);
+//			if (satAnn != null) ArmorRenderingRegistry.registerSimpleTexture(new Identifier(satAnn.value()), i);
 			YItems.BuiltinRenderer birAnn = f.getAnnotation(YItems.BuiltinRenderer.class);
 			if (birAnn != null) {
 				try {
@@ -410,7 +395,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (ann != null) {
 				try {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render.block_entity."+ann.value()), MethodType.methodType(void.class, BlockEntityRenderDispatcher.class));
-					BlockEntityRendererRegistry.INSTANCE.register(type, berd -> {
+					BlockEntityRendererRegistry.register(type, berd -> {
 						try {
 							return (BlockEntityRenderer<?>)handle.invoke(berd);
 						} catch (RuntimeException | Error e) {
@@ -428,9 +413,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (ann != null) {
 				try {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render."+ann.value()), MethodType.methodType(void.class, EntityRenderDispatcher.class));
-					EntityRendererRegistry.INSTANCE.register(type, (erd, ctx) -> {
+					EntityRendererRegistry.register(type, (ctx) -> {
 						try {
-							return (EntityRenderer<?>)handle.invoke(erd);
+							return (EntityRenderer<?>)handle.invoke(ctx.getRenderDispatcher());
 						} catch (RuntimeException | Error e) {
 							throw e;
 						} catch (Throwable e) {
@@ -501,7 +486,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					if (actualConstructor == null) throw new RuntimeException(ann.value().getSimpleName()+" does not have a normal constructor");
 					MethodHandle handle = MethodHandles.publicLookup().unreflectConstructor(actualConstructor);
 					// must be an anonymous class due to type unsafety; we need the rawtype
-					ScreenRegistry.register(type, new ScreenRegistry.Factory() {
+					HandledScreens.register(type, new HandledScreens.Provider() {
 
 						@Override
 						public Screen create(ScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -519,6 +504,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 		});
+	}
+
+	public static Iterable<BlockEntity> getBlockEntities() {
+		return ((AccessorWorldRenderer)mc.worldRenderer).yttr$getChunkInfos().stream()
+			.<BlockEntity>mapMulti((ci, r) -> ((AccessorChunkInfo)ci).yttr$getChunk().data.get().getBlockEntities().forEach(r))
+			::iterator;
 	}
 	
 }

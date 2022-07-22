@@ -228,8 +228,6 @@ public class YItems {
 
 	public static final BlockItem LEVITATION_CHAMBER = new LevitationChamberBlockItem(YBlocks.LEVITATION_CHAMBER, new Item.Settings());
 	
-	public static final LatchReference<BlockItem> COPPER_ORE = YLatches.create();
-	
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings());
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings());
 	
@@ -551,8 +549,6 @@ public class YItems {
 	
 	public static final Item MAGCAPSULE = new Item(new Item.Settings().maxCount(1));
 	public static final Item CUPROSTEEL_INGOT = new Item(new Item.Settings());
-	
-	public static final LatchReference<Item> COPPER_INGOT = YLatches.create();
 	
 	public static final LatchReference<Item> CUPROSTEEL_COIL = YLatches.create();
 	public static final LatchReference<Item> AMMO_PACK = YLatches.create();

@@ -1,15 +1,11 @@
 package com.unascribed.yttr.content.item;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.util.EquipmentSlots;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -18,14 +14,12 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttributeTool {
+public class ReinforcedCleaverItem extends CleaverItem {
 
 	private final Multimap<EntityAttribute, EntityAttributeModifier> modifiers = ImmutableMultimap.<EntityAttribute, EntityAttributeModifier>builder()
 			.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", 8, EntityAttributeModifier.Operation.ADDITION))
@@ -38,7 +32,7 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 	
 	@Override
 	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-		return !miner.abilities.creativeMode || !miner.isSneaking();
+		return !miner.getAbilities().creativeMode || !miner.isSneaking();
 	}
 	
 	@Override
@@ -82,32 +76,6 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		stack.damage(1, miner, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
 		return true;
-	}
-	
-	@Override
-	public int getMiningLevel(ItemStack stack, @Nullable LivingEntity user) {
-		return 2;
-	}
-	
-	@Override
-	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, @Nullable LivingEntity user) {
-		if (tag == FabricToolTags.SWORDS) return 4;
-		// any normal vanilla tool type
-		if (tag == FabricToolTags.PICKAXES ||
-				tag == FabricToolTags.AXES ||
-				tag == FabricToolTags.HOES ||
-				tag == FabricToolTags.SHOVELS ||
-				tag == FabricToolTags.SHEARS) {
-			return 2;
-		}
-		return 0;
-	}
-	
-	
-	
-	@Override
-	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, @Nullable LivingEntity user) {
-		return tag == FabricToolTags.SWORDS ? 8.5f : 4.5f;
 	}
 	
 	@Override

@@ -43,14 +43,14 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 		if (isEntireSuitPresent()) {
 			client.getTextureManager().bindTexture(BG);
 			LampColor color = LampBlockItem.getColor(handler.getSlot(0).getStack());
-			RenderSystem.color3f(((color.glowColor>>16)&0xFF)/255f, ((color.glowColor>>8)&0xFF)/255f, (color.glowColor&0xFF)/255f);
+			RenderSystem.setShaderColor(((color.glowColor>>16)&0xFF)/255f, ((color.glowColor>>8)&0xFF)/255f, (color.glowColor&0xFF)/255f, 1);
 			drawTexture(matrices, 129, 9, 231, 0, 16, 16, 256, 256);
 		}
 	}
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1, 1, 1, 1);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		client.getTextureManager().bindTexture(BG);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
@@ -80,16 +80,13 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 			
 			
 			drawTexture(matrices, x+153, y+9+fuelHR, fuelFrame*10, 186+fuelHR, 10, fuelH, 256, 256);
-			RenderSystem.enableAlphaTest();
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			RenderSystem.color4f(1, 1, 1, frameA);
+			RenderSystem.setShaderColor(1, 1, 1, frameA);
 			drawTexture(matrices, x+153, y+9+fuelHR, nextFuelFrame*10, 186+fuelHR, 10, fuelH, 256, 256);
 			RenderSystem.disableBlend();
-			RenderSystem.disableAlphaTest();
-			RenderSystem.enableAlphaTest();
-			RenderSystem.color4f(1, 1, 1, 1);
+			RenderSystem.setShaderColor(1, 1, 1, 1);
 			
 			int oxyH = (sai.getResourceAmount(chest, SuitResource.OXYGEN)*68)/SuitResource.OXYGEN.getMaximum();
 			int oxyHR = (70-oxyH);

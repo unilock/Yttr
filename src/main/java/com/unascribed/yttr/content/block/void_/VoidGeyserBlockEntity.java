@@ -8,6 +8,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
@@ -34,16 +35,13 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
-public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
+public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 
 	public int age;
 	
@@ -53,8 +51,8 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	private final Map<UUID, MutableInt> sneakTimers = Maps.newHashMap();
 	private final Set<UUID> seen = Sets.newHashSet();
 	
-	public VoidGeyserBlockEntity() {
-		super(YBlockEntities.VOID_GEYSER);
+	public VoidGeyserBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.VOID_GEYSER, pos, state);
 	}
 
 	@Override
@@ -166,7 +164,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 					world.playSound(null, pos, YSounds.DISSOLVE, SoundCategory.BLOCKS, 1, 0.8f+(world.random.nextFloat()*0.4f));
 				}
 				world.setBlockState(pos, targetState);
-				world.getFluidTickScheduler().schedule(pos, YFluids.VOID, 1);
+				world.createAndScheduleFluidTick(pos, YFluids.VOID, 1);
 			}
 		}
 	}
@@ -200,15 +198,13 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putUuid("ID", id);
 		tag.putString("Name", name);
-		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		id = tag.containsUuid("ID") ? tag.getUuid("ID") : UUID.randomUUID();
 		name = tag.getString("Name");
 	}
@@ -216,8 +212,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	public static void setDefaultName(World world, BlockPos pos, @Nullable LivingEntity creator) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof VoidGeyserBlockEntity) {
-			Biome b = world.getBiome(new BlockPos(pos.getX(), 64, pos.getZ()));
-			Identifier biomeId = world.getRegistryManager().get(Registry.BIOME_KEY).getId(b);
+			Identifier biomeId = world.getBiome(new BlockPos(pos.getX(), 64, pos.getZ())).getKey().get().getValue();
 			((VoidGeyserBlockEntity)be).setName((creator == null ? "" : creator.getName().getString()+"'s ")+Language.getInstance().get("biome."+biomeId.getNamespace()+"."+biomeId.getPath()));
 		}
 	}

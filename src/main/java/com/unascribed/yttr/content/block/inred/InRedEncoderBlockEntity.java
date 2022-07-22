@@ -22,8 +22,8 @@ import net.minecraft.util.math.MathHelper;
 public class InRedEncoderBlockEntity extends InRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 
-	public InRedEncoderBlockEntity() {
-		super(YBlockEntities.INRED_ENCODER);
+	public InRedEncoderBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_ENCODER, pos, state);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class InRedEncoderBlockEntity extends InRedDeviceBlockEntity {
 					stacksChecked++;
 				}
 			}
-			fillPercentage /= (float) inv.size();
+			fillPercentage /= inv.size();
 			return MathHelper.floor(fillPercentage * 62.0F) + (stacksChecked > 0 ? 1 : 0);
 			//no InventoryProvider, so scan the BE
 		} else if (world.getBlockEntity(pos) != null) {
@@ -101,7 +101,7 @@ public class InRedEncoderBlockEntity extends InRedDeviceBlockEntity {
 						stacksChecked++;
 					}
 				}
-				fillPercentage /= (float) inv.size();
+				fillPercentage /= inv.size();
 				return MathHelper.floor(fillPercentage * 62.0F) + (stacksChecked > 0 ? 1 : 0);
 			}
 			// check for a vanilla comparator interface
@@ -140,16 +140,13 @@ public class InRedEncoderBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
-		return tag;
 	}
 
 }

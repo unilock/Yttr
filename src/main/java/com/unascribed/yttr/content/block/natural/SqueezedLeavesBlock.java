@@ -51,7 +51,7 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 			if (be instanceof SqueezedLeavesBlockEntity) {
 				if (!((SqueezedLeavesBlockEntity) be).finished) {
 					world.setBlockState(pos, state.with(SQUEEZING, true));
-					world.getBlockTickScheduler().schedule(pos, this, 4);
+					world.createAndScheduleBlockTick(pos, this, 4);
 					((SqueezedLeavesBlockEntity)be).step();
 					if (player instanceof ServerPlayerEntity) {
 						YCriteria.SQUEEZE_LEAVES.trigger((ServerPlayerEntity)player);
@@ -96,8 +96,8 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new SqueezedLeavesBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new SqueezedLeavesBlockEntity(pos, state);
 	}
 
 }

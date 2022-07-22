@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.item;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.unascribed.yttr.world.WastelandPopulator;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -22,8 +24,8 @@ public class ShearsItem extends net.minecraft.item.ShearsItem {
 	
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-		if (selected && entity.isSprinting() && RANDOM.nextInt(10) == 0) {
-			entity.damage(new EntityDamageSource("yttr.scissors", entity), 4+RANDOM.nextInt(8));
+		if (selected && entity.isSprinting() && ThreadLocalRandom.current().nextInt(10) == 0) {
+			entity.damage(new EntityDamageSource("yttr.scissors", entity), 4+ThreadLocalRandom.current().nextInt(8));
 		}
 	}
 	
@@ -44,7 +46,7 @@ public class ShearsItem extends net.minecraft.item.ShearsItem {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if (FabricLoader.getInstance().isDevelopmentEnvironment() && context.getPlayer().isCreative()) {
-			WastelandPopulator.didYouKnowWeHaveVeinMiner(context.getWorld(), context.getBlockPos(), RANDOM);
+			WastelandPopulator.didYouKnowWeHaveVeinMiner(context.getWorld(), context.getBlockPos(), ThreadLocalRandom.current());
 			return ActionResult.SUCCESS;
 		}
 		return ActionResult.PASS;

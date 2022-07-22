@@ -6,13 +6,13 @@ import com.unascribed.yttr.init.YBlocks;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -65,7 +65,7 @@ public class SqueezeLogBlock extends PillarBlock {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
-		if (stack.isIn(FabricToolTags.AXES) && this != YBlocks.STRIPPED_SQUEEZE_LOG) {
+		if (stack.getItem() instanceof AxeItem && this != YBlocks.STRIPPED_SQUEEZE_LOG) {
 			world.playSound(player, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			if (!world.isClient) {
 				world.setBlockState(pos, YBlocks.STRIPPED_SQUEEZE_LOG.getDefaultState()

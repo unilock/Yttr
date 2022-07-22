@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.abomination;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YSounds;
 
 import com.google.common.collect.ImmutableMap;
@@ -15,6 +16,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -115,7 +118,12 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return new AwareHopperBlockEntity();
+		return new AwareHopperBlockEntity(pos, state);
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 	
 	@Override

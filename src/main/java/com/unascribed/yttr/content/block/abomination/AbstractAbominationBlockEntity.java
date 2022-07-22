@@ -1,17 +1,17 @@
 package com.unascribed.yttr.content.block.abomination;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-//TODO: ticking is weird now
-public abstract class AbstractAbominationBlockEntity extends BlockEntity implements Tickable {
+public abstract class AbstractAbominationBlockEntity extends BlockEntity implements YTickable {
 
 	protected int sayTicks = -60;
 	
@@ -22,8 +22,8 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	public float headPitch;
 	public float prevHeadPitch;
 	
-	public AbstractAbominationBlockEntity(BlockEntityType<? extends AbstractAbominationBlockEntity> type) {
-		super(type);
+	public AbstractAbominationBlockEntity(BlockEntityType<? extends AbstractAbominationBlockEntity> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 	}
 	
 	public boolean isSuffocating() {

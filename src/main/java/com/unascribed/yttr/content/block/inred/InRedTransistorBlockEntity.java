@@ -9,13 +9,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedTransistorBlockEntity extends InRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 
-	public InRedTransistorBlockEntity() {
-		super(YBlockEntities.INRED_TRANSISTOR);
+	public InRedTransistorBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_TRANSISTOR, pos, state);
 	}
 
 	@Override
@@ -79,16 +80,13 @@ public class InRedTransistorBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
-		return tag;
 	}
 
 }

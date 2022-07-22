@@ -12,8 +12,11 @@ public class AmmoPackScreen extends HandledScreen<AmmoPackScreenHandler> {
 
 	private static final Identifier BG = new Identifier("yttr", "textures/gui/ammo_pack.png");
 	
+	private final PlayerInventory playerInventory;
+	
 	public AmmoPackScreen(AmmoPackScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		playerInventory = inventory;
 		backgroundWidth = 176;
 		backgroundHeight = 163;
 		playerInventoryTitleY = 70;

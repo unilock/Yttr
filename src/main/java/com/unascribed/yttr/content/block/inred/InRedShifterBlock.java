@@ -28,8 +28,8 @@ public class InRedShifterBlock extends InRedLogicTileBlock {
 
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new InRedShifterBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new InRedShifterBlockEntity(pos, state);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class InRedShifterBlock extends InRedLogicTileBlock {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		if (state.get(WATERLOGGED)) {
-			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		if (!this.canBlockStay(world, pos)) {
 			world.breakBlock(pos, true);

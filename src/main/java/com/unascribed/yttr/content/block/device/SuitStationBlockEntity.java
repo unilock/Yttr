@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.device;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
@@ -23,10 +24,10 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class SuitStationBlockEntity extends BlockEntity implements Tickable, SideyInventory, DelegatingInventory {
+public class SuitStationBlockEntity extends BlockEntity implements YTickable, SideyInventory, DelegatingInventory {
 
 	public int lastCollisionTick;
 	
@@ -69,8 +70,8 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 		}
 	};
 	
-	public SuitStationBlockEntity() {
-		super(YBlockEntities.SUIT_STATION);
+	public SuitStationBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.SUIT_STATION, pos, state);
 		inv.addListener(i -> markDirty());
 	}
 	
@@ -149,7 +150,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("FuelTime", fuelTime);
 		tag.putInt("MaxFuelTime", maxFuelTime);
@@ -157,12 +158,10 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 		tag.putInt("MaxFluxLeft", maxFluxLeft);
 		tag.putInt("MeltedGlowstoneLeft", meltedGlowstoneLeft);
 		tag.putInt("ArmorPlatingLeft", armorPlatingLeft);
-		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		fuelTime = tag.getInt("FuelTime");
 		maxFuelTime = tag.getInt("MaxFuelTime");
@@ -179,7 +178,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		return pos.getSquaredDistance(player.getPos(), false) < 8*8;
+		return pos.getSquaredDistance(player.getPos()) < 8*8;
 	}
 
 	@Override

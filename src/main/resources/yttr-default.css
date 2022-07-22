@@ -67,17 +67,6 @@
 	 * In the future, Yttr progression will require Brookite; for now, disabling this is safe.
 	 */
 	brookite: on;
-	/*
-	 * Yttr will attempt to detect if another mod adds copper during launch. If none do, it will
-	 * register its own copper. If one does, it will not register its copper at all.
-	 * 
-	 * You can use this as an override if you need it. "off" always disables copper, "auto" performs
-	 * the above detection, "on" always enables copper.
-	 * 
-	 * Copper is required for Yttr progression. Only disable this if the detection is malfunctioning
-	 * or if you've modified recipes to not require copper.
-	 */
-	copper: auto;
 	
 	/*
 	 * Generate Squeeze Trees in the overworld, providing an easy source of sponges, Delicace, and

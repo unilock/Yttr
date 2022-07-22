@@ -1,18 +1,12 @@
 package com.unascribed.yttr.client.util;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Executor;
-import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -20,7 +14,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +28,6 @@ import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.tag.TagManager;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.hit.BlockHitResult;
@@ -44,6 +36,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -55,33 +48,24 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.chunk.light.LightingProvider;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.level.storage.LevelStorage.Session;
 
 public class DummyServerWorld extends ServerWorld {
-
-	public DummyServerWorld(MinecraftServer server, Executor workerExecutor,
-			Session session, ServerWorldProperties properties,
-			RegistryKey<World> registryKey, DimensionType dimensionType,
-			WorldGenerationProgressListener worldGenerationProgressListener,
-			ChunkGenerator chunkGenerator, boolean debugWorld, long l,
-			List<Spawner> list, boolean bl) {
-		super(server, workerExecutor, session, properties, registryKey, dimensionType,
-				worldGenerationProgressListener, chunkGenerator, debugWorld, l, list,
-				bl);
+	
+	public DummyServerWorld(MinecraftServer server, Executor workerExecutor, Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, RegistryEntry<DimensionType> registryEntry, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long seed, List<net.minecraft.world.spawner.Spawner> spawners, boolean shouldTickTime) {
+		super(server, workerExecutor, session, properties, worldKey, registryEntry, worldGenerationProgressListener, chunkGenerator, debugWorld, seed, spawners, shouldTickTime);
 		// WILL NOT BE CALLED
 	}
-	
+
 	public void init() {
 		isClient = true;
 		random = new Random();
@@ -132,12 +116,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public Stream<VoxelShape> getEntityCollisions(Entity entity, Box box,
-			Predicate<Entity> predicate) {
-		return getDelegate().getEntityCollisions(entity, box, predicate);
-	}
-
-	@Override
 	public Difficulty getDifficulty() {
 		return getDelegate().getDifficulty();
 	}
@@ -164,11 +142,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public boolean intersectsEntities(Entity entity, VoxelShape shape) {
-		return getDelegate().intersectsEntities(entity, shape);
-	}
-
-	@Override
 	public int getMaxLightLevel() {
 		return getDelegate().getMaxLightLevel();
 	}
@@ -189,21 +162,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public Stream<BlockState> method_29546(Box box) {
-		return getDelegate().method_29546(box);
-	}
-
-	@Override
-	public Biome getBiome(BlockPos pos) {
-		return getDelegate().getBiome(pos);
-	}
-
-	@Override
-	public boolean intersectsEntities(Entity entity) {
-		return getDelegate().intersectsEntities(entity);
-	}
-
-	@Override
 	public BlockHitResult raycast(RaycastContext context) {
 		return getDelegate().raycast(context);
 	}
@@ -211,16 +169,6 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public DynamicRegistryManager getRegistryManager() {
 		return getDelegate().getRegistryManager();
-	}
-
-	@Override
-	public Stream<BlockState> method_29556(Box box) {
-		return getDelegate().method_29556(box);
-	}
-
-	@Override
-	public Optional<RegistryKey<Biome>> getBiomeKey(BlockPos blockPos) {
-		return getDelegate().getBiomeKey(blockPos);
 	}
 
 	@Override
@@ -240,11 +188,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public int getDimensionHeight() {
-		return getDelegate().getDimensionHeight();
-	}
-
-	@Override
 	public void syncWorldEvent(int eventId, BlockPos pos, int data) {
 		getDelegate().syncWorldEvent(eventId, pos, data);
 	}
@@ -260,53 +203,14 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public boolean isSpaceEmpty(Entity entity, Box box,
-			Predicate<Entity> predicate) {
-		return getDelegate().isSpaceEmpty(entity, box, predicate);
-	}
-
-	@Override
-	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return getDelegate().getBiomeForNoiseGen(biomeX, biomeY, biomeZ);
-	}
-
-	@Override
-	public Stream<VoxelShape> getCollisions(Entity entity, Box box,
-			Predicate<Entity> predicate) {
-		return getDelegate().getCollisions(entity, box, predicate);
-	}
-
-	@Override
 	public List<Entity> getOtherEntities(Entity except, Box box) {
 		return getDelegate().getOtherEntities(except, box);
-	}
-
-	@Override
-	public Biome getGeneratorStoredBiome(int biomeX, int biomeY, int biomeZ) {
-		return getDelegate().getGeneratorStoredBiome(biomeX, biomeY, biomeZ);
-	}
-
-	@Override
-	public Stream<VoxelShape> getBlockCollisions(Entity entity, Box box) {
-		return getDelegate().getBlockCollisions(entity, box);
-	}
-
-	@Override
-	public boolean isBlockSpaceEmpty(Entity entity, Box box,
-			BiPredicate<BlockState, BlockPos> biPredicate) {
-		return getDelegate().isBlockSpaceEmpty(entity, box, biPredicate);
 	}
 
 	@Override
 	public BlockHitResult raycastBlock(Vec3d start, Vec3d end, BlockPos pos,
 			VoxelShape shape, BlockState state) {
 		return getDelegate().raycastBlock(start, end, pos, shape, state);
-	}
-
-	@Override
-	public Stream<VoxelShape> getBlockCollisions(Entity entity, Box box,
-			BiPredicate<BlockState, BlockPos> biPredicate) {
-		return getDelegate().getBlockCollisions(entity, box, biPredicate);
 	}
 
 	@Override
@@ -337,12 +241,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public <T extends Entity> List<T> getNonSpectatingEntities(
-			Class<? extends T> entityClass, Box box) {
-		return getDelegate().getNonSpectatingEntities(entityClass, box);
-	}
-
-	@Override
 	public int getStrongRedstonePower(BlockPos pos, Direction direction) {
 		return getDelegate().getStrongRedstonePower(pos, direction);
 	}
@@ -350,12 +248,6 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public boolean breakBlock(BlockPos pos, boolean drop) {
 		return false;
-	}
-
-	@Override
-	public <T extends Entity> List<T> getEntitiesIncludingUngeneratedChunks(
-			Class<? extends T> entityClass, Box box) {
-		return getDelegate().getEntitiesIncludingUngeneratedChunks(entityClass, box);
 	}
 
 	@Override
@@ -501,14 +393,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public <T extends LivingEntity> T getClosestEntityIncludingUngeneratedChunks(
-			Class<? extends T> entityClass, TargetPredicate targetPredicate,
-			LivingEntity entity, double x, double y, double z, Box box) {
-		return getDelegate().getClosestEntityIncludingUngeneratedChunks(entityClass,
-				targetPredicate, entity, x, y, z, box);
-	}
-
-	@Override
 	public <T extends LivingEntity> T getClosestEntity(
 			List<? extends T> entityList, TargetPredicate targetPredicate,
 			LivingEntity entity, double x, double y, double z) {
@@ -536,14 +420,6 @@ public class DummyServerWorld extends ServerWorld {
 	public List<PlayerEntity> getPlayers(TargetPredicate targetPredicate,
 			LivingEntity entity, Box box) {
 		return getDelegate().getPlayers(targetPredicate, entity, box);
-	}
-
-	@Override
-	public <T extends LivingEntity> List<T> getTargets(
-			Class<? extends T> entityClass, TargetPredicate targetPredicate,
-			LivingEntity targetingEntity, Box box) {
-		return getDelegate().getTargets(entityClass, targetPredicate,
-				targetingEntity, box);
 	}
 
 	@Override
@@ -674,34 +550,12 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public boolean addBlockEntity(BlockEntity blockEntity) {
-		return false;
-	}
-
-	@Override
-	public void addBlockEntities(Collection<BlockEntity> blockEntities) {
-	}
-
-	@Override
 	public void tickBlockEntities() {
-	}
-
-	@Override
-	public void tickEntity(Consumer<Entity> tickConsumer, Entity entity) {
-	}
-
-	@Override
-	public String getDebugString() {
-		return getDelegate().getDebugString();
 	}
 
 	@Override
 	public BlockEntity getBlockEntity(BlockPos pos) {
 		return getDelegate().getBlockEntity(pos);
-	}
-
-	@Override
-	public void setBlockEntity(BlockPos pos, BlockEntity blockEntity) {
 	}
 
 	@Override
@@ -751,33 +605,8 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public <T extends Entity> List<T> getEntitiesByType(EntityType<T> type,
-			Box box, Predicate<? super T> predicate) {
-		return getDelegate().getEntitiesByType(type, box, predicate);
-	}
-
-	@Override
-	public <T extends Entity> List<T> getEntitiesByClass(
-			Class<? extends T> entityClass, Box box,
-			Predicate<? super T> predicate) {
-		return getDelegate().getEntitiesByClass(entityClass, box, predicate);
-	}
-
-	@Override
-	public <T extends Entity> List<T> getEntitiesIncludingUngeneratedChunks(
-			Class<? extends T> entityClass, Box box,
-			Predicate<? super T> predicate) {
-		return getDelegate().getEntitiesIncludingUngeneratedChunks(entityClass, box,
-				predicate);
-	}
-
-	@Override
 	public Entity getEntityById(int id) {
 		return getDelegate().getEntityById(id);
-	}
-
-	@Override
-	public void markDirty(BlockPos pos, BlockEntity blockEntity) {
 	}
 
 	@Override
@@ -896,11 +725,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public void putMapState(MapState mapState) {
-		getDelegate().putMapState(mapState);
-	}
-
-	@Override
 	public int getNextMapId() {
 		return getDelegate().getNextMapId();
 	}
@@ -980,11 +804,6 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public RecipeManager getRecipeManager() {
 		return getDelegate().getRecipeManager();
-	}
-
-	@Override
-	public TagManager getNbtManager() {
-		return getDelegate().getNbtManager();
 	}
 
 	@Override

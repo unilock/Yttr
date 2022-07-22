@@ -3,8 +3,6 @@ package com.unascribed.yttr.client.screen.handled;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRecipeBookWidget;
-import com.unascribed.yttr.mixin.accessor.client.AccessorScreenHandlerClient;
-
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
@@ -22,7 +20,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 	private final RecipeBookWidget recipeBook = new RecipeBookWidget();
 	private boolean narrow;
 	
-	private short lastChangeId = -1;
+	private int lastRevision = -1;
 
 	public ProjectTableScreen(ProjectTableScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -36,22 +34,21 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 		super.init();
 		this.narrow = this.width < 379;
 		this.recipeBook.initialize(this.width, this.height, this.client, this.narrow, this.handler);
-		this.x = this.recipeBook.findLeftEdge(this.narrow, this.width, this.backgroundWidth);
-		this.children.add(this.recipeBook);
+		this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
+		addDrawable(this.recipeBook);
 		this.setInitialFocus(this.recipeBook);
-		this.addButton(new TexturedButtonWidget(this.x + 5, this.y + 34, 20, 18, 0, 0, 19, RECIPE_BUTTON_TEXTURE, (buttonWidget) -> {
-			this.recipeBook.reset(this.narrow);
+		this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.y + 34, 20, 18, 0, 0, 19, RECIPE_BUTTON_TEXTURE, (buttonWidget) -> {
+			this.recipeBook.reset();
 			this.recipeBook.toggleOpen();
-			this.x = this.recipeBook.findLeftEdge(this.narrow, this.width, this.backgroundWidth);
+			this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
 			((TexturedButtonWidget)buttonWidget).setPos(this.x + 5, this.y + 34);
 		}));
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-		if (lastChangeId != ((AccessorScreenHandlerClient)handler).yttr$getActionId()) {
-			lastChangeId = ((AccessorScreenHandlerClient)handler).yttr$getActionId();
+	public void handledScreenTick() {
+		if (lastRevision != handler.getRevision()) {
+			lastRevision = handler.getRevision();
 			if (recipeBook.isOpen()) {
 				((AccessorRecipeBookWidget)recipeBook).yttr$refreshInputs();
 			}
@@ -77,7 +74,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1, 1, 1, 1);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		this.client.getTextureManager().bindTexture(TEXTURE);
 		int x = this.x;
 		int y = (this.height - this.backgroundHeight) / 2;
@@ -87,7 +84,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 	@Override
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		textRenderer.draw(matrices, title, (backgroundWidth-textRenderer.getWidth(title))/2, titleY, 4210752);
-		textRenderer.draw(matrices, playerInventory.getDisplayName(), playerInventoryTitleX, playerInventoryTitleY, 4210752);
+		textRenderer.draw(matrices, playerInventoryTitle, playerInventoryTitleX, playerInventoryTitleY, 4210752);
 		
 //		for (Slot s : handler.slots) {
 //			drawCenteredText(matrices, textRenderer, Integer.toString(s.id), s.x+8, s.y+4, 0xFFCC00);

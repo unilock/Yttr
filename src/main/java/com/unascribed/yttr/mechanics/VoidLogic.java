@@ -103,7 +103,7 @@ public class VoidLogic {
 				for (int x = -r; x <= r; x++) {
 					for (int z = -r; z <= r; z++) {
 						bp.set(pos.getX()+x, pos.getY()+y, pos.getZ()+z);
-						if (pos.getSquaredDistance(bp.getX(), bp.getY(), bp.getZ(), true) < r*r) {
+						if (pos.getSquaredDistance(bp.getX(), bp.getY(), bp.getZ()) < r*r) {
 							BlockState bs = world.getBlockState(bp);
 							if (bs.getHardness(world, bp) < 0) continue;
 							BlockEntity be = world.getBlockEntity(bp);
@@ -118,7 +118,7 @@ public class VoidLogic {
 								block.put("State", state);
 							}
 							if (be != null) {
-								block.put("Entity", be.writeNbt(new NbtCompound()));
+								block.put("Entity", be.createNbt());
 							}
 							blocks.add(block);
 						}
@@ -132,7 +132,7 @@ public class VoidLogic {
 				for (int x = -r; x <= r; x++) {
 					for (int z = -r; z <= r; z++) {
 						bp.set(pos.getX()+x, pos.getY()+y, pos.getZ()+z);
-						if (pos.getSquaredDistance(bp.getX(), bp.getY(), bp.getZ(), true) < r*r) {
+						if (pos.getSquaredDistance(bp.getX(), bp.getY(), bp.getZ()) < r*r) {
 							BlockState bs = world.getBlockState(bp);
 							if (bs.getHardness(world, bp) < 0) continue;
 							if (!bs.isAir()) {

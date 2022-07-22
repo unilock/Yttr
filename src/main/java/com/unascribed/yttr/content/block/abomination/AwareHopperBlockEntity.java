@@ -41,6 +41,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.HitResult.Type;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -90,8 +91,8 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	public int craftingTicks = 0;
 	public int transferCooldown = 0;
 	
-	public AwareHopperBlockEntity() {
-		super(YBlockEntities.AWARE_HOPPER);
+	public AwareHopperBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.AWARE_HOPPER, pos, state);
 	}
 
 	@Override
@@ -211,18 +212,15 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		if (recipe != null) tag.putString("Recipe", recipe.toString());
 		tag.put("Inventory", Yttr.serializeInv(union));
 		tag.putInt("CraftingTicks", craftingTicks);
 		tag.putInt("TransferCooldown", transferCooldown);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		recipe = tag.contains("Recipe", NbtType.STRING) ? Identifier.tryParse(tag.getString("Recipe")) : null;
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), union);
 		craftingTicks = tag.getInt("CraftingTicks");

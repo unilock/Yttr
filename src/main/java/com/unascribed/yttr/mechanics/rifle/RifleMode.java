@@ -30,7 +30,6 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
@@ -156,7 +155,7 @@ public enum RifleMode {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			Vec3d start = RifleItem.getMuzzlePos(user, false);
-			double len = MathHelper.sqrt(start.squaredDistanceTo(hit.getPos()));
+			double len = Math.sqrt(start.squaredDistanceTo(hit.getPos()));
 			double diffX = hit.getPos().x-start.x;
 			double diffY = hit.getPos().y-start.y;
 			double diffZ = hit.getPos().z-start.z;

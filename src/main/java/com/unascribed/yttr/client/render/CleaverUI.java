@@ -2,10 +2,8 @@ package com.unascribed.yttr.client.render;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
+import static com.unascribed.yttr.client.RenderBridge.*;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.item.CleaverItem;
@@ -40,14 +38,14 @@ public class CleaverUI extends IHasAClient {
 					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
 					BlockState bs = wrc.world().getBlockState(pos);
 					if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
-						GlStateManager.pushMatrix();
-						GlStateManager.multMatrix(wrc.matrixStack().peek().getModel());
-						GlStateManager.translated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-						GlStateManager.disableTexture();
-						RenderSystem.defaultBlendFunc();
-						GlStateManager.enableBlend();
-						GL11.glEnable(GL11.GL_POINT_SMOOTH);
-						GL11.glEnable(GL11.GL_LINE_SMOOTH);
+						glPushMatrix();
+						glMultMatrixf(wrc.matrixStack().peek().getPositionMatrix());
+						glTranslated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
+						glDisable(GL_TEXTURE_2D);
+						glDefaultBlendFunc();
+						glEnable(GL_BLEND);
+						glEnable(GL_POINT_SMOOTH);
+						glEnable(GL_LINE_SMOOTH);
 						float scale = (float)mc.getWindow().getScaleFactor();
 						int sd = CleaverItem.SUBDIVISIONS;
 						Vec3d cleaveStart = ci.getCleaveStart(held);
@@ -97,11 +95,11 @@ public class CleaverUI extends IHasAClient {
 										selectedY = wY;
 										selectedZ = wZ;
 									}
-									GL11.glPointSize(size*scale);
-									GlStateManager.color4f(r, g, b, a);
-									GL11.glBegin(GL11.GL_POINTS);
-									GL11.glVertex3f(wX, wY, wZ);
-									GL11.glEnd();
+									glPointSize(size*scale);
+									glColor4f(r, g, b, a);
+									glBegin(GL_POINTS);
+									glVertex3f(wX, wY, wZ);
+									glEnd();
 								}
 							}
 						}
@@ -109,36 +107,36 @@ public class CleaverUI extends IHasAClient {
 							final float TAU = (float)(Math.PI*2);
 							float t = (wrc.world().getTime()+wrc.tickDelta())/5;
 							float a = (MathHelper.sin(t%TAU)+1)/2;
-							GlStateManager.color4f(1, 0.25f, 0, 0.1f+(a*0.3f));
-							GlStateManager.disableCull();
-							GlStateManager.enableDepthTest();
-							GlStateManager.enablePolygonOffset();
-							GlStateManager.polygonOffset(-3, -3);
+							glColor4f(1, 0.25f, 0, 0.1f+(a*0.3f));
+							glDisable(GL_CULL_FACE);
+							glEnable(GL_DEPTH_TEST);
+							glEnable(GL_POLYGON_OFFSET_FILL);
+							glPolygonOffset(-3, -3);
 							List<Polygon> shape = CleaverItem.getShape(wrc.world(), pos);
 							Plane plane = new Plane(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ));
 							List<Polygon> cleave = CleaverItem.performCleave(plane, shape, true);
 							for (Polygon polygon : cleave) {
-								GL11.glBegin(GL11.GL_POLYGON);
+								glBegin(GL_POLYGON);
 								polygon.forEachDEdge((de) -> {
-									GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
+									glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
 								});
-								GL11.glEnd();
+								glEnd();
 							}
-							GlStateManager.disablePolygonOffset();
-							GlStateManager.color4f(1, 0.25f, 0, 0.05f+(a*0.1f));
-							GlStateManager.disableDepthTest();
+							glDisable(GL_POLYGON_OFFSET_FILL);
+							glColor4f(1, 0.25f, 0, 0.05f+(a*0.1f));
+							glDisable(GL_DEPTH_TEST);
 							for (Polygon polygon : cleave) {
-								GL11.glBegin(GL11.GL_POLYGON);
+								glBegin(GL_POLYGON);
 								polygon.forEachDEdge((de) -> {
-									GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
+									glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
 								});
-								GL11.glEnd();
+								glEnd();
 							}
-							GlStateManager.enableCull();
+							glEnable(GL_CULL_FACE);
 						}
-						GlStateManager.disableBlend();
-						GlStateManager.popMatrix();
-						GlStateManager.enableTexture();
+						glDisable(GL_BLEND);
+						glPopMatrix();
+						glEnable(GL_TEXTURE_2D);
 					}
 				}
 			}
@@ -157,8 +155,8 @@ public class CleaverUI extends IHasAClient {
 				for (Polygon pg : polys.subList(0, polys.size()-1)) {
 					pg.forEachDEdge((de) -> {
 						VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
-						vc.vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
-						vc.vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
+						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
+						vc.vertex(wrc.matrixStack().peek().getPositionMatrix(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
 					});
 				}
 				wrc.matrixStack().pop();

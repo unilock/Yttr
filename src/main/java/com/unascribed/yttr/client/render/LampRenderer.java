@@ -4,14 +4,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.mechanics.HaloBlockEntity;
+import com.unascribed.yttr.mixin.accessor.client.AccessorChunkInfo;
+import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.util.MysticSet;
 
 import com.google.common.collect.Multimap;
@@ -25,9 +25,12 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.WorldRenderer.ChunkInfo;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -66,7 +69,7 @@ public class LampRenderer extends IHasAClient {
 		BakedModel bm;
 		try {
 			YttrClient.retrievingHalo = true;
-			bm = base.getOverrides().apply(base, ItemStack.EMPTY, MinecraftClient.getInstance().world, MinecraftClient.getInstance().player);
+			bm = base.getOverrides().apply(base, ItemStack.EMPTY, MinecraftClient.getInstance().world, MinecraftClient.getInstance().player, 39);
 		} finally {
 			YttrClient.retrievingHalo = false;
 		}
@@ -121,7 +124,7 @@ public class LampRenderer extends IHasAClient {
 			dvc.quad(matrices.peek(), bq, r, g, b, 0, 0);
 		}
 		for (Direction dir : Direction.values()) {
-			if (pos == null || Block.shouldDrawSide(state, MinecraftClient.getInstance().world, pos, dir)) {
+			if (pos == null || Block.shouldDrawSide(state, MinecraftClient.getInstance().world, pos, dir, pos.offset(dir))) {
 				for (BakedQuad bq : bm.getQuads(state, dir, world.random)) {
 					dvc.quad(matrices.peek(), bq, r, g, b, 0, 0);
 				}
@@ -158,7 +161,7 @@ public class LampRenderer extends IHasAClient {
 				}
 				Box bounds = null;
 				BufferBuilder vc = new BufferBuilder(24 * VertexFormats.POSITION_COLOR_TEXTURE.getVertexSize() * l.size());
-				vc.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+				vc.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 				for (BlockEntity be : l) {
 					if (!(be instanceof HaloBlockEntity) || !((HaloBlockEntity)be).shouldRenderHalo()) continue;
 					scratch.push();
@@ -176,15 +179,15 @@ public class LampRenderer extends IHasAClient {
 					scratch.pop();
 				}
 				vc.end();
-				VertexBuffer vb = buffers.computeIfAbsent(csp, blah -> new VertexBuffer(VertexFormats.POSITION_COLOR_TEXTURE));
+				VertexBuffer vb = buffers.computeIfAbsent(csp, blah -> new VertexBuffer());
 				vb.upload(vc);
 				buffers.put(csp, vb);
 				boundingBoxes.put(csp, bounds);
 			}
 			wrc.profiler().swap("render");
 			MatrixStack matrices = wrc.matrixStack();
-			RenderSystem.pushMatrix();
-			RenderSystem.loadIdentity();
+			matrices.push();
+			matrices.loadIdentity();
 			matrices.push();
 			Vec3d cam = wrc.camera().getPos();
 			matrices.translate(-cam.x, -cam.y, -cam.z);
@@ -196,9 +199,7 @@ public class LampRenderer extends IHasAClient {
 						VertexBuffer buf = buffers.get(pos);
 						buf.bind();
 						YRenderLayers.getLampHalo().startDrawing();
-						VertexFormats.POSITION_COLOR_TEXTURE.startDrawing(0L);
-						YttrClient.drawBufferWithoutClobberingGLMatrix(buf, matrices.peek().getModel(), GL11.GL_QUADS);
-						VertexFormats.POSITION_COLOR_TEXTURE.endDrawing();
+						buf.setShader(matrices.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionColorTexShader());
 						YRenderLayers.getLampHalo().endDrawing();
 						VertexBuffer.unbind();
 					matrices.pop();
@@ -210,7 +211,7 @@ public class LampRenderer extends IHasAClient {
 				}
 			}
 			matrices.pop();
-			RenderSystem.popMatrix();
+			matrices.pop();
 			wrc.profiler().pop();
 		}
 		wrc.profiler().swap("particles");
@@ -230,7 +231,7 @@ public class LampRenderer extends IHasAClient {
 					iter.remove();
 				}
 			}
-			for (BlockEntity be : mc.world.blockEntities) {
+			for (BlockEntity be : YttrClient.getBlockEntities()) {
 				if (be instanceof HaloBlockEntity) {
 					ChunkSectionPos cs = ChunkSectionPos.from(be.getPos());
 					if (!lampsBySection.containsEntry(cs, be)) {

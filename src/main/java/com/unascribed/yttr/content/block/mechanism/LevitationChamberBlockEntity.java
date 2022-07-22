@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
@@ -19,18 +20,18 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class LevitationChamberBlockEntity extends BlockEntity implements Tickable, SideyInventory, NamedScreenHandlerFactory, DelegatingInventory {
+public class LevitationChamberBlockEntity extends BlockEntity implements YTickable, SideyInventory, NamedScreenHandlerFactory, DelegatingInventory {
 
 	private final SimpleInventory inv = new SimpleInventory(5);
 	
 	public int age;
 	private int cooldown = 0;
 	
-	public LevitationChamberBlockEntity() {
-		super(YBlockEntities.LEVITATION_CHAMBER);
+	public LevitationChamberBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.LEVITATION_CHAMBER, pos, state);
 		inv.addListener((i) -> markDirty());
 	}
 	
@@ -55,18 +56,15 @@ public class LevitationChamberBlockEntity extends BlockEntity implements Tickabl
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		cooldown = tag.getInt("Cooldown");
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("Cooldown", cooldown);
-		return tag;
 	}
 	
 	@Override

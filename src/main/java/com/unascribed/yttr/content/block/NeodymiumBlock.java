@@ -166,17 +166,11 @@ public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock {
 			return ((AccessorVoxelShape)delegate).yttr$getCoordIndex(axis, coord);
 		}
 
-		//TODO: does this still exist?
-		@Override
-		protected boolean contains(double x, double y, double z) {
-			return ((AccessorVoxelShape)delegate).yttr$contains(x, y, z);
-		}
-
 		@Override
 		protected double calculateMaxDistance(AxisCycleDirection axisCycle, Box box, double maxDist) {
 			return ((AccessorVoxelShape)delegate).yttr$calculateMaxDistance(axisCycle, box, maxDist);
 		}
-
+		
 	}
 	
 }

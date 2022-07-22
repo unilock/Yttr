@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YRecipeTypes;
@@ -30,11 +31,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
-public class VoidFilterBlockEntity extends BlockEntity implements Tickable, DelegatingInventory, SideyInventory {
+public class VoidFilterBlockEntity extends BlockEntity implements YTickable, DelegatingInventory, SideyInventory {
 	
 	public static final int TICKS_PER_TOCK = 100;
 	public static final int TOCKS_PER_OP = (20*60)/TICKS_PER_TOCK;
@@ -78,8 +79,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		}
 	};
 	
-	public VoidFilterBlockEntity() {
-		super(YBlockEntities.VOID_FILTER);
+	public VoidFilterBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.VOID_FILTER, pos, state);
 		inv.addListener(i -> markDirty());
 	}
 	
@@ -135,8 +136,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("OpTocks", opTocks);
 		if (owner != null) tag.putUuid("Owner", owner);
@@ -145,12 +145,10 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 			statQTag.putInt(Registry.ITEM.getId(en.getElement()).toString(), en.getCount());
 		}
 		tag.put("StatQueue", statQTag);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		opTocks = tag.getInt("OpTocks");
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
@@ -166,7 +164,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		return pos.getSquaredDistance(player.getPos(), false) < 5*5;
+		return pos.getSquaredDistance(player.getPos()) < 5*5;
 	}
 
 	@Override

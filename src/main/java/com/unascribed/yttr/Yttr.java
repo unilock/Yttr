@@ -18,7 +18,6 @@ import com.unascribed.yttr.inred.InRedLogic;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.YConfig.Trilean;
 import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
@@ -45,7 +44,6 @@ import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YTrades;
 import com.unascribed.yttr.init.YWorldGen;
-import com.unascribed.yttr.init.conditional.YCopper;
 import com.unascribed.yttr.init.conditional.YTrinkets;
 import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
@@ -85,7 +83,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -97,7 +94,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.chunk.DebugChunkGenerator;
 
 public class Yttr implements ModInitializer {
@@ -108,8 +104,6 @@ public class Yttr implements ModInitializer {
 		if (INST != null) throw new AssertionError("Double initialized!");
 		INST = this;
 	}
-	
-	public static boolean COPPER_FALLBACK_ACTIVE = false;
 	
 	public static final int DIVING_BLOCKS_PER_TICK = 2;
 	
@@ -268,24 +262,6 @@ public class Yttr implements ModInitializer {
 				DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
 				YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
 			}
-		}
-		
-		if (YConfig.WorldGen.copper == Trilean.AUTO) {
-			boolean foundCopper = false;
-			for (Map.Entry<RegistryKey<Item>, Item> id : Registry.ITEM.getEntrySet()) {
-				if (id.getKey().getValue().getPath().contains("copper_ingot")) {
-					YLog.info("Found a copper ingot supplied by {}", id.getKey().getValue().getNamespace());
-					YLog.info("Note that this check does not guarantee this copper ingot will be recognized by Yttr; if it isn't, make sure it's in the c:copper_ingots tag.");
-					foundCopper = true;
-					break;
-				}
-			}
-			if (!foundCopper) {
-				YLog.warn("I can't find a copper ingot, so I'm adding my own!");
-				YCopper.init();
-			}
-		} else if (YConfig.WorldGen.copper == Trilean.ON) {
-			YCopper.init();
 		}
 		
 		YLatches.latchAll();

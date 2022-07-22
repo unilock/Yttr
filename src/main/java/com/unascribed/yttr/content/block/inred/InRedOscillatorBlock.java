@@ -29,8 +29,8 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new InRedOscillatorBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new InRedOscillatorBlockEntity(pos, state);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 			}
 		} else {
 			if (state.get(WATERLOGGED)) {
-				world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+				world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 		}
 	}

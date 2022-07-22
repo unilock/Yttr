@@ -9,15 +9,15 @@ import com.unascribed.yttr.util.SideyInventory;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityClientSerializable, SideyInventory {
+public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory {
 
 	public int seed = ThreadLocalRandom.current().nextInt();
 	public ItemStack item = ItemStack.EMPTY;
@@ -30,8 +30,8 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 	
 	private boolean addedClient = false;
 	
-	public ReplicatorBlockEntity() {
-		super(YBlockEntities.REPLICATOR);
+	public ReplicatorBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.REPLICATOR, pos, state);
 	}
 	
 	@Environment(EnvType.CLIENT)
@@ -59,38 +59,42 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 		ReplicatorRenderer.replicators.remove(this);
 		ReplicatorRenderer.removing.add(this);
 	}
+	
+	public void sync() {
+		// TODO
+	}
+
+//	@Override
+//	public void fromClientTag(NbtCompound tag) {
+//		seed = tag.getInt("Seed");
+//		item = ItemStack.fromNbt(tag.getCompound("Item"));
+//	}
+//
+//	@Override
+//	public NbtCompound toClientTag(NbtCompound tag) {
+//		tag.putInt("Seed", seed);
+//		tag.put("Item", item.writeNbt(new NbtCompound()));
+//		return tag;
+//	}
 
 	@Override
-	public void fromClientTag(NbtCompound tag) {
+	public void readNbt(NbtCompound tag) {
 		seed = tag.getInt("Seed");
 		item = ItemStack.fromNbt(tag.getCompound("Item"));
-	}
-	
-	@Override
-	public NbtCompound toClientTag(NbtCompound tag) {
-		tag.putInt("Seed", seed);
-		tag.put("Item", item.writeNbt(new NbtCompound()));
-		return tag;
-	}
-	
-	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
-		fromClientTag(tag);
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		toClientTag(tag);
+	public void writeNbt(NbtCompound tag) {
+		tag.putInt("Seed", seed);
+		tag.put("Item", item.writeNbt(new NbtCompound()));
 		if (owner != null) tag.putUuid("Owner", owner);
-		return super.writeNbt(tag);
 	}
 	
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return toClientTag(super.toInitialChunkDataNbt());
-	}
+//	@Override
+//	public NbtCompound toInitialChunkDataNbt() {
+//		return toClientTag(super.toInitialChunkDataNbt());
+//	}
 
 	@Override
 	public void clear() {

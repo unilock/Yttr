@@ -35,8 +35,8 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 	private final List<BlockPos> queueQueue = Lists.newArrayList();
 	private final Set<BlockPos> scannedThisLayer = Sets.newHashSet();
 	
-	public SqueezedLeavesBlockEntity() {
-		super(YBlockEntities.SQUEEZED_LEAVES);
+	public SqueezedLeavesBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.SQUEEZED_LEAVES, pos, state);
 	}
 	
 	public boolean step() {
@@ -135,15 +135,12 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag = super.writeNbt(tag);
+	public void writeNbt(NbtCompound tag) {
 		tag.putInt("DecayTime", decayTime);
-		return tag;
 	}
 	
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		decayTime = tag.getInt("DecayTime");
 	}
 	

@@ -87,7 +87,6 @@ public class YConfig {
 	public static final class WorldGen {
 		public static final boolean gadolinite = data.getBoolean("worldgen.gadolinite").orElse(true);
 		public static final boolean brookite   = data.getBoolean("worldgen.brookite").orElse(true);
-		public static final Trilean copper     = data.getEnum("worldgen.copper", Trilean.class).orElse(Trilean.AUTO);
 		
 		public static final boolean squeezeTrees = data.getBoolean("worldgen.squeeze-trees").orElse(true);
 		public static final boolean wasteland    = data.getBoolean("worldgen.wasteland").orElse(true);

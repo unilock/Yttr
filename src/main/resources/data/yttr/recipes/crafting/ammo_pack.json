@@ -10,7 +10,7 @@
 	"key": {
 		"L": { "item": "minecraft:leather" },
 		"Y": { "item": "yttr:yttrium_ingot" },
-		"C": { "tag": "yttr:copper_ingots" }
+		"C": { "item": "minecraft:copper_ingot" }
 	},
 	"result": {
 		"item": "yttr:ammo_pack"

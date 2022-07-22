@@ -14,6 +14,7 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -53,11 +54,10 @@ public class RifleHUDRenderer extends IHasAClient {
 				int minDim = Math.min(mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight());
 				matrices.scale(minDim/2, minDim/2, 1);
 				matrices.scale(1-((1-scopeA)/6), 1-((1-scopeA)/6), 1);
-				RenderSystem.disableAlphaTest();
 				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
 				RifleMode mode = rifleItem.getMode(rifleStack);
-				RenderSystem.color4f(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
+				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
 				int col = ((int)(scopeA*255)&0xFF)<<24;
 				DrawableHelper.drawTexture(matrices, -1, -1, 0, 0, 2, 2, 2, 2);
 				DrawableHelper.fill(matrices, -100, -2, -1, 2, col);
@@ -65,11 +65,10 @@ public class RifleHUDRenderer extends IHasAClient {
 				DrawableHelper.fill(matrices, -1, -2, 1, -1, col);
 				DrawableHelper.fill(matrices, -1, 1, 1, 2, col);
 				matrices.scale(0.25f, 0.75f, 1);
-				RenderSystem.color4f(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
+				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
 				for (int p = 0; p < 2; p++) {
-					RenderSystem.color4f(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA/(p+1));
+					RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA/(p+1));
 					mc.getTextureManager().bindTexture(MODES);
-					RenderSystem.disableAlphaTest();
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
 					{
@@ -79,7 +78,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float height = 2;
 						int textureWidth = RifleMode.ALL_VALUES.size()*2;
 						int textureHeight = 2;
-						Matrix4f mat = matrices.peek().getModel();
+						Matrix4f mat = matrices.peek().getPositionMatrix();
 						float x1 = 4.4f-(p/8f);
 						float x2 = x1 + width;
 						float y1 = -0.88f;
@@ -89,7 +88,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float minV = (v + 0) / textureHeight;
 						float maxV = (v + height) / textureHeight;
 						BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-						bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
+						bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 						bufferBuilder.vertex(mat, x1, y2-0.2f, 0).texture(minU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y2, 0).texture(maxU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y1, 0).texture(maxU, minV).next();
@@ -108,7 +107,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float height = mH-f;
 						float textureWidth = mH;
 						float textureHeight = mH;
-						Matrix4f mat = matrices.peek().getModel();
+						Matrix4f mat = matrices.peek().getPositionMatrix();
 						float x1 = -1.3f+(p/32f);
 						float x2 = x1 + width;
 						float y1 = f-(mH/2);
@@ -118,7 +117,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float minV = (v + 0) / textureHeight;
 						float maxV = (v + height) / textureHeight;
 						BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-						bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
+						bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 						bufferBuilder.vertex(mat, x1, y2, 0).texture(minU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y2, 0).texture(maxU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y1, 0).texture(maxU, minV).next();
@@ -146,14 +145,13 @@ public class RifleHUDRenderer extends IHasAClient {
 					int ammo = rifleItem.getPotentialAmmoCount(mc.player, mode);
 					boolean canned = rifleItem.isAmmoCanned(mc.player, mode);
 					if (ammo == 0) {
-						RenderSystem.color4f(0.25f, 0.25f, 0.25f, a);
+						RenderSystem.setShaderColor(0.25f, 0.25f, 0.25f, a);
 					} else {
-						RenderSystem.color4f(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, a);
+						RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, a);
 					}
 					int x = (int)((MathHelper.sin(f)*64)-8);
 					int y = (int)((MathHelper.cos(f)*48)+16);
 					// text renderer messes up the render state, so we have to set it every loop
-					RenderSystem.disableAlphaTest();
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
 					DrawableHelper.drawTexture(matrices, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.ALL_VALUES.size()*16, 16);
@@ -169,9 +167,9 @@ public class RifleHUDRenderer extends IHasAClient {
 								int cx = x+18-w;
 								int cy = y+12;
 								if (p == 0) {
-									RenderSystem.color4f(0.25f, 0.25f, 0.25f, a);
+									RenderSystem.setShaderColor(0.25f, 0.25f, 0.25f, a);
 								} else {
-									RenderSystem.color4f(1, 1, 1, a);
+									RenderSystem.setShaderColor(1, 1, 1, a);
 									cx--;
 									cy--;
 								}
@@ -192,7 +190,6 @@ public class RifleHUDRenderer extends IHasAClient {
 					}
 				}
 			matrices.pop();
-			RenderSystem.enableAlphaTest();
 		}
 	}
 	
@@ -221,7 +218,7 @@ public class RifleHUDRenderer extends IHasAClient {
 		}
 		rifleStack = stack;
 		rifleItem = (RifleItem)stack.getItem();
-		if (mc.options.keySwapHands.isPressed() || mc.options.keySwapHands.wasPressed()) {
+		if (mc.options.swapHandsKey.isPressed() || mc.options.swapHandsKey.wasPressed()) {
 			if (ticksSinceOpen == -1) {
 				ticksSinceOpen = 0;
 				ticksSinceClose = -1;
@@ -232,10 +229,10 @@ public class RifleHUDRenderer extends IHasAClient {
 			RifleMode current = rifleItem.getMode(stack);
 			RifleMode next = current;
 			// drain timesPressed to prevent vanilla behavior
-			while (mc.options.keySwapHands.wasPressed()) {}
-			if (mc.options.keyUse.wasPressed()) {
-				while (mc.options.keyUse.wasPressed()) {}
-				mc.options.keyUse.setPressed(false);
+			while (mc.options.swapHandsKey.wasPressed()) {}
+			if (mc.options.useKey.wasPressed()) {
+				while (mc.options.useKey.wasPressed()) {}
+				mc.options.useKey.setPressed(false);
 				if (changeSignum == 0) {
 					ticksSinceChange = 0;
 				} else {
@@ -244,9 +241,9 @@ public class RifleHUDRenderer extends IHasAClient {
 				changeSignum++;
 				next = current.next();
 			}
-			if (mc.options.keyAttack.wasPressed()) {
-				while (mc.options.keyAttack.wasPressed()) {}
-				mc.options.keyAttack.setPressed(false);
+			if (mc.options.attackKey.wasPressed()) {
+				while (mc.options.attackKey.wasPressed()) {}
+				mc.options.attackKey.setPressed(false);
 				if (changeSignum == 0) {
 					ticksSinceChange = 0;
 				} else {

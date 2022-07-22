@@ -17,6 +17,7 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -24,7 +25,7 @@ import net.minecraft.world.WorldView;
 
 public abstract class VoidFluid extends FlowableFluid {
 
-	public static final DustParticleEffect BLACK_DUST = new DustParticleEffect(0, 0, 0, 1);
+	public static final DustParticleEffect BLACK_DUST = new DustParticleEffect(Vec3f.ZERO, 1);
 	
 	public static class Flowing extends VoidFluid {
 		@Override

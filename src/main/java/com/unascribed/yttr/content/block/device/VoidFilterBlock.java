@@ -24,7 +24,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
@@ -43,8 +42,8 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new VoidFilterBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new VoidFilterBlockEntity(pos, state);
 	}
 	
 	@Override

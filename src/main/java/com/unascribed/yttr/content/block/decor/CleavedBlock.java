@@ -62,7 +62,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return new CleavedBlockEntity();
+		return new CleavedBlockEntity(pos, state);
 	}
 	
 	@Override

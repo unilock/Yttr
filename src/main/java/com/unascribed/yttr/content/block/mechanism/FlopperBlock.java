@@ -2,12 +2,16 @@ package com.unascribed.yttr.content.block.mechanism;
 
 import java.util.stream.Stream;
 
+import com.unascribed.yttr.fuckmojang.YTickable;
+
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -16,6 +20,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public class FlopperBlock extends HopperBlock {
 
@@ -98,8 +103,13 @@ public class FlopperBlock extends HopperBlock {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new FlopperBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new FlopperBlockEntity(pos, state);
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 
 }

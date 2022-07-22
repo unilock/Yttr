@@ -45,7 +45,7 @@ public class VoidFluidBlock extends FluidBlock {
 			if (entity instanceof ItemEntity) {
 				ItemStack stack = ((ItemEntity) entity).getStack();
 				if (stack.isIn(YTags.Item.VOID_IMMUNE)) return;
-				entity.remove();
+				entity.discard();
 			}
 			if (entity instanceof LivingEntity) {
 				LivingEntity le = (LivingEntity)entity;

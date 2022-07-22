@@ -20,6 +20,7 @@ import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
@@ -36,7 +37,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 		}
 		
 		@Override
-		public boolean doDrawHoveringEffect() {
+		public boolean isEnabled() {
 			return false;
 		}
 		
@@ -81,7 +82,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 
 	}
 
-	protected static void updateResult(int syncId, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+	protected static void updateResult(int syncId, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory, ScreenHandler handler) {
 		if (!world.isClient) {
 			ServerPlayerEntity spe = (ServerPlayerEntity)player;
 			ItemStack res = ItemStack.EMPTY;
@@ -94,14 +95,14 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 			}
 
 			resultInventory.setStack(0, res);
-			spe.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 0, res));
+			spe.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, handler.nextRevision(), 0, res));
 		}
 	}
 
 	@Override
 	public void onContentChanged(Inventory inventory) {
 		context.run((world, blockPos) -> {
-			updateResult(syncId, world, player, input, result);
+			updateResult(syncId, world, player, input, result, this);
 		});
 	}
 
@@ -125,7 +126,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 	public void close(PlayerEntity player) {
 		super.close(player);
 		context.run((world, blockPos) -> {
-			dropInventory(player, world, input);
+			dropInventory(player, input);
 		});
 	}
 
@@ -174,10 +175,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 				return ItemStack.EMPTY;
 			}
 
-			ItemStack itemStack3 = slot.onTakeItem(player, itemStack2);
-			if (index == 0) {
-				player.dropItem(itemStack3, false);
-			}
+			slot.onTakeItem(player, itemStack2);
 		}
 
 		return itemStack;
@@ -213,5 +211,10 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 	@Environment(EnvType.CLIENT)
 	public RecipeBookCategory getCategory() {
 		return RecipeBookCategory.CRAFTING;
+	}
+
+	@Override
+	public boolean canInsertIntoSlot(int index) {
+		return index != this.getCraftingResultSlotIndex();
 	}
 }

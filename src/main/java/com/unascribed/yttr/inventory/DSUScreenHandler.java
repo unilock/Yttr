@@ -57,7 +57,7 @@ public class DSUScreenHandler extends GenericContainerScreenHandler {
 	}
 
 	@Override
-	public ItemStack onSlotClick(int i, int j, SlotActionType actionType, PlayerEntity playerEntity) {
+	public void onSlotClick(int i, int j, SlotActionType actionType, PlayerEntity playerEntity) {
 		if (i >= 0 && i < slots.size()) {
 			Slot slot = slots.get(i);
 			if (slot != null && !(slot.inventory instanceof PlayerInventory) && actionType == SlotActionType.QUICK_MOVE) {
@@ -70,12 +70,12 @@ public class DSUScreenHandler extends GenericContainerScreenHandler {
 				}
 				all.setCount(all.getCount()-(all.getMaxCount()-some.getCount()));
 				slot.setStack(all);
-				return ItemStack.EMPTY;
+				return;
 			}
 		}
 		try {
 			increaseStackSize.get().increment();
-			return super.onSlotClick(i, j, actionType, playerEntity);
+			super.onSlotClick(i, j, actionType, playerEntity);
 		} finally {
 			increaseStackSize.get().decrement();
 		}
@@ -103,20 +103,20 @@ public class DSUScreenHandler extends GenericContainerScreenHandler {
 	}
 
 	@Override
-	public void setStackInSlot(int slot, ItemStack stack) {
+	public void setStackInSlot(int slot, int revision, ItemStack stack) {
 		try {
 			increaseStackSize.get().increment();
-			super.setStackInSlot(slot, stack);
+			super.setStackInSlot(slot, revision, stack);
 		} finally {
 			increaseStackSize.get().decrement();
 		}
 	}
 
 	@Override
-	public void updateSlotStacks(List<ItemStack> stacks) {
+	public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
 		try {
 			increaseStackSize.get().increment();
-			super.updateSlotStacks(stacks);
+			super.updateSlotStacks(revision, stacks, cursorStack);
 		} finally {
 			increaseStackSize.get().decrement();
 		}

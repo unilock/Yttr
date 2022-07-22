@@ -1,8 +1,10 @@
 package com.unascribed.yttr.content.block.mechanism;
 
+import java.util.Optional;
+
 import com.unascribed.yttr.content.fluid.VoidFluid;
 import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.init.YFluids;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 
 import net.minecraft.block.Block;
@@ -14,10 +16,10 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -39,8 +41,8 @@ public class VoidCauldronBlock extends Block implements FluidDrainable, BlockEnt
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new VoidCauldronBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new VoidCauldronBlockEntity(pos, state);
 	}
 	
 	@Override
@@ -83,9 +85,14 @@ public class VoidCauldronBlock extends Block implements FluidDrainable, BlockEnt
 	}
 
 	@Override
-	public Fluid tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
+	public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, Blocks.CAULDRON.getDefaultState(), 3);
-		return YFluids.VOID;
+		return new ItemStack(YItems.VOID_BUCKET);
+	}
+
+	@Override
+	public Optional<SoundEvent> getBucketFillSound() {
+		return Optional.empty();
 	}
 	
 	

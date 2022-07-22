@@ -1,8 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
 
@@ -12,7 +11,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
@@ -37,18 +35,17 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 			float time = ((ticks-entity.squeezeBegin)+tickDelta)%4;
 			final float TAU = (float)(Math.PI*2);
 			float a = 0.75f+((MathHelper.sin((time/4)*TAU)+1)/8);
-			GlStateManager.matrixMode(GL11.GL_TEXTURE);
-			GlStateManager.pushMatrix();
+			glMatrixMode(GL_TEXTURE);
+			glPushMatrix();
 			Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(new Identifier("yttr", "block/squeeze_leaves"));
 			float w = sprite.getMaxU()-sprite.getMinU();
 			float h = sprite.getMaxV()-sprite.getMinV();
-			GlStateManager.translatef(sprite.getMinU(), sprite.getMinV(), 0);
-			GlStateManager.translatef(w/2, h/2, 0);
-			GlStateManager.scalef(a, a, a);
-			GlStateManager.translatef(-w/2, -h/2, 0);
-			GlStateManager.translatef(-sprite.getMinU(), -sprite.getMinV(), 0);
-			GlStateManager.matrixMode(GL11.GL_MODELVIEW);
-			
+			glTranslatef(sprite.getMinU(), sprite.getMinV(), 0);
+			glTranslatef(w/2, h/2, 0);
+			glScalef(a, a, a);
+			glTranslatef(-w/2, -h/2, 0);
+			glTranslatef(-sprite.getMinU(), -sprite.getMinV(), 0);
+			glMatrixMode(GL_MODELVIEW);
 			matrices.push();
 			matrices.translate(0.5, 0.5, 0.5);
 			matrices.scale(a, a, a);
@@ -61,9 +58,9 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 			imm.draw(layer);
 			matrices.pop();
 			
-			GlStateManager.matrixMode(GL11.GL_TEXTURE);
-			GlStateManager.popMatrix();
-			GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+			glMatrixMode(GL_TEXTURE);
+			glPopMatrix();
+			glMatrixMode(GL_MODELVIEW);
 		} else {
 			entity.squeezeBegin = -1;
 		}

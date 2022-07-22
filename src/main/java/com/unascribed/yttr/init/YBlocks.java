@@ -71,13 +71,11 @@ import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidGeyserBlock;
 import com.unascribed.yttr.mixin.accessor.AccessorBlock;
-import com.unascribed.yttr.util.LatchReference;
 import com.unascribed.yttr.util.annotate.RenderLayer;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -96,8 +94,8 @@ import net.minecraft.block.TorchBlock;
 import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
@@ -108,25 +106,22 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-//TODO: move to tool tags
 public class YBlocks {
 
 	private static final FabricBlockSettings METALLIC_SETTINGS = FabricBlockSettings.of(Material.METAL)
 			.strength(4)
 			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1);
+			.sounds(BlockSoundGroup.METAL);
 
 	private static final FabricBlockSettings INRED_DEVICE_SETTINGS = FabricBlockSettings.of(Material.DECORATION)
 			.strength(0.5F, 8)
-			.breakByHand(true)
 			.breakInstantly()
 			.materialColor(MapColor.CYAN);
 	
@@ -144,8 +139,6 @@ public class YBlocks {
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.STONE)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
 	public static final Block YTTRIUM_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
@@ -196,8 +189,8 @@ public class YBlocks {
 			// no-op to prevent deadlock, and as core lava doesn't flow
 		}
 		@Override
-		public Fluid tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
-			return Fluids.LAVA;
+		public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
+			return new ItemStack(Items.LAVA_BUCKET);
 		}
 		@Override
 		public PistonBehavior getPistonBehavior(BlockState state) {
@@ -212,8 +205,6 @@ public class YBlocks {
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
 			.nonOpaque()
 		);
 	@RenderLayer("cutout_mipped")
@@ -221,8 +212,6 @@ public class YBlocks {
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
 	public static final VoidGeyserBlock VOID_GEYSER = new VoidGeyserBlock(FabricBlockSettings.of(Material.STONE)
 			.strength(-1, 9000000)
@@ -231,16 +220,13 @@ public class YBlocks {
 	public static final DormantVoidGeyserBlock DORMANT_VOID_GEYSER = new DormantVoidGeyserBlock(FabricBlockSettings.copyOf(VOID_GEYSER)
 			.nonOpaque());
 	public static final Block BEDROCK_SMASHER = new BedrockSmasherBlock(FabricBlockSettings.of(Material.STONE)
-			.breakByTool(FabricToolTags.PICKAXES, 3)
 			.strength(35, 4000));
 	public static final Block RUINED_BEDROCK = new Block(FabricBlockSettings.of(Material.STONE)
-			.breakByTool(FabricToolTags.PICKAXES, 3)
 			.strength(75, 9000000)
 			.nonOpaque()
 		);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID = new Block(FabricBlockSettings.of(Material.STONE)
-			.breakByTool(FabricToolTags.PICKAXES)
 			.strength(7)
 			.nonOpaque()
 		) {
@@ -251,16 +237,12 @@ public class YBlocks {
 	};
 	public static final Block SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
-			.breakByTool(FabricToolTags.HOES)
-			.breakByTool(FabricToolTags.AXES)
 			.strength(2)
 		);
 	public static final Block STRIPPED_SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.copyOf(SQUEEZE_LOG));
 	@RenderLayer("cutout_mipped")
 	public static final Block SQUEEZE_LEAVES = new SqueezeLeavesBlock(FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
-			.breakByTool(FabricToolTags.HOES)
-			.breakByTool(FabricToolTags.SHEARS)
 			.strength(0.2f)
 			.suffocates((bs, bv, pos) -> false)
 			.blockVision((bs, bv, pos) -> false)
@@ -286,29 +268,27 @@ public class YBlocks {
 	public static final Block LAMP = new LampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
-			.breakByTool(FabricToolTags.PICKAXES)
 		);
 	@RenderLayer("cutout")
 	public static final Block FIXTURE = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
-			.breakByTool(FabricToolTags.PICKAXES), 12, 2, 10, 6);
+			, 12, 2, 10, 6);
 	@RenderLayer("cutout")
 	public static final Block CAGE_LAMP = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
-			.breakByTool(FabricToolTags.PICKAXES), 10, 2, 6, 10);
+			, 10, 2, 6, 10);
 	@RenderLayer("cutout")
 	public static final Block PANEL = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
-			.breakByTool(FabricToolTags.PICKAXES), 14, 1, 12, 1);
+			, 14, 1, 12, 1);
 	
 	
 	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
-			.breakByTool(FabricToolTags.PICKAXES)
 			.strength(7)
 			.nonOpaque()
 		) {
@@ -351,16 +331,12 @@ public class YBlocks {
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.STONE)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
 	
 	public static final Block COMPRESSED_ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
 			.strength(6)
 			.requiresTool()
 			.sounds(BlockSoundGroup.STONE)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 2)
 		);
 	
 	public static final EncasedVoidFilterBlock ENCASED_VOID_FILTER = new EncasedVoidFilterBlock(FabricBlockSettings.copyOf(BEDROCK_SMASHER));
@@ -368,7 +344,6 @@ public class YBlocks {
 			.resistance(4000));
 	
 	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.of(Material.STONE)
-			.breakByTool(FabricToolTags.PICKAXES, 3)
 			.strength(45, 0)
 		);
 	
@@ -390,18 +365,10 @@ public class YBlocks {
 	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE)
 			.strength(4)
 			.requiresTool()
-			.sounds(BlockSoundGroup.STONE)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 2)
-		) {
-		@Override
-		protected int getExperienceWhenMined(Random rand) {
-			return 1+rand.nextInt(5);
-		}
-	};
+			.sounds(BlockSoundGroup.STONE), UniformIntProvider.create(1, 5)
+		);
 	
 	public static final RootOfContinuityBlock ROOT_OF_CONTINUITY = new RootOfContinuityBlock(FabricBlockSettings.of(Material.GLASS)
-			.breakByTool(FabricToolTags.PICKAXES)
 			.strength(20)
 			.luminance(4)
 			.sounds(RootOfContinuityBlock.SOUND_GROUP)
@@ -409,7 +376,6 @@ public class YBlocks {
 	
 	public static final YttriumButtonBlock YTTRIUM_BUTTON = new YttriumButtonBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(1)
-			.breakByTool(FabricToolTags.PICKAXES)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL)
 			.noCollision());
@@ -418,8 +384,6 @@ public class YBlocks {
 			.strength(3)
 			.requiresTool()
 			.sounds(BlockSoundGroup.NETHERITE)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
 	
 	public static final AirBlock TEMPORARY_LIGHT_AIR = new AirBlock(FabricBlockSettings.of(Material.AIR)
@@ -457,8 +421,7 @@ public class YBlocks {
 		);
 	
 	@RenderLayer("cutout")
-	public static final FernBlock WASTELAND_GRASS = new FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)
-			.breakByTool(FabricToolTags.SHOVELS)) {
+	public static final FernBlock WASTELAND_GRASS = new FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)) {
 		@Override
 		protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
 			return floor.isOf(YBlocks.WASTELAND_DIRT);
@@ -615,8 +578,6 @@ public class YBlocks {
 	public static final InRedOscillatorBlock INRED_OSCILLATOR = new InRedOscillatorBlock(INRED_DEVICE_SETTINGS);
 	public static final InRedDemoCyclerBlock INRED_DEMO_CYCLER = new InRedDemoCyclerBlock(INRED_DEVICE_SETTINGS);
 
-	public static final LatchReference<Block> COPPER_ORE = YLatches.create();
-	
 	public static final Block CUPROSTEEL_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final CuprosteelPressurePlateBlock CUPROSTEEL_PLATE = new CuprosteelPressurePlateBlock(METALLIC_SETTINGS);
 	
@@ -633,9 +594,6 @@ public class YBlocks {
 	
 	public static final RafterBlock RAFTER = new RafterBlock(METALLIC_SETTINGS);
 	public static final ProjectTableBlock PROJECT_TABLE = new ProjectTableBlock(FabricBlockSettings.of(Material.STONE, MapColor.PINK)
-			.breakByHand(true)
-			.breakByTool(FabricToolTags.PICKAXES)
-			.breakByTool(FabricToolTags.AXES)
 			.hardness(1.5f)
 			.sounds(BlockSoundGroup.WOOD));
 	@RenderLayer("cutout_mipped")

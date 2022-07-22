@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
 import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -151,7 +150,7 @@ public class SuitScreen extends Screen {
 			client.player.setPos(client.player.getPos().x, -12, client.player.getPos().z);
 			client.player.fallDistance = 0;
 			if (!Yttr.isWearingFullSuit(client.player)) {
-				client.openScreen(null);
+				client.setScreen(null);
 			}
 		}
 		if (!fastDiving) {
@@ -224,30 +223,30 @@ public class SuitScreen extends Screen {
 		factor *= (client.options.distortionEffectScale+0.2f);
 		factor /= 2;
 		if (factor > 0 || factor < 0) {
-			float t = ticks+delta;
-			RenderSystem.matrixMode(GL11.GL_PROJECTION);
-			RenderSystem.pushMatrix();
-			RenderSystem.translatef(width/2+((MathHelper.sin(t/2)*20)*factor), height/2, 0);
-			RenderSystem.rotatef((MathHelper.sin(t)*30)*(factor/4), 0, 0, 1);
-			if (factor > 0.3f || factor < -0.3f) {
-				float sig = Math.signum(factor);
-				float f = (Math.abs(factor)-0.3f)*sig;
-				MATRIX_BUFFER.clear();
-				MATRIX_BUFFER.put(1).put(MathHelper.cos(t*4)/8*f).put(0).put(0);
-				MATRIX_BUFFER.put(MathHelper.sin(t)/2*f).put(1).put(0).put(0);
-				MATRIX_BUFFER.put(0).put(0).put(1).put(0);
-				MATRIX_BUFFER.put(0).put(0).put(0).put(1);
-				MATRIX_BUFFER.flip();
-				GlStateManager.multMatrix(MATRIX_BUFFER);
-			}
-			RenderSystem.translatef(-width/2, -height/2, 0);
-			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+//			float t = ticks+delta;
+//			RenderSystem.matrixMode(GL11.GL_PROJECTION);
+//			RenderSystem.pushMatrix();
+//			RenderSystem.translatef(width/2+((MathHelper.sin(t/2)*20)*factor), height/2, 0);
+//			RenderSystem.rotatef((MathHelper.sin(t)*30)*(factor/4), 0, 0, 1);
+//			if (factor > 0.3f || factor < -0.3f) {
+//				float sig = Math.signum(factor);
+//				float f = (Math.abs(factor)-0.3f)*sig;
+//				MATRIX_BUFFER.clear();
+//				MATRIX_BUFFER.put(1).put(MathHelper.cos(t*4)/8*f).put(0).put(0);
+//				MATRIX_BUFFER.put(MathHelper.sin(t)/2*f).put(1).put(0).put(0);
+//				MATRIX_BUFFER.put(0).put(0).put(1).put(0);
+//				MATRIX_BUFFER.put(0).put(0).put(0).put(1);
+//				MATRIX_BUFFER.flip();
+//				RenderSystem.multMatrix(MATRIX_BUFFER);
+//			}
+//			RenderSystem.translatef(-width/2, -height/2, 0);
+//			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
 		}
 		sr.setUp();
 		sr.drawText(matrices, "distance", 10, height-78, delta);
 		int dist = 0;
 		if (client.player != null) {
-			dist = (int)MathHelper.sqrt(client.player.getPos().squaredDistanceTo(posX, client.player.getPos().y, posZ));
+			dist = (int)Math.sqrt(client.player.getPos().squaredDistanceTo(posX, client.player.getPos().y, posZ));
 		}
 		sr.drawText(matrices, "distance-num", dist+"m", 10, height-66, delta);
 		
@@ -376,14 +375,14 @@ public class SuitScreen extends Screen {
 		
 		sr.tearDown();
 		if (factor > 0 || factor < 0) {
-			RenderSystem.matrixMode(GL11.GL_PROJECTION);
-			RenderSystem.popMatrix();
-			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+//			RenderSystem.matrixMode(GL11.GL_PROJECTION);
+//			RenderSystem.popMatrix();
+//			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
 		}
 	}
 	
 	@Override
-	public boolean isPauseScreen() {
+	public boolean shouldPause() {
 		return false;
 	}
 	
@@ -429,16 +428,16 @@ public class SuitScreen extends Screen {
 	
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (client.options.keyForward.matchesKey(keyCode, scanCode)) {
+		if (client.options.forwardKey.matchesKey(keyCode, scanCode)) {
 			holdingForward = true;
 		}
-		if (client.options.keyLeft.matchesKey(keyCode, scanCode)) {
+		if (client.options.leftKey.matchesKey(keyCode, scanCode)) {
 			holdingLeft = true;
 		}
-		if (client.options.keyRight.matchesKey(keyCode, scanCode)) {
+		if (client.options.rightKey.matchesKey(keyCode, scanCode)) {
 			holdingRight = true;
 		}
-		if (client.options.keyBack.matchesKey(keyCode, scanCode)) {
+		if (client.options.backKey.matchesKey(keyCode, scanCode)) {
 			holdingBack = true;
 		}
 		return super.keyPressed(keyCode, scanCode, modifiers);
@@ -446,16 +445,16 @@ public class SuitScreen extends Screen {
 	
 	@Override
 	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-		if (client.options.keyForward.matchesKey(keyCode, scanCode)) {
+		if (client.options.forwardKey.matchesKey(keyCode, scanCode)) {
 			holdingForward = false;
 		}
-		if (client.options.keyLeft.matchesKey(keyCode, scanCode)) {
+		if (client.options.leftKey.matchesKey(keyCode, scanCode)) {
 			holdingLeft = false;
 		}
-		if (client.options.keyRight.matchesKey(keyCode, scanCode)) {
+		if (client.options.rightKey.matchesKey(keyCode, scanCode)) {
 			holdingRight = false;
 		}
-		if (client.options.keyBack.matchesKey(keyCode, scanCode)) {
+		if (client.options.backKey.matchesKey(keyCode, scanCode)) {
 			holdingBack = false;
 		}
 		return super.keyReleased(keyCode, scanCode, modifiers);

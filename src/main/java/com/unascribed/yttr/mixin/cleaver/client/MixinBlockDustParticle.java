@@ -30,7 +30,7 @@ public abstract class MixinBlockDustParticle extends SpriteBillboardParticle {
 		if (bp != null) {
 			BlockEntity be = world.getBlockEntity(bp);
 			if (be instanceof CleavedBlockEntity) {
-				setSprite(MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getSprite(((CleavedBlockEntity) be).getDonor()));
+				setSprite(MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModelParticleSprite(((CleavedBlockEntity) be).getDonor()));
 			}
 		}
 	}

@@ -77,4 +77,14 @@ public class VertexObserver implements VertexConsumer {
 	public VertexConsumer color(int red, int green, int blue, int alpha) {
 		return this;
 	}
+
+	@Override
+	public void fixedColor(int var1, int var2, int var3, int var4) {
+		
+	}
+
+	@Override
+	public void unfixColor() {
+		
+	}
 }

@@ -11,6 +11,8 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.Magnetized;
 
+import com.google.common.collect.Iterables;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -70,14 +72,14 @@ public class MixinEntity implements Magnetized {
 		if (receptiveBelow) {
 			Box box = self.getBoundingBox();
 			Box bottom = new Box(box.minX, box.minY-0.5, box.minZ, box.maxX, box.minY, box.maxZ);
-			if (self.world.getBlockCollisions(self, bottom).anyMatch(vs -> vs instanceof MagneticVoxelShape)) {
+			if (Iterables.any(self.world.getBlockCollisions(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
 				yttr$magnetizedBelow = true;
 			}
 		}
 		if (receptiveAbove) {
 			Box box = self.getBoundingBox();
 			Box top = new Box(box.minX, box.maxY, box.minZ, box.maxX, box.maxY+0.5, box.maxZ);
-			if (self.world.getBlockCollisions(self, top).anyMatch(vs -> {
+			if (Iterables.any(self.world.getBlockCollisions(self, top), vs -> {
 				if (!(vs instanceof MagneticVoxelShape)) return false;
 				double min = vs.getMin(Axis.Y);
 				if (min < box.maxY) return false;
@@ -92,10 +94,10 @@ public class MixinEntity implements Magnetized {
 			if (yttr$magnetizedBelow && !(self instanceof IronGolemEntity) && !(self instanceof ItemEntity)) {
 				self.damage(YTTR$MAGNET, 2);
 			}
-			if (Math.abs(self.pitch) > 0.01 && self.world.random.nextInt(20) == 0) {
+			if (Math.abs(self.getPitch()) > 0.01 && self.world.random.nextInt(20) == 0) {
 				self.playSound(YSounds.MAGNET_STEP, 1, 1);
 			}
-			self.pitch /= 2;
+			self.setPitch(self.getPitch() / 2);
 		} else if (yttr$magnetizedBelow) {
 			self.setVelocity(self.getVelocity().x, Math.min(self.getVelocity().y, -0.9), self.getVelocity().z);
 		}

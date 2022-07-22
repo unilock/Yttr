@@ -1,21 +1,21 @@
 package com.unascribed.yttr.client.particle;
 
-import org.lwjgl.opengl.GL11;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.client.YttrClient;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.particle.BillboardParticle;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Shader;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -44,18 +44,17 @@ public class VoidBallParticle extends BillboardParticle {
 				buf3.close();
 				buf1 = buf2 = buf3 = null;
 			}
-			MinecraftClient mc = MinecraftClient.getInstance();
-			mc.getTextureManager().bindTexture(TEXTURE);
-			Tessellator.getInstance().getBuffer().begin(7, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
-			setColorAlpha(age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
+			RenderSystem.setShaderTexture(0, TEXTURE);
+			Tessellator.getInstance().getBuffer().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
+			setAlpha(age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
 			super.buildGeometry(vertexConsumer, camera, tickDelta);
 			Tessellator.getInstance().draw();
 			return;
 		}
 		if (buf1 == null) {
-			buf1 = new VertexBuffer(VertexFormats.POSITION);
-			buf2 = new VertexBuffer(VertexFormats.POSITION);
-			buf3 = new VertexBuffer(VertexFormats.POSITION);
+			buf1 = new VertexBuffer();
+			buf2 = new VertexBuffer();
+			buf3 = new VertexBuffer();
 			BufferBuilder bb = Tessellator.getInstance().getBuffer();
 			
 			final float PI = (float)Math.PI;
@@ -67,7 +66,7 @@ public class VoidBallParticle extends BillboardParticle {
 		
 			float x, y, z;
 			float rho, drho, theta, dtheta;
-			int i, j, imin, imax;
+			int i, j, k, l, imin, imax;
 			float nsign;
 
 			nsign = 1.0f;
@@ -76,7 +75,7 @@ public class VoidBallParticle extends BillboardParticle {
 			dtheta = 2.0f * PI / slices;
 			
 			// draw +Z end as a triangle fan
-			bb.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION);
+			bb.begin(DrawMode.TRIANGLE_FAN, VertexFormats.POSITION);
 			bb.vertex(0.0f, 0.0f, nsign * radius).next();
 			for (j = 0; j <= slices; j++) {
 				theta = (j == slices) ? 0.0f : j * dtheta;
@@ -92,26 +91,30 @@ public class VoidBallParticle extends BillboardParticle {
 			imax = stacks - 1;
 
 			// draw intermediate stacks as quad strips
-			bb.begin(GL11.GL_QUAD_STRIP, VertexFormats.POSITION);
+			// actually quads, mojang ate quad strips in 1.17
+			bb.begin(DrawMode.QUADS, VertexFormats.POSITION);
 			for (i = imin; i < imax; i++) {
 				rho = i * drho;
-				for (j = 0; j <= slices; j++) {
-					theta = (j == slices) ? 0.0f : j * dtheta;
-					x = -MathHelper.sin(theta) * MathHelper.sin(rho);
-					y = MathHelper.cos(theta) * MathHelper.sin(rho);
-					z = nsign * MathHelper.cos(rho);
-					bb.vertex(x * radius, y * radius, z * radius).next();
-					x = -MathHelper.sin(theta) * MathHelper.sin(rho + drho);
-					y = MathHelper.cos(theta) * MathHelper.sin(rho + drho);
-					z = nsign * MathHelper.cos(rho + drho);
-					bb.vertex(x * radius, y * radius, z * radius).next();
+				for (j = 0; j < slices; j++) {
+					for (k = 0; k < 2; k++) {
+						l = j+k;
+						theta = (l == slices) ? 0.0f : l * dtheta;
+						x = -MathHelper.sin(theta) * MathHelper.sin(rho);
+						y = MathHelper.cos(theta) * MathHelper.sin(rho);
+						z = nsign * MathHelper.cos(rho);
+						bb.vertex(x * radius, y * radius, z * radius).next();
+						x = -MathHelper.sin(theta) * MathHelper.sin(rho + drho);
+						y = MathHelper.cos(theta) * MathHelper.sin(rho + drho);
+						z = nsign * MathHelper.cos(rho + drho);
+						bb.vertex(x * radius, y * radius, z * radius).next();
+					}
 				}
 			}
 			bb.end();
 			buf2.upload(bb);
 			
 			// draw -Z end as a triangle fan
-			bb.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION);
+			bb.begin(DrawMode.TRIANGLE_FAN, VertexFormats.POSITION);
 			bb.vertex(0.0f, 0.0f, -radius * nsign).next();
 			rho = PI - drho;
 			for (j = slices; j >= 0; j--) {
@@ -129,33 +132,24 @@ public class VoidBallParticle extends BillboardParticle {
 		float ox = (float)(MathHelper.lerp(tickDelta, prevPosX, x) - cam.getX());
 		float oy = (float)(MathHelper.lerp(tickDelta, prevPosY, y) - cam.getY());
 		float oz = (float)(MathHelper.lerp(tickDelta, prevPosZ, z) - cam.getZ());
-		GlStateManager.pushMatrix();
-		GlStateManager.color4f(0, 0, 0, age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
-		GlStateManager.translatef(ox, oy, oz);
-		GlStateManager.scalef(scale-0.5f, scale-0.5f, scale-0.5f);
-		GlStateManager.disableTexture();
-		GlStateManager.depthMask(false);
-		GlStateManager.disableCull();
+		MatrixStack ms = RenderSystem.getModelViewStack();
+		ms.push();
+		Shader old = RenderSystem.getShader();
+		RenderSystem.setShader(GameRenderer::getPositionShader);
+		RenderSystem.setShaderColor(0, 0, 0, age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
+		ms.translate(ox, oy, oz);
+		ms.scale(scale-0.5f, scale-0.5f, scale-0.5f);
+		RenderSystem.depthMask(false);
+		RenderSystem.disableCull();
 		
-		buf1.bind();
-		VertexFormats.POSITION.startDrawing(0);
-		YttrClient.drawBufferWithoutClobberingGLMatrix(buf1, null, GL11.GL_TRIANGLE_FAN);
-		VertexFormats.POSITION.endDrawing();
-		
-		buf2.bind();
-		VertexFormats.POSITION.startDrawing(0);
-		YttrClient.drawBufferWithoutClobberingGLMatrix(buf2, null, GL11.GL_QUAD_STRIP);
-		VertexFormats.POSITION.endDrawing();
-		
-		buf3.bind();
-		VertexFormats.POSITION.startDrawing(0);
-		YttrClient.drawBufferWithoutClobberingGLMatrix(buf3, null, GL11.GL_TRIANGLE_FAN);
-		VertexFormats.POSITION.endDrawing();
+		buf1.setShader(ms.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf2.setShader(ms.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf3.setShader(ms.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 		
 		VertexBuffer.unbind();
-		GlStateManager.enableTexture();
-		GlStateManager.depthMask(true);
-		GlStateManager.popMatrix();
+		ms.pop();
+		RenderSystem.setShader(() -> old);
+		RenderSystem.depthMask(true);
 	}
 
 	@Override

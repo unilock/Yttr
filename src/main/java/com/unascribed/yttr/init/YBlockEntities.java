@@ -5,8 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.function.Supplier;
-
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
@@ -41,6 +39,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.BlockEntityType.BlockEntityFactory;
 import net.minecraft.util.registry.Registry;
 
 public class YBlockEntities {
@@ -84,8 +83,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<InRedOscillatorBlockEntity> INRED_OSCILLATOR = create(InRedOscillatorBlockEntity::new, YBlocks.INRED_OSCILLATOR);
 	public static final BlockEntityType<InRedDemoCyclerBlockEntity> INRED_DEMO_CYCLER = create(InRedDemoCyclerBlockEntity::new, YBlocks.INRED_DEMO_CYCLER);
 
-	//TODO: figure out why this can't infer
-	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
+	private static <T extends BlockEntity> BlockEntityType<T> create(BlockEntityFactory<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);
 	}
 

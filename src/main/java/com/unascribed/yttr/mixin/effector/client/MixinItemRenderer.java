@@ -28,7 +28,6 @@ public class MixinItemRenderer {
 		if (stack.getItem() == YItems.EFFECTOR) {
 			RenderSystem.disableDepthTest();
 			RenderSystem.disableTexture();
-			RenderSystem.disableAlphaTest();
 			RenderSystem.disableBlend();
 			Tessellator tess = Tessellator.getInstance();
 			BufferBuilder bb = tess.getBuffer();
@@ -38,7 +37,6 @@ public class MixinItemRenderer {
 			renderGuiQuad(bb, x + 2, y + 13, 13, 1, 255, 255, 255, 255);
 			renderGuiQuad(bb, x + 2, y + 13, w, 1, 0, 0, 0, 255);
 			RenderSystem.enableBlend();
-			RenderSystem.enableAlphaTest();
 			RenderSystem.enableTexture();
 			RenderSystem.enableDepthTest();
 		}

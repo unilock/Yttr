@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class InRedOscillatorBlockEntity extends InRedDeviceBlockEntity {
@@ -17,8 +18,8 @@ public class InRedOscillatorBlockEntity extends InRedDeviceBlockEntity {
 	public int maxRefreshTicks = 4;
 	private int sigToWrite;
 
-	public InRedOscillatorBlockEntity() {
-		super(YBlockEntities.INRED_OSCILLATOR);
+	public InRedOscillatorBlockEntity(BlockPos pos, BlockState state) {
+		super(YBlockEntities.INRED_OSCILLATOR, pos, state);
 	}
 
 	@Override
@@ -91,8 +92,7 @@ public class InRedOscillatorBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal")) signal.deserialize(tag.getCompound("Signal"));
 		sigToWrite = tag.getInt("NextSignal");
 		refreshTicks = tag.getInt("CurrentRefresh");
@@ -100,13 +100,11 @@ public class InRedOscillatorBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		NbtCompound tag = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
 		tag.putInt("NextSignal", sigToWrite);
 		tag.putInt("CurrentRefresh", refreshTicks);
 		tag.putInt("MaxRefresh", maxRefreshTicks);
-		return tag;
 	}
 
 }

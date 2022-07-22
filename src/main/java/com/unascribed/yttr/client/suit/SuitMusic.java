@@ -11,7 +11,7 @@ public class SuitMusic extends SuitSound implements TickableSoundInstance {
 
 	public SuitMusic(SoundEvent event, float volume, SoundCategory category) {
 		super(event, volume, category);
-		this.looping = true;
+		this.repeat = true;
 	}
 
 	@Override

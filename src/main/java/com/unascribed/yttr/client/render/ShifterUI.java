@@ -55,7 +55,7 @@ public class ShifterUI extends IHasAClient {
 				}
 				lastPositions = positions;
 				lastShape = shanpe;
-				Matrix4f matrix4f = wrc.matrixStack().peek().getModel();
+				Matrix4f matrix4f = wrc.matrixStack().peek().getPositionMatrix();
 				VertexConsumerProvider.Immediate vcp = mc.getBufferBuilders().getEntityVertexConsumers();vcp.draw(YRenderLayers.getShifterLines());
 				for (int p = 0; p < 2; p++) {
 					// ideally we'd do this in one pass, but since we're using a custom render layer, everything gets lumped together if we do that
@@ -103,12 +103,11 @@ public class ShifterUI extends IHasAClient {
 		if (mc.player == null || shifterStack == null || shifterItem == null) return;
 		if (ticksSinceOpen > 0 || (ticksSinceClose != -1 && ticksSinceClose < ANIM_TIME)) {
 			float mainA = Interp.sCurve5((Math.min((ticksSinceOpen > 0 ? ticksSinceOpen+delta : ANIM_TIME-(ticksSinceClose+delta)), ANIM_TIME)/ANIM_TIMEf));
-			RenderSystem.disableAlphaTest();
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			matrices.push();
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
-				RenderSystem.color4f(1, 1, 1, mainA);
+				RenderSystem.setShaderColor(1, 1, 1, mainA);
 				mc.getTextureManager().bindTexture(MODES);
 				boolean disconnected = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceDisconnected");
 				boolean hidden = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceHidden");
@@ -117,19 +116,18 @@ public class ShifterUI extends IHasAClient {
 				DrawableHelper.drawTexture(matrices, -8, -24, 16, hidden ? 16 : 0, 16, 16, 48, 32);
 				DrawableHelper.drawTexture(matrices, 8, -8, 32, plane ? 16 : 0, 16, 16, 48, 32);
 				if (ticksSinceChangeDisconnected < ANIM_TIME) {
-					RenderSystem.color4f(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeDisconnected+delta)/ANIM_TIMEf)*mainA);
+					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeDisconnected+delta)/ANIM_TIMEf)*mainA);
 					DrawableHelper.drawTexture(matrices, -24, -8, 0, disconnected ? 0 : 16, 16, 16, 48, 32);
 				}
 				if (ticksSinceChangeHidden < ANIM_TIME) {
-					RenderSystem.color4f(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeHidden+delta)/ANIM_TIMEf)*mainA);
+					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeHidden+delta)/ANIM_TIMEf)*mainA);
 					DrawableHelper.drawTexture(matrices, -8, -24, 16, hidden ? 0 : 16, 16, 16, 48, 32);
 				}
 				if (ticksSinceChangePlane < ANIM_TIME) {
-					RenderSystem.color4f(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangePlane+delta)/ANIM_TIMEf)*mainA);
+					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangePlane+delta)/ANIM_TIMEf)*mainA);
 					DrawableHelper.drawTexture(matrices, 8, -8, 32, plane ? 0 : 16, 16, 16, 48, 32);
 				}
 			matrices.pop();
-			RenderSystem.enableAlphaTest();
 		}
 	}
 	
@@ -150,7 +148,7 @@ public class ShifterUI extends IHasAClient {
 		}
 		shifterStack = stack;
 		shifterItem = (ShifterItem)stack.getItem();
-		if (mc.options.keySwapHands.isPressed() || mc.options.keySwapHands.wasPressed()) {
+		if (mc.options.swapHandsKey.isPressed() || mc.options.swapHandsKey.wasPressed()) {
 			if (ticksSinceOpen == -1) {
 				ticksSinceOpen = 0;
 				ticksSinceClose = -1;
@@ -163,24 +161,24 @@ public class ShifterUI extends IHasAClient {
 			boolean plane = stack.hasNbt() && stack.getNbt().getBoolean("PlaneRestrict");
 			boolean changed = false;
 			// drain timesPressed to prevent vanilla behavior
-			while (mc.options.keySwapHands.wasPressed()) {}
-			if (mc.options.keyAttack.wasPressed()) {
-				while (mc.options.keyAttack.wasPressed()) {}
-				mc.options.keyAttack.setPressed(false);
+			while (mc.options.swapHandsKey.wasPressed()) {}
+			if (mc.options.attackKey.wasPressed()) {
+				while (mc.options.attackKey.wasPressed()) {}
+				mc.options.attackKey.setPressed(false);
 				disconnected = !disconnected;
 				ticksSinceChangeDisconnected = 0;
 				changed = true;
 			}
-			if (mc.options.keyPickItem.wasPressed()) {
-				while (mc.options.keyPickItem.wasPressed()) {}
-				mc.options.keyPickItem.setPressed(false);
+			if (mc.options.pickItemKey.wasPressed()) {
+				while (mc.options.pickItemKey.wasPressed()) {}
+				mc.options.pickItemKey.setPressed(false);
 				hidden = !hidden;
 				ticksSinceChangeHidden = 0;
 				changed = true;
 			}
-			if (mc.options.keyUse.wasPressed()) {
-				while (mc.options.keyUse.wasPressed()) {}
-				mc.options.keyUse.setPressed(false);
+			if (mc.options.useKey.wasPressed()) {
+				while (mc.options.useKey.wasPressed()) {}
+				mc.options.useKey.setPressed(false);
 				plane = !plane;
 				ticksSinceChangePlane = 0;
 				changed = true;
