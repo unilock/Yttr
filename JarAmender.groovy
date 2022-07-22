@@ -22,7 +22,7 @@ return {
 	TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 	def zip = it.toPath()
 
-	def fs = FileSystems.newFileSystem(zip, null)
+	def fs = FileSystems.newFileSystem(zip, new HashMap<>())
 	try {
 		def time = FileTime.fromMillis(Long.parseLong('git show -s --format=%ct HEAD'.execute().text.trim())*1000)
 		for (Path d : fs.getRootDirectories()) {
