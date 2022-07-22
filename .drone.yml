@@ -8,6 +8,15 @@ steps:
   - gradle clean build
   - "echo 10 most recent commits: > note.txt"
   - "git log --pretty=tformat:%B -n10 >> note.txt"
+- name: retag
+  image: alpine/git:latest
+  environment:
+    GITEA_KEY:
+      from_secret: gitea_key
+  commands:
+  - "git tag -d dev-1.18 || true"
+  - git tag dev-1.18
+  - "git push -f https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git 1.18.2"
 - name: release
   image: unascribed/drone-gitea-release
   settings:
@@ -16,11 +25,14 @@ steps:
     base_url: https://git.sleeping.town
     files:
       - build/libs/yttr-*.jar
-    title: "[1.18.2] Dev Build"
+    title: "[1.18.2] Dev Build (INCOMPLETE)"
     prerelease: true
     tag: dev-1.18
     note: note.txt
     allow_edit: true
-  when:
+
+trigger:
     branch:
     - "1.18.2"
+    event:
+    - push
