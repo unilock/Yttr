@@ -58,7 +58,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 	@Override
 	public void tick() {
 		if (world.isDebugWorld()) return;
-		if (pos.getY() != 0 && !world.getBlockState(pos.down()).isOf(Blocks.BEDROCK)) {
+		if (pos.getY() != world.getBottomY() && !world.getBlockState(pos.down()).isOf(Blocks.BEDROCK)) {
 			world.createExplosion(null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 4, DestructionType.NONE);
 			world.setBlockState(pos, Blocks.VOID_AIR.getDefaultState());
 			return;
@@ -93,7 +93,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 					DiverPlayer diver = (DiverPlayer)p;
 					diver.yttr$setDiving(true);
 					diver.yttr$setDivePos(new Vec2i(pos.getX(), pos.getZ()));
-					p.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
+					p.teleport(pos.getX()+0.5, world.getBottomY()-24, pos.getZ()+0.5);
 					p.setVelocity(0, 0, 0);
 					YCriteria.DIVE.trigger(p);
 					Yttr.syncDive(p);

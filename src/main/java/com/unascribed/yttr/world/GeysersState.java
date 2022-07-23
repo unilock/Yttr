@@ -37,7 +37,7 @@ public class GeysersState extends PersistentState {
 	}
 	
 	public static GeysersState get(ServerWorld world) {
-		return world.getPersistentStateManager().getOrCreate(GeysersState::readNbt, GeysersState::new, "yttr_geysers");
+		return world.getPersistentStateManager().getOrCreate(GeysersState::readNbt, GeysersState::new, "yttr_geysers_v2");
 	}
 	
 	public void addGeyser(Geyser g) {

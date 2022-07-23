@@ -43,10 +43,10 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 	@Override
 	public boolean onShotByRifle(World world, BlockState bs, LivingEntity user, RifleMode mode, float power, BlockPos pos, BlockHitResult bhr) {
 		if (mode == RifleMode.EXPLODE && power > 1.1f && world.getRegistryKey().getValue().toString().equals("minecraft:overworld")
-				&& pos.getY() < 10 && bhr.getSide() == Direction.UP) {
+				&& pos.getY() < world.getBottomY()+10 && bhr.getSide() == Direction.UP) {
 			BlockPos down = pos.down();
 			if (world.getBlockState(down).isOf(Blocks.BEDROCK)) {
-				if (down.getY() == 0) {
+				if (down.getY() == world.getBottomY()) {
 					world.setBlockState(down, YBlocks.VOID_GEYSER.getDefaultState());
 					VoidGeyserBlockEntity.setDefaultName(world, down, user);
 					world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.VOID_HOLE, SoundCategory.BLOCKS, 1, 0.5f);

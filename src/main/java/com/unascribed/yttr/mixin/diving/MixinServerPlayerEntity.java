@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.authlib.GameProfile;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBlocks;
@@ -26,6 +27,7 @@ import com.google.common.collect.Sets;
 
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -33,9 +35,14 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 @Mixin(ServerPlayerEntity.class)
-public class MixinServerPlayerEntity implements DiverPlayer {
+public abstract class MixinServerPlayerEntity extends PlayerEntity implements DiverPlayer {
+
+	public MixinServerPlayerEntity(World world, BlockPos pos, float yaw, GameProfile profile) {
+		super(world, pos, yaw, profile);
+	}
 
 	private boolean yttr$isDiving = false;
 	private boolean yttr$isInvisibleFromDiving = false;
@@ -53,8 +60,9 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 		if (!self.isAlive()) return;
 		if (yttr$isDiving) {
 			YStats.add(self, YStats.TIME_IN_VOID, 1);
-			if (self.getPos().y > 0) {
+			if (self.getPos().y > world.getBottomY()) {
 				yttr$isDiving = false;
+				new MessageS2CDiveEnd().sendTo(self);
 			} else {
 				if (!self.isInvisible()) {
 					self.setInvisible(true);
@@ -63,7 +71,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 					self.setNoGravity(true);
 					yttr$isNoGravityFromDiving = true;
 				}
-				self.setPos(self.getPos().x, -12, self.getPos().z);
+				self.setPos(self.getPos().x, world.getBottomY() - 24, self.getPos().z);
 			}
 			ItemStack chest = self.getEquippedStack(EquipmentSlot.CHEST);
 			if (Yttr.isWearingFullSuit(self)) {
@@ -89,7 +97,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 						YCriteria.DIVE_FAR.trigger(self);
 					}
 					// teleport prematurely to load chunks
-					self.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
+					self.teleport(pos.getX()+0.5, world.getBottomY() - 24, pos.getZ()+0.5);
 				} else {
 					yttr$isDiving = false;
 					new MessageS2CDiveEnd().sendTo(self);

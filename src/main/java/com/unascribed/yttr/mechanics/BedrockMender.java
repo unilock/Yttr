@@ -22,7 +22,7 @@ public class BedrockMender {
 	
 	public static void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (!(world instanceof ServerWorld)) return;
-		if (world == world.getServer().getOverworld() && pos.getY() == 0 && newState.getHardness(world, pos) >= 0) {
+		if (world == world.getServer().getOverworld() && pos.getY() == world.getBottomY() && newState.getHardness(world, pos) >= 0) {
 			world.setBlockState(pos, YBlocks.VOID_GEYSER.getDefaultState());
 		}
 	}

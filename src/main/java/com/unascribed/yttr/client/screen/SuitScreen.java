@@ -147,7 +147,7 @@ public class SuitScreen extends Screen {
 		}
 		sr.tick();
 		if (client.player != null) {
-			client.player.setPos(client.player.getPos().x, -12, client.player.getPos().z);
+			client.player.setPos(client.player.getPos().x, client.player.world.getBottomY()-24, client.player.getPos().z);
 			client.player.fallDistance = 0;
 			if (!Yttr.isWearingFullSuit(client.player)) {
 				client.setScreen(null);

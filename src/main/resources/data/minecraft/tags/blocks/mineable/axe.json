@@ -13,6 +13,8 @@
 		"yttr:soul_planks",
 		"#yttr:project_tables",
 		"yttr:wasteland_log",
-		"yttr:ruined_container"
+		"yttr:ruined_container",
+		"yttr:skeletal_sorter_right_handed",
+		"yttr:skeletal_sorter_left_handed"
 	]
 }

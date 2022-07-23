@@ -29,7 +29,7 @@ public class MixinDeathScreen {
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/client/util/math/MatrixStack.push()V"), method="render")
 	public void render(CallbackInfo ci) {
 		PlayerEntity player = MinecraftClient.getInstance().player;
-		if (player != null && player.getEquippedStack(EquipmentSlot.CHEST).getItem() == YItems.SUIT_CHESTPLATE && player.getY() < 0) {
+		if (player != null && player.getEquippedStack(EquipmentSlot.CHEST).getItem() == YItems.SUIT_CHESTPLATE && player.getY() < player.world.getBottomY()) {
 			RenderSystem.clearColor(0, 0, 0, 1);
 			RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 		}
