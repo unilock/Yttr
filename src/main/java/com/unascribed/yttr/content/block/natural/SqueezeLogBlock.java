@@ -70,7 +70,8 @@ public class SqueezeLogBlock extends PillarBlock {
 			if (!world.isClient) {
 				world.setBlockState(pos, YBlocks.STRIPPED_SQUEEZE_LOG.getDefaultState()
 						.with(AXIS, state.get(AXIS))
-						.with(WATERLOGGED, state.get(WATERLOGGED)), 11);
+						.with(WATERLOGGED, state.get(WATERLOGGED))
+						.with(ALIVE, state.get(ALIVE)), 11);
 				stack.damage(1, player, ((p) -> {
 					p.sendToolBreakStatus(hand);
 				}));

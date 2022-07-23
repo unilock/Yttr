@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:raw_gadolinite",
+  "group": "raw_gadolinite",
+  "ingredients": [
+    {
+      "item": "yttr:raw_gadolinite_block"
+    }
+  ],
+  "result": {
+    "item": "yttr:raw_gadolinite",
+    "count": 9
+  }
+}

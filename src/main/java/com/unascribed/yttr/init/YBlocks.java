@@ -599,6 +599,8 @@ public class YBlocks {
 	@RenderLayer("cutout_mipped")
 	public static final DyedProjectTableBlock DYED_PROJECT_TABLE = new DyedProjectTableBlock(FabricBlockSettings.copyOf(PROJECT_TABLE));
 	
+	public static final Block RAW_GADOLINITE_BLOCK = new Block(FabricBlockSettings.copyOf(Blocks.RAW_IRON_BLOCK));
+	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
 	}

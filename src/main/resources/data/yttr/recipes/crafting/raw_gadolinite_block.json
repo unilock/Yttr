@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "yttr:discovered_via": "yttr:raw_gadolinite",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "yttr:raw_gadolinite"
+    }
+  },
+  "result": {
+    "item": "yttr:raw_gadolinite_block"
+  }
+}

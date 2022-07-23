@@ -24,7 +24,7 @@ public class SecretShapedRecipe extends ShapedRecipe {
 	
 	@Override
 	public DefaultedList<Ingredient> getIngredients() {
-		return DefaultedList.of();
+		return DefaultedList.ofSize(getWidth()*getHeight(), Ingredient.empty());
 	}
 	
 	@Override

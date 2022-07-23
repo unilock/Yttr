@@ -1,0 +1,10 @@
+{
+	"type": "minecraft:smelting",
+	"yttr:discovered_via": "yttr:raw_gadolinite",
+	"ingredient": {
+		"item": "yttr:raw_gadolinite"
+	},
+	"result": "yttr:xl_iron_ingot",
+	"experience": 0.7,
+	"cookingtime": 200
+}

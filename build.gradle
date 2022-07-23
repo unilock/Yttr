@@ -54,6 +54,12 @@ repositories {
 			includeGroup 'dev.onyxstudios.cardinal-components-api'
 		}
 	}
+	maven {
+		url 'https://maven.cafeteria.dev/releases/'
+		content {
+			includeGroup 'me.luligabi'
+		}
+	}
 }
 
 dependencies {
@@ -71,6 +77,8 @@ dependencies {
 	modImplementation "dev.emi:trinkets:3.3.0"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.1.4"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:4.1.4"
+	
+	include "me.luligabi:NoIndium:1.0.2+1.18.2"
 
 	modRuntimeOnly("com.terraformersmc:modmenu:3.1.0") {
 		transitive = false

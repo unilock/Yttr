@@ -29,6 +29,7 @@ public class YRenderLayers extends RenderPhase {
 				.texture(new RenderPhase.Texture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, false, true))
 				.transparency(ADDITIVE_WITH_ALPHA_TRANSPARENCY)
 				.writeMaskState(new RenderPhase.WriteMaskState(true, false))
+				.shader(POSITION_COLOR_TEXTURE_LIGHTMAP_SHADER)
 				.build(false));
 	
 	public static RenderLayer getArmorTranslucentNoCull(Identifier tex) {

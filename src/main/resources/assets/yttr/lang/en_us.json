@@ -80,6 +80,7 @@
 	"item.yttr.empty_ammo_can": "Empty Rifle Canister",
 	"item.yttr.ammo_pack": "Rifle Canister Multiplexer",
 	"item.yttr.spatula": "Gigantic Spatula",
+	"item.yttr.raw_gadolinite": "Raw Gadolinite",
 	
 	"item.yttr.inred_multimeter": "Multimeter",
 	"item.yttr.inred_pcb": "PCB",
@@ -207,6 +208,8 @@
 	"block.yttr.giant_cobblestone": "Giant Cobblestone",
 	"block.yttr.rafter": "Crafter Rafter",
 	"block.yttr.project_table": "Project Table",
+	"block.yttr.raw_gadolinite_block": "Raw Gadolinite Block",
+	
 	"block.yttr.black_project_table": "Black Project Table",
 	"block.yttr.blue_project_table": "Blue Project Table",
 	"block.yttr.brown_project_table": "Brown Project Table",
@@ -614,6 +617,18 @@
 	"advancements.yttr.break_armor_with_cleaver.desc": "Break an adversary's armor using a Reinforced Void Cleaver",
 	
 	
+	"tag.yttr.magnetic": "Magnetic",
+	"tag.yttr.lamp_dyes": "Lamp Dyes",
+	"tag.yttr.project_tables": "Project Tables",
+	"tag.yttr.dyes": "Dyes",
+	"tag.yttr.ultrapure_cubes": "Ultrapure Cubes",
+	"tag.yttr.void_immune": "Void Immune",
+	"tag.yttr.stone": "Stone",
+	"tag.yttr.conductive_boots": "Conductive Boots",
+	"tag.yttr.squeeze_logs": "Squeeze Logs",
+	"tag.yttr.fluxes": "Metallurgical Fluxes",
+	"tag.trinkets.feet.sole": "Sole Trinkets",
+	
 	"category.yttr.void_filtering": "Void Filtering",
 	"category.yttr.piston_smashing": "Piston Smashing",
 	"category.yttr.centrifuging": "Centrifuging",
@@ -632,7 +647,7 @@
 	
 	"category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
 	
-	"rei.yttr.suit_helmet_hud": "HUD Color: %s",
+	"tooltip.yttr.suit_helmet_hud": "HUD Color: %s",
 	
 	"trinkets.slot.feet.sole": "Sole"
 	

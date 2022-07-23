@@ -132,6 +132,7 @@ public class YItems {
 	public static final BlockItem DUST = createBlockItem(YBlocks.DUST);
 	public static final BlockItem RAFTER = createBlockItem(YBlocks.RAFTER);
 	public static final BlockItem PROJECT_TABLE = createBlockItem(YBlocks.PROJECT_TABLE);
+	public static final BlockItem RAW_GADOLINITE_BLOCK = createBlockItem(YBlocks.RAW_GADOLINITE_BLOCK);
 	
 	public static final BlockItem WHITE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.ORANGE);
@@ -561,6 +562,8 @@ public class YItems {
 	public static final Item INRED_PCB = new Item(new Item.Settings());
 	
 	public static final SpatulaItem SPATULA = new SpatulaItem(ToolMaterials.IRON, 6, -3.2f, new Item.Settings());
+	
+	public static final Item RAW_GADOLINITE = new Item(new Item.Settings());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
