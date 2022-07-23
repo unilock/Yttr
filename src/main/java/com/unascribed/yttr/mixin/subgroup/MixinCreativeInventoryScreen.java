@@ -45,10 +45,10 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 		if (parent.yttr$getChildren() != null && !parent.yttr$getChildren().isEmpty()) {
 			if (!selected.shouldRenderName()) {
 				ItemGroup child = parent.yttr$getSelectedChild();
-				float x = textRenderer.draw(matrices, selected.getName(), this.x+8, this.y+6, 4210752);
+				float x = textRenderer.draw(matrices, selected.getDisplayName(), this.x+8, this.y+6, 4210752);
 				if (child != null) {
 					x = textRenderer.draw(matrices, " ", x, this.y+6, 4210752);
-					x = textRenderer.draw(matrices, child.getName(), x, this.y+6, 4210752);
+					x = textRenderer.draw(matrices, child.getDisplayName(), x, this.y+6, 4210752);
 				}
 			}
 			MinecraftClient mc = MinecraftClient.getInstance();
@@ -70,13 +70,14 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 					if (c > 0x7F) continue;
 					int u = (c%16)*4;
 					int v = (c/16)*6;
-					RenderSystem.setShaderColor(0, 0, 0, 0);
+					RenderSystem.setShaderColor(0, 0, 0, 1);
 					drawTexture(matrices, x, y+3, u, v, 4, 6, 64, 48);
 					x -= 4;
 				}
 				x = this.x-ofs;
 				y += 10;
 			}
+			RenderSystem.setShaderColor(1, 1, 1, 1);
 		}
 	}
 	

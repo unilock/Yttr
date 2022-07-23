@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:aware_hopper" }
+					{ "items": ["yttr:aware_hopper"] }
 				]
 			}
 		}

@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:glowing_gas" }
+					{ "items": ["yttr:glowing_gas"] }
 				]
 			}
 		}

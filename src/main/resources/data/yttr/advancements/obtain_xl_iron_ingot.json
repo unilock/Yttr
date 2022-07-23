@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:xl_iron_ingot" }
+					{ "items": ["yttr:xl_iron_ingot"] }
 				]
 			}
 		}

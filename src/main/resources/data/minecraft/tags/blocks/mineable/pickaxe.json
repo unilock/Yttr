@@ -45,6 +45,8 @@
 		"yttr:magtank",
 		"yttr:dsu",
 		"yttr:rafter",
-		"yttr:giant_cobblestone"
+		"yttr:giant_cobblestone",
+		"yttr:deepslate_gadolinite",
+		"yttr:deepslate_brookite_ore"
 	]
 }

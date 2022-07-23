@@ -96,17 +96,27 @@ public class VoidBallParticle extends BillboardParticle {
 			for (i = imin; i < imax; i++) {
 				rho = i * drho;
 				for (j = 0; j < slices; j++) {
+					int[][] orders = {
+						{0, 1},
+						{1, 0}
+					};
 					for (k = 0; k < 2; k++) {
 						l = j+k;
 						theta = (l == slices) ? 0.0f : l * dtheta;
-						x = -MathHelper.sin(theta) * MathHelper.sin(rho);
-						y = MathHelper.cos(theta) * MathHelper.sin(rho);
-						z = nsign * MathHelper.cos(rho);
-						bb.vertex(x * radius, y * radius, z * radius).next();
-						x = -MathHelper.sin(theta) * MathHelper.sin(rho + drho);
-						y = MathHelper.cos(theta) * MathHelper.sin(rho + drho);
-						z = nsign * MathHelper.cos(rho + drho);
-						bb.vertex(x * radius, y * radius, z * radius).next();
+						for (int w : orders[k]) {
+							if (w == 0) {
+								x = -MathHelper.sin(theta) * MathHelper.sin(rho);
+								y = MathHelper.cos(theta) * MathHelper.sin(rho);
+								z = nsign * MathHelper.cos(rho);
+								bb.vertex(x * radius, y * radius, z * radius).next();
+							}
+							if (w == 1) {
+								x = -MathHelper.sin(theta) * MathHelper.sin(rho + drho);
+								y = MathHelper.cos(theta) * MathHelper.sin(rho + drho);
+								z = nsign * MathHelper.cos(rho + drho);
+								bb.vertex(x * radius, y * radius, z * radius).next();
+							}
+						}
 					}
 				}
 			}

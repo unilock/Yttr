@@ -20,12 +20,14 @@ public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 	private RegistryEntry<Biome> yttr$scorchedTerminus = null;
 	
 	@Inject(at=@At("HEAD"), method="getBiome", cancellable=true)
-	public void getBiomeForNoiseGen(int bX, int bY, int bZ, MultiNoiseSampler noise, CallbackInfoReturnable<RegistryEntry<Biome>> ci) {
+	public void getBiome(int bX, int bY, int bZ, MultiNoiseSampler noise, CallbackInfoReturnable<RegistryEntry<Biome>> ci) {
 		if (!YConfig.WorldGen.scorched) return;
 		if (yttr$scorchedSummit != null) {
 			if (bY > (192>>2) && yttr$scorchedTerminus != null) {
+				System.out.println("Terminus @ "+bY);
 				ci.setReturnValue(yttr$scorchedTerminus);
 			} else if (bY > (128>>2)) {
+				System.out.println("Summit @ "+bY);
 				ci.setReturnValue(yttr$scorchedSummit);
 			}
 		}
@@ -33,8 +35,14 @@ public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 	
 	@Override
 	public void yttr$setScorchedBiomes(RegistryEntry<Biome> summit, RegistryEntry<Biome> terminus) {
+		System.out.println(this+" has received biomes: "+summit+" "+terminus);
 		yttr$scorchedSummit = summit;
 		yttr$scorchedTerminus = terminus;
+	}
+	
+	@Override
+	public void yttr$copyTo(ScorchedEnablement other) {
+		other.yttr$setScorchedBiomes(yttr$scorchedSummit, yttr$scorchedTerminus);
 	}
 
 }

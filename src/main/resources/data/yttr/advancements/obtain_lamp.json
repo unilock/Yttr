@@ -21,7 +21,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:lamp" }
+					{ "items": ["yttr:lamp"] }
 				]
 			}
 		},
@@ -29,7 +29,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:fixture" }
+					{ "items": ["yttr:fixture"] }
 				]
 			}
 		},
@@ -37,7 +37,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:cage_lamp" }
+					{ "items": ["yttr:cage_lamp"] }
 				]
 			}
 		}

@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:brookite_sword" }
+					{ "items": ["yttr:brookite_sword"] }
 				]
 			}
 		},
@@ -28,7 +28,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:brookite_shovel" }
+					{ "items": ["yttr:brookite_shovel"] }
 				]
 			}
 		},
@@ -36,7 +36,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:brookite_pickaxe" }
+					{ "items": ["yttr:brookite_pickaxe"] }
 				]
 			}
 		},
@@ -44,7 +44,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:brookite_axe" }
+					{ "items":[ "yttr:brookite_axe"] }
 				]
 			}
 		},
@@ -52,7 +52,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:brookite_hoe" }
+					{ "items": ["yttr:brookite_hoe"] }
 				]
 			}
 		}

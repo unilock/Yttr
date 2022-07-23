@@ -135,11 +135,9 @@ public class YBlocks {
 //	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 //			.sounds(HOLLOW_SOUNDS);
 	
-	public static final Block GADOLINITE = new Block(FabricBlockSettings.of(Material.STONE)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.STONE)
-		);
+	public static final Block GADOLINITE = new Block(FabricBlockSettings.copyOf(Blocks.IRON_ORE));
+	public static final Block DEEPSLATE_GADOLINITE = new Block(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_IRON_ORE));
+	
 	public static final Block YTTRIUM_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
 	
@@ -362,11 +360,8 @@ public class YBlocks {
 	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
 	public static final DSUBlock DSU = new DSUBlock(HOLLOWHUGE_SETTINGS);
 	
-	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.STONE), UniformIntProvider.create(1, 5)
-		);
+	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.EMERALD_ORE), UniformIntProvider.create(1, 5));
+	public static final Block DEEPSLATE_BROOKITE_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_EMERALD_ORE), UniformIntProvider.create(1, 5));
 	
 	public static final RootOfContinuityBlock ROOT_OF_CONTINUITY = new RootOfContinuityBlock(FabricBlockSettings.of(Material.GLASS)
 			.strength(20)

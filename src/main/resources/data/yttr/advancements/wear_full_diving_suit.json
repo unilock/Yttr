@@ -21,7 +21,7 @@
 			"conditions": {
 				"player": {
 					"equipment": {
-						"head": { "item": "yttr:suit_helmet" }
+						"head": { "items": ["yttr:suit_helmet"] }
 					}
 				}
 			}
@@ -31,7 +31,7 @@
 			"conditions": {
 				"player": {
 					"equipment": {
-						"chest": { "item": "yttr:suit_chestplate" }
+						"chest": { "items": ["yttr:suit_chestplate"] }
 					}
 				}
 			}
@@ -41,7 +41,7 @@
 			"conditions": {
 				"player": {
 					"equipment": {
-						"legs": { "item": "yttr:suit_leggings" }
+						"legs": { "items": ["yttr:suit_leggings"] }
 					}
 				}
 			}
@@ -51,7 +51,7 @@
 			"conditions": {
 				"player": {
 					"equipment": {
-						"feet": { "item": "yttr:suit_boots" }
+						"feet": { "items": ["yttr:suit_boots"] }
 					}
 				}
 			}

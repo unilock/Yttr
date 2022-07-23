@@ -10,6 +10,7 @@ import com.unascribed.yttr.init.YItems;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
+import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.item.Items;
@@ -27,7 +28,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.rightInput(EmiStack.of(Items.IRON_AXE), true)
 			.output(EmiStack.of(YBlocks.STRIPPED_SQUEEZE_LOG))
 			.build());
-		registry.removeRecipes(er -> registry.getRecipeManager().get(er.getId())
+		registry.removeRecipes(er -> er.getCategory() == VanillaEmiRecipeCategories.CRAFTING && registry.getRecipeManager().get(er.getId())
 				.map(it -> it instanceof SecretShapedRecipe || it instanceof LampRecipe
 						|| (it instanceof CraftingRecipe cr && (cr.getIngredients().size() > 9
 								|| (cr instanceof ShapedRecipe sr && (sr.getWidth() > 3 || sr.getHeight() > 3))))).orElse(false));

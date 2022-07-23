@@ -7,4 +7,6 @@ public interface ScorchedEnablement {
 
 	void yttr$setScorchedBiomes(RegistryEntry<Biome> summit, RegistryEntry<Biome> terminus);
 	
+	void yttr$copyTo(ScorchedEnablement other);
+	
 }

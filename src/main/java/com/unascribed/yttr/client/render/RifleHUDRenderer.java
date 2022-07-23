@@ -8,7 +8,6 @@ import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.network.MessageC2SRifleMode;
 import com.unascribed.yttr.util.math.Interp;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
@@ -182,7 +181,7 @@ public class RifleHUDRenderer extends IHasAClient {
 									int cj = str.charAt(ci)-'0';
 									int u = (cj%5)*3;
 									int v = (cj/5)*5;
-									DrawableHelper.drawTexture(matrices, cx, cy, 300, u, v, 3, 5, 10, 15);
+									DrawableHelper.drawTexture(matrices, cx, cy, 300, u, v, 3, 5, 15, 10);
 									cx += 4;
 								}
 							}

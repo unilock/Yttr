@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import com.unascribed.yttr.util.YLog;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
@@ -29,9 +27,6 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class YttrMixin implements IMixinConfigPlugin {
 
-	private Set<String> notYetApplied = new HashSet<>();
-	private int total = 0;
-	
 	@Override
 	public void onLoad(String mixinPackage) {
 		
@@ -55,8 +50,6 @@ public class YttrMixin implements IMixinConfigPlugin {
 	@Override
 	public List<String> getMixins() {
 		List<String> mixins = discoverClassesInPackage("com.unascribed.yttr.mixin", true);
-		total = mixins.size();
-		this.notYetApplied = Sets.newHashSet(mixins);
 		return mixins;
 	}
 
@@ -134,12 +127,6 @@ public class YttrMixin implements IMixinConfigPlugin {
 
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		notYetApplied.remove(mixinClassName.replace("com.unascribed.yttr.mixin.", ""));
-		int applied = total-notYetApplied.size();
-		YLog.info("{}/{} mixins applied ({}%)", applied, total, (applied*100)/total);
-		if (notYetApplied.size() < 5) {
-			YLog.info("Mixins yet to be applied: {}", notYetApplied);
-		}
 	}
 	
 	private interface ClassInfo {

@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:rifle_reinforced" }
+					{ "items": ["yttr:rifle_reinforced"] }
 				]
 			}
 		},
@@ -28,7 +28,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:rifle_overclocked" }
+					{ "items": ["yttr:rifle_overclocked"] }
 				]
 			}
 		}

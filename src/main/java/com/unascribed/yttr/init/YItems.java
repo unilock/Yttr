@@ -133,6 +133,8 @@ public class YItems {
 	public static final BlockItem RAFTER = createBlockItem(YBlocks.RAFTER);
 	public static final BlockItem PROJECT_TABLE = createBlockItem(YBlocks.PROJECT_TABLE);
 	public static final BlockItem RAW_GADOLINITE_BLOCK = createBlockItem(YBlocks.RAW_GADOLINITE_BLOCK);
+	public static final BlockItem DEEPSLATE_GADOLINITE = createBlockItem(YBlocks.DEEPSLATE_GADOLINITE);
+	public static final BlockItem DEEPSLATE_BROOKITE_ORE = createBlockItem(YBlocks.DEEPSLATE_BROOKITE_ORE);
 	
 	public static final BlockItem WHITE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.ORANGE);

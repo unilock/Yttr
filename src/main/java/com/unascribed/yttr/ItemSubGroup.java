@@ -58,7 +58,8 @@ public class ItemSubGroup extends ItemGroup {
 		return index;
 	}
 	
-	public String getId() {
+	@Override
+	public String getName() {
 		return id;
 	}
 	

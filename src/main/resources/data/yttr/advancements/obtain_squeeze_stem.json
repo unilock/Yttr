@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:squeeze_log" }
+					{ "items": [ "yttr:squeeze_log" ] }
 				]
 			}
 		}

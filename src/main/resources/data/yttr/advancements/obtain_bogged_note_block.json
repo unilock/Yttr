@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:bogged_note_block" }
+					{ "items": ["yttr:bogged_note_block"] }
 				]
 			}
 		},
@@ -28,7 +28,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:bogged_high_note_block" }
+					{ "items": ["yttr:bogged_high_note_block"] }
 				]
 			}
 		},
@@ -36,7 +36,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:bogged_low_note_block" }
+					{ "items": ["yttr:bogged_low_note_block"] }
 				]
 			}
 		}

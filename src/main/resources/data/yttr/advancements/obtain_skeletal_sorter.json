@@ -20,7 +20,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:skeletal_sorter_left_handed" }
+					{ "items": ["yttr:skeletal_sorter_left_handed"] }
 				]
 			}
 		},
@@ -28,7 +28,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "yttr:skeletal_sorter_right_handed" }
+					{ "items": ["yttr:skeletal_sorter_right_handed"] }
 				]
 			}
 		}

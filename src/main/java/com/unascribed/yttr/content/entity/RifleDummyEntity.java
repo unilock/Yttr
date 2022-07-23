@@ -1,21 +1,16 @@
 package com.unascribed.yttr.content.entity;
 
+import com.unascribed.yttr.init.YEntities;
+
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 
 public class RifleDummyEntity extends Entity {
 
-	public static final EntityType<RifleDummyEntity> TYPE = EntityType.Builder.<RifleDummyEntity>create(SpawnGroup.MISC)
-			.disableSaving()
-			.disableSummon()
-			.build("yttr:rifle_dummy");
-	
 	public RifleDummyEntity(World world) {
-		super(TYPE, world);
+		super(YEntities.RIFLE_DUMMY, world);
 	}
 
 	@Override

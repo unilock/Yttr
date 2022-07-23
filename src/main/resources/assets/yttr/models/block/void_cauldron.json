@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:block/cauldron_level3",
+    "parent": "minecraft:block/template_cauldron_full",
     "textures": {
-        "water": "yttr:block/void_still"
+        "content": "yttr:block/void_still"
     }
 }

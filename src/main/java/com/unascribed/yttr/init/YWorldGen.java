@@ -1,31 +1,90 @@
 package com.unascribed.yttr.init;
 
-@SuppressWarnings("deprecation")
+import java.util.List;
+
+import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.Yttr;
+
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.YOffset;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreConfiguredFeatures;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+
 public class YWorldGen {
 
-//	public static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
-//			.configure(new OreFeatureConfig(
-//					OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
-//					YBlocks.GADOLINITE.getDefaultState(),
-//					9))
-//			.decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(
-//					20,
-//					0,
-//					96)))
-//			.spreadHorizontally()
-//			.repeat(8);
-//
-//	public static final ConfiguredFeature<?, ?> BROOKITE_OVERWORLD = Feature.ORE
-//			.configure(new OreFeatureConfig(
-//					OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
-//					YBlocks.BROOKITE_ORE.getDefaultState(),
-//					5))
-//			.rangeOf(32)
-//			.spreadHorizontally()
-//			.repeat(4);
-//
-//	public static final LatchReference<ConfiguredFeature<?, ?>> COPPER_OVERWORLD = YLatches.create();
-//
+	public static final ConfiguredFeature<OreFeatureConfig, Feature<OreFeatureConfig>> GADOLINITE_OVERWORLD = new ConfiguredFeature<>
+			(Feature.ORE,
+					new OreFeatureConfig(
+						List.of(
+							OreFeatureConfig.createTarget(
+								OreConfiguredFeatures.STONE_ORE_REPLACEABLES,
+								YBlocks.GADOLINITE.getDefaultState()
+							),
+							OreFeatureConfig.createTarget(
+								OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES,
+								YBlocks.DEEPSLATE_GADOLINITE.getDefaultState()
+							)
+						),
+					9));
+
+	public static final PlacedFeature GADOLINITE_OVERWORLD_MAIN = new PlacedFeature(
+			RegistryEntry.of(GADOLINITE_OVERWORLD),
+			List.of(
+					CountPlacementModifier.of(10),
+					SquarePlacementModifier.of(),
+					HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(96))
+			));
+	public static final PlacedFeature GADOLINITE_OVERWORLD_DEEP = new PlacedFeature(
+			RegistryEntry.of(GADOLINITE_OVERWORLD),
+			List.of(
+					CountPlacementModifier.of(5),
+					SquarePlacementModifier.of(),
+					HeightRangePlacementModifier.trapezoid(YOffset.aboveBottom(20), YOffset.fixed(10))
+			));
+
+	public static final ConfiguredFeature<OreFeatureConfig, Feature<OreFeatureConfig>> BROOKITE_ORE_OVERWORLD = new ConfiguredFeature<>
+			(Feature.ORE,
+					new OreFeatureConfig(
+						List.of(
+							OreFeatureConfig.createTarget(
+								OreConfiguredFeatures.STONE_ORE_REPLACEABLES,
+								YBlocks.BROOKITE_ORE.getDefaultState()
+							),
+							OreFeatureConfig.createTarget(
+								OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES,
+								YBlocks.DEEPSLATE_BROOKITE_ORE.getDefaultState()
+							)
+						),
+					5));
+
+	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_MAIN = new PlacedFeature(
+			RegistryEntry.of(BROOKITE_ORE_OVERWORLD),
+			List.of(
+					CountPlacementModifier.of(4),
+					SquarePlacementModifier.of(),
+					HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(32))
+			));
+	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_DEEP = new PlacedFeature(
+			RegistryEntry.of(BROOKITE_ORE_OVERWORLD),
+			List.of(
+					CountPlacementModifier.of(6),
+					SquarePlacementModifier.of(),
+					HeightRangePlacementModifier.trapezoid(YOffset.getBottom(), YOffset.fixed(4))
+			));
+
 //	public static final ConfiguredFeature<?, ?> WASTELAND_GRASS = Feature.RANDOM_PATCH
 //			.configure(new RandomPatchFeatureConfig.Builder(
 //					new SimpleBlockStateProvider(YBlocks.WASTELAND_GRASS.getDefaultState()), SimpleBlockPlacer.INSTANCE)
@@ -38,18 +97,20 @@ public class YWorldGen {
 //			.withConfig(new TernarySurfaceConfig(YBlocks.WASTELAND_DIRT.getDefaultState(), YBlocks.WASTELAND_DIRT.getDefaultState(), Blocks.STONE.getDefaultState()));
 	
 	public static void init() {
-//		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
-//		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, YWorldGen.class, ConfiguredSurfaceBuilder.class);
-//		if (YConfig.WorldGen.gadolinite) {
-//			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld"));
-//		}
-//		if (YConfig.WorldGen.brookite) {
-//			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_overworld"));
-//		}
+		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
+		Yttr.autoRegister(BuiltinRegistries.PLACED_FEATURE, YWorldGen.class, PlacedFeature.class);
+		if (YConfig.WorldGen.gadolinite) {
+			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld_main"));
+			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld_deep"));
+		}
+		if (YConfig.WorldGen.brookite) {
+			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_ore_overworld_main"));
+			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_ore_overworld_deep"));
+		}
 	}
 
-//	public static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {
-//		return RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", path));
-//	}
+	public static RegistryKey<PlacedFeature> key(String path) {
+		return RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier("yttr", path));
+	}
 
 }
