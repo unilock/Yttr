@@ -132,7 +132,7 @@ public class RootOfContinuityBlock extends Block {
 							}
 						}
 						if (bs.isOf(Blocks.END_STONE)) {
-							FallingBlockEntity.spawnFromBlock(world, pos, bs);
+							FallingBlockEntity.spawnFromBlock(world, bp, bs);
 						}
 					}
 					scan.clear();
