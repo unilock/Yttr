@@ -596,6 +596,14 @@ public class YBlocks {
 	
 	public static final Block RAW_GADOLINITE_BLOCK = new Block(FabricBlockSettings.copyOf(Blocks.RAW_IRON_BLOCK));
 	
+	public static final FallingBlock ASH = new FallingBlock(FabricBlockSettings.copyOf(Blocks.SAND)
+			.allowsSpawning((state, world, pos, et) -> false)) {
+		@Override
+		public int getColor(BlockState state, BlockView world, BlockPos pos) {
+			return 0xFF181018;
+		}
+	};
+	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
 	}

@@ -63,11 +63,24 @@ public class ScorchedGenerator {
 							chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
 							lastYH = y;
 						}
-						if (lastYH > 0 && rand.nextDouble() < (fireNoise.sample(bX/30D, bZ/30D, false)+0.2)) {
-							bp.set(bX, lastYH, bZ);
-							if (!region.getBlockState(bp).isAir()) {
-								bp.set(bX, lastYH+1, bZ);
-								region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+						if (lastYH > 0) {
+							boolean flameoMyGoodHotman = false;
+							double d = rand.nextDouble();
+							double noise = (fireNoise.sample(bX/30D, bZ/30D, false)+0.2);
+							if (d < noise) {
+								bp.set(bX, lastYH, bZ);
+								if (!region.getBlockState(bp).isAir()) {
+									bp.set(bX, lastYH+1, bZ);
+									region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+									flameoMyGoodHotman = true;
+								}
+							}
+							if (!flameoMyGoodHotman && d-0.2 > noise) {
+								bp.set(bX, lastYH-1, bZ);
+								if (!region.getBlockState(bp).isAir()) {
+									bp.set(bX, lastYH, bZ);
+									region.setBlockState(bp, YBlocks.ASH.getDefaultState(), 3);
+								}
 							}
 						}
 					}
