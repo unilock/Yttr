@@ -5,7 +5,7 @@ import com.unascribed.yttr.init.YItems;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -20,7 +20,7 @@ public class BleedingStatusEffect extends StatusEffect {
 		setUnblockable();
 	}};
 	
-	public BleedingStatusEffect(StatusEffectCategory type, int color) {
+	public BleedingStatusEffect(StatusEffectType type, int color) {
 		super(type, color);
 	}
 
@@ -39,7 +39,7 @@ public class BleedingStatusEffect extends StatusEffect {
 			entity.damage(SOURCE, (amplifier/4)+1);
 			entity.hurtTime = oldHurtTime;
 		}
-		World w = entity.getEntityWorld();
+		World w = entity.getWorld();
 		if (w instanceof ServerWorld) {
 			ServerWorld sw = (ServerWorld)w;
 			if (hurt || entity.getRandom().nextInt(Math.max(10-(amplifier*2), 1)) == 0) {

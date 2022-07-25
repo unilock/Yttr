@@ -46,7 +46,7 @@ public class VoidBallParticle extends BillboardParticle {
 			}
 			RenderSystem.setShaderTexture(0, TEXTURE);
 			Tessellator.getInstance().getBuffer().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
-			setAlpha(age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
+			setColorAlpha(age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
 			super.buildGeometry(vertexConsumer, camera, tickDelta);
 			Tessellator.getInstance().draw();
 			return;
@@ -152,9 +152,9 @@ public class VoidBallParticle extends BillboardParticle {
 		RenderSystem.depthMask(false);
 		RenderSystem.disableCull();
 		
-		buf1.setShader(ms.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
-		buf2.setShader(ms.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
-		buf3.setShader(ms.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf1.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf2.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf3.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 		
 		VertexBuffer.unbind();
 		ms.pop();

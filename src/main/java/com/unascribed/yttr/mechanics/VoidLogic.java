@@ -118,7 +118,7 @@ public class VoidLogic {
 								block.put("State", state);
 							}
 							if (be != null) {
-								block.put("Entity", be.createNbt());
+								block.put("Entity", be.toNbt());
 							}
 							blocks.add(block);
 						}

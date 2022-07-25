@@ -3,13 +3,13 @@ package com.unascribed.yttr.mixin.accessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.resource.LifecycledResourceManager;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.minecraft.resource.AutoCloseableResourceManager;
+import net.minecraft.resource.ReloadableResourceManager;
 
-@Mixin(ReloadableResourceManagerImpl.class)
+@Mixin(ReloadableResourceManager.class)
 public interface AccessorReloadableResourceManagerImpl {
 
-	@Accessor("activeManager")
-	LifecycledResourceManager yttr$getActiveManager();
+	@Accessor("resources")
+	AutoCloseableResourceManager yttr$getResources();
 	
 }

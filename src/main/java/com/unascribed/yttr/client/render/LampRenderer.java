@@ -194,7 +194,7 @@ public class LampRenderer extends IHasAClient {
 						VertexBuffer buf = buffers.get(pos);
 						buf.bind();
 						YRenderLayers.getLampHalo().startDrawing();
-						buf.setShader(matrices.peek().getPositionMatrix(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionColorTexShader());
+						buf.setShader(matrices.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionColorTexShader());
 						YRenderLayers.getLampHalo().endDrawing();
 						VertexBuffer.unbind();
 					matrices.pop();

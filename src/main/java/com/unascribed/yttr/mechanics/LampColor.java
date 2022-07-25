@@ -61,7 +61,7 @@ public enum LampColor implements StringIdentifiable {
 	}
 	
 	LampColor(DyeColor inherit, int glowColor) {
-		this(inherit, null, NativeImage.packColor(1, (int)(inherit.getColorComponents()[0]*255),
+		this(inherit, null, NativeImage.getAbgrColor(1, (int)(inherit.getColorComponents()[0]*255),
 				(int)(inherit.getColorComponents()[1]*255), (int)(inherit.getColorComponents()[2]*255)), glowColor);
 	}
 	

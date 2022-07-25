@@ -153,7 +153,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		if (state.get(AGE) != Age.IMMORTAL) {
-			world.createAndScheduleBlockTick(pos, this, 200+world.random.nextInt(40));
+			world.scheduleBlockTick(pos, this, 200+world.random.nextInt(40));
 		}
 	}
 	

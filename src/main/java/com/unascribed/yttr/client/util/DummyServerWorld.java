@@ -28,6 +28,7 @@ import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Holder;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.hit.BlockHitResult;
@@ -36,7 +37,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -54,6 +54,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.chunk.light.LightingProvider;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.ServerWorldProperties;
@@ -61,8 +62,8 @@ import net.minecraft.world.level.storage.LevelStorage.Session;
 
 public class DummyServerWorld extends ServerWorld {
 	
-	public DummyServerWorld(MinecraftServer server, Executor workerExecutor, Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, RegistryEntry<DimensionType> registryEntry, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long seed, List<net.minecraft.world.spawner.Spawner> spawners, boolean shouldTickTime) {
-		super(server, workerExecutor, session, properties, worldKey, registryEntry, worldGenerationProgressListener, chunkGenerator, debugWorld, seed, spawners, shouldTickTime);
+	public DummyServerWorld(MinecraftServer server, Executor workerExecutor, Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, Holder<DimensionType> holder, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime) {
+		super(server, workerExecutor, session, properties, worldKey, holder, worldGenerationProgressListener, chunkGenerator, debugWorld, seed, spawners, shouldTickTime);
 		// WILL NOT BE CALLED
 	}
 

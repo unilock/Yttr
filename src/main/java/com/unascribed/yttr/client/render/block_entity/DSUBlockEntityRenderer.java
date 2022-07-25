@@ -110,8 +110,8 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 			matrices.translate(-dsu.xSize/2D, -dsu.ySize/2D, -dsu.zSize/2D);
 			matrices.translate(2, 2, 0);
 			matrices.scale(-1/16f, -1/16f, 1/16f);
-			Matrix4f mat = matrices.peek().getPositionMatrix();
-			Matrix3f nmat = matrices.peek().getNormalMatrix();
+			Matrix4f mat = matrices.peek().getModel();
+			Matrix3f nmat = matrices.peek().getNormal();
 			matrices.translate(2.5, 2, -0.0025);
 			for (int y = 0; y < 5; y++) {
 				for (int x = 0; x < 9; x++) {
@@ -122,7 +122,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 						if (CUBE_COLORS.containsKey(item.getItem())) {
 							color = CUBE_COLORS.get(item.getItem());
 						} else {
-							Identifier spriteId = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0).getParticleSprite().getId();
+							Identifier spriteId = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null, 0).getParticleSprite().getId();
 							Identifier id = new Identifier(spriteId.getNamespace(), "textures/"+spriteId.getPath()+".png");
 							color = TextureColorThief.getPrimaryColor(id);
 						}
@@ -145,7 +145,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 					} else {
 						matrices.push();
 							matrices.scale(3, -3, -3);
-							Matrix3f nmat2 = matrices.peek().getNormalMatrix();
+							Matrix3f nmat2 = matrices.peek().getNormal();
 						matrices.pop();
 						matrices.push();
 							matrices.translate(x*3, y*6, 0);
@@ -154,7 +154,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 							MinecraftClient.getInstance().getItemRenderer().renderItem(item, Mode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 								@Override
 								public void quad(Entry matrixEntry, BakedQuad quad, float red, float green, float blue, int light, int overlay) {
-									super.quad(new Entry(matrixEntry.getPositionMatrix(), nmat2), quad, red, green, blue, light, overlay);
+									super.quad(new Entry(matrixEntry.getModel(), nmat2), quad, red, green, blue, light, overlay);
 								}
 							}, 0);
 						matrices.pop();

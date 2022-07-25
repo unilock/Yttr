@@ -235,7 +235,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 		Inventory inventory = obtainInventory(accessingInventory);
 		accessingInventory = null;
 		if (inventory instanceof ChestBlockEntity cbe) {
-			world.createAndScheduleBlockTick(cbe.getPos(), cbe.getCachedState().getBlock(), 0);
+			world.scheduleBlockTick(cbe.getPos(), cbe.getCachedState().getBlock(), 0);
 		}
 	}
 
@@ -243,7 +243,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 		if (accessingInventory == null) return;
 		Inventory inventory = obtainInventory(accessingInventory);
 		if (inventory instanceof ChestBlockEntity cbe) {
-			world.createAndScheduleBlockTick(cbe.getPos(), cbe.getCachedState().getBlock(), 0);
+			world.scheduleBlockTick(cbe.getPos(), cbe.getCachedState().getBlock(), 0);
 		}
 	}
 
@@ -303,7 +303,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
+		return BlockEntityUpdateS2CPacket.of(this);
 	}
 	
 	@Override

@@ -34,8 +34,8 @@ import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.random.ChunkRandom;
 import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class ScorchedGenerator {

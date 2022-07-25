@@ -100,15 +100,14 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourcePackProfile;
-import net.minecraft.resource.ResourcePackProvider;
-import net.minecraft.resource.ResourcePackSource;
-import net.minecraft.resource.ResourcePackProfile.Factory;
-import net.minecraft.resource.ResourcePackProfile.InsertionPosition;
-import net.minecraft.resource.metadata.PackResourceMetadata;
+import net.minecraft.resource.pack.ResourcePack;
+import net.minecraft.resource.pack.ResourcePackProfile;
+import net.minecraft.resource.pack.ResourcePackProfile.InsertionPosition;
+import net.minecraft.resource.pack.ResourcePackProvider;
+import net.minecraft.resource.pack.ResourcePackSource;
+import net.minecraft.resource.pack.metadata.PackResourceMetadata;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -173,7 +172,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					}
 				}
 			});
-			ReloadableResourceManagerImpl rm = (ReloadableResourceManagerImpl)mc.getResourceManager();
+			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
 			rm.registerReloader(reloader("yttr:clear_caches", (manager) -> {
 				TextureColorThief.clearCache();
 				LampRenderer.clearCache();
@@ -206,7 +205,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
 					hasCheckedRegistry = true;
-					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntrySet()) {
+					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
@@ -224,12 +223,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							}
 						}
 					}
-					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntrySet()) {
+					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
-					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntrySet()) {
+					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
@@ -294,7 +293,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {
 			@Override
-			public void register(Consumer<ResourcePackProfile> consumer, Factory factory) {
+			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
 				consumer.accept(factory.create("", new LiteralText("dfgplokyhjwrst7yoiuawhrkyijt"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
@@ -542,8 +541,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		dX /= dist;
 		dY /= dist;
 		dZ /= dist;
-		Matrix4f model = matrices.peek().getPositionMatrix();
-		Matrix3f normal = matrices.peek().getNormalMatrix();
+		Matrix4f model = matrices.peek().getModel();
+		Matrix3f normal = matrices.peek().getNormal();
 		vc.vertex(model, x1, y1, z1).color(r1, g1, b1, a1).normal(normal, dX, dY, dZ).next();
 		vc.vertex(model, x2, y2, z2).color(r2, g2, b2, a2).normal(normal, dX, dY, dZ).next();
 	}

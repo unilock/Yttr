@@ -20,9 +20,9 @@ import com.google.common.io.Resources;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.resource.metadata.ResourceMetadataReader;
+import net.minecraft.resource.pack.ResourcePack;
+import net.minecraft.resource.pack.metadata.ResourceMetadataReader;
 import net.minecraft.util.Identifier;
 
 public class EmbeddedResourcePack implements ResourcePack {

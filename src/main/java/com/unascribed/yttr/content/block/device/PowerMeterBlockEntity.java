@@ -28,7 +28,7 @@ public class PowerMeterBlockEntity extends BlockEntity {
 		this.readoutTime = System.currentTimeMillis();
 		getWorld().addSyncedBlockEvent(getPos(), YBlocks.POWER_METER, ((readout >> 8)&0xFF), readout&0xFF);
 		getWorld().updateNeighborsAlways(pos, YBlocks.POWER_METER);
-		getWorld().createAndScheduleBlockTick(pos, getCachedState().getBlock(), 4*20);
+		getWorld().scheduleBlockTick(pos, getCachedState().getBlock(), 4*20);
 	}
 	
 

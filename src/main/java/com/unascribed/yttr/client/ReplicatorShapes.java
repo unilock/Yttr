@@ -47,8 +47,8 @@ public class ReplicatorShapes {
 	}
 	
 	public static void octahedron(MatrixStack m, VertexConsumer vc) {
-		Matrix4f mod = m.peek().getPositionMatrix();
-		Matrix3f nrm = m.peek().getNormalMatrix();
+		Matrix4f mod = m.peek().getModel();
+		Matrix3f nrm = m.peek().getNormal();
 		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).normal(nrm, 0.577350f, 0.577350f, 0.577350f).next();
 		vc.vertex(mod, 1.000000f, 0.000000f, 0.000000f).normal(nrm, 0.577350f, 0.577350f, 0.577350f).next();
 		vc.vertex(mod, 0.000000f, 1.000000f, 0.000000f).normal(nrm, 0.577350f, 0.577350f, 0.577350f).next();
@@ -76,8 +76,8 @@ public class ReplicatorShapes {
 	}
 	
 	public static void dodecahedron(MatrixStack m, VertexConsumer vc) {
-		Matrix4f mod = m.peek().getPositionMatrix();
-		Matrix3f nrm = m.peek().getNormalMatrix();
+		Matrix4f mod = m.peek().getModel();
+		Matrix3f nrm = m.peek().getNormal();
 		vc.vertex(mod, 0.607000f, 0.000000f, 0.795000f).normal(nrm, 0.000000f, 0.000000f, 1.000000f).next();
 		vc.vertex(mod, 0.188000f, 0.577000f, 0.795000f).normal(nrm, 0.000000f, 0.000000f, 1.000000f).next();
 		vc.vertex(mod, -0.491000f, 0.357000f, 0.795000f).normal(nrm, 0.000000f, 0.000000f, 1.000000f).next();
@@ -189,8 +189,8 @@ public class ReplicatorShapes {
 	}
 	
 	public static void icosahedron(MatrixStack m, VertexConsumer vc) {
-		Matrix4f mod = m.peek().getPositionMatrix();
-		Matrix3f nrm = m.peek().getNormalMatrix();
+		Matrix4f mod = m.peek().getModel();
+		Matrix3f nrm = m.peek().getNormal();
 		vc.vertex(mod, 0.000000f, 0.000000f, 1.000000f).normal(nrm, 0.491421f, 0.356872f, 0.794448f).next();
 		vc.vertex(mod, 0.894000f, 0.000000f, 0.447000f).normal(nrm, 0.491421f, 0.356872f, 0.794448f).next();
 		vc.vertex(mod, 0.276000f, 0.851000f, 0.447000f).normal(nrm, 0.491421f, 0.356872f, 0.794448f).next();

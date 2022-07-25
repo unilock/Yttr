@@ -77,7 +77,7 @@ public class GeysersState extends PersistentState {
 			for (int rXo = -regionRadius; rXo <= regionRadius; rXo++) {
 				for (int rZo = -regionRadius; rZo <= regionRadius; rZo++) {
 					for (Geyser g : getGeysersInRegion(rX+rXo, rZ+rZo)) {
-						if (g.pos.getSquaredDistanceFromCenter(x, g.pos.getY(), z) < rangeSq) {
+						if (g.pos.getSquaredDistance(x, g.pos.getY(), z) < rangeSq) {
 							if (out.isEmpty()) out = Lists.newArrayList();
 							out.add(g);
 						}
@@ -92,7 +92,7 @@ public class GeysersState extends PersistentState {
 			for (int cXo = -chunkRadius; cXo <= chunkRadius; cXo++) {
 				for (int cZo = -chunkRadius; cZo <= chunkRadius; cZo++) {
 					for (Geyser g : getGeysersInChunk(new ChunkPos(cX+cXo, cZ+cZo))) {
-						if (g.pos.getSquaredDistanceFromCenter(x, g.pos.getY(), z) < rangeSq) {
+						if (g.pos.getSquaredDistance(x, g.pos.getY(), z) < rangeSq) {
 							if (out.isEmpty()) out = Lists.newArrayList();
 							out.add(g);
 						}

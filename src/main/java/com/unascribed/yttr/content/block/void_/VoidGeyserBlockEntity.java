@@ -164,7 +164,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 					world.playSound(null, pos, YSounds.DISSOLVE, SoundCategory.BLOCKS, 1, 0.8f+(world.random.nextFloat()*0.4f));
 				}
 				world.setBlockState(pos, targetState);
-				world.createAndScheduleFluidTick(pos, YFluids.VOID, 1);
+				world.scheduleFluidTick(pos, YFluids.VOID, 1);
 			}
 		}
 	}

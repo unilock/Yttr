@@ -22,7 +22,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.Explosion.DestructionType;
-import net.minecraft.world.gen.random.ChunkRandom;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 import java.util.List;

@@ -93,7 +93,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 				BlockPos pos = yttr$fastDiveTarget;
 				if (yttr$fastDiveTime > 0) {
 					yttr$fastDiveTime--;
-					if (pos.getSquaredDistance(self.getPos()) > 5000*5000) {
+					if (pos.getSquaredDistanceToCenter(self.getPos()) > 5000*5000) {
 						YCriteria.DIVE_FAR.trigger(self);
 					}
 					// teleport prematurely to load chunks
@@ -154,7 +154,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 		}
 	}
 	
-	@Inject(at=@At("HEAD"), method="onSpawn")
+	@Inject(at=@At("HEAD"), method="onSpawn()V")
 	public void onSpawn(CallbackInfo ci) {
 		if (yttr$isDiving) {
 			ServerPlayerEntity self = (ServerPlayerEntity)(Object)this;

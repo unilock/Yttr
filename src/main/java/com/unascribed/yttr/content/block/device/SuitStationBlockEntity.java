@@ -178,7 +178,7 @@ public class SuitStationBlockEntity extends BlockEntity implements YTickable, Si
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		return pos.getSquaredDistance(player.getPos()) < 8*8;
+		return pos.getSquaredDistanceToCenter(player.getPos()) < 8*8;
 	}
 
 	@Override

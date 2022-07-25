@@ -28,7 +28,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		this.pos = handler.getPos();
 		this.state = handler.getState();
 		this.be = handler.getOscillator();
-		be.readNbt(inventory.player.getEntityWorld().getBlockEntity(pos).createNbt());
+		be.readNbt(inventory.player.getWorld().getBlockEntity(pos).toNbt());
 		this.width = 138;
 		this.height = 74;
 	}

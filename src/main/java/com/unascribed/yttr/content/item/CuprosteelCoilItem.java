@@ -66,7 +66,7 @@ public class CuprosteelCoilItem extends TrinketItem {
 //				matrices.translate(0.5f/16f*(flip?1:-1), 1/16f, 0);
 //			}
 //			matrices.scale(1.5f/16f, 1, 1.5f/16f);
-//			Matrix4f mmat = matrices.peek().getPositionMatrix();
+//			Matrix4f mmat = matrices.peek().getModel();
 //			Matrix3f nmat = matrices.peek().getNormal();
 //			vc.vertex(mmat, -1, 0,  1).color(1f, 1f, 1f, 1f).texture(flip ? 1 : 0, 1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
 //			vc.vertex(mmat,  1, 0,  1).color(1f, 1f, 1f, 1f).texture(flip ? 0 : 1, 1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();

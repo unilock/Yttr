@@ -28,7 +28,7 @@ public interface Voidloggable extends FluidDrainable, FluidFillable {
 		if (!state.get(VOIDLOGGED) && fluidState.getFluid() == YFluids.VOID) {
 			if (!world.isClient()) {
 				world.setBlockState(pos, state.with(VOIDLOGGED, true), 3);
-				world.createAndScheduleFluidTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
+				world.scheduleFluidTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
 			}
 
 			return true;

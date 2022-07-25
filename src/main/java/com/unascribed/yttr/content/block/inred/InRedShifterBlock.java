@@ -81,7 +81,7 @@ public class InRedShifterBlock extends InRedLogicTileBlock {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		if (state.get(WATERLOGGED)) {
-			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		if (!this.canBlockStay(world, pos)) {
 			world.breakBlock(pos, true);

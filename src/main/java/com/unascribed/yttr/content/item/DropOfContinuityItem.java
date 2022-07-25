@@ -119,9 +119,9 @@ public class DropOfContinuityItem extends Item {
 	
 	public static Set<Item> getPossibilities() {
 		Set<Item> possibilities = Sets.newHashSet();
-		Registry.ITEM.getEntryList(YTags.Item.GIFTS).get().stream().map(re -> re.value()).forEach(possibilities::add);
-		Registry.BLOCK.getEntryList(YTags.Block.GIFTS).get().stream().map(re -> re.value().asItem()).forEach(possibilities::add);
-		Registry.ITEM.getEntryList(YTags.Item.NOT_GIFTS).get().stream().map(re -> re.value()).forEach(possibilities::remove);
+		Registry.ITEM.getTag(YTags.Item.GIFTS).get().stream().map(re -> re.value()).forEach(possibilities::add);
+		Registry.BLOCK.getTag(YTags.Block.GIFTS).get().stream().map(re -> re.value().asItem()).forEach(possibilities::add);
+		Registry.ITEM.getTag(YTags.Item.NOT_GIFTS).get().stream().map(re -> re.value()).forEach(possibilities::remove);
 		possibilities.remove(null);
 		possibilities.remove(Items.AIR);
 		return possibilities;

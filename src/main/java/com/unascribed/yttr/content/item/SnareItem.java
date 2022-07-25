@@ -152,7 +152,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						if (fbe.blockEntityData != null) {
 							BlockEntity be = world.getBlockEntity(target);
 							if (be != null) {
-								NbtCompound data = be.createNbt();
+								NbtCompound data = be.toNbt();
 								NbtCompound incoming = fbe.blockEntityData.copy();
 								incoming.remove("x");
 								incoming.remove("y");
@@ -198,7 +198,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						fbe.dropItem = true;
 						fbe.timeFalling = 2;
 						if (be != null) {
-							NbtCompound data = be.createNbt();
+							NbtCompound data = be.toNbt();
 							fbe.blockEntityData = data;
 						}
 						hit = fbe;
@@ -490,7 +490,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);
 		if (group == YItemGroups.SNARE) {
-			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntrySet()) {
+			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 				EntityType<?> e = en.getValue();
 				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
 				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {

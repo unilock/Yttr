@@ -5,7 +5,7 @@ import com.unascribed.yttr.client.IBXMAudioStream.InterpolationMode;
 
 import com.google.common.base.Ascii;
 
-import net.minecraft.resource.metadata.ResourceMetadataReader;
+import net.minecraft.resource.pack.metadata.ResourceMetadataReader;
 import net.minecraft.util.JsonHelper;
 
 public class IBXMResourceMetadataReader implements ResourceMetadataReader<IBXMResourceMetadata> {

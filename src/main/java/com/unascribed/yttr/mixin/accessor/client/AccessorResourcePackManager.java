@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resource.ResourcePackManager;
-import net.minecraft.resource.ResourcePackProvider;
+import net.minecraft.resource.pack.ResourcePackManager;
+import net.minecraft.resource.pack.ResourcePackProvider;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ResourcePackManager.class)

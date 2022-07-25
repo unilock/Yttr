@@ -73,7 +73,7 @@ public class ItemSubGroup extends ItemGroup {
 	}
 	
 	@Override
-	public Text getDisplayName() {
+	public Text getTranslationKey() {
 		return translationKey;
 	}
 	

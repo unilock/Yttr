@@ -35,7 +35,7 @@ public class Substitutes {
 		MAP.clear();
 		Iterable<String> namespaces;
 		if (mgr instanceof AccessorReloadableResourceManagerImpl) {
-			namespaces = ((AccessorReloadableResourceManagerImpl)mgr).yttr$getActiveManager().getAllNamespaces();
+			namespaces = ((AccessorReloadableResourceManagerImpl)mgr).yttr$getResources().getAllNamespaces();
 		} else if (mgr instanceof AccessorNamespaceResourceManager) {
 			namespaces = Collections.singleton(((AccessorNamespaceResourceManager)mgr).yttr$getNamespace());
 		} else {

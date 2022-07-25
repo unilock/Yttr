@@ -36,7 +36,7 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		return pos.isWithinDistance(player.getPos(), 5);
+		return pos.isCenterWithinDistance(player.getPos(), 5);
 	}
 
 	public DSUBlockEntity getController() {
@@ -102,7 +102,7 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
+		return BlockEntityUpdateS2CPacket.of(this);
 	}
 
 	@Override

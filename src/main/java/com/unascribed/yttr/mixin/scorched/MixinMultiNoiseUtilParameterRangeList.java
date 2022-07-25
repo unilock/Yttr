@@ -3,18 +3,18 @@ package com.unascribed.yttr.mixin.scorched;
 import org.spongepowered.asm.mixin.Mixin;
 import com.unascribed.yttr.mixinsupport.ScorchedEnablement;
 
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.Holder;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
-@Mixin(MultiNoiseUtil.Entries.class)
-public class MixinMultiNoiseUtilEntries implements ScorchedEnablement {
+@Mixin(MultiNoiseUtil.ParameterRangeList.class)
+public class MixinMultiNoiseUtilParameterRangeList implements ScorchedEnablement {
 
-	private RegistryEntry<Biome> yttr$scorchedSummit = null;
-	private RegistryEntry<Biome> yttr$scorchedTerminus = null;
+	private Holder<Biome> yttr$scorchedSummit = null;
+	private Holder<Biome> yttr$scorchedTerminus = null;
 	
 	@Override
-	public void yttr$setScorchedBiomes(RegistryEntry<Biome> summit, RegistryEntry<Biome> terminus) {
+	public void yttr$setScorchedBiomes(Holder<Biome> summit, Holder<Biome> terminus) {
 		System.out.println(this+" has received biomes: "+summit+" "+terminus);
 		yttr$scorchedSummit = summit;
 		yttr$scorchedTerminus = terminus;

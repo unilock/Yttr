@@ -185,7 +185,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				for (int i = 0; i < (MinecraftClient.isFancyGraphicsOrBetter() ? 6 : 1); i++) {
 					RenderSystem.setShaderColor(r, g, b, i == 0 ? 0.4f : 0.1f);
 //					ReplicatorShapes.POSITION_NORMAL.startDrawing(0);
-//					YttrClient.drawBufferWithoutClobberingGLMatrix(solid1, matrices.peek().getPositionMatrix(), GL11.GL_TRIANGLES);
+//					YttrClient.drawBufferWithoutClobberingGLMatrix(solid1, matrices.peek().getModel(), GL11.GL_TRIANGLES);
 //					ReplicatorShapes.POSITION_NORMAL.endDrawing();
 					matrices.scale(1.05f, 1.05f, 1.05f);
 				}
@@ -199,7 +199,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				RenderSystem.setShaderColor(rand.nextFloat(), 0.25f+(rand.nextFloat()*0.75f), rand.nextFloat(), 0.25f);
 				solid2.bind();
 //				ReplicatorShapes.POSITION_NORMAL.startDrawing(0);
-//				YttrClient.drawBufferWithoutClobberingGLMatrix(solid2, matrices.peek().getPositionMatrix(), GL11.GL_TRIANGLES);
+//				YttrClient.drawBufferWithoutClobberingGLMatrix(solid2, matrices.peek().getModel(), GL11.GL_TRIANGLES);
 //				ReplicatorShapes.POSITION_NORMAL.endDrawing();
 				VertexBuffer.unbind();
 				
@@ -251,7 +251,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			wrc.profiler().push("prepare");
 			for (ReplicatorBlockEntity rbe : renderList) {
 				if (rbe.clientAge < 1) continue;
-				double dist = rbe.getPos().getSquaredDistance(wrc.camera().getPos());
+				double dist = rbe.getPos().getSquaredDistanceToCenter(wrc.camera().getPos());
 				if (dist < 64*64 && wrc.frustum().isVisible(new Box(rbe.getPos()))) {
 					rbe.distTmp = dist;
 				}

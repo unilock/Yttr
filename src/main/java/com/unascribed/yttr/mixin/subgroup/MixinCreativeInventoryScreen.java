@@ -45,10 +45,10 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 		if (parent.yttr$getChildren() != null && !parent.yttr$getChildren().isEmpty()) {
 			if (!selected.shouldRenderName()) {
 				ItemGroup child = parent.yttr$getSelectedChild();
-				float x = textRenderer.draw(matrices, selected.getDisplayName(), this.x+8, this.y+6, 4210752);
+				float x = textRenderer.draw(matrices, selected.getTranslationKey(), this.x+8, this.y+6, 4210752);
 				if (child != null) {
 					x = textRenderer.draw(matrices, " ", x, this.y+6, 4210752);
-					x = textRenderer.draw(matrices, child.getDisplayName(), x, this.y+6, 4210752);
+					x = textRenderer.draw(matrices, child.getTranslationKey(), x, this.y+6, 4210752);
 				}
 			}
 			MinecraftClient mc = MinecraftClient.getInstance();
@@ -64,7 +64,7 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 				drawTexture(matrices, x-tw, y, 0, bgV, tw+ofs, 11, 70, 22);
 				drawTexture(matrices, this.x, y, 64, bgV, 6, 11, 70, 22);
 				RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/tinyfont.png"));
-				String str = child.getDisplayName().getString();
+				String str = child.getTranslationKey().getString();
 				for (int i = str.length()-1; i >= 0; i--) {
 					char c = str.charAt(i);
 					if (c > 0x7F) continue;

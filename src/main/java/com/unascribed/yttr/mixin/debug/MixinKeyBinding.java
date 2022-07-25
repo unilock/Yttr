@@ -5,15 +5,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.InputUtil;
 import com.unascribed.yttr.client.render.ProfilerRenderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.fabricmc.fabric.mixin.client.keybinding.KeyBindingAccessor;
+import net.minecraft.client.option.KeyBind;
 
 @Environment(EnvType.CLIENT)
-@Mixin(KeyBinding.class)
+@Mixin(KeyBind.class)
 public class MixinKeyBinding {
 
 	@Inject(at=@At("HEAD"), method="onKeyPressed")

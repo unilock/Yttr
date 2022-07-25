@@ -77,7 +77,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		super.neighborUpdate(state, world, pos, block, fromPos, notify);
 		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
-			world.createAndScheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
+			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}
 
@@ -85,7 +85,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
 		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
-			world.createAndScheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
+			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}
 

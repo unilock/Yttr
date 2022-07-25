@@ -164,7 +164,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements YTickable, Del
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		return pos.getSquaredDistance(player.getPos()) < 5*5;
+		return pos.getSquaredDistanceToCenter(player.getPos()) < 5*5;
 	}
 
 	@Override

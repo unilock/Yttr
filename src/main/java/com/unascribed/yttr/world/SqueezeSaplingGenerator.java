@@ -19,7 +19,7 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.Holder;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -29,7 +29,7 @@ import static net.minecraft.util.math.Direction.*;
 public class SqueezeSaplingGenerator extends SaplingGenerator {
 
 	@Override
-	protected RegistryEntry<? extends ConfiguredFeature<?, ?>> getTreeFeature(Random random, boolean bl) {
+	protected Holder<? extends ConfiguredFeature<?, ?>> getTreeFeature(Random random, boolean bl) {
 		// no thanks i'll do it myself
 		return null;
 	}

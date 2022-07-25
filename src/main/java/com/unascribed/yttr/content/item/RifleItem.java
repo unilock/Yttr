@@ -593,7 +593,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		float r = rF+((rE-rF)*a);
 		float g = gF+((gE-gF)*a);
 		float b = bF+((bE-bF)*a);
-		return NativeImage.packColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
+		return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
 	}
 
 }

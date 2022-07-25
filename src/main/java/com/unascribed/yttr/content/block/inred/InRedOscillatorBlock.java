@@ -89,7 +89,7 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 			}
 		} else {
 			if (state.get(WATERLOGGED)) {
-				world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+				world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 		}
 	}

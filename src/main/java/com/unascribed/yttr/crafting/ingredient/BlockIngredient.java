@@ -12,12 +12,10 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
+import net.minecraft.util.Holder;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 
 public class BlockIngredient implements Predicate<Block> {
 
@@ -30,7 +28,7 @@ public class BlockIngredient implements Predicate<Block> {
 	public boolean test(Block b) {
 		if (exacts.contains(b)) return true;
 		for (TagKey<Block> tag : tags) {
-			if (b.getRegistryEntry().isIn(tag)) return true;
+			if (b.getBuiltInRegistryHolder().hasTag(tag)) return true;
 		}
 		return false;
 	}
@@ -39,7 +37,7 @@ public class BlockIngredient implements Predicate<Block> {
 		List<Block> li = Lists.newArrayList();
 		li.addAll(exacts);
 		for (TagKey<Block> tag : tags) {
-			for (RegistryEntry<Block> block : Registry.BLOCK.iterateEntries(tag)) {
+			for (Holder<Block> block : Registry.BLOCK.getTagOrEmpty(tag)) {
 				li.add(block.value());
 			}
 		}

@@ -7,7 +7,8 @@ import com.google.gson.JsonObject;
 
 import com.google.common.collect.Sets;
 
-import net.minecraft.resource.metadata.ResourceMetadataReader;
+import net.minecraft.resource.pack.metadata.ResourceMetadataReader;
+
 
 public class RuinedRecipeResourceMetadataReader implements ResourceMetadataReader<RuinedRecipeResourceMetadata> {
 	@Override

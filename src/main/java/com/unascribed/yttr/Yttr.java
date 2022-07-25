@@ -444,7 +444,7 @@ public class Yttr implements ModInitializer {
 		int falloff = 768;
 		int falloffSq = falloff*falloff;
 		for (Geyser g : gs.getGeysersInRange(x, z, falloff)) {
-			double distSq = g.pos.getSquaredDistanceFromCenter(x, g.pos.getY(), z);
+			double distSq = g.pos.getSquaredDistance(x, g.pos.getY(), z);
 			if (distSq < falloffSq) {
 				double effect = (falloffSq-distSq)/falloffSq;
 				pressureEffect += pressureGap*effect;

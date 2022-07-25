@@ -58,8 +58,8 @@ public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerM
 			for (int i = readout.length()-1; i >= 0; i--) {
 				char c = readout.charAt(i);
 				float u = Character.digit(c, 10)/10f;
-				Matrix4f mat = matrices.peek().getPositionMatrix();
-				Matrix3f nrm = matrices.peek().getNormalMatrix();
+				Matrix4f mat = matrices.peek().getModel();
+				Matrix3f nrm = matrices.peek().getNormal();
 				vc.vertex(mat, 0, 7/16f, 0).color(1f, 1f, 1f, a).texture(u+0.1f, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
 				vc.vertex(mat, 4/16f, 7/16f, 0).color(1f, 1f, 1f, a).texture(u, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
 				vc.vertex(mat, 4/16f, 0, 0).color(1f, 1f, 1f, a).texture(u, 1).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();

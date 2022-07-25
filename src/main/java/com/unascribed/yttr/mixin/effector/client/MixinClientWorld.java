@@ -11,9 +11,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Holder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
@@ -23,8 +23,8 @@ import net.minecraft.world.dimension.DimensionType;
 @Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World implements YttrWorld {
 
-	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
-		super(properties, registryRef, registryEntry, profiler, isClient, debugWorld, seed);
+	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, Holder<DimensionType> holder, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
+		super(properties, registryRef, holder, profiler, isClient, debugWorld, seed);
 	}
 
 	@Shadow

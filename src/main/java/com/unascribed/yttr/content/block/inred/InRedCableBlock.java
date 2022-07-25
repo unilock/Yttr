@@ -136,7 +136,7 @@ public class InRedCableBlock extends Block implements Waterloggable {
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		super.neighborUpdate(state, world, pos, block, fromPos, notify);
 		if (state.get(WATERLOGGED)) {
-			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		world.setBlockState(pos, this.getDefaultState()
 				.with(NORTH, getCableConnections(world, pos, Direction.NORTH))

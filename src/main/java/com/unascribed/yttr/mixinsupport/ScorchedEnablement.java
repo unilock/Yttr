@@ -1,11 +1,11 @@
 package com.unascribed.yttr.mixinsupport;
 
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.Holder;
 import net.minecraft.world.biome.Biome;
 
 public interface ScorchedEnablement {
 
-	void yttr$setScorchedBiomes(RegistryEntry<Biome> summit, RegistryEntry<Biome> terminus);
+	void yttr$setScorchedBiomes(Holder<Biome> summit, Holder<Biome> terminus);
 	
 	void yttr$copyTo(ScorchedEnablement other);
 	

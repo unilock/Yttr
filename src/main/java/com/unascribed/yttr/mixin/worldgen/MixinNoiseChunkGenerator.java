@@ -11,9 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.world.ScorchedGenerator;
 
-import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntryList;
+import net.minecraft.util.HolderSet;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
@@ -24,7 +23,7 @@ import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 @Mixin(NoiseChunkGenerator.class)
 public abstract class MixinNoiseChunkGenerator extends ChunkGenerator {
 
-	public MixinNoiseChunkGenerator(Registry<StructureSet> registry, Optional<RegistryEntryList<StructureSet>> optional, BiomeSource biomeSource) {
+	public MixinNoiseChunkGenerator(Registry<net.minecraft.world.gen.structure.StructureSet> registry, Optional<HolderSet<net.minecraft.world.gen.structure.StructureSet>> optional, BiomeSource biomeSource) {
 		super(registry, optional, biomeSource);
 	}
 

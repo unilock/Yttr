@@ -82,7 +82,7 @@ public class MessageS2CBeam extends S2CMessage {
 					}
 					setMaxAge((int)(Math.log10((fi*4)+5))+10);
 					setColor(r, g, b);
-					setAlpha(a);
+					setColorAlpha(a);
 					velocityX = 0;
 					velocityY = 0;
 					velocityZ = 0;

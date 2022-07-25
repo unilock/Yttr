@@ -9,7 +9,7 @@ accessible method net/minecraft/util/shape/VoxelShape <init> (Lnet/minecraft/uti
 
 mutable field net/minecraft/world/World isClient Z
 mutable field net/minecraft/world/World random Ljava/util/Random;
-mutable field net/minecraft/resource/ResourcePackManager providers Ljava/util/Set;
+mutable field net/minecraft/resource/pack/ResourcePackManager providers Ljava/util/Set;
 
 accessible field net/minecraft/world/gen/chunk/DebugChunkGenerator BLOCK_STATES Ljava/util/List;
 accessible field net/minecraft/world/gen/chunk/DebugChunkGenerator X_SIDE_LENGTH I

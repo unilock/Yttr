@@ -220,7 +220,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 			state = state.with(MODE, mode);
 		}
 		if (state.get(WATERLOGGED)) {
-			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return state;
 	}

@@ -9,15 +9,15 @@ import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.Holder;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.random.ChunkRandom;
 import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 @Mixin(ChunkGenerator.class)
@@ -32,7 +32,7 @@ public abstract class MixinChunkGenerator {
 			int x = chunkRandom.nextInt(16);
 			int z = chunkRandom.nextInt(16);
 			chunkRandom.setPopulationSeed(world.getSeed(), x, z);
-			RegistryEntry<Biome> b = world.getBiome(new BlockPos(chunk.getPos().getStartX()+x, 0, chunk.getPos().getStartZ()+z));
+			Holder<Biome> b = world.getBiome(new BlockPos(chunk.getPos().getStartX()+x, 0, chunk.getPos().getStartZ()+z));
 			if (Biome.getCategory(b) == Category.OCEAN && b.getKey().get().getValue().getPath().contains("deep")) {
 				int y = chunk.sampleHeightmap(Type.OCEAN_FLOOR_WG, x, z);
 				int waterSurface = chunk.sampleHeightmap(Type.WORLD_SURFACE_WG, x, z);

@@ -13,9 +13,9 @@ import com.google.common.collect.Sets;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.TagKey;
+import net.minecraft.util.Holder;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 
 public class FluidIngredient implements Predicate<Fluid> {
 
@@ -37,7 +37,7 @@ public class FluidIngredient implements Predicate<Fluid> {
 		List<Fluid> li = Lists.newArrayList();
 		li.addAll(exacts);
 		for (TagKey<Fluid> tag : tags) {
-			for (RegistryEntry<Fluid> fluid : Registry.FLUID.iterateEntries(tag)) {
+			for (Holder<Fluid> fluid : Registry.FLUID.getTagOrEmpty(tag)) {
 				li.add(fluid.value());
 			}
 		}

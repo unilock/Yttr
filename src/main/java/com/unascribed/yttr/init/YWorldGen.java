@@ -7,21 +7,21 @@ import com.unascribed.yttr.Yttr;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.minecraft.util.Holder;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
+import net.minecraft.world.gen.decorator.CountPlacementModifier;
+import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
+import net.minecraft.world.gen.decorator.InSquarePlacementModifier;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreConfiguredFeatures;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.PlacedFeature;
-import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
 public class YWorldGen {
 
@@ -41,17 +41,17 @@ public class YWorldGen {
 					9));
 
 	public static final PlacedFeature GADOLINITE_OVERWORLD_MAIN = new PlacedFeature(
-			RegistryEntry.of(GADOLINITE_OVERWORLD),
+			Holder.createDirect(GADOLINITE_OVERWORLD),
 			List.of(
-					CountPlacementModifier.of(10),
-					SquarePlacementModifier.of(),
-					HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(96))
+					CountPlacementModifier.create(10),
+					InSquarePlacementModifier.getInstance(),
+					HeightRangePlacementModifier.createUniform(YOffset.fixed(20), YOffset.fixed(96))
 			));
 	public static final PlacedFeature GADOLINITE_OVERWORLD_DEEP = new PlacedFeature(
-			RegistryEntry.of(GADOLINITE_OVERWORLD),
+			Holder.createDirect(GADOLINITE_OVERWORLD),
 			List.of(
-					CountPlacementModifier.of(5),
-					SquarePlacementModifier.of(),
+					CountPlacementModifier.create(5),
+					InSquarePlacementModifier.getInstance(),
 					HeightRangePlacementModifier.trapezoid(YOffset.aboveBottom(20), YOffset.fixed(10))
 			));
 
@@ -71,17 +71,17 @@ public class YWorldGen {
 					5));
 
 	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_MAIN = new PlacedFeature(
-			RegistryEntry.of(BROOKITE_ORE_OVERWORLD),
+			Holder.createDirect(BROOKITE_ORE_OVERWORLD),
 			List.of(
-					CountPlacementModifier.of(4),
-					SquarePlacementModifier.of(),
-					HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(32))
+					CountPlacementModifier.create(4),
+					InSquarePlacementModifier.getInstance(),
+					HeightRangePlacementModifier.createUniform(YOffset.fixed(0), YOffset.fixed(32))
 			));
 	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_DEEP = new PlacedFeature(
-			RegistryEntry.of(BROOKITE_ORE_OVERWORLD),
+			Holder.createDirect(BROOKITE_ORE_OVERWORLD),
 			List.of(
-					CountPlacementModifier.of(6),
-					SquarePlacementModifier.of(),
+					CountPlacementModifier.create(6),
+					InSquarePlacementModifier.getInstance(),
 					HeightRangePlacementModifier.trapezoid(YOffset.getBottom(), YOffset.fixed(4))
 			));
 

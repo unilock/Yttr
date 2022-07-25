@@ -129,7 +129,7 @@ public class EffectorRenderer extends IHasAClient {
 		ms.translate(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
 		ms.translate(dir.getOffsetX()*-0.5, dir.getOffsetY()*-0.5, dir.getOffsetZ()*-0.5);
 		ms.multiply(dir.getRotationQuaternion());
-		Matrix4f mat = ms.peek().getPositionMatrix();
+		Matrix4f mat = ms.peek().getModel();
 		if (a != 0) {
 			float s = a*1.5f;
 			RenderSystem.disableTexture();

@@ -40,7 +40,7 @@ public class MessageC2SDiveTo extends C2SMessage {
 			if (diver.yttr$isDiving() && diver.yttr$getFastDiveTarget() == null && diver.yttr$getKnownGeysers().contains(id)) {
 				Geyser g = GeysersState.get(player.getWorld()).getGeyser(id);
 				if (g != null) {
-					double distance = Math.sqrt(g.pos.getSquaredDistanceFromCenter(diver.yttr$getDivePos().x, g.pos.getY(), diver.yttr$getDivePos().z));
+					double distance = Math.sqrt(g.pos.getSquaredDistance(diver.yttr$getDivePos().x, g.pos.getY(), diver.yttr$getDivePos().z));
 					Multiset<SuitResource> resourcesNeeded = Yttr.determineNeededResourcesForFastDive(distance);
 					Multiset<SuitResource> resourcesAvailable = Yttr.determineAvailableResources(player);
 					if (!player.isCreative()) {

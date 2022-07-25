@@ -114,7 +114,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 			boolean cur = state.get(LIT);
 			if (cur != (world.isReceivingRedstonePower(pos) ^ state.get(INVERTED))) {
 				if (cur) {
-					world.createAndScheduleBlockTick(pos, this, 4);
+					world.scheduleBlockTick(pos, this, 4);
 				} else {
 					world.setBlockState(pos, state.cycle(LIT), 2);
 				}

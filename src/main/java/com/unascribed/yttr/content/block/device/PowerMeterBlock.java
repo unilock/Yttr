@@ -76,7 +76,7 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.updateNeighborsAlways(pos, this);
 		if (getWeakRedstonePower(state, world, pos, null) > 0) {
-			world.createAndScheduleBlockTick(pos, this, 20);
+			world.scheduleBlockTick(pos, this, 20);
 		}
 	}
 	

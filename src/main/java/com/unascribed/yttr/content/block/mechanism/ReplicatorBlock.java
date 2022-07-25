@@ -81,7 +81,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 		ItemStack stack = new ItemStack(this);
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ReplicatorBlockEntity) {
-			stack.setSubNbt("BlockEntityTag", be.createNbt());
+			stack.setSubNbt("BlockEntityTag", be.toNbt());
 		}
 		return stack;
 	}

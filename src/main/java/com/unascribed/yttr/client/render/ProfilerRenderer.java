@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.InputUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.mixin.debug.AccessorMinecraftClient;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
@@ -189,15 +189,15 @@ public class ProfilerRenderer {
 
 	public static void handleKey(InputUtil.Key key) {
 		if (enabled) {
-			if (key.getCode() == GLFW.GLFW_KEY_KP_2) {
+			if (key.getKeyCode() == GLFW.GLFW_KEY_KP_2) {
 				cursorIndex++;
-			} else if (key.getCode() == GLFW.GLFW_KEY_KP_8) {
+			} else if (key.getKeyCode() == GLFW.GLFW_KEY_KP_8) {
 				cursorIndex--;
-			} else if (key.getCode() == GLFW.GLFW_KEY_KP_6) {
+			} else if (key.getKeyCode() == GLFW.GLFW_KEY_KP_6) {
 				stepIn = true;
-			} else if (key.getCode() == GLFW.GLFW_KEY_KP_4) {
+			} else if (key.getKeyCode() == GLFW.GLFW_KEY_KP_4) {
 				stepOut = true;
-			} else if (key.getCode() == GLFW.GLFW_KEY_KP_7) {
+			} else if (key.getKeyCode() == GLFW.GLFW_KEY_KP_7) {
 				AccessorMinecraftClient amc = ((AccessorMinecraftClient)MinecraftClient.getInstance());
 				amc.yttr$getTickTimeTracker().disable();
 				amc.yttr$setTrackingTick(0);

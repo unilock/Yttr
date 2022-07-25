@@ -114,7 +114,7 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 			}
 		} else {
 			if (state.get(WATERLOGGED)) {
-				world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+				world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof InRedAndGateBlockEntity) {
