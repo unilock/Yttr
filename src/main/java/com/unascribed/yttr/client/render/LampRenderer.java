@@ -38,7 +38,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
@@ -73,29 +72,19 @@ public class LampRenderer extends IHasAClient {
 		if (bm == null) return;
 		DelegatingVertexConsumer dvc = new DelegatingVertexConsumer(vc) {
 			@Override
-			public VertexConsumer normal(float x, float y, float z) {
-				return this;
-			}
-			@Override
-			public VertexConsumer normal(Matrix3f matrix, float x, float y, float z) {
-				return this;
-			}
-			@Override
-			public VertexConsumer light(int u, int v) {
-				return this;
-			}
-			@Override
-			public VertexConsumer light(int uv) {
-				return this;
-			}
-			@Override
-			public VertexConsumer overlay(int u, int v) {
-				return this;
-			}
-			@Override
-			public VertexConsumer overlay(int uv) {
-				return this;
-			}
+			public void vertex(
+					float x, float y, float z,
+					float red, float green, float blue, float alpha,
+					float u, float v,
+					int overlay, int light,
+					float normalX, float normalY, float normalZ
+				) {
+					vertex(x, y, z);
+					texture(u, v);
+					color(red, green, blue, alpha);
+					normal(normalX, normalY, normalZ);
+					next();
+				}
 		};
 
 		matrices.push();
@@ -157,8 +146,9 @@ public class LampRenderer extends IHasAClient {
 					continue;
 				}
 				Box bounds = null;
-				BufferBuilder vc = new BufferBuilder(24 * VertexFormats.POSITION_COLOR_TEXTURE.getVertexSize() * l.size());
-				vc.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+				// POSITION_TEXTURE_COLOR_NORMAL is one of the few generic shaders with fog support
+				BufferBuilder vc = new BufferBuilder(24 * VertexFormats.POSITION_TEXTURE_COLOR_NORMAL.getVertexSize() * l.size());
+				vc.begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_NORMAL);
 				for (BlockEntity be : l) {
 					if (!(be instanceof HaloBlockEntity) || !((HaloBlockEntity)be).shouldRenderHalo()) continue;
 					scratch.push();
@@ -194,7 +184,7 @@ public class LampRenderer extends IHasAClient {
 						VertexBuffer buf = buffers.get(pos);
 						buf.bind();
 						YRenderLayers.getLampHalo().startDrawing();
-						buf.setShader(matrices.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionColorTexShader());
+						buf.setShader(matrices.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionTexColorNormalShader());
 						YRenderLayers.getLampHalo().endDrawing();
 						VertexBuffer.unbind();
 					matrices.pop();

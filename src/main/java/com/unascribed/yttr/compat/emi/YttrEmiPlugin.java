@@ -6,6 +6,8 @@ import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.mixinsupport.ItemGroupParent;
+import com.unascribed.yttr.mixinsupport.SubTabLocation;
 
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -13,6 +15,9 @@ import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.Bounds;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.ShapedRecipe;
@@ -47,6 +52,14 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.setDefaultComparison(YItems.FIXTURE, compareNbt);
 		registry.setDefaultComparison(YItems.CAGE_LAMP, compareNbt);
 		registry.setDefaultComparison(YItems.PANEL, compareNbt);
+		
+		registry.addExclusionArea(CreativeInventoryScreen.class, (screen, out) -> {
+			ItemGroup selected = ItemGroup.GROUPS[screen.getSelectedTab()];
+			ItemGroupParent parent = (ItemGroupParent)selected;
+			if (screen instanceof SubTabLocation stl && parent.yttr$getChildren() != null && !parent.yttr$getChildren().isEmpty()) {
+				out.accept(new Bounds(stl.yttr$getX(), stl.yttr$getY(), stl.yttr$getW(), stl.yttr$getH()));
+			}
+		});
 	}
 
 }

@@ -98,6 +98,19 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 			con.onClose(player);
 		}
 	}
+	
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound tag = super.toInitialChunkDataNbt();
+		tag.put("Contents", Yttr.serializeInv(contents));
+		return tag;
+	}
+	
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		Yttr.sync(this);
+	}
 
 	@Nullable
 	@Override
