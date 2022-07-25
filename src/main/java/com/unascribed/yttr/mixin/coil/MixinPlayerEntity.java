@@ -31,7 +31,7 @@ public class MixinPlayerEntity {
 		float breakSpeed = ci.getReturnValueF();
 		PlayerEntity self = (PlayerEntity)(Object)this;
 		if (YEnchantments.STABILIZATION.isPresent() && breakSpeed == yttr$storedBreakSpeed/5
-				&& EnchantmentHelper.getLevel(YEnchantments.STABILIZATION.get(), Yttr.trinketsAccess.getSoleTrinket(self)) > 0) {
+				&& Yttr.trinketsAccess.count(self, is -> EnchantmentHelper.getLevel(YEnchantments.STABILIZATION.get(), is)) > 0) {
 			ci.setReturnValue(yttr$storedBreakSpeed);
 		}
 	}

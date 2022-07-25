@@ -8,10 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 import com.unascribed.yttr.inred.InRedLogic;
@@ -85,6 +87,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -117,8 +120,8 @@ public class Yttr implements ModInitializer {
 	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
 	
 	public interface TrinketsAccess {
-		ItemStack getSoleTrinket(PlayerEntity pe);
-		ItemStack getBackTrinket(PlayerEntity pe);
+		Optional<SlotReference> getWorn(PlayerEntity pe, Predicate<Item> predicate);
+		int count(PlayerEntity pe, ToIntFunction<ItemStack> func);
 		void dropMagneticTrinkets(PlayerEntity pe);
 	}
 	
@@ -130,13 +133,13 @@ public class Yttr implements ModInitializer {
 	public static TrinketsAccess trinketsAccess = new TrinketsAccess() {
 
 		@Override
-		public ItemStack getSoleTrinket(PlayerEntity pe) {
-			return ItemStack.EMPTY;
+		public Optional<SlotReference> getWorn(PlayerEntity pe, Predicate<Item> predicate) {
+			return Optional.empty();
 		}
-
+		
 		@Override
-		public ItemStack getBackTrinket(PlayerEntity pe) {
-			return ItemStack.EMPTY;
+		public int count(PlayerEntity pe, ToIntFunction<ItemStack> func) {
+			return 0;
 		}
 
 		@Override
@@ -502,15 +505,11 @@ public class Yttr implements ModInitializer {
 	}
 
 	public static int getSpringingLevel(PlayerEntity p) {
-		ItemStack is = trinketsAccess.getSoleTrinket(p);
-		if (YEnchantments.SPRINGING.isPresent()) {
-			return EnchantmentHelper.getLevel(YEnchantments.SPRINGING.get(), is);
-		}
-		return 0;
+		return trinketsAccess.count(p, is -> EnchantmentHelper.getLevel(YEnchantments.SPRINGING.get(), is));
 	}
 
-	public static boolean isWearingCoil(PlayerEntity e) {
-		return YItems.CUPROSTEEL_COIL.is(trinketsAccess.getSoleTrinket(e).getItem());
+	public static Optional<SlotReference> getWornCoil(PlayerEntity e) {
+		return trinketsAccess.getWorn(e, YItems.CUPROSTEEL_COIL::is);
 	}
 
 	public static @Nullable SlotReference scanInventory(Inventory inv, Predicate<ItemStack> predicate) {

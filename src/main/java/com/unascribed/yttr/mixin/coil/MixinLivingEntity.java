@@ -20,10 +20,13 @@ public class MixinLivingEntity {
 			PlayerEntity p = (PlayerEntity)self;
 			if (p.isSneaking()) return;
 			int level = Yttr.getSpringingLevel(p);
-			if (level > 0 && Yttr.isWearingCoil(p)) {
-				Yttr.trinketsAccess.getSoleTrinket(p).damage(level/2, p, (e) -> {
-					e.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1, 1);
-				});
+			if (level > 0) {
+				var coil = Yttr.getWornCoil(p);
+				if (coil.isPresent()) {
+					coil.get().getStack().damage(level/2, p, (e) -> {
+						e.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1, 1);
+					});
+				}
 			}
 		}
 	}
