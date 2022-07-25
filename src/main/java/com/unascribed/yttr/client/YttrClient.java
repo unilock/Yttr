@@ -24,6 +24,8 @@ import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.ShifterUI;
 import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.util.TextureColorThief;
+import com.unascribed.yttr.compat.EarsCompat;
+import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompatClient;
 import com.unascribed.yttr.content.block.big.BigBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
@@ -200,6 +202,22 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		ModelPredicateProviderRegistry.register(new Identifier("yttr", "gui"), (stack, world, entity, seed) -> {
 			return renderingGui ? 1 : 0;
 		});
+		
+
+		if (FabricLoader.getInstance().isModLoaded("ears")) {
+			try {
+				EarsCompat.init();
+			} catch (Throwable t) {
+				YLog.warn("Failed to load Ears compat", t);
+			}
+		}
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			try {
+				YttrTrinketsCompatClient.init();
+			} catch (Throwable t) {
+				YLog.warn("Failed to load Trinkets compat", t);
+			}
+		}
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

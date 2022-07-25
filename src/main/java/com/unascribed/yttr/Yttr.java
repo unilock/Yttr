@@ -20,7 +20,6 @@ import com.unascribed.yttr.inred.InRedLogic;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBiomes;
@@ -231,13 +230,6 @@ public class Yttr implements ModInitializer {
 			}
 		});
 		
-		if (FabricLoader.getInstance().isModLoaded("ears")) {
-			try {
-				EarsCompat.init();
-			} catch (Throwable t) {
-				YLog.warn("Failed to load Ears compat", t);
-			}
-		}
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			try {
 				YttrTrinketsCompat.init();
