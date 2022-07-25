@@ -21,7 +21,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 public class MixinMultiNoiseBiomeSourcePreset {
 
 	// nether lambda
-	@Inject(at=@At("RETURN"), method="method_31088(Lnet/minecraft/util/registry/Registry;)Lnet/minecraft/world/biome/source/util/MultiNoiseUtil$ParameterRangeList;")
+	@Inject(at=@At("RETURN"), method="m_ixtcdgmf(Lnet/minecraft/util/registry/Registry;)Lnet/minecraft/world/biome/source/util/MultiNoiseUtil$ParameterRangeList;")
 	private static void presetSetup(Registry<Biome> registry, CallbackInfoReturnable<MultiNoiseUtil.ParameterRangeList<?>> ci) {
 		((ScorchedEnablement)ci.getReturnValue()).yttr$setScorchedBiomes(
 				registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "scorched_summit"))),

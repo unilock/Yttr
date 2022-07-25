@@ -19,8 +19,8 @@ public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 	private Holder<Biome> yttr$scorchedSummit = null;
 	private Holder<Biome> yttr$scorchedTerminus = null;
 	
-	@Inject(at=@At("HEAD"), method="getBiome", cancellable=true)
-	public void getBiome(int bX, int bY, int bZ, MultiNoiseSampler noise, CallbackInfoReturnable<Holder<Biome>> ci) {
+	@Inject(at=@At("HEAD"), method="getNoiseBiome", cancellable=true)
+	public void getNoiseBiome(int bX, int bY, int bZ, MultiNoiseSampler noise, CallbackInfoReturnable<Holder<Biome>> ci) {
 		if (!YConfig.WorldGen.scorched) return;
 		if (yttr$scorchedSummit != null) {
 			if (bY > (192>>2) && yttr$scorchedTerminus != null) {

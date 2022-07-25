@@ -20,8 +20,8 @@ import net.minecraft.world.gen.feature.util.FeatureContext;
 @Mixin(EndIslandFeature.class)
 public class MixinEndIslandFeature {
 
-	@Inject(at=@At("TAIL"), method="generate")
-	public void generate(FeatureContext<DefaultFeatureConfig> context, CallbackInfoReturnable<Boolean> ci) {
+	@Inject(at=@At("TAIL"), method="place")
+	public void place(FeatureContext<DefaultFeatureConfig> context, CallbackInfoReturnable<Boolean> ci) {
 		if (!YConfig.WorldGen.continuity) return;
 		if (ci.getReturnValueZ()) {
 			BlockPos pos = context.getOrigin();
