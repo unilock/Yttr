@@ -2,17 +2,27 @@ package com.unascribed.yttr.init;
 
 import java.util.function.Consumer;
 
-import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.BiomeMoodSound;
+import net.minecraft.sound.MusicSound;
+import net.minecraft.util.Holder;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.TheNetherBiomeCreator;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.minecraft.world.gen.feature.OrePlacedFeatures;
 
 @SuppressWarnings("deprecation")
 public class YBiomes {
@@ -51,44 +61,43 @@ public class YBiomes {
 			.generationSettings(new GenerationSettings.Builder().build())
 			.build();
 
-//	public static final Biome WASTELAND = new Biome.Builder()
-//			.precipitation(Biome.Precipitation.NONE)
-//			.category(Biome.Category.DESERT)
-//			.temperature(1.2f)
-//			.downfall(0.5f)
-//			.effects(new BiomeEffects.Builder()
-//					.waterColor(0x403E16)
-//					.waterFogColor(0x403E16)
-//					.fogColor(0x6A7053)
-//					.skyColor(0x848970)
-//					.grassColor(0x58503F)
-//					.foliageColor(0x58503F)
-//					.moodSound(BiomeMoodSound.CAVE)
-//					.music(new MusicSound(YSounds.MEMORANDUM, 3000, 6000, true))
-//					.build())
-//			.spawnSettings(modify(new SpawnSettings.Builder(),
-//						DefaultBiomeFeatures::addCaveMobs,
-//						b -> DefaultBiomeFeatures.addMonsters(b, 0, 40, 120))
-//					.build())
-//			.generationSettings(modify(new GenerationSettings.Builder(),
-//						DefaultBiomeFeatures::addLandCarvers,
-//						DefaultBiomeFeatures::addDefaultDisks,
-//						DefaultBiomeFeatures::addDefaultLakes,
-//						DefaultBiomeFeatures::addDefaultOres)
-//					.surfaceBuilder(YWorldGen.WASTELAND_SURFACE)
-//					.feature(Feature.VEGETAL_DECORATION, YWorldGen.WASTELAND_GRASS)
-//					.feature(GenerationStep.Feature.UNDERGROUND_ORES, ConfiguredFeatures.ORE_DIRT)
-//					.feature(GenerationStep.Feature.UNDERGROUND_ORES, ConfiguredFeatures.ORE_GRAVEL)
-//					.build()
-//				)
-//			.build();
+	public static final Biome WASTELAND = new Biome.Builder()
+			.precipitation(Biome.Precipitation.NONE)
+			.category(Biome.Category.DESERT)
+			.temperature(1.2f)
+			.downfall(0.5f)
+			.effects(new BiomeEffects.Builder()
+					.waterColor(0x403E16)
+					.waterFogColor(0x403E16)
+					.fogColor(0x6A7053)
+					.skyColor(0x848970)
+					.grassColor(0x58503F)
+					.foliageColor(0x58503F)
+					.moodSound(BiomeMoodSound.CAVE)
+					.music(new MusicSound(YSounds.MEMORANDUM, 3000, 6000, true))
+					.build())
+			.spawnSettings(modify(new SpawnSettings.Builder(),
+						DefaultBiomeFeatures::addCaveMobs,
+						b -> DefaultBiomeFeatures.addMonsters(b, 0, 40, 120, false))
+					.build())
+			.generationSettings(modify(new GenerationSettings.Builder(),
+						DefaultBiomeFeatures::addLandCarvers,
+						b -> b
+							.feature(GenerationStep.Feature.UNDERGROUND_ORES, OrePlacedFeatures.ORE_DIRT)
+							.feature(GenerationStep.Feature.UNDERGROUND_ORES, OrePlacedFeatures.ORE_GRAVEL),
+						DefaultBiomeFeatures::addSprings,
+						DefaultBiomeFeatures::addDefaultOres,
+						DefaultBiomeFeatures::addDefaultDisks)
+					.feature(GenerationStep.Feature.VEGETAL_DECORATION, YWorldGen.WASTELAND_GRASS_PLACED_HOLDER)
+					.build()
+				)
+			.build();
+	
+	public static final Holder<Biome> WASTELAND_HOLDER = Holder.Reference.create(BuiltinRegistries.BIOME, RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland")));
 	
 	public static void init() {
+		Blocks.SAND.asItem();
 		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
-		
-		if (YConfig.WorldGen.wasteland) {
-//			OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland")), 0.2);
-		}
 	}
 
 	@SafeVarargs

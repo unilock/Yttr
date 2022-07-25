@@ -14,6 +14,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
+import net.minecraft.world.gen.decorator.BiomePlacementModifier;
 import net.minecraft.world.gen.decorator.CountPlacementModifier;
 import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
 import net.minecraft.world.gen.decorator.InSquarePlacementModifier;
@@ -22,6 +23,10 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreConfiguredFeatures;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.feature.RandomPatchFeatureConfig;
+import net.minecraft.world.gen.feature.VegetationConfiguredFeatures;
+import net.minecraft.world.gen.feature.util.PlacedFeatureUtil;
+import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 
 public class YWorldGen {
 
@@ -39,16 +44,18 @@ public class YWorldGen {
 							)
 						),
 					9));
+	
+	public static final Holder<ConfiguredFeature<?, ?>> GADOLINITE_OVERWORLD_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("yttr", "gadolinite_overworld")));
 
 	public static final PlacedFeature GADOLINITE_OVERWORLD_MAIN = new PlacedFeature(
-			Holder.createDirect(GADOLINITE_OVERWORLD),
+			GADOLINITE_OVERWORLD_HOLDER,
 			List.of(
 					CountPlacementModifier.create(10),
 					InSquarePlacementModifier.getInstance(),
 					HeightRangePlacementModifier.createUniform(YOffset.fixed(20), YOffset.fixed(96))
 			));
 	public static final PlacedFeature GADOLINITE_OVERWORLD_DEEP = new PlacedFeature(
-			Holder.createDirect(GADOLINITE_OVERWORLD),
+			GADOLINITE_OVERWORLD_HOLDER,
 			List.of(
 					CountPlacementModifier.create(5),
 					InSquarePlacementModifier.getInstance(),
@@ -69,32 +76,38 @@ public class YWorldGen {
 							)
 						),
 					5));
+	
+	public static final Holder<ConfiguredFeature<?, ?>> BROOKITE_ORE_OVERWORLD_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("yttr", "brookite_ore_overworld")));
 
 	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_MAIN = new PlacedFeature(
-			Holder.createDirect(BROOKITE_ORE_OVERWORLD),
+			BROOKITE_ORE_OVERWORLD_HOLDER,
 			List.of(
 					CountPlacementModifier.create(4),
 					InSquarePlacementModifier.getInstance(),
 					HeightRangePlacementModifier.createUniform(YOffset.fixed(0), YOffset.fixed(32))
 			));
 	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_DEEP = new PlacedFeature(
-			Holder.createDirect(BROOKITE_ORE_OVERWORLD),
+			BROOKITE_ORE_OVERWORLD_HOLDER,
 			List.of(
 					CountPlacementModifier.create(6),
 					InSquarePlacementModifier.getInstance(),
 					HeightRangePlacementModifier.trapezoid(YOffset.getBottom(), YOffset.fixed(4))
 			));
 
-//	public static final ConfiguredFeature<?, ?> WASTELAND_GRASS = Feature.RANDOM_PATCH
-//			.configure(new RandomPatchFeatureConfig.Builder(
-//					new SimpleBlockStateProvider(YBlocks.WASTELAND_GRASS.getDefaultState()), SimpleBlockPlacer.INSTANCE)
-//				.tries(4)
-//				.build())
-//			.decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP_SPREAD_DOUBLE)
-//			.repeat(4);
-//
-//	public static final ConfiguredSurfaceBuilder<?> WASTELAND_SURFACE = SurfaceBuilder.DEFAULT
-//			.withConfig(new TernarySurfaceConfig(YBlocks.WASTELAND_DIRT.getDefaultState(), YBlocks.WASTELAND_DIRT.getDefaultState(), Blocks.STONE.getDefaultState()));
+	public static final ConfiguredFeature<RandomPatchFeatureConfig, ?> WASTELAND_GRASS = new ConfiguredFeature<>(
+			Feature.RANDOM_PATCH, VegetationConfiguredFeatures.createRandomPatchFeatureConfig(BlockStateProvider.of(YBlocks.WASTELAND_GRASS), 12));
+	
+	public static final Holder<ConfiguredFeature<?, ?>> WASTELAND_GRASS_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("yttr", "wasteland_grass")));
+	
+	public static final PlacedFeature WASTELAND_GRASS_PLACED = new PlacedFeature(
+			WASTELAND_GRASS_HOLDER,
+			List.of(
+				InSquarePlacementModifier.getInstance(),
+				PlacedFeatureUtil.WORLD_SURFACE_WG_HEIGHTMAP,
+				BiomePlacementModifier.getInstance()
+			));
+	
+	public static final Holder<PlacedFeature> WASTELAND_GRASS_PLACED_HOLDER = Holder.Reference.create(BuiltinRegistries.PLACED_FEATURE, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier("yttr", "wasteland_grass_placed")));
 	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
