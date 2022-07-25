@@ -23,7 +23,10 @@ public class InRedNotGateBlock extends InRedLogicTileBlock {
 
 	public InRedNotGateBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(BOOLEAN_MODE, false).with(WATERLOGGED, false));
+		this.setDefaultState(this.getStateManager().getDefaultState()
+				.with(FACING, Direction.NORTH)
+				.with(MODE, BooleanMode.BITWISE)
+				.with(WATERLOGGED, false));
 	}
 
 	@Nullable
@@ -63,7 +66,7 @@ public class InRedNotGateBlock extends InRedLogicTileBlock {
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(BOOLEAN_MODE);
+		builder.add(MODE);
 	}
 
 	@Override
@@ -105,8 +108,8 @@ public class InRedNotGateBlock extends InRedLogicTileBlock {
 		} else {
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof InRedNotGateBlockEntity) {
-				world.setBlockState(pos, state
-						.with(BOOLEAN_MODE, ((InRedNotGateBlockEntity) be).booleanMode));
+//				world.setBlockState(pos, state
+//						.with(MODE, ((InRedNotGateBlockEntity) be).booleanMode));
 			}
 		}
 	}

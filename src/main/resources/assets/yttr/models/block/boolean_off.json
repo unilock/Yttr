@@ -1,19 +1,15 @@
 {
-	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"credit": "Made with Blockbench",
 	"textures": {
-		"light": "yttr:block/inred_lights"
+		"0": "yttr:block/inred_mode_bitwise",
+		"particle": "yttr:block/inred_mode_bitwise"
 	},
 	"elements": [
 		{
-			"from": [7, 3, 2],
-			"to": [9, 5, 4],
+			"from": [4, -0.01, 2],
+			"to": [12, 1.99, 14],
 			"faces": {
-				"north": {"uv": [9, 7, 11, 9], "texture": "#light"},
-				"east": {"uv": [9, 7, 11, 9], "texture": "#light"},
-				"south": {"uv": [9, 7, 11, 9], "texture": "#light"},
-				"west": {"uv": [9, 7, 11, 9], "texture": "#light"},
-				"up": {"uv": [9, 7, 11, 9], "texture": "#light"},
-				"down": {"uv": [9, 7, 11, 9], "texture": "#light"}
+				"up": {"uv": [0, 0, 9, 12], "texture": "#0"}
 			}
 		}
 	]

@@ -563,13 +563,21 @@ public class YBlocks {
 			.strength(0F, 8F)
 			.nonOpaque()
 	);
+	@RenderLayer("cutout")
 	public static final InRedAndGateBlock INRED_AND_GATE = new InRedAndGateBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedNotGateBlock INRED_NOT_GATE = new InRedNotGateBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedXorGateBlock INRED_XOR_GATE = new InRedXorGateBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedDiodeBlock INRED_DIODE = new InRedDiodeBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedShifterBlock INRED_SHIFTER = new InRedShifterBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedTransistorBlock INRED_TRANSISTOR = new InRedTransistorBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedEncoderBlock INRED_ENCODER = new InRedEncoderBlock(INRED_DEVICE_SETTINGS);
+	@RenderLayer("cutout")
 	public static final InRedOscillatorBlock INRED_OSCILLATOR = new InRedOscillatorBlock(INRED_DEVICE_SETTINGS);
 	public static final InRedDemoCyclerBlock INRED_DEMO_CYCLER = new InRedDemoCyclerBlock(INRED_DEVICE_SETTINGS);
 

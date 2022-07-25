@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexFormats;
@@ -23,13 +24,13 @@ public class YRenderLayers extends RenderPhase {
 	   });
 	
 	private static final RenderLayer LAMP_HALO = RenderLayer.of("yttr_lamp_halo",
-					VertexFormats.POSITION_COLOR_TEXTURE,
+					VertexFormats.POSITION_TEXTURE_COLOR_NORMAL,
 					DrawMode.QUADS, 256, false, true,
 			RenderLayer.MultiPhaseParameters.builder()
 				.texture(new RenderPhase.Texture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, false, true))
 				.transparency(ADDITIVE_WITH_ALPHA_TRANSPARENCY)
 				.writeMaskState(new RenderPhase.WriteMaskState(true, false))
-				.shader(POSITION_COLOR_TEXTURE_LIGHTMAP_SHADER)
+				.shader(new RenderPhase.Shader(GameRenderer::getPositionTexColorNormalShader))
 				.build(false));
 	
 	public static RenderLayer getArmorTranslucentNoCull(Identifier tex) {

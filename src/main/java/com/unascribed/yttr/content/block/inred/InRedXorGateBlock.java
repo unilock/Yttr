@@ -20,7 +20,10 @@ import org.jetbrains.annotations.Nullable;
 public class InRedXorGateBlock extends InRedLogicTileBlock {
 	public InRedXorGateBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(BOOLEAN_MODE, false).with(WATERLOGGED, false));
+		this.setDefaultState(this.getStateManager().getDefaultState()
+				.with(FACING, Direction.NORTH)
+				.with(MODE, BooleanMode.BITWISE)
+				.with(WATERLOGGED, false));
 	}
 
 	@Nullable
@@ -51,9 +54,9 @@ public class InRedXorGateBlock extends InRedLogicTileBlock {
 			blockCenteredHit = blockCenteredHit.add(0.5, 0.5, 0.5);
 //			blockCenteredHit = blockCenteredHit.multiply(16);
 			InRedXorGateBlockEntity beXorGate = (InRedXorGateBlockEntity)be;
-			if (CLICK_BOOLEAN.getBoundingBox().contains(blockCenteredHit)) {
-				beXorGate.toggleBooleanMode();
-			}
+//			if (CLICK_BOOLEAN.getBoundingBox().contains(blockCenteredHit)) {
+//				beXorGate.toggleBooleanMode();
+//			}
 		}
 		return ActionResult.SUCCESS;
 	}
@@ -61,7 +64,7 @@ public class InRedXorGateBlock extends InRedLogicTileBlock {
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(BOOLEAN_MODE);
+		builder.add(MODE);
 	}
 
 	@Override
@@ -103,8 +106,8 @@ public class InRedXorGateBlock extends InRedLogicTileBlock {
 			}
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof InRedXorGateBlockEntity) {
-				world.setBlockState(pos, state
-						.with(BOOLEAN_MODE, ((InRedXorGateBlockEntity) be).booleanMode));
+//				world.setBlockState(pos, state
+//						.with(MODE, ((InRedXorGateBlockEntity) be).booleanMode));
 			}
 		}
 	}

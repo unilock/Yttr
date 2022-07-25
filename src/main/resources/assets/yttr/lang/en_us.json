@@ -9,7 +9,7 @@
 	"itemGroup.yttr.lamp": "Lamps & Lazors",
 	"itemGroup.yttr.potion": "Potions",
 	"itemGroup.yttr.ruined": "Wasteland",
-	"itemGroup.yttr.inred": "InfraRedstone",
+	"itemGroup.yttr.inred": "Circuitry",
 	"itemGroup.yttr.misc": "Miscellaneous",
 	
 	"item.yttr.rifle": "Yttric Rifle",
@@ -233,7 +233,7 @@
 	"block.yttr.yellow_project_table": "Yellow Project Table",
 	
 	"block.yttr.inred_block": "InfraRedstone Block",
-	"block.yttr.inred_cable": "InfraRedstone Cable",
+	"block.yttr.inred_cable": "Cuprosteel Wire",
 	"block.yttr.inred_scaffold": "InfraRedstone Scaffold",
 	"block.yttr.inred_and_gate": "AND Gate",
 	"block.yttr.inred_not_gate": "NOT Gate",

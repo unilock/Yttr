@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.inred;
 
+import com.unascribed.yttr.content.block.inred.InRedLogicTileBlock.BooleanMode;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inred.InRedDevice;
@@ -21,11 +22,9 @@ import java.util.List;
 
 public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
-	public boolean booleanMode;
 	private int valLeft;
 	private int valBack;
 	private int valRight;
-	public InactiveSelection inactive = InactiveSelection.NONE;
 
 	public InRedAndGateBlockEntity(BlockPos pos, BlockState state) {
 		super(YBlockEntities.INRED_AND_GATE, pos, state);
@@ -54,7 +53,8 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 				valBack = sigBack;
 				int result = 0b11_1111; //63
 
-				if (!booleanMode) {
+				InactiveSelection inactive = state.get(InRedAndGateBlock.INACTIVE);
+				if (state.get(InRedAndGateBlock.MODE) == BooleanMode.BOOLEAN) {
 					switch (inactive) {
 						case LEFT:
 							signals.add(sigBack);
@@ -106,26 +106,15 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	public void toggleBooleanMode() {
-		if (booleanMode) {
-			booleanMode = false;
-			world.playSound(null, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3f, 0.5f);
-		} else {
-			booleanMode = true;
-			world.playSound(null, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3f, 0.55f);
-		}
-		world.setBlockState(pos, getCachedState().with(InRedAndGateBlock.BOOLEAN_MODE, booleanMode));
-		sync();
+		world.setBlockState(pos, getCachedState().cycle(InRedAndGateBlock.MODE));
 	}
 
 	public void toggleInactive(InactiveSelection newInactive) {
-		if (inactive == newInactive) {
-			inactive = InactiveSelection.NONE;
-		} else {
-			inactive = newInactive;
+		if (newInactive == getCachedState().get(InRedAndGateBlock.INACTIVE)) {
+			newInactive = InactiveSelection.NONE;
 		}
-		world.setBlockState(pos, getCachedState().with(InRedAndGateBlock.INACTIVE, inactive));
+		world.setBlockState(pos, getCachedState().with(InRedAndGateBlock.INACTIVE, newInactive));
 		world.playSound(null, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3f, 0.45f);
-		sync();
 	}
 
 	@Override
@@ -176,21 +165,17 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 	@Override
 	public void readNbt(NbtCompound tag) {
 		if (tag.contains("Signal", NbtType.COMPOUND)) signal.deserialize(tag.getCompound("Signal"));
-		booleanMode = tag.getBoolean("BooleanMode");
 		valLeft = tag.getInt("Left");
 		valBack = tag.getInt("Back");
 		valRight = tag.getInt("Right");
-		inactive = InactiveSelection.forName(tag.getString("Inactive"));
 	}
 
 	@Override
 	public void writeNbt(NbtCompound tag) {
 		tag.put("Signal", signal.serialize());
-		tag.putBoolean("BooleanMode", booleanMode);
 		tag.putInt("Left", valLeft);
 		tag.putInt("Back", valBack);
 		tag.putInt("Right", valRight);
-		tag.putString("Inactive", inactive.asString());
 	}
 
 }

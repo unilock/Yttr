@@ -1,6 +1,8 @@
 package com.unascribed.yttr.content.block.inred;
 
 import com.unascribed.yttr.inred.InactiveSelection;
+import com.unascribed.yttr.util.RelativeFace;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,27 +16,24 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class InRedAndGateBlock extends InRedLogicTileBlock {
 	public static final EnumProperty<InactiveSelection> INACTIVE = EnumProperty.of("inactive", InactiveSelection.class);
 
-	private static final VoxelShape CLICK_LEFT = Block.createCuboidShape( 0, 2.9,  6,  3, 4.1, 10);
-	private static final VoxelShape CLICK_BACK = Block.createCuboidShape( 6, 2.9, 13, 10, 4.1, 16);
-	private static final VoxelShape CLICK_RIGHT = Block.createCuboidShape(13, 2.9,  6, 16, 4.1, 10);
-
 	public InRedAndGateBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false).with(INACTIVE, InactiveSelection.NONE));
+		this.setDefaultState(this.getStateManager().getDefaultState()
+				.with(FACING, Direction.NORTH)
+				.with(WATERLOGGED, false)
+				.with(INACTIVE, InactiveSelection.NONE));
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(BOOLEAN_MODE, INACTIVE);
+		builder.add(MODE, INACTIVE);
 	}
 
 	@Override
@@ -46,33 +45,15 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if(!world.isClient() && !player.isSneaking() && be instanceof InRedAndGateBlockEntity) {
-			Vec3d blockCenteredHit = new Vec3d(hit.getPos().getX() - hit.getBlockPos().getX(), hit.getPos().getY() - hit.getBlockPos().getY(), hit.getPos().getZ() - hit.getBlockPos().getZ());
-			blockCenteredHit = blockCenteredHit.subtract(0.5, 0.5, 0.5);
-			switch (state.get(InRedAndGateBlock.FACING)) {
-				case SOUTH:
-					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI);
-					break;
-				case EAST:
-					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI / 2);
-					break;
-				case WEST:
-					blockCenteredHit = blockCenteredHit.rotateY(3 * (float)Math.PI / 2);
-					break;
-				default:
-					break;
-			}
-			blockCenteredHit = blockCenteredHit.add(0.5, 0.5, 0.5);
 			InRedAndGateBlockEntity beAndGate = (InRedAndGateBlockEntity)be;
-			if (CLICK_BOOLEAN.getBoundingBox().contains(blockCenteredHit)) {
+			RelativeFace rf = RelativeFace.from(state.get(FACING), hit.getSide());
+			if (rf == RelativeFace.FRONT) {
 				beAndGate.toggleBooleanMode();
-			}
-			if (CLICK_LEFT.getBoundingBox().contains(blockCenteredHit)) {
+			} else if (rf == RelativeFace.LEFT) {
 				beAndGate.toggleInactive(InactiveSelection.LEFT);
-			}
-			if (CLICK_BACK.getBoundingBox().contains(blockCenteredHit)) {
+			} else if (rf == RelativeFace.BACK) {
 				beAndGate.toggleInactive(InactiveSelection.BACK);
-			}
-			if (CLICK_RIGHT.getBoundingBox().contains(blockCenteredHit)) {
+			} else if (rf == RelativeFace.RIGHT) {
 				beAndGate.toggleInactive(InactiveSelection.RIGHT);
 			}
 		}
@@ -115,12 +96,6 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 		} else {
 			if (state.get(WATERLOGGED)) {
 				world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-			}
-			BlockEntity be = world.getBlockEntity(pos);
-			if (be instanceof InRedAndGateBlockEntity) {
-				world.setBlockState(pos, state
-						.with(BOOLEAN_MODE, ((InRedAndGateBlockEntity)be).booleanMode)
-						.with(INACTIVE, ((InRedAndGateBlockEntity)be).inactive));
 			}
 		}
 	}
