@@ -75,91 +75,94 @@ public class ScorchedGenerator {
 			}
 			rand.setPopulationSeed(31*worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
 			if (accessor.shouldGenerateStructures() && rand.nextInt(40) == 0) {
-				Structure s = region.toServerWorld().getStructureManager().getStructure(new Identifier("yttr", "terminus_house")).get(); //TODO: unsafe
-				BlockRotation rot = BlockRotation.random(rand);
-				List<BlockPos> chains = Lists.newArrayList();
-				StructurePlacementData spd = new StructurePlacementData();
-				spd.setRotation(rot);
-				BlockPos origin = new BlockPos(
-						chunk.getPos().getStartX(),
-						(190+(rand.nextInt(30)))-s.getSize().getY(),
-						chunk.getPos().getStartZ()
-				);
-				boolean success = true;
-				for (int i = 0; i < 3; i++) {
-					success = true;
-					for (BlockPos bpp : BlockPos.iterate(origin, origin.add(s.getRotatedSize(rot)))) {
-						BlockState bs = region.getBlockState(bpp);
-						if (!bs.isAir()) {
-							if (!bs.isOf(YBlocks.NETHERTUFF)) {
-								// we probably ran into another already-generated house, so just bail entirely to avoid weird generation
-								return;
+				var opt = region.toServerWorld().getStructureManager().getStructure(new Identifier("yttr", "terminus_house"));
+				if (opt.isPresent()) {
+					Structure s = opt.get();
+					BlockRotation rot = BlockRotation.random(rand);
+					List<BlockPos> chains = Lists.newArrayList();
+					StructurePlacementData spd = new StructurePlacementData();
+					spd.setRotation(rot);
+					BlockPos origin = new BlockPos(
+							chunk.getPos().getStartX(),
+							(190+(rand.nextInt(30)))-s.getSize().getY(),
+							chunk.getPos().getStartZ()
+					);
+					boolean success = true;
+					for (int i = 0; i < 3; i++) {
+						success = true;
+						for (BlockPos bpp : BlockPos.iterate(origin, origin.add(s.getRotatedSize(rot)))) {
+							BlockState bs = region.getBlockState(bpp);
+							if (!bs.isAir()) {
+								if (!bs.isOf(YBlocks.NETHERTUFF)) {
+									// we probably ran into another already-generated house, so just bail entirely to avoid weird generation
+									return;
+								}
+								success = false;
+								origin = origin.down(bpp.getY()-origin.getY());
+								break;
 							}
-							success = false;
-							origin = origin.down(bpp.getY()-origin.getY());
-							break;
 						}
+						if (success) break;
 					}
-					if (success) break;
-				}
-				if (!success) return;
-				boolean foundAllAnchors = true;
-				for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
-					if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-						if (info.nbt != null && "yttr:chain".equals(info.nbt.getString("metadata"))) {
-							bp.set(info.pos);
-							boolean foundAnchor = false;
-							for (int i = 0; i < 10; i++) {
-								bp.move(Direction.UP);
-								if (!region.getBlockState(bp).isAir()) {
-									foundAnchor = true;
+					if (!success) return;
+					boolean foundAllAnchors = true;
+					for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
+						if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
+							if (info.nbt != null && "yttr:chain".equals(info.nbt.getString("metadata"))) {
+								bp.set(info.pos);
+								boolean foundAnchor = false;
+								for (int i = 0; i < 10; i++) {
+									bp.move(Direction.UP);
+									if (!region.getBlockState(bp).isAir()) {
+										foundAnchor = true;
+										break;
+									}
+								}
+								if (!foundAnchor) {
+									foundAllAnchors = false;
 									break;
 								}
+								chains.add(info.pos.toImmutable());
 							}
-							if (!foundAnchor) {
-								foundAllAnchors = false;
-								break;
-							}
-							chains.add(info.pos.toImmutable());
 						}
 					}
-				}
-				if (foundAllAnchors) {
-					boolean warped = rand.nextBoolean();
-					spd.addProcessor(new NetherWoodSwapStructureProcessor(warped));
-					spd.addProcessor(new LootTableFromPaperStructureProcessor());
-					s.place(region, origin, origin, spd, rand, 0);
-					for (BlockPos chain : chains) {
-						bp.set(chain);
-						for (int i = 0; i < 10; i++) {
-							if (region.getBlockState(bp).isAir() || region.getBlockState(bp).isOf(Blocks.STRUCTURE_BLOCK)) {
-								region.setBlockState(bp, Blocks.CHAIN.getDefaultState(), 3);
-							} else {
-								break;
+					if (foundAllAnchors) {
+						boolean warped = rand.nextBoolean();
+						spd.addProcessor(new NetherWoodSwapStructureProcessor(warped));
+						spd.addProcessor(new LootTableFromPaperStructureProcessor());
+						s.place(region, origin, origin, spd, rand, 0);
+						for (BlockPos chain : chains) {
+							bp.set(chain);
+							for (int i = 0; i < 10; i++) {
+								if (region.getBlockState(bp).isAir() || region.getBlockState(bp).isOf(Blocks.STRUCTURE_BLOCK)) {
+									region.setBlockState(bp, Blocks.CHAIN.getDefaultState(), 3);
+								} else {
+									break;
+								}
+								bp.move(Direction.UP);
 							}
-							bp.move(Direction.UP);
 						}
-					}
-					bp.set(origin);
-					bp.move(Direction.DOWN);
-					for (int i = 0; i < 100; i++) {
-						if (!region.getBlockState(bp).isAir() && !region.getBlockState(bp).isIn(BlockTags.FIRE)) {
-							break;
-						}
+						bp.set(origin);
 						bp.move(Direction.DOWN);
-					}
-					region.setBlockState(bp, Blocks.SHROOMLIGHT.getDefaultState(), 3);
-					bp.move(Direction.UP);
-					region.setBlockState(bp, (warped ? Blocks.WARPED_PRESSURE_PLATE : Blocks.CRIMSON_PRESSURE_PLATE).getDefaultState(), 3);
-					bp.move(Direction.DOWN, 2);
-					region.setBlockState(bp, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, Direction.UP), 3);
-					BlockEntity be = region.getBlockEntity(bp);
-					if (be instanceof DispenserBlockEntity) {
-						ItemStack potion = new ItemStack(Items.SPLASH_POTION);
-						potion.setCustomName(new TranslatableText("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
-						PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
-						potion.getNbt().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
-						((DispenserBlockEntity)be).setStack(4, potion);
+						for (int i = 0; i < 100; i++) {
+							if (!region.getBlockState(bp).isAir() && !region.getBlockState(bp).isIn(BlockTags.FIRE)) {
+								break;
+							}
+							bp.move(Direction.DOWN);
+						}
+						region.setBlockState(bp, Blocks.SHROOMLIGHT.getDefaultState(), 3);
+						bp.move(Direction.UP);
+						region.setBlockState(bp, (warped ? Blocks.WARPED_PRESSURE_PLATE : Blocks.CRIMSON_PRESSURE_PLATE).getDefaultState(), 3);
+						bp.move(Direction.DOWN, 2);
+						region.setBlockState(bp, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, Direction.UP), 3);
+						BlockEntity be = region.getBlockEntity(bp);
+						if (be instanceof DispenserBlockEntity) {
+							ItemStack potion = new ItemStack(Items.SPLASH_POTION);
+							potion.setCustomName(new TranslatableText("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
+							PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
+							potion.getNbt().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
+							((DispenserBlockEntity)be).setStack(4, potion);
+						}
 					}
 				}
 			}

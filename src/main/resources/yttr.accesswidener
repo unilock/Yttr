@@ -34,3 +34,4 @@ accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;
 accessible method net/minecraft/entity/FallingBlockEntity <init> (Lnet/minecraft/world/World;DDDLnet/minecraft/block/BlockState;)V
 
 accessible class net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
+accessible class net/minecraft/world/biome/source/MultiNoiseBiomeSource$Instance

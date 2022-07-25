@@ -1,6 +1,6 @@
 package com.unascribed.yttr.init;
 
-import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import com.unascribed.yttr.BasicCriterion;
 import com.unascribed.yttr.BlockCriterion;
@@ -32,9 +32,10 @@ public class YCriteria {
 	public static final BasicCriterion VORPAL_HIT = new BasicCriterion("yttr:vorpal_hit");
 	public static final BasicCriterion HIT_WITH_FULL_SUIT = new BasicCriterion("yttr:hit_with_full_suit");
 	public static final BasicCriterion BREAK_ARMOR_WITH_CLEAVER = new BasicCriterion("yttr:break_armor_with_cleaver");
+	public static final BasicCriterion TERMINUS_HOUSE = new BasicCriterion("yttr:terminus_house");
 	
 	public static void init() {
-		Yttr.autoRegister(CriterionRegistry::register, YCriteria.class, Criterion.class);
+		Yttr.autoRegister(Criteria::register, YCriteria.class, Criterion.class);
 	}
 	
 }

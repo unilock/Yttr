@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:levitation_in_scorched",
+	"display": {
+		"icon": {
+			"item": "minecraft:warped_hyphae"
+		},
+		"title": {
+			"translate": "advancements.yttr.find_terminus_house.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.find_terminus_house.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": true
+	},
+	"criteria": {
+		"name": {
+			"trigger": "yttr:terminus_house"
+		}
+	}
+}

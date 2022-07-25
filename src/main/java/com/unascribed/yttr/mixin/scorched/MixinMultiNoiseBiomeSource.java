@@ -10,6 +10,7 @@ import com.unascribed.yttr.mixinsupport.ScorchedEnablement;
 
 import net.minecraft.util.Holder;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
@@ -23,11 +24,9 @@ public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 	public void getNoiseBiome(int bX, int bY, int bZ, MultiNoiseSampler noise, CallbackInfoReturnable<Holder<Biome>> ci) {
 		if (!YConfig.WorldGen.scorched) return;
 		if (yttr$scorchedSummit != null) {
-			if (bY > (192>>2) && yttr$scorchedTerminus != null) {
-				System.out.println("Terminus @ "+bY);
+			if (bY >= BiomeCoords.fromBlock(192) && yttr$scorchedTerminus != null) {
 				ci.setReturnValue(yttr$scorchedTerminus);
-			} else if (bY > (128>>2)) {
-				System.out.println("Summit @ "+bY);
+			} else if (bY >= BiomeCoords.fromBlock(120)) {
 				ci.setReturnValue(yttr$scorchedSummit);
 			}
 		}
@@ -35,14 +34,8 @@ public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 	
 	@Override
 	public void yttr$setScorchedBiomes(Holder<Biome> summit, Holder<Biome> terminus) {
-		System.out.println(this+" has received biomes: "+summit+" "+terminus);
 		yttr$scorchedSummit = summit;
 		yttr$scorchedTerminus = terminus;
-	}
-	
-	@Override
-	public void yttr$copyTo(ScorchedEnablement other) {
-		other.yttr$setScorchedBiomes(yttr$scorchedSummit, yttr$scorchedTerminus);
 	}
 
 }
