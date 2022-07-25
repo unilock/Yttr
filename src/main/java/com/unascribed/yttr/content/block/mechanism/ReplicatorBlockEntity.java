@@ -14,6 +14,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -59,23 +62,6 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 		ReplicatorRenderer.replicators.remove(this);
 		ReplicatorRenderer.removing.add(this);
 	}
-	
-	public void sync() {
-		// TODO
-	}
-
-//	@Override
-//	public void fromClientTag(NbtCompound tag) {
-//		seed = tag.getInt("Seed");
-//		item = ItemStack.fromNbt(tag.getCompound("Item"));
-//	}
-//
-//	@Override
-//	public NbtCompound toClientTag(NbtCompound tag) {
-//		tag.putInt("Seed", seed);
-//		tag.put("Item", item.writeNbt(new NbtCompound()));
-//		return tag;
-//	}
 
 	@Override
 	public void readNbt(NbtCompound tag) {
@@ -91,10 +77,18 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 		if (owner != null) tag.putUuid("Owner", owner);
 	}
 	
-//	@Override
-//	public NbtCompound toInitialChunkDataNbt() {
-//		return toClientTag(super.toInitialChunkDataNbt());
-//	}
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound tag = super.toInitialChunkDataNbt();
+		writeNbt(tag);
+		tag.remove("Owner");
+		return tag;
+	}
+	
+	@Override
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.of(this);
+	}
 
 	@Override
 	public void clear() {

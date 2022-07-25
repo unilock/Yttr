@@ -532,6 +532,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				WorldChunk c = (WorldChunk) mc.world.getChunk(((AccessorChunkInfo)ci).yttr$getChunk().getOrigin());
 				c.getBlockEntities().values().forEach(r);
 			})
+			.distinct()
 			::iterator;
 	}
 	

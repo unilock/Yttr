@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
 
 import net.minecraft.block.Block;
@@ -49,7 +50,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 				if (!ItemStack.areItemsEqual(held, rbe.item) || !ItemStack.areNbtEqual(held, rbe.item)) {
 					rbe.item = held.copy();
 					world.playSound(null, pos, YSounds.REPLICATOR_UPDATE, SoundCategory.BLOCKS, 1, rbe.item.isEmpty() ? 1f : 1.25f);
-					rbe.sync();
+					Yttr.sync(rbe);
 					return ActionResult.SUCCESS;
 				} else {
 					return ActionResult.CONSUME;
