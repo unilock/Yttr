@@ -548,6 +548,11 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		}
 	}
 	
+	@Override
+	public boolean hasGlint(ItemStack stack) {
+		return false;
+	}
+	
 	public static Vec3d getMuzzlePos(Entity entity, boolean firstPerson) {
 		Arm arm = entity instanceof LivingEntity ? ((LivingEntity)entity).getMainArm() : Arm.RIGHT;
 		Vec3d eyes = entity.getCameraPosVec(0);
