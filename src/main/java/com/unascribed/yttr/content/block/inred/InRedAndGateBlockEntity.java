@@ -54,7 +54,7 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 				int result = 0b11_1111; //63
 
 				InactiveSelection inactive = state.get(InRedAndGateBlock.INACTIVE);
-				if (state.get(InRedAndGateBlock.MODE) == BooleanMode.BOOLEAN) {
+				if (state.get(InRedAndGateBlock.MODE) == BooleanMode.BITWISE) {
 					switch (inactive) {
 						case LEFT:
 							signals.add(sigBack);

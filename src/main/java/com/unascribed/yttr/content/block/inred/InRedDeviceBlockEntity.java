@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.inred;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
@@ -7,6 +8,7 @@ import com.unascribed.yttr.inred.InRedHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,25 +42,15 @@ public abstract class InRedDeviceBlockEntity extends BlockEntity implements YTic
 		int bit6 = ((signal & 0b10_0000) != 0) ? 1:0;
 		return "0b"+bit6+bit5+"_"+bit4+bit3+bit2+bit1+" ("+signal+")";
 	}
-
-//	@Override
-//	public void fromClientTag(NbtCompound tag) {
-//		readNbt(getCachedState(), tag);
-//	}
-//
-//	@Override
-//	public NbtCompound toClientTag(NbtCompound tag) {
-//		return writeNbt(tag);
-//	}
-//
-//	@Override
-//	public void sync() {
-//		markDirty();
-//		BlockEntityClientSerializable.super.sync();
-//		world.updateNeighborsAlways(pos, getCachedState().getBlock());
-//	}
+	
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		return toNbt();
+	}
 	
 	public void sync() {
-		// TODO
+		markDirty();
+		Yttr.sync(this);
+		world.updateNeighborsAlways(pos, getCachedState().getBlock());
 	}
 }
