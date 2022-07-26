@@ -88,6 +88,7 @@ public class ShifterUI extends IHasAClient {
 					glEnd();
 				}
 				glPopMCMatrix();
+				glEnable(GL_DEPTH_TEST);
 				return false;
 			}
 		}
