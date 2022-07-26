@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "yttr:block/diode",
-		"particle": "yttr:block/inred_cable",
+		"particle": "yttr:block/diode",
 		"cable": "yttr:block/inred_cable"
 	},
 	"elements": [

@@ -4,7 +4,7 @@
 		"0": "yttr:block/encoder",
 		"2": "yttr:block/inred_ics",
 		"cable": "yttr:block/inred_cable",
-		"particle": "yttr:block/inred_encoder"
+		"particle": "yttr:block/encoder"
 	},
 	"elements": [
 		{

@@ -74,7 +74,6 @@ public class YBlockEntities {
 	public static final BlockEntityType<LazorBeamBlockEntity> LAZOR_BEAM = create(LazorBeamBlockEntity::new, YBlocks.LAZOR_BEAM);
 	
 	
-	//TODO: rendering for all of these, probably (and there might be a way to make them not have to all be ticking BEs)
 	public static final BlockEntityType<InRedAndGateBlockEntity> INRED_AND_GATE = create(InRedAndGateBlockEntity::new, YBlocks.INRED_AND_GATE);
 	public static final BlockEntityType<InRedNotGateBlockEntity> INRED_NOT_GATE = create(InRedNotGateBlockEntity::new, YBlocks.INRED_NOT_GATE);
 	public static final BlockEntityType<InRedXorGateBlockEntity> INRED_XOR_GATE = create(InRedXorGateBlockEntity::new, YBlocks.INRED_XOR_GATE);

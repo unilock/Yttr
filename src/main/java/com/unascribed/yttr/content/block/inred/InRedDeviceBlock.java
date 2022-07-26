@@ -1,23 +1,17 @@
 package com.unascribed.yttr.content.block.inred;
 
-import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.inred.*;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
 
 public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedProvider, EncoderScannable, MultimeterProbeProvider {
 
@@ -56,5 +50,10 @@ public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedP
 		}
 		//TODO: better fallback message? this should never happen anyway lol
 		return new TranslatableText("tip.yttr.inred.multimeter.block");
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return YTickable::tick;
 	}
 }

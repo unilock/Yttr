@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "yttr:block/xor_gate",
-		"particle": "yttr:block/inred_cable",
+		"particle": "yttr:block/xor_gate",
 		"cable": "yttr:block/inred_cable"
 	},
 	"elements": [

@@ -30,7 +30,7 @@ public class InRedDemoCyclerBlock extends InRedDeviceBlock {
 			if (!world.isClient) {
 				((InRedDemoCyclerBlockEntity) be).activate();
 			} else {
-				world.playSound(null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1f, 1f);
+				world.playSound(player, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1f, 1f);
 			}
 		}
 		return ActionResult.SUCCESS;
