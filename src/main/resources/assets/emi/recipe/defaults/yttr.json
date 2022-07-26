@@ -166,6 +166,16 @@
 		"yttr:crafting/flopper",
 		"yttr:crafting/red_project_table",
 		"yttr:crafting/suit_chestplate",
-		"yttr:crafting/compressed_ultrapure_carbon_block"
+		"yttr:crafting/compressed_ultrapure_carbon_block",
+		"yttr:stonecutting/inred_shifter",
+		"yttr:stonecutting/inred_not_gate",
+		"yttr:stonecutting/inred_encoder",
+		"yttr:stonecutting/inred_oscillator",
+		"yttr:stonecutting/inred_and_gate",
+		"yttr:stonecutting/inred_xor_gate",
+		"yttr:crafting/inred_cable",
+		"yttr:crafting/inred_pcb",
+		"yttr:stonecutting/inred_transistor",
+		"yttr:stonecutting/inred_diode"
 	]
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "yttr:discovered_via": "yttr:cuprosteel_ingot",
+  "pattern": [
+    "C",
+    "C",
+    "C"
+  ],
+  "key": {
+    "C": { "item": "yttr:cuprosteel_ingot" }
+  },
+  "result": {
+    "item": "yttr:inred_cable",
+    "count": 12
+  }
+}

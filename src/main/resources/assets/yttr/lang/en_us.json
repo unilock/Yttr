@@ -85,7 +85,7 @@
 	"item.yttr.raw_gadolinite": "Raw Gadolinite",
 	
 	"item.yttr.inred_multimeter": "Multimeter",
-	"item.yttr.inred_pcb": "PCB",
+	"item.yttr.inred_pcb": "Circuit Board",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -635,6 +635,7 @@
 	"tag.yttr.conductive_boots": "Conductive Boots",
 	"tag.yttr.squeeze_logs": "Squeeze Logs",
 	"tag.yttr.fluxes": "Metallurgical Fluxes",
+	"tag.yttr.gates": "Gates",
 	"tag.trinkets.feet.sole": "Sole Trinkets",
 	"tag.trinkets.chest.back": "Back Trinkets",
 	

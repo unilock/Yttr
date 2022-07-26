@@ -1,143 +1,70 @@
 {
-	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"credit": "Made with Blockbench",
 	"textures": {
-		"ic": "yttr:block/inred_ics",
-		"side": "yttr:block/inred_pcb_slate",
-		"base": "yttr:block/inred_encoder",
+		"0": "yttr:block/encoder",
+		"2": "yttr:block/inred_ics",
+		"cable": "yttr:block/inred_cable",
 		"particle": "yttr:block/inred_encoder"
 	},
 	"elements": [
 		{
-			"from": [0, 0, 0],
-			"to": [16, 3, 16],
+			"from": [4, -0.01, 2],
+			"to": [12, 1.99, 14],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 3], "texture": "#side"},
-				"east": {"uv": [0, 0, 16, 3], "texture": "#side"},
-				"south": {"uv": [0, 0, 16, 3], "texture": "#side"},
-				"west": {"uv": [0, 0, 16, 3], "texture": "#side"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#base"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#side"}
+				"north": {"uv": [0, 12, 8, 14], "texture": "#0"},
+				"east": {"uv": [8, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0, 12, 8, 14], "texture": "#0"},
+				"west": {"uv": [8, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [0, 0, 8, 12], "texture": "#0"},
+				"down": {"uv": [1, 1, 2, 2], "texture": "#0"}
 			}
 		},
 		{
-			"from": [11.25, 3, 10],
-			"to": [12.25, 4, 11],
+			"name": "CONNECTED",
+			"from": [7, 0, 0],
+			"to": [9, 1, 7],
 			"faces": {
-				"north": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"east": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"south": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"west": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"up": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"down": {"uv": [1, 4, 2, 5], "texture": "#ic"}
+				"north": {"uv": [12, 0, 16, 1], "texture": "#cable"},
+				"east": {"uv": [3, 13, 9, 14], "texture": "#cable"},
+				"south": {"uv": [12, 0, 16, 1], "texture": "#cable"},
+				"west": {"uv": [3, 13, 9, 14], "texture": "#cable"},
+				"up": {"uv": [13, 8, 15, 15], "texture": "#cable"},
+				"down": {"uv": [13, 9, 15, 16], "texture": "#cable"}
 			}
 		},
 		{
-			"from": [8.25, 3, 10],
-			"to": [9.25, 4, 11],
+			"from": [3, 0, 12],
+			"to": [13, 4, 16],
 			"faces": {
-				"north": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"east": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"south": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"west": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"up": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"down": {"uv": [1, 4, 2, 5], "texture": "#ic"}
+				"north": {"uv": [1, 12, 11, 16], "texture": "#2"},
+				"east": {"uv": [11, 8, 15, 12], "texture": "#2"},
+				"south": {"uv": [0, 11, 10, 15], "texture": "#2"},
+				"west": {"uv": [12, 8, 16, 12], "texture": "#2"},
+				"up": {"uv": [1, 12, 11, 16], "texture": "#2"},
+				"down": {"uv": [1, 11, 11, 15], "texture": "#2"}
 			}
+		}
+	],
+	"display": {},
+	"groups": [
+		0,
+		{
+			"name": "inred_cable_side",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
 		},
 		{
-			"from": [5.25, 3, 10],
-			"to": [6.25, 4, 11],
-			"faces": {
-				"north": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"east": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"south": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"west": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"up": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"down": {"uv": [1, 4, 2, 5], "texture": "#ic"}
-			}
+			"name": "inred_cable_side",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [1]
 		},
 		{
-			"from": [9.75, 3, 10],
-			"to": [10.75, 4, 11],
-			"faces": {
-				"north": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"east": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"south": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"west": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"up": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"down": {"uv": [1, 4, 2, 5], "texture": "#ic"}
-			}
-		},
-		{
-			"from": [3.75, 3, 10],
-			"to": [4.75, 4, 11],
-			"faces": {
-				"north": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"east": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"south": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"west": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"up": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"down": {"uv": [1, 4, 2, 5], "texture": "#ic"}
-			}
-		},
-		{
-			"from": [6.75, 3, 10],
-			"to": [7.75, 4, 11],
-			"faces": {
-				"north": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"east": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"south": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"west": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"up": {"uv": [1, 4, 2, 5], "texture": "#ic"},
-				"down": {"uv": [1, 4, 2, 5], "texture": "#ic"}
-			}
-		},
-		{
-			"from": [2, 3, 11],
-			"to": [14, 8, 15],
-			"faces": {
-				"north": {"uv": [0, 11, 12, 16], "texture": "#ic"},
-				"east": {"uv": [12, 7, 16, 12], "texture": "#ic"},
-				"south": {"uv": [0, 11, 12, 16], "texture": "#ic"},
-				"west": {"uv": [11, 7, 15, 12], "texture": "#ic"},
-				"up": {"uv": [0, 11, 12, 15], "texture": "#ic"},
-				"down": {"uv": [0, 11, 12, 15], "texture": "#ic"}
-			}
-		},
-		{
-			"from": [10, 3, 15],
-			"to": [14, 8, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 4, 5], "texture": "#missing"},
-				"east": {"uv": [11, 11, 12, 16], "texture": "#ic"},
-				"south": {"uv": [8, 11, 12, 16], "texture": "#ic"},
-				"west": {"uv": [0, 0, 1, 5], "texture": "#missing"},
-				"up": {"uv": [8, 11, 12, 12], "texture": "#ic"},
-				"down": {"uv": [0, 0, 4, 1], "texture": "#missing"}
-			}
-		},
-		{
-			"from": [2, 3, 15],
-			"to": [6, 8, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 4, 5], "texture": "#missing"},
-				"east": {"uv": [0, 0, 1, 5], "texture": "#missing"},
-				"south": {"uv": [0, 11, 4, 16], "texture": "#ic"},
-				"west": {"uv": [0, 11, 1, 16], "texture": "#ic"},
-				"up": {"uv": [0, 15, 4, 16], "texture": "#ic"},
-				"down": {"uv": [0, 0, 4, 1], "texture": "#missing"}
-			}
-		},
-		{
-			"from": [6, 3, 15],
-			"to": [10, 8, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 4, 5], "texture": "#missing"},
-				"east": {"uv": [0, 0, 1, 5], "texture": "#missing"},
-				"south": {"uv": [12, 11, 16, 16], "texture": "#ic"},
-				"west": {"uv": [0, 0, 1, 5], "texture": "#missing"},
-				"up": {"uv": [12, 11, 16, 12], "texture": "#ic"},
-				"down": {"uv": [0, 0, 4, 1], "texture": "#missing"}
-			}
+			"name": "inred_encoder",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [2]
 		}
 	]
 }

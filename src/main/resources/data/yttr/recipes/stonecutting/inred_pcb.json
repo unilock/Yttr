@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"ingredient": {
+		"tag": "yttr:gates"
+	},
+	"result": "yttr:inred_pcb",
+	"count": 1
+}

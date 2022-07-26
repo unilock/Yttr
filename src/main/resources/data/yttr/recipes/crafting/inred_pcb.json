@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "yttr:discovered_via": "yttr:cuprosteel_ingot",
+  "pattern": [
+    "WWW",
+    "PPP"
+  ],
+  "key": {
+    "W": { "item": "yttr:inred_cable" },
+    "P": { "item": "minecraft:paper" }
+  },
+  "result": {
+    "item": "yttr:inred_pcb",
+    "count": 4
+  }
+}

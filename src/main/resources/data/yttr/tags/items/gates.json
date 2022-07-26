@@ -1,0 +1,12 @@
+{
+	"values": [
+		"yttr:inred_and_gate",
+		"yttr:inred_diode",
+		"yttr:inred_encoder",
+		"yttr:inred_not_gate",
+		"yttr:inred_oscillator",
+		"yttr:inred_shifter",
+		"yttr:inred_transistor",
+		"yttr:inred_xor_gate"
+	]
+}

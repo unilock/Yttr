@@ -1,22 +1,64 @@
 {
-  "credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
-  "textures": {
-    "side": "yttr:block/inred_pcb_slate",
-    "base": "yttr:block/inred_diode",
-    "particle": "yttr:block/inred_diode"
-  },
-  "elements": [
-    {
-      "from": [0, 0, 0],
-      "to": [16, 3, 16],
-      "faces": {
-        "north": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "east": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "south": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "west": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "up": {"uv": [0, 0, 16, 16], "texture": "#base"},
-        "down": {"uv": [0, 0, 16, 16], "texture": "#side"}
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "yttr:block/diode",
+		"particle": "yttr:block/inred_cable",
+		"cable": "yttr:block/inred_cable"
+	},
+	"elements": [
+		{
+			"from": [4, -0.01, 2],
+			"to": [12, 1.99, 14],
+			"faces": {
+				"north": {"uv": [0, 12, 8, 14], "texture": "#0"},
+				"east": {"uv": [8, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0, 12, 8, 14], "texture": "#0"},
+				"west": {"uv": [8, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [0, 0, 8, 12], "texture": "#0"},
+				"down": {"uv": [1, 1, 2, 2], "texture": "#0"}
+			}
+		},
+		{
+			"name": "CONNECTED",
+			"from": [7, 0, 0],
+			"to": [9, 1, 7],
+			"faces": {
+				"north": {"uv": [12, 0, 16, 1], "texture": "#cable"},
+				"east": {"uv": [3, 13, 9, 14], "texture": "#cable"},
+				"south": {"uv": [12, 0, 16, 1], "texture": "#cable"},
+				"west": {"uv": [3, 13, 9, 14], "texture": "#cable"},
+				"up": {"uv": [13, 8, 15, 15], "texture": "#cable"},
+				"down": {"uv": [13, 9, 15, 16], "texture": "#cable"}
+			}
+		},
+		{
+			"name": "CONNECTED",
+			"from": [7, 0, 9],
+			"to": [9, 1, 16],
+			"faces": {
+				"north": {"uv": [12, 0, 16, 1], "texture": "#cable"},
+				"east": {"uv": [3, 13, 9, 14], "texture": "#cable"},
+				"south": {"uv": [12, 0, 16, 1], "texture": "#cable"},
+				"west": {"uv": [3, 13, 9, 14], "texture": "#cable"},
+				"up": {"uv": [13, 8, 15, 15], "texture": "#cable"},
+				"down": {"uv": [13, 9, 15, 16], "texture": "#cable"}
+			}
+		}
+	],
+	"display": {},
+	"groups": [
+		0,
+		{
+			"name": "inred_cable_side",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "inred_cable_side",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [1, 2]
+		}
+	]
 }
