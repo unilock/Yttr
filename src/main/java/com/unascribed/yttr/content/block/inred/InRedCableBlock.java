@@ -7,12 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -23,7 +21,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 
 public class InRedCableBlock extends Block implements Waterloggable {
 	public static final EnumProperty<CableConnection> NORTH = EnumProperty.of("north", CableConnection.class);
@@ -32,18 +31,18 @@ public class InRedCableBlock extends Block implements Waterloggable {
 	public static final EnumProperty<CableConnection> WEST = EnumProperty.of("west", CableConnection.class);
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-	private static final VoxelShape NO_SIDE = Block.createCuboidShape(6d, 0d, 6d, 10d, 3d, 10d);
-	private static final VoxelShape NORTH_SIDE = Block.createCuboidShape(6d, 0d, 0d, 10d, 3d, 6d);
-	private static final VoxelShape NORTH_UP = Block.createCuboidShape(6d, 3d, 0d, 10d, 19d, 3d);
+	private static final VoxelShape NO_SIDE = Block.createCuboidShape(6d, 0d, 6d, 10d, 1d, 10d);
+	private static final VoxelShape NORTH_SIDE = Block.createCuboidShape(6d, 0d, 0d, 10d, 1d, 6d);
+	private static final VoxelShape NORTH_UP = Block.createCuboidShape(6d, 1d, 0d, 10d, 17d, 1d);
 	private static final VoxelShape NORTH_SIDE_UP = VoxelShapes.union(NORTH_SIDE, NORTH_UP);
-	private static final VoxelShape SOUTH_SIDE = Block.createCuboidShape(6d, 0d, 10d, 10d, 3d, 16d);
-	private static final VoxelShape SOUTH_UP = Block.createCuboidShape(6d, 3d, 13d, 10d, 19d, 16d);
+	private static final VoxelShape SOUTH_SIDE = Block.createCuboidShape(6d, 0d, 10d, 10d, 1d, 16d);
+	private static final VoxelShape SOUTH_UP = Block.createCuboidShape(6d, 1d, 15d, 10d, 17d, 16d);
 	private static final VoxelShape SOUTH_SIDE_UP = VoxelShapes.union(SOUTH_SIDE, SOUTH_UP);
-	private static final VoxelShape EAST_SIDE = Block.createCuboidShape(10d, 0d, 6d, 16d, 3d, 10d);
-	private static final VoxelShape EAST_UP = Block.createCuboidShape(13d, 3d, 6d, 16d, 19d, 10d);
+	private static final VoxelShape EAST_SIDE = Block.createCuboidShape(10d, 0d, 6d, 16d, 1d, 10d);
+	private static final VoxelShape EAST_UP = Block.createCuboidShape(15d, 1d, 6d, 16d, 17d, 10d);
 	private static final VoxelShape EAST_SIDE_UP = VoxelShapes.union(EAST_SIDE, EAST_UP);
-	private static final VoxelShape WEST_SIDE = Block.createCuboidShape(0d, 0d, 6d, 6d, 3d, 10d);
-	private static final VoxelShape WEST_UP = Block.createCuboidShape(0d, 3d, 6d, 3d, 19d, 10d);
+	private static final VoxelShape WEST_SIDE = Block.createCuboidShape(0d, 0d, 6d, 6d, 1d, 10d);
+	private static final VoxelShape WEST_UP = Block.createCuboidShape(0d, 1d, 6d, 1d, 17d, 10d);
 	private static final VoxelShape WEST_SIDE_UP = VoxelShapes.union(WEST_SIDE, WEST_UP);
 
 	public InRedCableBlock(Settings settings) {
@@ -135,18 +134,32 @@ public class InRedCableBlock extends Block implements Waterloggable {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		super.neighborUpdate(state, world, pos, block, fromPos, notify);
+		if (!canPlaceAt(state, world, pos)) {
+			world.breakBlock(pos, true);
+			return;
+		}
 		if (state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
-		world.setBlockState(pos, this.getDefaultState()
+		world.setBlockState(pos, state
 				.with(NORTH, getCableConnections(world, pos, Direction.NORTH))
 				.with(SOUTH, getCableConnections(world, pos, Direction.SOUTH))
 				.with(EAST, getCableConnections(world, pos, Direction.EAST))
-				.with(WEST, getCableConnections(world, pos, Direction.WEST))
-				.with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER));
-
+				.with(WEST, getCableConnections(world, pos, Direction.WEST)));
 	}
-
+	
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		return state
+				;
+	}
+	
+	@Override
+	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+		BlockPos down = pos.down();
+		return world.getBlockState(down).isSideSolidFullSquare(world, down, Direction.UP);
+	}
+	
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);

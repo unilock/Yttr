@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:stonecutting",
+  "yttr:discovered_via": "yttr:inred_pcb",
 	"ingredient": {
 		"item": "yttr:inred_pcb"
 	},

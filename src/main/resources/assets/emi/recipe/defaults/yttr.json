@@ -176,6 +176,7 @@
 		"yttr:crafting/inred_cable",
 		"yttr:crafting/inred_pcb",
 		"yttr:stonecutting/inred_transistor",
-		"yttr:stonecutting/inred_diode"
+		"yttr:stonecutting/inred_diode",
+		"yttr:crafting/inred_multimeter"
 	]
 }

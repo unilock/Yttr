@@ -2,15 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "yttr:discovered_via": "yttr:inred_cable",
   "pattern": [
-    "WWW",
-    "PPP"
+    "W W",
+    "GPG",
+    " G "
   ],
   "key": {
     "W": { "item": "yttr:inred_cable" },
-    "P": { "item": "minecraft:paper" }
+    "G": { "item": "minecraft:gold_ingot" },
+    "P": { "item": "yttr:power_meter" }
   },
   "result": {
-    "item": "yttr:inred_pcb",
-    "count": 4
+    "item": "yttr:inred_multimeter"
   }
 }
