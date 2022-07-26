@@ -15,7 +15,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class InRedShifterBlockEntity extends InRedDeviceBlockEntity {
+public class InRedShifterBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 	private InRedHandler eject = new InRedHandler();
 	public ShifterSelection selection = ShifterSelection.LEFT;

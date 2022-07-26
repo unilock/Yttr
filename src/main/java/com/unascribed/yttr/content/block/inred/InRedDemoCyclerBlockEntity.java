@@ -11,7 +11,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class InRedDemoCyclerBlockEntity extends InRedDeviceBlockEntity {
+public class InRedDemoCyclerBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 
 	private boolean active;

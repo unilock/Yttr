@@ -14,7 +14,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class InRedDiodeBlockEntity extends InRedDeviceBlockEntity {
+public class InRedDiodeBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 	private int mask = 0b11_1111;
 

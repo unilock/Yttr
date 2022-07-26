@@ -14,7 +14,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class InRedXorGateBlockEntity extends InRedDeviceBlockEntity {
+public class InRedXorGateBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 	private int valLeft;
 	private int valRight;

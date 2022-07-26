@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 
-public class InRedEncoderBlockEntity extends InRedDeviceBlockEntity {
+public class InRedEncoderBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 
 	public InRedEncoderBlockEntity(BlockPos pos, BlockState state) {

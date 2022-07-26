@@ -9,13 +9,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public abstract class InRedDeviceBlockEntity extends BlockEntity implements YTickable {
+public abstract class AbstractInRedDeviceBlockEntity extends BlockEntity implements YTickable {
 
-	public InRedDeviceBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	public AbstractInRedDeviceBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
@@ -46,6 +49,11 @@ public abstract class InRedDeviceBlockEntity extends BlockEntity implements YTic
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
 		return toNbt();
+	}
+	
+	@Override
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.of(this);
 	}
 	
 	public void sync() {

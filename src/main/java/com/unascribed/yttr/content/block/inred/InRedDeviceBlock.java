@@ -27,8 +27,8 @@ public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedP
 	@Override
 	public InRedDevice getDevice(BlockView world, BlockPos pos, BlockState state, Direction inspectingFrom) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof InRedDeviceBlockEntity) {
-			return ((InRedDeviceBlockEntity) be).getDevice(inspectingFrom);
+		if (be instanceof AbstractInRedDeviceBlockEntity) {
+			return ((AbstractInRedDeviceBlockEntity) be).getDevice(inspectingFrom);
 		}
 		return null;
 	}
@@ -36,8 +36,8 @@ public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedP
 	@Override
 	public int getEncoderValue(BlockView world, BlockPos pos, BlockState state, Direction inspectingFrom) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof InRedDeviceBlockEntity) {
-			return ((InRedDeviceBlockEntity) be).getEncoderValue(inspectingFrom);
+		if (be instanceof AbstractInRedDeviceBlockEntity) {
+			return ((AbstractInRedDeviceBlockEntity) be).getEncoderValue(inspectingFrom);
 		}
 		return 0;
 	}
@@ -45,8 +45,8 @@ public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedP
 	@Override
 	public Text getProbeMessage(BlockView world, BlockPos pos, BlockState state) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof InRedDeviceBlockEntity) {
-			return ((InRedDeviceBlockEntity) be).getProbeMessage();
+		if (be instanceof AbstractInRedDeviceBlockEntity) {
+			return ((AbstractInRedDeviceBlockEntity) be).getProbeMessage();
 		}
 		//TODO: better fallback message? this should never happen anyway lol
 		return new TranslatableText("tip.yttr.inred.multimeter.block");

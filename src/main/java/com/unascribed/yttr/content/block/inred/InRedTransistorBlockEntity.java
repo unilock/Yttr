@@ -12,7 +12,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class InRedTransistorBlockEntity extends InRedDeviceBlockEntity {
+public class InRedTransistorBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 
 	public InRedTransistorBlockEntity(BlockPos pos, BlockState state) {

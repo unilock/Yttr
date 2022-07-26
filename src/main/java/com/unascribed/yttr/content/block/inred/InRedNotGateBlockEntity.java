@@ -14,7 +14,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class InRedNotGateBlockEntity extends InRedDeviceBlockEntity {
+public class InRedNotGateBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 	public boolean booleanMode;
 	public boolean backActive;

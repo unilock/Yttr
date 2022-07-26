@@ -20,7 +20,7 @@ import net.minecraft.util.math.Direction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
+public class InRedAndGateBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();
 	private int valLeft;
 	private int valBack;
