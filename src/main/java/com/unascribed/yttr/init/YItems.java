@@ -31,6 +31,7 @@ import com.unascribed.yttr.content.item.SwallowableItem;
 import com.unascribed.yttr.content.item.VoidBucketItem;
 import com.unascribed.yttr.content.item.block.BigBlockItem;
 import com.unascribed.yttr.content.item.block.DyedBlockItem;
+import com.unascribed.yttr.content.item.block.InRedCableBlockItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.content.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
@@ -178,8 +179,7 @@ public class YItems {
 	};
 
 	public static final BlockItem INRED_BLOCK = createBlockItem(YBlocks.INRED_BLOCK);
-	public static final BlockItem INRED_CABLE = createBlockItem(YBlocks.INRED_CABLE);
-	public static final BlockItem INRED_SCAFFOLD = createBlockItem(YBlocks.INRED_SCAFFOLD);
+	public static final BlockItem INRED_CABLE = new InRedCableBlockItem(YBlocks.INRED_CABLE, new Item.Settings());
 	public static final BlockItem INRED_AND_GATE = createBlockItem(YBlocks.INRED_AND_GATE);
 	public static final BlockItem INRED_NOT_GATE = createBlockItem(YBlocks.INRED_NOT_GATE);
 	public static final BlockItem INRED_XOR_GATE = createBlockItem(YBlocks.INRED_XOR_GATE);

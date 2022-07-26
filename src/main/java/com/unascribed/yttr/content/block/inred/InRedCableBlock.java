@@ -82,13 +82,14 @@ public class InRedCableBlock extends Block implements Waterloggable {
 	private CableConnection getCableConnections(BlockView world, BlockPos pos, Direction dir) {
 		if (InRedLogic.canConnect(world, pos.offset(dir), dir.getOpposite())) return CableConnection.CONNECTED;
 
-		if (!InRedLogic.isSideSolid((World)world, pos.offset(Direction.UP), Direction.DOWN)) {
+		if (!InRedLogic.isSideSolid(world, pos.offset(Direction.UP), Direction.DOWN)) {
 			if (InRedLogic.canConnect(world, pos.offset(dir).up(), dir.getOpposite())) return CableConnection.CONNECTED_UP;
 		}
 
-		if (!InRedLogic.isSideSolid((World)world, pos.offset(dir), dir.getOpposite())) {
-			if (world.getBlockState(pos.offset(Direction.DOWN).offset(dir)).getBlock() == YBlocks.INRED_SCAFFOLD
-					|| world.getBlockState(pos.offset(Direction.DOWN).offset(dir)).getBlock() == YBlocks.INRED_BLOCK) return CableConnection.DISCONNECTED;
+		if (!InRedLogic.isSideSolid(world, pos.offset(dir), dir.getOpposite())) {
+			if (world.getBlockState(pos.down().offset(dir)).getBlock() == YBlocks.INRED_SCAFFOLD
+					|| world.getBlockState(pos.down().offset(dir)).getBlock() == YBlocks.INRED_BLOCK) return CableConnection.DISCONNECTED;
+			if (!world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), dir)) return CableConnection.DISCONNECTED;
 			if (InRedLogic.canConnect(world, pos.offset(dir).down(), dir.getOpposite())) return CableConnection.CONNECTED;
 		}
 

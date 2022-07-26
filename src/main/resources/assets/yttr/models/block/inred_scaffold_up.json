@@ -1,21 +1,21 @@
 {
-	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"credit": "Made with Blockbench",
 	"textures": {
-		"cable": "yttr:block/inred_cable",
-		"particle": "yttr:block/inred_cable"
+		"particle": "yttr:block/inred_cable",
+		"cable": "yttr:block/inred_cable"
 	},
 	"elements": [
 		{
 			"name": "up",
-			"from": [6, 3, 6],
-			"to": [10, 15.9, 10],
+			"from": [7, 1, 7],
+			"to": [9, 15.9, 9],
 			"faces": {
-				"north": {"uv": [12, 3, 16, 15.9], "texture": "#cable"},
-				"east": {"uv": [12, 3, 16, 15.9], "texture": "#cable"},
-				"south": {"uv": [12, 3, 16, 15.9], "texture": "#cable"},
-				"west": {"uv": [12, 3, 16, 15.9], "texture": "#cable"},
-				"up": {"uv": [3, 0, 7, 4], "texture": "#cable"},
-				"down": {"uv": [0, 0, 4, 4], "texture": "#missing"}
+				"north": {"uv": [12, 1, 14, 15.9], "texture": "#cable"},
+				"east": {"uv": [12, 1, 14, 15.9], "texture": "#cable"},
+				"south": {"uv": [12, 1, 14, 15.9], "texture": "#cable"},
+				"west": {"uv": [12, 1, 14, 15.9], "texture": "#cable"},
+				"up": {"uv": [3, 0, 5, 2], "texture": "#cable"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#missing"}
 			}
 		}
 	]

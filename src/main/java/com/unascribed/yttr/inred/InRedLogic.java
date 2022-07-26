@@ -3,14 +3,12 @@ package com.unascribed.yttr.inred;
 import com.unascribed.yttr.init.YBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class InRedLogic {
 	public static final int MAX_SIGNAL = 0b11_1111; //TODO: stay with 0-63?
@@ -108,7 +106,7 @@ public class InRedLogic {
 		return false;
 	}
 
-	public static boolean isSideSolid(World world, BlockPos pos, Direction dir) {
+	public static boolean isSideSolid(BlockView world, BlockPos pos, Direction dir) {
 		return Block.isFaceFullSquare(world.getBlockState(pos).getOutlineShape(world, pos), dir);
 	}
 

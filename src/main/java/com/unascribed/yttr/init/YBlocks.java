@@ -559,10 +559,7 @@ public class YBlocks {
 			.breakInstantly()
 	);
 	@RenderLayer("cutout")
-	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.of(Material.DECORATION)
-			.strength(0F, 8F)
-			.nonOpaque()
-	);
+	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.copyOf(Blocks.SCAFFOLDING));
 	@RenderLayer("cutout")
 	public static final InRedAndGateBlock INRED_AND_GATE = new InRedAndGateBlock(INRED_DEVICE_SETTINGS);
 	@RenderLayer("cutout")

@@ -1,6 +1,14 @@
 {
   "multipart": [
-    { "apply": { "model": "yttr:block/inred_scaffold_none" }},
+    {   "when": { "bottom": "false" },
+      "apply": { "model": "minecraft:block/scaffolding_stable" }
+    },
+    {   "when": { "bottom": "true" },
+      "apply": { "model": "minecraft:block/scaffolding_unstable" }
+    },
+    {
+      "apply": { "model": "yttr:block/inred_scaffold_none" }
+    },
     {   "when": { "north": "true" },
       "apply": { "model": "yttr:block/inred_scaffold_side" }
     },
