@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import com.google.common.base.MoreObjects;
@@ -348,13 +349,15 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 							} else if (type == AdjType.CULL_EDGE) {
 								BlockPos ofs = pos.offset(d);
 								BlockState other = world.getBlockState(ofs);
-								VoxelShape otherShape = other.getCullingShape(world, pos);
-								if (otherShape != null && !otherShape.isEmpty()) {
-									VoxelShape shape = VOXEL_SHAPES[slot];
-									VoxelShape touching = VoxelShapes.combine(shape.getFace(d), otherShape.getFace(d.getOpposite()), BooleanBiFunction.ONLY_FIRST);
-									if (touching.isEmpty()) {
-										type = type.culled();
-										changed = true;
+								if (!other.isOf(YBlocks.BLOQUE)) {
+									VoxelShape otherShape = other.getCullingShape(world, pos);
+									if (otherShape != null && !otherShape.isEmpty()) {
+										VoxelShape shape = VOXEL_SHAPES[slot];
+										VoxelShape touching = VoxelShapes.combine(shape.getFace(d), otherShape.getFace(d.getOpposite()), BooleanBiFunction.ONLY_FIRST);
+										if (touching.isEmpty()) {
+											type = type.culled();
+											changed = true;
+										}
 									}
 								}
 							}
