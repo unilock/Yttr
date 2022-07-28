@@ -110,7 +110,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack is = player.getStackInHand(hand);
-		if (is.isIn(YTags.Item.BLOQUES)) return ActionResult.PASS;
+		if (is.getMiningSpeedMultiplier(state) <= 1) return ActionResult.PASS;
 		if (!world.isClient && world.getBlockEntity(pos) instanceof BloqueBlockEntity be) {
 			Vec3d hitVec = hit.getPos().subtract(pos.getX(), pos.getY(), pos.getZ());
 			int x = (int)((hitVec.x)*XSIZE);
@@ -133,6 +133,8 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 				world.spawnEntity(ie);
 				if (be.getPopCount() == 0) {
 					world.setBlockState(pos, world.getFluidState(pos).getBlockState());
+				} else {
+					world.updateNeighborsAlways(pos, this);
 				}
 			}
 			return ActionResult.CONSUME;
