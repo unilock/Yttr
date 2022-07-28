@@ -171,11 +171,16 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											adjacentW = a.south();
 											break;
 									}
+									boolean showStuds = !data.doubleWelded();
+									if (a.merged(d)) {
+										adjacentN = adjacentE = adjacentS = adjacentW = true;
+										showStuds = false;
+									}
 									float uScale = 2;
 									float vScale = 2;
 									sprite = weldedSide;
 									if (d == Direction.UP) {
-										sprite = data.doubleWelded() ? welded : weldedTop;
+										sprite = showStuds ? weldedTop : welded;
 									} else if (d == Direction.DOWN) {
 										sprite = welded;
 									}
