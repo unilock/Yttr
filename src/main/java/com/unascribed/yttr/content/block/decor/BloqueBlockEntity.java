@@ -18,9 +18,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 
@@ -28,23 +31,64 @@ import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
 
 public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
 
+	public enum AdjType {
+		NONE,
+		CULL,
+		CULL_EDGE,
+		MERGE_INTERNAL,
+		MERGE_EXTERNAL,
+		MERGE_EXTERNAL_CULL,
+		;
+		public boolean merged() {
+			return this == MERGE_INTERNAL || this == MERGE_EXTERNAL || this == MERGE_EXTERNAL_CULL;
+		}
+		public boolean skipFace() {
+			return this == CULL || this == MERGE_INTERNAL || this == MERGE_EXTERNAL_CULL;
+		}
+		public boolean cullable() {
+			return this == CULL_EDGE || this == MERGE_EXTERNAL;
+		}
+		public AdjType culled() {
+			switch (this) {
+				case CULL_EDGE: return CULL;
+				case MERGE_EXTERNAL: return MERGE_EXTERNAL_CULL;
+				default: return this;
+			}
+		}
+	}
+	
 	public record RenderData(DyeColor[] colors, Adjacency[] adjacency, boolean welded, boolean doubleWelded) {}
-	public record Adjacency(boolean down, boolean up, boolean north, boolean south, boolean west, boolean east) {
-		public static final Adjacency NONE = new Adjacency(false, false, false, false, false, false);
-		public Adjacency(boolean[] vals) {
+	public record Adjacency(AdjType downType, AdjType upType, AdjType northType, AdjType southType, AdjType westType, AdjType eastType) {
+		public static final Adjacency NONE = new Adjacency(AdjType.NONE, AdjType.NONE, AdjType.NONE, AdjType.NONE, AdjType.NONE, AdjType.NONE);
+		public Adjacency(AdjType[] vals) {
 			this(vals[0], vals[1], vals[2], vals[3], vals[4], vals[5]);
 		}
-		public boolean get(Direction d) {
+		public AdjType getType(Direction d) {
 			switch (d) {
-				case DOWN: return down;
-				case UP: return up;
-				case NORTH: return north;
-				case SOUTH: return south;
-				case WEST: return west;
-				case EAST: return east;
+				case DOWN: return downType;
+				case UP: return upType;
+				case NORTH: return northType;
+				case SOUTH: return southType;
+				case WEST: return westType;
+				case EAST: return eastType;
 				default: throw new AssertionError(d);
 			}
 		}
+		public boolean merged(Direction d) {
+			return getType(d).merged();
+		}
+		public boolean skipFace(Direction d) {
+			return getType(d).skipFace();
+		}
+		public boolean cullable(Direction d) {
+			return getType(d).cullable();
+		}
+		public boolean down() { return downType.merged(); }
+		public boolean up() { return upType.merged(); }
+		public boolean north() { return northType.merged(); }
+		public boolean south() { return southType.merged(); }
+		public boolean west() { return westType.merged(); }
+		public boolean east() { return eastType.merged(); }
 	}
 	
 	private final DyeColor[] colors = new DyeColor[SLOTS];
@@ -60,7 +104,9 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 			return;
 		}
 		colors[slot] = color;
-		world.addSyncedBlockEvent(getPos(), getCachedState().getBlock(), slot, color == null ? -1 : color.getId());
+		if (!isWelded()) {
+			world.addSyncedBlockEvent(getPos(), getCachedState().getBlock(), slot, color == null ? -1 : color.getId());
+		}
 		markDirty();
 	}
 	
@@ -72,26 +118,27 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	}
 
 	public void weld() {
-		if (this.welded && this.doubleWelded) return;
+		if (!isWeldable()) return;
 		if (this.welded) {
 			this.doubleWelded = true;
-			computeAdjacency(true);
+			computeAdjacency(true, true);
 		} else {
 			this.welded = true;
-			computeAdjacency(false);
+			computeAdjacency(true, false);
 		}
 		markDirty();
 		Yttr.sync(this);
 	}
 	
 	public void unweld() {
+		if (!isWelded()) return;
 		this.welded = this.doubleWelded = false;
 		Arrays.fill(adjacency, null);
 		markDirty();
 		Yttr.sync(this);
 	}
 	
-	private void computeAdjacency(boolean mixColors) {
+	private void computeAdjacency(boolean weld, boolean mixColors) {
 		for (int y = 0; y < YSIZE; y++) {
 			for (int x = 0; x < XSIZE; x++) {
 				for (int z = 0; z < ZSIZE; z++) {
@@ -101,17 +148,25 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 						adjacency[slot] = Adjacency.NONE;
 						continue;
 					}
-					boolean[] b = new boolean[6];
+					AdjType[] b = new AdjType[6];
+					Arrays.fill(b, AdjType.NONE);
 					for (Direction d : Direction.values()) {
-						DyeColor other = getMulti(x+d.getOffsetX(), y+d.getOffsetY(), z+d.getOffsetZ());
-						boolean match;
-						if (mixColors) {
-							match = other != null;
-						} else {
-							match = other == cur;
+						int ox = x+d.getOffsetX();
+						int oy = y+d.getOffsetY();
+						int oz = z+d.getOffsetZ();
+						DyeColor other = getMulti(ox, oy, oz);
+						boolean external = false;
+						if (ox < 0 || oy < 0 || oz < 0 ||
+								ox >= XSIZE || oy >= YSIZE || oz >= ZSIZE) {
+							external = true;
 						}
+						boolean match = weld && (mixColors ? other != null : other == cur);
 						if (match) {
-							b[d.ordinal()] = true;
+							b[d.ordinal()] = external ? AdjType.MERGE_EXTERNAL : AdjType.MERGE_INTERNAL;
+						} else if (external) {
+							b[d.ordinal()] = AdjType.CULL_EDGE;
+						} else if (other != null) {
+							b[d.ordinal()] = AdjType.CULL;
 						}
 					}
 					adjacency[slot] = new Adjacency(b);
@@ -125,7 +180,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	}
 
 	public boolean isWeldable() {
-		return !doubleWelded;
+		return !welded || !doubleWelded;
 	}
 
 	public void set(int x, int y, int z, @Nullable DyeColor color) {
@@ -134,6 +189,10 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	
 	public @Nullable DyeColor get(int x, int y, int z) {
 		return get(getSlot(x, y, z));
+	}
+	
+	public @Nullable DyeColor getMulti(int x, int y, int z, Direction d) {
+		return getMulti(x+d.getOffsetX(), y+d.getOffsetY(), z+d.getOffsetZ());
 	}
 	
 	public @Nullable DyeColor getMulti(int x, int y, int z) {
@@ -198,6 +257,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	@Override
 	public boolean onSyncedBlockEvent(int type, int data) {
 		colors[type] = data == -1 ? null : DyeColor.byId(data);
+		computeAdjacency(false, false);
 		if (world instanceof YttrWorld yw) {
 			yw.yttr$scheduleRenderUpdate(getPos());
 		}
@@ -215,15 +275,12 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 		if (welded) {
 			nbt.putBoolean("Welded", true);
 			nbt.putBoolean("DoubleWelded", doubleWelded);
-			byte[] abys = new byte[SLOTS];
+			byte[] abys = new byte[SLOTS*6];
 			for (int i = 0; i < SLOTS; i++) {
-				int v = 0;
+				int j = i*6;
 				for (Direction d : Direction.values()) {
-					if (adjacency[i] != null && adjacency[i].get(d)) {
-						v |= (1 << d.ordinal());
-					}
+					abys[j+d.ordinal()] = (byte)getAdjacency(i).getType(d).ordinal();
 				}
-				abys[i] = (byte)v;
 			}
 			nbt.putByteArray("Adjacency", abys);
 		}
@@ -241,21 +298,21 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 			}
 		}
 		welded = nbt.getBoolean("Welded");
-		if (welded) {
+		if (welded && nbt.getByteArray("Adjacency").length == SLOTS*6) {
 			doubleWelded = nbt.getBoolean("DoubleWelded");
 			byte[] abys = nbt.getByteArray("Adjacency");
 			for (int i = 0; i < SLOTS; i++) {
-				int v = abys[i]&0xFF;
-				boolean[] vals = new boolean[6];
+				int j = i*6;
+				AdjType[] types = new AdjType[6];
 				for (Direction d : Direction.values()) {
-					if ((v & (1 << d.ordinal())) != 0) {
-						vals[d.ordinal()] = true;
-					}
+					types[d.ordinal()] = AdjType.values()[abys[j+d.ordinal()]&0xFF];
 				}
-				adjacency[i] = new Adjacency(vals);
+				adjacency[i] = new Adjacency(types);
 			}
 		} else {
-			Arrays.fill(adjacency, null);
+			welded = false;
+			doubleWelded = false;
+			computeAdjacency(false, false);
 		}
 		if (world instanceof YttrWorld yw) {
 			yw.yttr$scheduleRenderUpdate(getPos());
@@ -274,7 +331,43 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 
 	@Override
 	public @Nullable Object getRenderAttachmentData() {
-		return new RenderData(colors.clone(), adjacency.clone(), welded, doubleWelded);
+		Adjacency[] adj = adjacency.clone();
+		for (int y = 0; y < YSIZE; y++) {
+			for (int x = 0; x < XSIZE; x++) {
+				for (int z = 0; z < ZSIZE; z++) {
+					int slot = getSlot(x, y, z);
+					if (colors[slot] == null) continue;
+					boolean changed = false;
+					AdjType[] nw = new AdjType[6];
+					for (Direction d : Direction.values()) {
+						AdjType type = getAdjacency(slot).getType(d);
+						if (type.cullable()) {
+							if (type.cullable() && getMulti(x, y, z, d) != null) {
+								type = type.culled();
+								changed = true;
+							} else if (type == AdjType.CULL_EDGE) {
+								BlockPos ofs = pos.offset(d);
+								BlockState other = world.getBlockState(ofs);
+								VoxelShape otherShape = other.getCullingShape(world, pos);
+								if (otherShape != null && !otherShape.isEmpty()) {
+									VoxelShape shape = VOXEL_SHAPES[slot];
+									VoxelShape touching = VoxelShapes.combine(shape.getFace(d), otherShape.getFace(d.getOpposite()), BooleanBiFunction.ONLY_FIRST);
+									if (touching.isEmpty()) {
+										type = type.culled();
+										changed = true;
+									}
+								}
+							}
+						}
+						nw[d.ordinal()] = type;
+					}
+					if (changed) {
+						adj[slot] = new Adjacency(nw);
+					}
+				}
+			}
+		}
+		return new RenderData(colors.clone(), adj, welded, doubleWelded);
 	}
 
 	public int getSlotForPlacement(Vec3d hitPos, BlockPos blockPos, Direction face) {

@@ -129,6 +129,8 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.chunk.WorldChunk;
 
+import static com.unascribed.yttr.client.RenderBridge.*;
+
 public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
@@ -137,6 +139,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	private final List<Identifier> additionalSprites = Lists.newArrayList();
 	
 	private boolean hasCheckedRegistry = false;
+	private boolean wireframeMode = false;
 	
 	public static boolean onlyRenderOpaqueParticles = false;
 	public static boolean onlyRenderNonOpaqueParticles = false;
@@ -285,7 +288,22 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					ProfilerRenderer.enabled = !ProfilerRenderer.enabled;
 					return 0;
 				}));
+		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("yttr:wireframe")
+				.executes(ctx -> {
+					wireframeMode = !wireframeMode;
+					return 0;
+				}));
 		
+		WorldRenderEvents.START.register((wrc) -> {
+			if (wireframeMode) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+		});
+		WorldRenderEvents.END.register((wrc) -> {
+			if (wireframeMode) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);

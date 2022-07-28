@@ -39,7 +39,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.BlockRenderView;
 
@@ -74,57 +73,56 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 							Adjacency a = data.adjacency()[slot];
 							Box box = VOXEL_SHAPES[slot].getBoundingBox();
 							for (Direction d : Direction.values()) {
+								if (a != null && a.skipFace(d)) {
+									continue;
+								}
 								Sprite sprite = side;
-								qe.nominalFace(d);
 								float minX = (float)box.minX;
 								float minY = (float)box.minY;
 								float minZ = (float)box.minZ;
 								float maxX = (float)box.maxX;
 								float maxY = (float)box.maxY;
 								float maxZ = (float)box.maxZ;
-								Vec3d[] vertices = new Vec3d[4];
+								Vec3f[] vertices = new Vec3f[4];
 								switch (d) {
 									case UP:
 										sprite = top;
-										vertices[3] = new Vec3d(minX, maxY, minZ);
-										vertices[2] = new Vec3d(maxX, maxY, minZ);
-										vertices[1] = new Vec3d(maxX, maxY, maxZ);
-										vertices[0] = new Vec3d(minX, maxY, maxZ);
+										vertices[3] = new Vec3f(minX, maxY, minZ);
+										vertices[2] = new Vec3f(maxX, maxY, minZ);
+										vertices[1] = new Vec3f(maxX, maxY, maxZ);
+										vertices[0] = new Vec3f(minX, maxY, maxZ);
 										break;
 									case DOWN:
 										sprite = bottom;
-										vertices[0] = new Vec3d(minX, minY, minZ);
-										vertices[1] = new Vec3d(maxX, minY, minZ);
-										vertices[2] = new Vec3d(maxX, minY, maxZ);
-										vertices[3] = new Vec3d(minX, minY, maxZ);
+										vertices[0] = new Vec3f(minX, minY, minZ);
+										vertices[1] = new Vec3f(maxX, minY, minZ);
+										vertices[2] = new Vec3f(maxX, minY, maxZ);
+										vertices[3] = new Vec3f(minX, minY, maxZ);
 										break;
 									case NORTH:
-										vertices[3] = new Vec3d(minX, minY, minZ);
-										vertices[2] = new Vec3d(maxX, minY, minZ);
-										vertices[1] = new Vec3d(maxX, maxY, minZ);
-										vertices[0] = new Vec3d(minX, maxY, minZ);
+										vertices[3] = new Vec3f(minX, minY, minZ);
+										vertices[2] = new Vec3f(maxX, minY, minZ);
+										vertices[1] = new Vec3f(maxX, maxY, minZ);
+										vertices[0] = new Vec3f(minX, maxY, minZ);
 										break;
 									case SOUTH:
-										vertices[0] = new Vec3d(minX, minY, maxZ);
-										vertices[1] = new Vec3d(maxX, minY, maxZ);
-										vertices[2] = new Vec3d(maxX, maxY, maxZ);
-										vertices[3] = new Vec3d(minX, maxY, maxZ);
+										vertices[0] = new Vec3f(minX, minY, maxZ);
+										vertices[1] = new Vec3f(maxX, minY, maxZ);
+										vertices[2] = new Vec3f(maxX, maxY, maxZ);
+										vertices[3] = new Vec3f(minX, maxY, maxZ);
 										break;
 									case WEST:
-										vertices[3] = new Vec3d(minX, minY, maxZ);
-										vertices[2] = new Vec3d(minX, minY, minZ);
-										vertices[1] = new Vec3d(minX, maxY, minZ);
-										vertices[0] = new Vec3d(minX, maxY, maxZ);
+										vertices[3] = new Vec3f(minX, minY, maxZ);
+										vertices[2] = new Vec3f(minX, minY, minZ);
+										vertices[1] = new Vec3f(minX, maxY, minZ);
+										vertices[0] = new Vec3f(minX, maxY, maxZ);
 										break;
 									case EAST:
-										vertices[0] = new Vec3d(maxX, minY, maxZ);
-										vertices[1] = new Vec3d(maxX, minY, minZ);
-										vertices[2] = new Vec3d(maxX, maxY, minZ);
-										vertices[3] = new Vec3d(maxX, maxY, maxZ);
+										vertices[0] = new Vec3f(maxX, minY, maxZ);
+										vertices[1] = new Vec3f(maxX, minY, minZ);
+										vertices[2] = new Vec3f(maxX, maxY, minZ);
+										vertices[3] = new Vec3f(maxX, maxY, maxZ);
 										break;
-								}
-								for (int i = 0; i < 4; i++) {
-									qe.normal(i, d.getUnitVector());
 								}
 								int packedColor = color.getFireworkColor();
 								if (data.welded() && a != null) {
@@ -173,53 +171,6 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											adjacentW = a.south();
 											break;
 									}
-									Vec2i qNW, qNE, qSW, qSE;
-									if (adjacentN && adjacentW) {
-										qNW = new Vec2i(1, 1);
-									} else if (adjacentN && !adjacentW) {
-										qNW = new Vec2i(1, 0);
-									} else if (!adjacentN && adjacentW) {
-										qNW = new Vec2i(0, 1);
-									} else { // !adjacentUp && !adjacentLeft
-										qNW = new Vec2i(0, 0);
-									}
-									if (adjacentN && adjacentE) {
-										qNE = new Vec2i(1, 1);
-									} else if (adjacentN && !adjacentE) {
-										qNE = new Vec2i(1, 0);
-									} else if (!adjacentN && adjacentE) {
-										qNE = new Vec2i(0, 1);
-									} else { // !adjacentUp && !adjacentRight
-										qNE = new Vec2i(0, 0);
-									}
-									if (adjacentS && adjacentW) {
-										qSW = new Vec2i(1, 1);
-									} else if (adjacentS && !adjacentW) {
-										qSW = new Vec2i(1, 0);
-									} else if (!adjacentS && adjacentW) {
-										qSW = new Vec2i(0, 1);
-									} else { // !adjacentDown && !adjacentLeft
-										qSW = new Vec2i(0, 0);
-									}
-									if (adjacentS && adjacentE) {
-										qSE = new Vec2i(1, 1);
-									} else if (adjacentS && !adjacentE) {
-										qSE = new Vec2i(1, 0);
-									} else if (!adjacentS && adjacentE) {
-										qSE = new Vec2i(0, 1);
-									} else { // !adjacentDown && !adjacentRight
-										qSE = new Vec2i(0, 0);
-									}
-									Vec2i[] quadrantUVs;
-									switch (d) {
-										case WEST:
-										case NORTH:
-											quadrantUVs = new Vec2i[] {qNE, qNW, qSW, qSE};
-											break;
-										default:
-											quadrantUVs = new Vec2i[] {qSW, qSE, qNE, qNW};
-											break;
-									}
 									float uScale = 2;
 									float vScale = 2;
 									sprite = weldedSide;
@@ -228,18 +179,30 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 									} else if (d == Direction.DOWN) {
 										sprite = welded;
 									}
-									for (int i = 0; i < vertices.length; i++) {
-										qe.pos(i, new Vec3f(vertices[i]));
-										for (int j = 0; j < vertices.length; j++) {
-											if (j != i) {
-												qe.pos(j, new Vec3f(vertices[j].lerp(vertices[i], 0.5)));
-											}
+									int kind;
+									if (!adjacentN && !adjacentE && !adjacentS && !adjacentW) {
+										kind = 1;
+									} else if (adjacentN && adjacentE && adjacentS && adjacentW) {
+										kind = 2;
+									} else {
+										kind = 0;
+									}
+									if (kind != 0) {
+										qe.nominalFace(d);
+										for (int i = 0; i < 4; i++) {
+											qe.normal(i, d.getUnitVector());
+											qe.pos(i, vertices[i]);
 										}
-										Vec2i uvs = quadrantUVs[i];
-										float minU = (uvs.x)/uScale;
-										float maxU = (uvs.x+.5f)/uScale;
-										float minV = (uvs.z)/vScale;
-										float maxV = (uvs.z+.5f)/vScale;
+										int u = 0;
+										int v = 0;
+										if (kind == 2) {
+											u = 1;
+											v = 1;
+										}
+										float minU = u/uScale;
+										float maxU = (u+1)/uScale;
+										float minV = v/vScale;
+										float maxV = (v+1)/vScale;
 										if (invert) {
 											float swap = minV;
 											minV = maxV;
@@ -248,29 +211,127 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											minU = maxU;
 											maxU = swap;
 										}
-										if (uvs == qNW || uvs == qNE) {
-											float swap = minV;
-											minV = maxV;
-											maxV = swap;
-										}
-										if (uvs == qNE || uvs == qSE) {
-											float swap = minU;
-											minU = maxU;
-											maxU = swap;
-										}
-										qe.sprite(0, 0, minU, minV);
-										qe.sprite(1, 0, maxU, minV);
-										qe.sprite(2, 0, maxU, maxV);
-										qe.sprite(3, 0, minU, maxV);
+										qe.sprite(0, 0, minU, maxV);
+										qe.sprite(1, 0, maxU, maxV);
+										qe.sprite(2, 0, maxU, minV);
+										qe.sprite(3, 0, minU, minV);
 										qe.spriteBake(0, sprite, QuadEmitter.BAKE_NORMALIZED);
 										qe.spriteColor(0, packedColor, packedColor, packedColor, packedColor);
 										qe.material(mat);
 										qe.colorIndex(0);
 										qe.emit();
+									} else {
+										Vec2i qNW, qNE, qSW, qSE;
+										if (adjacentN && adjacentW) {
+											qNW = new Vec2i(1, 1);
+										} else if (adjacentN && !adjacentW) {
+											qNW = new Vec2i(1, 0);
+										} else if (!adjacentN && adjacentW) {
+											qNW = new Vec2i(0, 1);
+										} else { // !adjacentUp && !adjacentLeft
+											qNW = new Vec2i(0, 0);
+										}
+										if (adjacentN && adjacentE) {
+											qNE = new Vec2i(1, 1);
+										} else if (adjacentN && !adjacentE) {
+											qNE = new Vec2i(1, 0);
+										} else if (!adjacentN && adjacentE) {
+											qNE = new Vec2i(0, 1);
+										} else { // !adjacentUp && !adjacentRight
+											qNE = new Vec2i(0, 0);
+										}
+										if (adjacentS && adjacentW) {
+											qSW = new Vec2i(1, 1);
+										} else if (adjacentS && !adjacentW) {
+											qSW = new Vec2i(1, 0);
+										} else if (!adjacentS && adjacentW) {
+											qSW = new Vec2i(0, 1);
+										} else { // !adjacentDown && !adjacentLeft
+											qSW = new Vec2i(0, 0);
+										}
+										if (adjacentS && adjacentE) {
+											qSE = new Vec2i(1, 1);
+										} else if (adjacentS && !adjacentE) {
+											qSE = new Vec2i(1, 0);
+										} else if (!adjacentS && adjacentE) {
+											qSE = new Vec2i(0, 1);
+										} else { // !adjacentDown && !adjacentRight
+											qSE = new Vec2i(0, 0);
+										}
+										Vec2i[] quadrantUVs;
+										switch (d) {
+											case WEST:
+											case NORTH:
+												quadrantUVs = new Vec2i[] {qNE, qNW, qSW, qSE};
+												break;
+											default:
+												quadrantUVs = new Vec2i[] {qSW, qSE, qNE, qNW};
+												break;
+										}
+										for (int i = 0; i < vertices.length; i++) {
+											qe.nominalFace(d);
+											for (int j = 0; j < 4; j++) {
+												qe.normal(j, d.getUnitVector());
+											}
+											qe.pos(i, vertices[i]);
+											for (int j = 0; j < vertices.length; j++) {
+												if (j != i) {
+													Vec3f v = vertices[j].copy();
+													v.lerp(vertices[i], 0.5f);
+													qe.pos(j, v);
+												}
+											}
+											Vec2i uvs = quadrantUVs[i];
+											float minU = (uvs.x);
+											float maxU = (uvs.x+.5f);
+											float minV = (uvs.z);
+											float maxV = (uvs.z+.5f);
+											if (uvs == qNE || uvs == qSE) {
+												minU += .5f;
+												maxU += .5f;
+											}
+											if (uvs == qSW || uvs == qSE) {
+												minV += .5f;
+												maxV += .5f;
+											}
+											minU /= uScale;
+											maxU /= uScale;
+											minV /= vScale;
+											maxV /= vScale;
+											if (invert) {
+												float swap = minV;
+												minV = maxV;
+												maxV = swap;
+												swap = minU;
+												minU = maxU;
+												maxU = swap;
+											}
+											if (uvs == null) {
+												float swap = minV;
+												minV = maxV;
+												maxV = swap;
+											}
+											if (uvs == null) {
+												float swap = minU;
+												minU = maxU;
+												maxU = swap;
+											}
+											qe.sprite(0, 0, minU, maxV);
+											qe.sprite(1, 0, maxU, maxV);
+											qe.sprite(2, 0, maxU, minV);
+											qe.sprite(3, 0, minU, minV);
+											qe.spriteBake(0, sprite, QuadEmitter.BAKE_NORMALIZED);
+											qe.spriteColor(0, packedColor, packedColor, packedColor, packedColor);
+											qe.material(mat);
+											qe.colorIndex(0);
+											qe.emit();
+										}
 									}
 								} else {
-									for (int i = 0; i < vertices.length; i++) {
-										qe.pos(i, new Vec3f(vertices[i]));
+									qe.nominalFace(d);
+									for (int i = 0; i < 4; i++) {
+										qe.normal(i, d.getUnitVector());
+										qe.pos(i, vertices[i]);
 									}
 									qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
 									qe.spriteColor(0, packedColor, packedColor, packedColor, packedColor);

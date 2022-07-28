@@ -149,7 +149,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 			return ActionResult.CONSUME;
 		}
 		if (is.getMiningSpeedMultiplier(state) <= 1) return ActionResult.PASS;
-		if (world.getBlockEntity(pos) instanceof BloqueBlockEntity be && !be.isWelded()) {
+		if (world.getBlockEntity(pos) instanceof BloqueBlockEntity be && (!be.isWelded() || player.isCreative())) {
 			if (!world.isClient) {
 				Vec3d hitVec = hit.getPos().subtract(pos.getX(), pos.getY(), pos.getZ());
 				int x = (int)((hitVec.x)*XSIZE);
@@ -168,8 +168,14 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 				if (cur != null) {
 					be.set(slot, null);
 					ItemStack drop = new ItemStack(Registry.ITEM.get(Yttr.id(cur.name().toLowerCase(Locale.ROOT)+"_bloque")));
-					ItemEntity ie = new ItemEntity(world, pos.getX()+((x+.5)/XSIZE), pos.getY()+((y+.5)/YSIZE), pos.getZ()+((z+.5)/ZSIZE), drop);
-					world.spawnEntity(ie);
+					if (!player.isCreative()) {
+						ItemEntity ie = new ItemEntity(world, pos.getX()+((x+.5)/XSIZE), pos.getY()+((y+.5)/YSIZE), pos.getZ()+((z+.5)/ZSIZE), drop);
+						world.spawnEntity(ie);
+					}
+					if (be.isWelded()) {
+						world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.PLAYERS, 1, 0.5f);
+						Yttr.sync(be);
+					}
 					if (be.getPopCount() == 0) {
 						world.setBlockState(pos, world.getFluidState(pos).getBlockState());
 					} else {
