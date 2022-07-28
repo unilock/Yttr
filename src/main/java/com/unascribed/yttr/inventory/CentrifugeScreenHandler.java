@@ -1,7 +1,7 @@
 package com.unascribed.yttr.inventory;
 
-import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.init.YHandledScreens;
+import com.unascribed.yttr.init.YRecipeTypes;
 
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
 import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -22,7 +22,7 @@ import net.minecraft.util.Identifier;
 
 public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 
-	private static final Identifier BG = new Identifier("yttr", "textures/gui/void_filter.png");
+	private static final Identifier BG = Yttr.id("textures/gui/void_filter.png");
 	
 	private final List<GuiParticle> particles = Lists.newArrayList();
 	

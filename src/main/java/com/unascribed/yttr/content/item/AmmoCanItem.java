@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.List;
+
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 
 import com.google.common.base.Ascii;

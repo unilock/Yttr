@@ -2,8 +2,8 @@ package com.unascribed.yttr.content.block.void_;
 
 import com.unascribed.yttr.content.block.basic.BasicConnectingBlock;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.FilterNetwork.NodeType;
+import com.unascribed.yttr.world.FilterNetworks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

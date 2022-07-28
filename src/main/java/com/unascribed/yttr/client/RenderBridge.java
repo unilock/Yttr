@@ -1,9 +1,5 @@
 package com.unascribed.yttr.client;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
-
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -11,6 +7,10 @@ import org.lwjgl.opengl.GL21;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderSystem;
+
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
 
 public class RenderBridge extends GL21 {
 

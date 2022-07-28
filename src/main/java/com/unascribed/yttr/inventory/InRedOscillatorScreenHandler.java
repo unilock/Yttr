@@ -2,6 +2,7 @@ package com.unascribed.yttr.inventory;
 
 import com.unascribed.yttr.content.block.inred.InRedOscillatorBlockEntity;
 import com.unascribed.yttr.init.YHandledScreens;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

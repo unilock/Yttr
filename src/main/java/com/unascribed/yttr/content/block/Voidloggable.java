@@ -1,14 +1,13 @@
 package com.unascribed.yttr.content.block;
 
 import com.unascribed.yttr.init.YFluids;
-
 import com.unascribed.yttr.init.YItems;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.FluidFillable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;

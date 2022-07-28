@@ -10,7 +10,6 @@ import com.unascribed.yttr.client.render.ProfilerRenderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.mixin.client.keybinding.KeyBindingAccessor;
 import net.minecraft.client.option.KeyBind;
 
 @Environment(EnvType.CLIENT)

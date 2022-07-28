@@ -5,10 +5,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.content.block.big.DSUBlockEntity;
+import com.unascribed.yttr.content.block.decor.BloqueBlockEntity;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.block.decor.LampBlockEntity;
 import com.unascribed.yttr.content.block.device.CanFillerBlockEntity;
@@ -35,6 +37,7 @@ import com.unascribed.yttr.content.block.mechanism.ReplicatorBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.VoidCauldronBlockEntity;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
 import com.unascribed.yttr.content.block.void_.VoidGeyserBlockEntity;
+
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.block.Block;
@@ -72,6 +75,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
 	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE, YBlocks.DYED_PROJECT_TABLE);
 	public static final BlockEntityType<LazorBeamBlockEntity> LAZOR_BEAM = create(LazorBeamBlockEntity::new, YBlocks.LAZOR_BEAM);
+	public static final BlockEntityType<BloqueBlockEntity> BLOQUE = create(BloqueBlockEntity::new, YBlocks.BLOQUE);
 	
 	
 	public static final BlockEntityType<InRedAndGateBlockEntity> INRED_AND_GATE = create(InRedAndGateBlockEntity::new, YBlocks.INRED_AND_GATE);

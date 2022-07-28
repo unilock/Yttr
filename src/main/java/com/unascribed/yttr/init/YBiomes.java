@@ -10,7 +10,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.util.Holder;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -93,7 +92,7 @@ public class YBiomes {
 				)
 			.build();
 	
-	public static final Holder<Biome> WASTELAND_HOLDER = Holder.Reference.create(BuiltinRegistries.BIOME, RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland")));
+	public static final Holder<Biome> WASTELAND_HOLDER = Holder.Reference.create(BuiltinRegistries.BIOME, RegistryKey.of(Registry.BIOME_KEY, Yttr.id("wasteland")));
 	
 	public static void init() {
 		Blocks.SAND.asItem();

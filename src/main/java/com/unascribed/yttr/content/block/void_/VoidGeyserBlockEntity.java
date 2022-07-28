@@ -13,15 +13,14 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YFluids;
-
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.util.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
+
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

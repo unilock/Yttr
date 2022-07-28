@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.screen.handled.DSUScreen;
 import com.unascribed.yttr.init.YTags;
 
@@ -22,7 +23,7 @@ import net.minecraft.util.Identifier;
 @Mixin(HandledScreen.class)
 public class MixinHandledScreen {
 
-	private static final Identifier YTTR$TINYNUMBERS = new Identifier("yttr", "textures/gui/tiny_numbers.png");
+	private static final Identifier YTTR$TINYNUMBERS = Yttr.id("textures/gui/tiny_numbers.png");
 	
 	private ItemStack yttr$storedStack;
 	

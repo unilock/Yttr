@@ -6,6 +6,7 @@ import com.unascribed.yttr.inred.EncoderScannable;
 import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
 import com.unascribed.yttr.inred.InRedLogic;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;

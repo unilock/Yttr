@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.abomination;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YSounds;
@@ -32,7 +34,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
-import org.jetbrains.annotations.Nullable;
 
 public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 

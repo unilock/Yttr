@@ -21,24 +21,24 @@ import net.minecraft.util.registry.Registry;
 
 public class YStats {
 
-	public static final Identifier ULTRAPURE_ITEMS_CRAFTED = new Identifier("yttr", "ultrapure_items_crafted");
+	public static final Identifier ULTRAPURE_ITEMS_CRAFTED = Yttr.id("ultrapure_items_crafted");
 	@FormattedAs("time")
-	public static final Identifier RIFLE_CHARGING_TIME = new Identifier("yttr", "rifle_charging_time");
-	public static final Identifier RIFLE_SHOTS_FIRED = new Identifier("yttr", "rifle_shots_fired");
-	public static final Identifier RIFLE_SHOTS_BACKFIRED = new Identifier("yttr", "rifle_shots_backfired");
-	public static final Identifier RIFLE_SHOTS_OVERCHARGED = new Identifier("yttr", "rifle_shots_overcharged");
+	public static final Identifier RIFLE_CHARGING_TIME = Yttr.id("rifle_charging_time");
+	public static final Identifier RIFLE_SHOTS_FIRED = Yttr.id("rifle_shots_fired");
+	public static final Identifier RIFLE_SHOTS_BACKFIRED = Yttr.id("rifle_shots_backfired");
+	public static final Identifier RIFLE_SHOTS_OVERCHARGED = Yttr.id("rifle_shots_overcharged");
 	@FormattedAs("distance")
-	public static final Identifier BLOCKS_EFFECTED = new Identifier("yttr", "blocks_effected");
+	public static final Identifier BLOCKS_EFFECTED = Yttr.id("blocks_effected");
 	@FormattedAs("distance")
-	public static final Identifier BLOCKS_DOVE = new Identifier("yttr", "blocks_dove");
-	public static final Identifier GEYSERS_OPENED = new Identifier("yttr", "geysers_opened");
-	public static final Identifier BEDROCK_BROKEN = new Identifier("yttr", "bedrock_broken");
-	public static final Identifier FILTERS_INSTALLED = new Identifier("yttr", "filters_installed");
+	public static final Identifier BLOCKS_DOVE = Yttr.id("blocks_dove");
+	public static final Identifier GEYSERS_OPENED = Yttr.id("geysers_opened");
+	public static final Identifier BEDROCK_BROKEN = Yttr.id("bedrock_broken");
+	public static final Identifier FILTERS_INSTALLED = Yttr.id("filters_installed");
 	@FormattedAs("time")
-	public static final Identifier TIME_IN_VOID = new Identifier("yttr", "time_in_void");
-	public static final Identifier BLOCKS_VOIDED = new Identifier("yttr", "blocks_voided");
-	public static final Identifier BLOCKS_CLEAVED = new Identifier("yttr", "blocks_cleaved");
-	public static final Identifier BLOCKS_SHIFTED = new Identifier("yttr", "blocks_shifted");
+	public static final Identifier TIME_IN_VOID = Yttr.id("time_in_void");
+	public static final Identifier BLOCKS_VOIDED = Yttr.id("blocks_voided");
+	public static final Identifier BLOCKS_CLEAVED = Yttr.id("blocks_cleaved");
+	public static final Identifier BLOCKS_SHIFTED = Yttr.id("blocks_shifted");
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented

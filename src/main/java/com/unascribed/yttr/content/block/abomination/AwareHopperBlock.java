@@ -3,6 +3,8 @@ package com.unascribed.yttr.content.block.abomination;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YSounds;
 
@@ -38,7 +40,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class AwareHopperBlock extends Block implements BlockEntityProvider {
 

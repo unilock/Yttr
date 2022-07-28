@@ -3,13 +3,12 @@ package com.unascribed.yttr.client.cache;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import com.unascribed.yttr.util.YLog;
-
 import com.google.gson.internal.UnsafeAllocator;
 import com.unascribed.yttr.client.util.DummyServerWorld;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityRendererDispatcher;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

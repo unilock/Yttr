@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import com.unascribed.yttr.content.block.device.CanFillerBlockEntity;
 import com.unascribed.yttr.init.YHandledScreens;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

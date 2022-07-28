@@ -46,8 +46,8 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
+import net.minecraft.world.World;
 
 public class CleaverItem extends Item implements Attackable {
 

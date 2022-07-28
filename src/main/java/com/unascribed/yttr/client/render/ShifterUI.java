@@ -1,10 +1,28 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.yttr.client.RenderBridge.*;
+import static com.unascribed.yttr.client.RenderBridge.glDefaultBlendFunc;
+import static com.unascribed.yttr.client.RenderBridge.glPopMCMatrix;
+import static com.unascribed.yttr.client.RenderBridge.glPushMCMatrix;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_LINE_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.glShadeModel;
+import static org.lwjgl.opengl.GL11.glVertex3d;
 
 import java.util.Set;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.item.ShifterItem;
 import com.unascribed.yttr.network.MessageC2SShifterMode;
@@ -98,7 +116,7 @@ public class ShifterUI extends IHasAClient {
 	public static final int ANIM_TIME = 5;
 	public static final float ANIM_TIMEf = ANIM_TIME;
 	
-	private static final Identifier MODES = new Identifier("yttr", "textures/gui/shifter_modes.png");
+	private static final Identifier MODES = Yttr.id("textures/gui/shifter_modes.png");
 	
 	private static int ticksSinceOpen = -1;
 	private static int ticksSinceClose = -1;

@@ -10,10 +10,10 @@ import com.unascribed.yttr.init.YBlocks;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.state.State;
 import net.minecraft.state.property.Property;
 

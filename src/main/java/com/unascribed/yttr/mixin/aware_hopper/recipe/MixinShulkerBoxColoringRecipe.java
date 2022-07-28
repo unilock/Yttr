@@ -1,6 +1,7 @@
 package com.unascribed.yttr.mixin.aware_hopper.recipe;
 
 import org.spongepowered.asm.mixin.Mixin;
+
 import com.unascribed.yttr.mechanics.SpecialInputsRecipe;
 
 import net.minecraft.block.Block;

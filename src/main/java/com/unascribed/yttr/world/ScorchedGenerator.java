@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 
 import com.google.common.collect.Lists;
@@ -21,13 +22,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.structure.Structure;
-import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.Structure.StructureBlockInfo;
+import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
@@ -88,7 +88,7 @@ public class ScorchedGenerator {
 			}
 			rand.setPopulationSeed(31*worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
 			if (accessor.shouldGenerateStructures() && rand.nextInt(40) == 0) {
-				var opt = region.toServerWorld().getStructureManager().getStructure(new Identifier("yttr", "terminus_house"));
+				var opt = region.toServerWorld().getStructureManager().getStructure(Yttr.id("terminus_house"));
 				if (opt.isPresent()) {
 					Structure s = opt.get();
 					BlockRotation rot = BlockRotation.random(rand);

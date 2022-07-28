@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.big;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.big.DSUBlock.OpenState;
 import com.unascribed.yttr.init.YBlockEntities;
@@ -21,7 +23,6 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import org.jetbrains.annotations.Nullable;
 
 public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, SideyInventory {
 

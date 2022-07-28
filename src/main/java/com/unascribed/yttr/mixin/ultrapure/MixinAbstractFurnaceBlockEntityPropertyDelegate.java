@@ -12,10 +12,10 @@ public abstract class MixinAbstractFurnaceBlockEntityPropertyDelegate {
 	private boolean yttr$reentering = false;
 	
 	@Shadow
-    public abstract int get(int index);
+	public abstract int get(int index);
 	
 	@Inject(at=@At("HEAD"), method="get(I)I", cancellable=true)
-    public void get(int index, CallbackInfoReturnable<Integer> ci) {
+	public void get(int index, CallbackInfoReturnable<Integer> ci) {
 		if (yttr$reentering) return;
 		try {
 			yttr$reentering = true;
@@ -36,6 +36,6 @@ public abstract class MixinAbstractFurnaceBlockEntityPropertyDelegate {
 		} finally {
 			yttr$reentering = false;
 		}
-     }
+	}
 	
 }

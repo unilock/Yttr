@@ -3,6 +3,7 @@ package com.unascribed.yttr.client.render.block_entity;
 import static com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity.STOW_TIME;
 import static com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity.THINK_TIME;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.util.math.Interp;
@@ -26,7 +27,7 @@ import net.minecraft.util.math.Vec3f;
 public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<SkeletalSorterBlockEntity> {
 
 	private static final Identifier SKELETON_TEXTURE = new Identifier("minecraft", "textures/entity/skeleton/skeleton.png");
-	private static final Identifier GOGGLES_TEXTURE = new Identifier("yttr", "textures/models/armor/goggles_layer_1.png");
+	private static final Identifier GOGGLES_TEXTURE = Yttr.id("textures/models/armor/goggles_layer_1.png");
 	
 	private final SkeletonEntityModel<SkeletonEntity> skeletonModel = new SkeletonEntityModel<>(SkeletonEntityModel.getTexturedModelData().createModel());
 	

@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.concurrent.TimeUnit;
+
 import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mechanics.TicksAlwaysItem;

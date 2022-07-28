@@ -3,8 +3,8 @@ package com.unascribed.yttr.inventory;
 import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.content.item.SuitArmorItem;
-import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YHandledScreens;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.api.EnvType;

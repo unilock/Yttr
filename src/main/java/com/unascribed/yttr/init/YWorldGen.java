@@ -8,7 +8,6 @@ import com.unascribed.yttr.Yttr;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.util.Holder;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -45,7 +44,7 @@ public class YWorldGen {
 						),
 					9));
 	
-	public static final Holder<ConfiguredFeature<?, ?>> GADOLINITE_OVERWORLD_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("yttr", "gadolinite_overworld")));
+	public static final Holder<ConfiguredFeature<?, ?>> GADOLINITE_OVERWORLD_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, Yttr.id("gadolinite_overworld")));
 
 	public static final PlacedFeature GADOLINITE_OVERWORLD_MAIN = new PlacedFeature(
 			GADOLINITE_OVERWORLD_HOLDER,
@@ -77,7 +76,7 @@ public class YWorldGen {
 						),
 					5));
 	
-	public static final Holder<ConfiguredFeature<?, ?>> BROOKITE_ORE_OVERWORLD_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("yttr", "brookite_ore_overworld")));
+	public static final Holder<ConfiguredFeature<?, ?>> BROOKITE_ORE_OVERWORLD_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, Yttr.id("brookite_ore_overworld")));
 
 	public static final PlacedFeature BROOKITE_ORE_OVERWORLD_MAIN = new PlacedFeature(
 			BROOKITE_ORE_OVERWORLD_HOLDER,
@@ -97,7 +96,7 @@ public class YWorldGen {
 	public static final ConfiguredFeature<RandomPatchFeatureConfig, ?> WASTELAND_GRASS = new ConfiguredFeature<>(
 			Feature.RANDOM_PATCH, VegetationConfiguredFeatures.createRandomPatchFeatureConfig(BlockStateProvider.of(YBlocks.WASTELAND_GRASS), 12));
 	
-	public static final Holder<ConfiguredFeature<?, ?>> WASTELAND_GRASS_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("yttr", "wasteland_grass")));
+	public static final Holder<ConfiguredFeature<?, ?>> WASTELAND_GRASS_HOLDER = Holder.Reference.create(BuiltinRegistries.CONFIGURED_FEATURE, RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, Yttr.id("wasteland_grass")));
 	
 	public static final PlacedFeature WASTELAND_GRASS_PLACED = new PlacedFeature(
 			WASTELAND_GRASS_HOLDER,
@@ -107,7 +106,7 @@ public class YWorldGen {
 				BiomePlacementModifier.getInstance()
 			));
 	
-	public static final Holder<PlacedFeature> WASTELAND_GRASS_PLACED_HOLDER = Holder.Reference.create(BuiltinRegistries.PLACED_FEATURE, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier("yttr", "wasteland_grass_placed")));
+	public static final Holder<PlacedFeature> WASTELAND_GRASS_PLACED_HOLDER = Holder.Reference.create(BuiltinRegistries.PLACED_FEATURE, RegistryKey.of(Registry.PLACED_FEATURE_KEY, Yttr.id("wasteland_grass_placed")));
 	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
@@ -123,7 +122,7 @@ public class YWorldGen {
 	}
 
 	public static RegistryKey<PlacedFeature> key(String path) {
-		return RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier("yttr", path));
+		return RegistryKey.of(Registry.PLACED_FEATURE_KEY, Yttr.id(path));
 	}
 
 }

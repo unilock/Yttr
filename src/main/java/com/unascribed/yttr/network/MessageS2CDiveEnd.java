@@ -6,6 +6,7 @@ import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.network.concrete.NetworkContext;
 import com.unascribed.yttr.network.concrete.S2CMessage;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

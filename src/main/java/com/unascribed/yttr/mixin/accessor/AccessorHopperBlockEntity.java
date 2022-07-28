@@ -1,6 +1,7 @@
 package com.unascribed.yttr.mixin.accessor;
 
 import java.util.function.BooleanSupplier;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;

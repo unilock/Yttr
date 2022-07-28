@@ -1,8 +1,9 @@
 package com.unascribed.yttr.util.math;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIntArray;
-import org.jetbrains.annotations.Nullable;
 
 public class Vec2i {
 

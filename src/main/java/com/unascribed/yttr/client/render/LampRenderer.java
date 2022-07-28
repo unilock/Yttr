@@ -3,7 +3,9 @@ package com.unascribed.yttr.client.render;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.jetbrains.annotations.Nullable;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YRenderLayers;
@@ -14,6 +16,7 @@ import com.unascribed.yttr.util.MysticSet;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;

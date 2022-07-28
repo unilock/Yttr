@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:delrene",
+  "group": "yttr:bloques",
+  "ingredients": [
+    {
+      "item": "minecraft:white_dye"
+    },
+    {
+      "item": "yttr:delrene"
+    }
+  ],
+  "result": {
+    "item": "yttr:white_bloque",
+    "count": 48
+  }
+}

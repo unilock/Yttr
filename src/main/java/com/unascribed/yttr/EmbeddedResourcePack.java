@@ -9,10 +9,9 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.unascribed.yttr.util.YLog;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;

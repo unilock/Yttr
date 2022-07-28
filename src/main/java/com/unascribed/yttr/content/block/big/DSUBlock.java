@@ -5,8 +5,8 @@ import java.util.Random;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.inventory.DSUScreenHandler;
-import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.FilterNetwork.NodeType;
+import com.unascribed.yttr.world.FilterNetworks;
 
 import com.google.common.base.Ascii;
 

@@ -1,10 +1,22 @@
 package com.unascribed.yttr.world;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
-import net.minecraft.block.*;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
+import net.minecraft.block.SideShapeType;
+import net.minecraft.block.StructureBlock;
+import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.enums.StructureBlockMode;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.world.ServerWorld;
@@ -24,10 +36,6 @@ import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
-
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 public class WastelandPopulator {
 

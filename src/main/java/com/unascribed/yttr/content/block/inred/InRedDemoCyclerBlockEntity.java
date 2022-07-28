@@ -4,6 +4,7 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
 import com.unascribed.yttr.inred.InRedLogic;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;

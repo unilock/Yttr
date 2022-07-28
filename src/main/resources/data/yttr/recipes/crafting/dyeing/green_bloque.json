@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:delrene",
+  "group": "yttr:bloques",
+  "ingredients": [
+    {
+      "item": "minecraft:green_dye"
+    },
+    {
+      "item": "yttr:delrene"
+    }
+  ],
+  "result": {
+    "item": "yttr:green_bloque",
+    "count": 48
+  }
+}

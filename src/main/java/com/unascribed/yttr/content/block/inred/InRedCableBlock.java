@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.inred;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inred.CableConnection;
 import com.unascribed.yttr.inred.InRedLogic;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;

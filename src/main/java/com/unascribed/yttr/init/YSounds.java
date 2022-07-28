@@ -3,7 +3,6 @@ package com.unascribed.yttr.init;
 import com.unascribed.yttr.Yttr;
 
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class YSounds {
@@ -132,7 +131,7 @@ public class YSounds {
 	}
 
 	private static SoundEvent create(String path) {
-		return new SoundEvent(new Identifier("yttr", path));
+		return new SoundEvent(Yttr.id(path));
 	}
 	
 }

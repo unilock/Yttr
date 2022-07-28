@@ -1,10 +1,6 @@
 package com.unascribed.yttr.inred;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
 
 public class InRedHandler implements InRedDevice {
 	public static final InRedDevice ALWAYS_OFF = () -> 0;

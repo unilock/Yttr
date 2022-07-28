@@ -1,8 +1,8 @@
 package com.unascribed.yttr.content.block.big;
 
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
-import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.FilterNetwork.NodeType;
+import com.unascribed.yttr.world.FilterNetworks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

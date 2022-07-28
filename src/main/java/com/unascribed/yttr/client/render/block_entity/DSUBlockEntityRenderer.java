@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client.render.block_entity;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.content.block.big.DSUBlock;
@@ -26,15 +27,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.world.LightType;
 
 public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntity> {
 
-	private static final Identifier TEX = new Identifier("yttr", "textures/block/dsu/front_inside_contents.png");
+	private static final Identifier TEX = Yttr.id("textures/block/dsu/front_inside_contents.png");
 	
 	// I tried to use ColorThief to imply these for resource pack support and such, but it makes bad decisions
 	private static final ImmutableMap<Item, Integer> CUBE_COLORS = ImmutableMap.<Item, Integer>builder()

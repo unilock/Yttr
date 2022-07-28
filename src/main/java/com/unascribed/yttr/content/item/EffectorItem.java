@@ -36,8 +36,8 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
+import net.minecraft.world.World;
 
 public class EffectorItem extends Item {
 

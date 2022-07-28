@@ -3,6 +3,7 @@ package com.unascribed.yttr.mixin.substitute;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.unascribed.yttr.Substitutes;
 
 import com.google.common.collect.Iterables;
+
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
 

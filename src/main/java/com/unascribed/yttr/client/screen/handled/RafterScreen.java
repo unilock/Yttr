@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.RafterScreenHandler;
 import com.unascribed.yttr.inventory.RafterScreenHandler.FloatingSlot;
 import com.unascribed.yttr.mixin.accessor.client.AccessorHandledScreen;
@@ -24,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
 public class RafterScreen extends HandledScreen<RafterScreenHandler> implements RecipeBookProvider {
-	private static final Identifier TEXTURE = new Identifier("yttr", "textures/gui/rafter.png");
+	private static final Identifier TEXTURE = Yttr.id("textures/gui/rafter.png");
 	private static final Identifier RECIPE_BUTTON_TEXTURE = new Identifier("textures/gui/recipe_button.png");
 	private final RecipeBookWidget recipeBook = new RecipeBookWidget();
 	private boolean narrow;

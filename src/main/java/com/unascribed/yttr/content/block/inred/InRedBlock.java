@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.inred;
 import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
 import com.unascribed.yttr.inred.InRedProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;

@@ -1,6 +1,7 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.ItemSubGroup;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mixin.accessor.AccessorItem;
 
@@ -15,21 +16,21 @@ import net.minecraft.util.registry.Registry;
 
 public class YItemGroups {
 
-	public static final ItemGroup PARENT = FabricItemGroupBuilder.create(new Identifier("yttr", "parent"))
+	public static final ItemGroup PARENT = FabricItemGroupBuilder.create(Yttr.id("parent"))
 		.icon(() -> new ItemStack(YItems.LOGO))
 		.build()
 		.hideName();
-	public static final ItemSubGroup RESOURCES = ItemSubGroup.create(PARENT, new Identifier("yttr", "resources"));
-	public static final ItemSubGroup FILTERING = ItemSubGroup.create(PARENT, new Identifier("yttr", "filtering"));
-	public static final ItemSubGroup DEVICES = ItemSubGroup.create(PARENT, new Identifier("yttr", "devices"));
-	public static final ItemSubGroup MECHANISMS = ItemSubGroup.create(PARENT, new Identifier("yttr", "mechanisms"));
-	public static final ItemSubGroup EQUIPMENT = ItemSubGroup.create(PARENT, new Identifier("yttr", "equipment"));
-	public static final ItemSubGroup SNARE = ItemSubGroup.create(PARENT, new Identifier("yttr", "snare"));
-	public static final ItemSubGroup LAMP = ItemSubGroup.create(PARENT, new Identifier("yttr", "lamp"));
-	public static final ItemSubGroup POTION = ItemSubGroup.create(PARENT, new Identifier("yttr", "potion"));
-	public static final ItemSubGroup RUINED = ItemSubGroup.create(PARENT, new Identifier("yttr", "ruined"));
-	public static final ItemSubGroup INRED = ItemSubGroup.create(PARENT, new Identifier("yttr", "inred"));
-	public static final ItemSubGroup MISC = ItemSubGroup.create(PARENT, new Identifier("yttr", "misc"));
+	public static final ItemSubGroup RESOURCES = ItemSubGroup.create(PARENT, Yttr.id("resources"));
+	public static final ItemSubGroup FILTERING = ItemSubGroup.create(PARENT, Yttr.id("filtering"));
+	public static final ItemSubGroup DEVICES = ItemSubGroup.create(PARENT, Yttr.id("devices"));
+	public static final ItemSubGroup MECHANISMS = ItemSubGroup.create(PARENT, Yttr.id("mechanisms"));
+	public static final ItemSubGroup EQUIPMENT = ItemSubGroup.create(PARENT, Yttr.id("equipment"));
+	public static final ItemSubGroup SNARE = ItemSubGroup.create(PARENT, Yttr.id("snare"));
+	public static final ItemSubGroup LAMP = ItemSubGroup.create(PARENT, Yttr.id("lamp"));
+	public static final ItemSubGroup POTION = ItemSubGroup.create(PARENT, Yttr.id("potion"));
+	public static final ItemSubGroup RUINED = ItemSubGroup.create(PARENT, Yttr.id("ruined"));
+	public static final ItemSubGroup INRED = ItemSubGroup.create(PARENT, Yttr.id("inred"));
+	public static final ItemSubGroup MISC = ItemSubGroup.create(PARENT, Yttr.id("misc"));
 
 	public static void init() {
 		Registry.ITEM.forEach(i -> {
@@ -40,7 +41,7 @@ public class YItemGroups {
 					group = LAMP;
 				} else if (i instanceof PotionItem) {
 					group = POTION;
-				} else if (i instanceof BlockItem && ((BlockItem)i).getBlock().getLootTableId().equals(new Identifier("yttr", "blocks/ruined"))) {
+				} else if (i instanceof BlockItem && ((BlockItem)i).getBlock().getLootTableId().equals(Yttr.id("blocks/ruined"))) {
 					group = RUINED;
 				} else if (id.getPath().startsWith("inred_")) {
 					group = INRED;

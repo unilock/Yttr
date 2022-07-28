@@ -7,8 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 
@@ -16,12 +16,12 @@ import net.minecraft.util.Identifier;
 public class YRenderLayers extends RenderPhase {
 
 	private static final RenderPhase.Transparency ADDITIVE_WITH_ALPHA_TRANSPARENCY = new RenderPhase.Transparency("yttr_additive_transparency_with_alpha", () -> {
-	      RenderSystem.enableBlend();
-	      RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
-	   }, () -> {
-	      RenderSystem.disableBlend();
-	      RenderSystem.defaultBlendFunc();
-	   });
+			RenderSystem.enableBlend();
+			RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
+		}, () -> {
+			RenderSystem.disableBlend();
+			RenderSystem.defaultBlendFunc();
+		});
 	
 	private static final RenderLayer LAMP_HALO = RenderLayer.of("yttr_lamp_halo",
 					VertexFormats.POSITION_TEXTURE_COLOR_NORMAL,

@@ -1,8 +1,14 @@
 package com.unascribed.yttr.content.block.inred;
 
 import com.unascribed.yttr.fuckmojang.YTickable;
-import com.unascribed.yttr.inred.*;
-import net.minecraft.block.*;
+import com.unascribed.yttr.inred.EncoderScannable;
+import com.unascribed.yttr.inred.InRedDevice;
+import com.unascribed.yttr.inred.InRedProvider;
+import com.unascribed.yttr.inred.MultimeterProbeProvider;
+
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;

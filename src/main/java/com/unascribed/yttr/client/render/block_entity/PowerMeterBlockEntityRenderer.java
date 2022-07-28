@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client.render.block_entity;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
@@ -17,7 +18,7 @@ import net.minecraft.util.math.Vec3f;
 
 public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerMeterBlockEntity> {
 
-	private static final Identifier LCD = new Identifier("yttr", "textures/block/lcd.png");
+	private static final Identifier LCD = Yttr.id("textures/block/lcd.png");
 	
 	@Override
 	public void render(PowerMeterBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

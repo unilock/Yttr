@@ -3,12 +3,13 @@ package com.unascribed.yttr.mixin.worldgen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
 import com.unascribed.yttr.init.YBiomes;
 import com.unascribed.yttr.init.YBlocks;
 
 import net.minecraft.world.gen.surfacebuilder.SurfaceRules;
-import net.minecraft.world.gen.surfacebuilder.VanillaSurfaceRules;
 import net.minecraft.world.gen.surfacebuilder.SurfaceRules.SequenceMaterialRule;
+import net.minecraft.world.gen.surfacebuilder.VanillaSurfaceRules;
 
 @Mixin(VanillaSurfaceRules.class)
 public class MixinVanillaSurfaceRules {

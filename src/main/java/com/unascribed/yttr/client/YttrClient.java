@@ -10,8 +10,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
@@ -35,15 +35,17 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEntities;
 import com.unascribed.yttr.init.YFluids;
-import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YHandledScreens;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mixin.accessor.client.AccessorChunkInfo;
 import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
+import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
@@ -179,8 +181,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				TextureColorThief.clearCache();
 				LampRenderer.clearCache();
 			}));
-			rm.registerReloader(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(new Identifier("yttr", "lcah-marker"))));
-			Yttr.lessCreepyAwareHopper = rm.containsResource(new Identifier("yttr", "lcah-marker"));
+			rm.registerReloader(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(Yttr.id("lcah-marker"))));
+			Yttr.lessCreepyAwareHopper = rm.containsResource(Yttr.id("lcah-marker"));
 		});
 		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -190,16 +192,16 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			});
 		}
 		
-		ModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity, seed) -> {
+		ModelPredicateProviderRegistry.register(YItems.SNARE, Yttr.id("filled"), (stack, world, entity, seed) -> {
 			return stack.hasNbt() && stack.getNbt().contains("Contents") ? 1 : 0;
 		});
-		ModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), new Identifier("yttr", "halo"), (stack, world, entity, seed) -> {
+		ModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), Yttr.id("halo"), (stack, world, entity, seed) -> {
 			return retrievingHalo ? 1 : 0;
 		});
-		ModelPredicateProviderRegistry.register(new Identifier("yttr", "durability_bonus"), (stack, world, entity, seed) -> {
+		ModelPredicateProviderRegistry.register(Yttr.id("durability_bonus"), (stack, world, entity, seed) -> {
 			return stack.hasNbt() ? stack.getNbt().getInt("yttr:DurabilityBonus") : 0;
 		});
-		ModelPredicateProviderRegistry.register(new Identifier("yttr", "gui"), (stack, world, entity, seed) -> {
+		ModelPredicateProviderRegistry.register(Yttr.id("gui"), (stack, world, entity, seed) -> {
 			return renderingGui ? 1 : 0;
 		});
 		
@@ -307,7 +309,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
 		WorldRenderEvents.AFTER_ENTITIES.register(LampRenderer::render);
-		CleavedBlockModelProvider.init();
+		DynamicBlockModelProvider.init();
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {
 			@Override

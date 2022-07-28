@@ -13,6 +13,7 @@ import com.unascribed.yttr.content.block.basic.BasicHorizontalFacingBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
 import com.unascribed.yttr.content.block.big.GiantsBlock;
 import com.unascribed.yttr.content.block.big.MagtankBlock;
+import com.unascribed.yttr.content.block.decor.BloqueBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.content.block.decor.TableBlock;
@@ -20,10 +21,10 @@ import com.unascribed.yttr.content.block.decor.WallLampBlock;
 import com.unascribed.yttr.content.block.device.CanFillerBlock;
 import com.unascribed.yttr.content.block.device.CentrifugeBlock;
 import com.unascribed.yttr.content.block.device.DyedProjectTableBlock;
-import com.unascribed.yttr.content.block.device.RafterBlock;
 import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.ProjectTableBlock;
+import com.unascribed.yttr.content.block.device.RafterBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.content.block.inred.InRedAndGateBlock;
@@ -102,7 +103,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -249,7 +249,7 @@ public class YBlocks {
 		);
 	@RenderLayer("cutout_mipped")
 	public static final Block SQUEEZED_LEAVES = new SqueezedLeavesBlock(FabricBlockSettings.copyOf(SQUEEZE_LEAVES)
-			.drops(new Identifier("yttr", "blocks/squeeze_leaves"))
+			.drops(Yttr.id("blocks/squeeze_leaves"))
 			.dynamicBounds()
 		);
 	@RenderLayer("cutout_mipped")
@@ -437,16 +437,16 @@ public class YBlocks {
 	
 	private static final Block.Settings RUINED_SETTINGS = FabricBlockSettings.copyOf(Blocks.DIRT)
 			.sounds(BlockSoundGroup.BASALT)
-			.drops(new Identifier("yttr", "blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined"));
 	private static final Block.Settings RUINED_UNCL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.noCollision()
-			.drops(new Identifier("yttr", "blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined"));
 	private static final Block.Settings RUINED_PARTIAL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.nonOpaque()
-			.drops(new Identifier("yttr", "blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined"));
 	private static final Block.Settings RUINED_TORCH_SETTINGS = FabricBlockSettings.copyOf(RUINED_UNCL_SETTINGS)
 			.luminance(2)
-			.drops(new Identifier("yttr", "blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined"));
 	
 	private static <T extends Block> T ruinedDevice(T block) {
 		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_device");
@@ -462,7 +462,7 @@ public class YBlocks {
 	public static final Block RUINED_BRICKS = new Block(RUINED_SETTINGS);
 	
 	public static final Block RUINED_CONTAINER = new Block(FabricBlockSettings.copyOf(RUINED_SETTINGS)
-			.drops(new Identifier("yttr", "blocks/ruined_container")));
+			.drops(Yttr.id("blocks/ruined_container")));
 	@RenderLayer("cutout")
 	public static final Block RUINED_TANK = new Block(RUINED_SETTINGS) {
 		private VoxelShape SHAPE = createCuboidShape(2, 0, 2, 14, 16, 14);
@@ -608,6 +608,9 @@ public class YBlocks {
 			return 0xFF181018;
 		}
 	};
+	
+	public static final BloqueBlock BLOQUE = new BloqueBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE));
+	public static final Block DELRENE = new Block(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

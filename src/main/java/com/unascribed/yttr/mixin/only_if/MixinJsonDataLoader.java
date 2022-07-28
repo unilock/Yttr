@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.unascribed.yttr.Yttr;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.JsonDataLoader;

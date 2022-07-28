@@ -214,6 +214,25 @@
 	"block.yttr.deepslate_gadolinite": "Deepslate Gadolinite",
 	"block.yttr.deepslate_brookite_ore": "Deepslate Brookite Ore",
 	"block.yttr.ash": "Ash",
+	"block.yttr.bloque": "Bloque® Plastic Construction Building Brick",
+	"block.yttr.delrene": "Block of Delrene Plastic",
+	
+	"block.yttr.black_bloque": "Black Bloque® Plastic Construction Building Brick",
+	"block.yttr.blue_bloque": "Blue Bloque® Plastic Construction Building Brick",
+	"block.yttr.brown_bloque": "Brown Bloque® Plastic Construction Building Brick",
+	"block.yttr.cyan_bloque": "Cyan Bloque® Plastic Construction Building Brick",
+	"block.yttr.gray_bloque": "Gray Bloque® Plastic Construction Building Brick",
+	"block.yttr.green_bloque": "Green Bloque® Plastic Construction Building Brick",
+	"block.yttr.light_blue_bloque": "Light Blue Bloque® Plastic Construction Building Brick",
+	"block.yttr.light_gray_bloque": "Light Gray Bloque® Plastic Construction Building Brick",
+	"block.yttr.lime_bloque": "Lime Bloque® Plastic Construction Building Brick",
+	"block.yttr.magenta_bloque": "Magenta Bloque® Plastic Construction Building Brick",
+	"block.yttr.orange_bloque": "Orange Bloque® Plastic Construction Building Brick",
+	"block.yttr.pink_bloque": "Pink Bloque® Plastic Construction Building Brick",
+	"block.yttr.purple_bloque": "Purple Bloque® Plastic Construction Building Brick",
+	"block.yttr.red_bloque": "Red Bloque® Plastic Construction Building Brick",
+	"block.yttr.white_bloque": "White Bloque® Plastic Construction Building Brick",
+	"block.yttr.yellow_bloque": "Yellow Bloque® Plastic Construction Building Brick",
 	
 	"block.yttr.black_project_table": "Black Project Table",
 	"block.yttr.blue_project_table": "Blue Project Table",
@@ -296,7 +315,7 @@
 	"block.yttr.magtube.flow.forward": "FLOW ▶",
 	"block.yttr.magtube.flow.backward": "◀ FLOW",
 	
-	"entity.yttr.disc_of_continuity": "Disc of Continuity",
+	"entity.yttr.rifle_dummy": "Rifle Dummy",
 	
 	"biome.yttr.scorched_summit": "Scorched Summit",
 	"biome.yttr.scorched_terminus": "Scorched Terminus",
@@ -382,6 +401,7 @@
 	"death.attack.yttr.void_rifle.item": "%s was erased by %s using %s",
 	"death.attack.yttr.lazor": "%s got burned playing with lazors",
 	"death.attack.yttr.magnet": "%s was turned to taffy",
+	"death.attack.yttr.bloque": "%s stepped upon a Bloque® Plastic Construction Building Brick without foot protection",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",
@@ -636,6 +656,7 @@
 	"tag.yttr.squeeze_logs": "Squeeze Logs",
 	"tag.yttr.fluxes": "Metallurgical Fluxes",
 	"tag.yttr.gates": "Gates",
+	"tag.yttr.bloques": "Bloque® Plastic Construction Building Bricks",
 	"tag.trinkets.feet.sole": "Sole Trinkets",
 	"tag.trinkets.chest.back": "Back Trinkets",
 	

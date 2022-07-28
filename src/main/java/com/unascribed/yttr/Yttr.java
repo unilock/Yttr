@@ -16,7 +16,6 @@ import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
-import com.unascribed.yttr.inred.InRedLogic;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,13 +31,13 @@ import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YEntities;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YFuels;
+import com.unascribed.yttr.init.YHandledScreens;
+import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YLatches;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
-import com.unascribed.yttr.init.YHandledScreens;
-import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YStatusEffects;
@@ -46,6 +45,7 @@ import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YTrades;
 import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.init.conditional.YTrinkets;
+import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
@@ -69,6 +69,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -81,8 +82,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -262,6 +263,10 @@ public class Yttr implements ModInitializer {
 		}
 		
 		YLatches.latchAll();
+	}
+
+	public static Identifier id(String path) {
+		return new Identifier("yttr", path);
 	}
 
 	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {

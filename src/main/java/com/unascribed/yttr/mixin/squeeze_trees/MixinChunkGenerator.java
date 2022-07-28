@@ -8,10 +8,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Holder;
-import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap.Type;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.chunk.Chunk;

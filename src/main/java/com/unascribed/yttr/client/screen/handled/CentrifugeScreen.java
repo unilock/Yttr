@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -11,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 
-	private static final Identifier BG = new Identifier("yttr", "textures/gui/centrifuge.png");
+	private static final Identifier BG = Yttr.id("textures/gui/centrifuge.png");
 	
 	public CentrifugeScreen(CentrifugeScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);

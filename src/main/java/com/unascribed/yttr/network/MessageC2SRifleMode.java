@@ -5,6 +5,7 @@ import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.network.concrete.C2SMessage;
 import com.unascribed.yttr.network.concrete.NetworkContext;
+
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class MessageC2SRifleMode extends C2SMessage {

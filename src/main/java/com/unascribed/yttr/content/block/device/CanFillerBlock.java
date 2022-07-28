@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.device;
 
 import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.inventory.CanFillerScreenHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;

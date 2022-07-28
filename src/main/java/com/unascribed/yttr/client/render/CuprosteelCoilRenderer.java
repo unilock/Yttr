@@ -24,7 +24,7 @@ import net.minecraft.util.math.Matrix4f;
 
 public class CuprosteelCoilRenderer {
 	
-	private static final Identifier TEXTURE = new Identifier("yttr", "textures/entity/coil.png");
+	private static final Identifier TEXTURE = Yttr.id("textures/entity/coil.png");
 
 	public static void render(ItemStack is, SlotReference slotReference, EntityModel<? extends LivingEntity> model,
 			MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light, LivingEntity entity,

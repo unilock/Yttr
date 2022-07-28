@@ -1,6 +1,10 @@
 package com.unascribed.yttr.util.math.partitioner;
 
-import static com.unascribed.yttr.util.math.partitioner.Where.*;
+import static com.unascribed.yttr.util.math.partitioner.Where.ABOVE;
+import static com.unascribed.yttr.util.math.partitioner.Where.ABOVEBELOW;
+import static com.unascribed.yttr.util.math.partitioner.Where.BELOW;
+import static com.unascribed.yttr.util.math.partitioner.Where.NOWHERE;
+import static com.unascribed.yttr.util.math.partitioner.Where.ON;
 
 import java.util.Arrays;
 import java.util.Iterator;

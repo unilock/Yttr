@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.inred;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,7 +19,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class InRedDiodeBlock extends InRedLogicTileBlock {
 	public static final BooleanProperty BIT_0 = BooleanProperty.of("bit_0");

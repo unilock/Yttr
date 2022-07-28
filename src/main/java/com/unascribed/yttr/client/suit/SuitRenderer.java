@@ -6,6 +6,7 @@ import java.util.Random;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.util.math.Interp;
 
@@ -14,14 +15,13 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.hash.Hashing;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 public class SuitRenderer {
 
-	public static final Identifier SUIT_TEX = new Identifier("yttr", "textures/gui/suit.png");
+	public static final Identifier SUIT_TEX = Yttr.id("textures/gui/suit.png");
 	public static final int SUIT_TEX_WIDTH = 280;
 	public static final int SUIT_TEX_HEIGHT = 200;
 

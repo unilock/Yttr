@@ -1,8 +1,10 @@
 package com.unascribed.yttr.client.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
+
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,7 +15,7 @@ import net.minecraft.util.Identifier;
 
 public class MagtankScreen extends HandledScreen<MagtankScreenHandler> {
 
-	private static final Identifier BG = new Identifier("yttr", "textures/gui/magtank.png");
+	private static final Identifier BG = Yttr.id("textures/gui/magtank.png");
 	
 	public MagtankScreen(MagtankScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);

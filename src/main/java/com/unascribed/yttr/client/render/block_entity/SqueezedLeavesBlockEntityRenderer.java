@@ -1,7 +1,14 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
 
@@ -15,7 +22,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<SqueezedLeavesBlockEntity> {
@@ -37,7 +43,7 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 			float a = 0.75f+((MathHelper.sin((time/4)*TAU)+1)/8);
 			glMatrixMode(GL_TEXTURE);
 			glPushMatrix();
-			Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(new Identifier("yttr", "block/squeeze_leaves"));
+			Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/squeeze_leaves"));
 			float w = sprite.getMaxU()-sprite.getMinU();
 			float h = sprite.getMaxV()-sprite.getMinV();
 			glTranslatef(sprite.getMinU(), sprite.getMinV(), 0);

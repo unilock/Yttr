@@ -10,12 +10,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import com.unascribed.yttr.util.YLog;
-
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.mechanics.VoidLogic;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

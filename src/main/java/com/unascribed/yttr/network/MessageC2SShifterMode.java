@@ -4,6 +4,7 @@ import com.unascribed.yttr.content.item.ShifterItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.network.concrete.C2SMessage;
 import com.unascribed.yttr.network.concrete.NetworkContext;
+
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class MessageC2SShifterMode extends C2SMessage {

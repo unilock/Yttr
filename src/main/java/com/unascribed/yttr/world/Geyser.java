@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.unascribed.yttr.network.concrete.ImmutableMarshallable;
 import com.unascribed.yttr.util.math.Vec2i;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;

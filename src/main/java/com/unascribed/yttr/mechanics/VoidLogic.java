@@ -10,12 +10,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.unascribed.yttr.util.YLog;
-
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
 import com.unascribed.yttr.util.EquipmentSlots;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.common.base.Predicates;
 import com.google.common.io.MoreFiles;

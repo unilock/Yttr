@@ -3,6 +3,7 @@ package com.unascribed.yttr.client.screen.handled;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.inventory.SuitStationScreenHandler;
@@ -18,7 +19,7 @@ import net.minecraft.util.Identifier;
 
 public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 
-	private static final Identifier BG = new Identifier("yttr", "textures/gui/suit_station.png");
+	private static final Identifier BG = Yttr.id("textures/gui/suit_station.png");
 	
 	public SuitStationScreen(SuitStationScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);

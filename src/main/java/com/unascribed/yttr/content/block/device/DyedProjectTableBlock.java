@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.device;
 
 import java.util.Locale;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.DyedBlockItem;
 import com.unascribed.yttr.mechanics.SimpleLootBlock;
 
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -57,7 +57,7 @@ public class DyedProjectTableBlock extends ProjectTableBlock implements BlockCol
 	
 	@Override
 	public ItemStack getLoot(BlockState state) {
-		return new ItemStack(Registry.ITEM.get(new Identifier("yttr", state.get(COLOR).name().toLowerCase(Locale.ROOT)+"_project_table")));
+		return new ItemStack(Registry.ITEM.get(Yttr.id(state.get(COLOR).name().toLowerCase(Locale.ROOT)+"_project_table")));
 	}
 	
 	@Override

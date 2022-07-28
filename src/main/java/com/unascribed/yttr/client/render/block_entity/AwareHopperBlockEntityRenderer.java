@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client.render.block_entity;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.ZendermieModel;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 
@@ -16,7 +17,7 @@ import net.minecraft.util.math.Vec3f;
 
 public class AwareHopperBlockEntityRenderer implements BlockEntityRenderer<AwareHopperBlockEntity> {
 
-	private static final Identifier ZENDERMIE_TEX = new Identifier("yttr", "textures/entity/zendermie.png");
+	private static final Identifier ZENDERMIE_TEX = Yttr.id("textures/entity/zendermie.png");
 	private static final Identifier EYES_TEX = new Identifier("minecraft", "textures/entity/enderman/enderman_eyes.png");
 	
 	private final ZendermieModel zendermie = new ZendermieModel(ZendermieModel.buildModelData().createModel());

@@ -3,6 +3,8 @@ package com.unascribed.yttr.client.particle;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.particle.BillboardParticle;
@@ -13,8 +15,8 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Shader;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
@@ -23,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class VoidBallParticle extends BillboardParticle {
 	
-	private static final Identifier TEXTURE = new Identifier("yttr", "textures/particle/void_ball.png");
+	private static final Identifier TEXTURE = Yttr.id("textures/particle/void_ball.png");
 	
 	private static VertexBuffer buf1, buf2, buf3;
 	

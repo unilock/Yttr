@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
@@ -12,8 +13,8 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -25,11 +26,11 @@ public class RifleHUDRenderer extends IHasAClient {
 	public static final int ANIM_TIME = 5;
 	public static final float ANIM_TIMEf = ANIM_TIME;
 	
-	private static final Identifier MODES = new Identifier("yttr", "textures/gui/rifle_modes.png");
-	private static final Identifier SCOPE = new Identifier("yttr", "textures/gui/riflescope.png");
-	private static final Identifier SCOPEAMMO = new Identifier("yttr", "textures/gui/riflescopeammo.png");
-	private static final Identifier TINYNUMBERS = new Identifier("yttr", "textures/gui/tiny_numbers.png");
-	private static final Identifier CANICON = new Identifier("yttr", "textures/gui/riflecanicon.png");
+	private static final Identifier MODES = Yttr.id("textures/gui/rifle_modes.png");
+	private static final Identifier SCOPE = Yttr.id("textures/gui/riflescope.png");
+	private static final Identifier SCOPEAMMO = Yttr.id("textures/gui/riflescopeammo.png");
+	private static final Identifier TINYNUMBERS = Yttr.id("textures/gui/tiny_numbers.png");
+	private static final Identifier CANICON = Yttr.id("textures/gui/riflecanicon.png");
 	
 	private static int ticksSinceOpen = -1;
 	private static int ticksSinceClose = -1;

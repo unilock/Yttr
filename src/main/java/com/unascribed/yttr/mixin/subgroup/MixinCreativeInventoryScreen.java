@@ -1,16 +1,5 @@
 package com.unascribed.yttr.mixin.subgroup;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen.CreativeScreenHandler;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,8 +9,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.ItemSubGroup;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.mixinsupport.ItemGroupParent;
 import com.unascribed.yttr.mixinsupport.SubTabLocation;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen.CreativeScreenHandler;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 @Mixin(CreativeInventoryScreen.class)
@@ -61,12 +61,12 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
 			yttr$y = y;
 			for (ItemSubGroup child : parent.yttr$getChildren()) {
 				RenderSystem.setShaderColor(1, 1, 1, 1);
-				RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/subtab.png"));
+				RenderSystem.setShaderTexture(0, Yttr.id("textures/gui/subtab.png"));
 				boolean childSelected = child == parent.yttr$getSelectedChild();
 				int bgV = childSelected ? 11 : 0;
 				drawTexture(matrices, x-tw, y, 0, bgV, tw+ofs, 11, 70, 22);
 				drawTexture(matrices, this.x, y, 64, bgV, 6, 11, 70, 22);
-				RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/tinyfont.png"));
+				RenderSystem.setShaderTexture(0, Yttr.id("textures/gui/tinyfont.png"));
 				String str = child.getTranslationKey().getString();
 				for (int i = str.length()-1; i >= 0; i--) {
 					char c = str.charAt(i);

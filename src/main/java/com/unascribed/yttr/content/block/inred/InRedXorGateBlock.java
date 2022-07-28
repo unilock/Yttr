@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.inred;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,7 +17,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class InRedXorGateBlock extends InRedLogicTileBlock {
 	public InRedXorGateBlock(Settings settings) {

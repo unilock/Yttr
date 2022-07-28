@@ -1,14 +1,19 @@
 package com.unascribed.yttr.inred;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import com.unascribed.yttr.init.YBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
-import java.util.*;
 
 public class InRedLogic {
 	public static final int MAX_SIGNAL = 0b11_1111; //TODO: stay with 0-63?

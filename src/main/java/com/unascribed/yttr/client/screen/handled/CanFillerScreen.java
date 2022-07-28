@@ -1,7 +1,9 @@
 package com.unascribed.yttr.client.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.CanFillerScreenHandler;
+
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,7 +13,7 @@ import net.minecraft.util.Identifier;
 
 public class CanFillerScreen extends HandledScreen<CanFillerScreenHandler> {
 
-	private static final Identifier BG = new Identifier("yttr", "textures/gui/can_filler.png");
+	private static final Identifier BG = Yttr.id("textures/gui/can_filler.png");
 	private final PlayerInventory playerInventory;
 	
 	public CanFillerScreen(CanFillerScreenHandler handler, PlayerInventory inventory, Text title) {

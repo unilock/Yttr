@@ -1,20 +1,20 @@
 package com.unascribed.yttr.mixin.flopper;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import com.unascribed.yttr.content.block.mechanism.FlopperBlock;
+import com.unascribed.yttr.content.block.mechanism.FlopperBlockEntity;
+
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.At.Shift;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import com.unascribed.yttr.content.block.mechanism.FlopperBlock;
-import com.unascribed.yttr.content.block.mechanism.FlopperBlockEntity;
 
 @Mixin(HopperBlockEntity.class)
 public class MixinHopperBlockEntity {

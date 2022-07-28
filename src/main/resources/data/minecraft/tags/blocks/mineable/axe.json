@@ -14,6 +14,8 @@
 		"#yttr:project_tables",
 		"yttr:wasteland_log",
 		"yttr:ruined_container",
-		"yttr:skeletal_sorter"
+		"yttr:skeletal_sorter",
+		"yttr:delrene",
+		"yttr:bloque"
 	]
 }

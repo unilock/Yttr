@@ -1,10 +1,11 @@
 package com.unascribed.yttr.init;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
 import com.unascribed.yttr.BasicCriterion;
 import com.unascribed.yttr.BlockCriterion;
 import com.unascribed.yttr.Yttr;
+
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.advancement.criterion.Criterion;
 
 public class YCriteria {
 

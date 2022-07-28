@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:delrene",
+  "group": "yttr:bloques",
+  "ingredients": [
+    {
+      "item": "minecraft:magenta_dye"
+    },
+    {
+      "item": "yttr:delrene"
+    }
+  ],
+  "result": {
+    "item": "yttr:magenta_bloque",
+    "count": 48
+  }
+}

@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.mechanics.BedrockMender;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.AbstractBlock.AbstractBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

@@ -6,6 +6,7 @@ import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
 import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.inred.ShifterSelection;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;

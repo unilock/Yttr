@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.content.block.inred.InRedOscillatorBlockEntity;
 import com.unascribed.yttr.inventory.InRedOscillatorScreenHandler;
 import com.unascribed.yttr.network.MessageC2SOscillatorShift;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;

@@ -1,8 +1,7 @@
 package com.unascribed.yttr.world;
 
-import net.minecraft.structure.StructurePlacementData;
-
 import net.minecraft.structure.Structure.StructureBlockInfo;
+import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.processor.StructureProcessor;
 import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.util.math.BlockPos;

@@ -11,8 +11,8 @@ import com.unascribed.yttr.mixin.accessor.AccessorStatusEffectInstance;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectType;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {

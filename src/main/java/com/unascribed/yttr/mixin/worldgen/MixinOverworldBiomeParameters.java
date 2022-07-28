@@ -1,13 +1,7 @@
 package com.unascribed.yttr.mixin.worldgen;
 
-import com.mojang.datafixers.util.Pair;
-import com.unascribed.yttr.YConfig;
-import com.unascribed.yttr.init.YBiomes;
+import java.util.function.Consumer;
 
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
-import net.minecraft.world.biome.source.util.OverworldBiomeParameters;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,7 +10,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.function.Consumer;
+import com.mojang.datafixers.util.Pair;
+import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.init.YBiomes;
+
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil;
+import net.minecraft.world.biome.source.util.OverworldBiomeParameters;
 
 // https://github.com/LambdAurora/AurorasDecorations/blob/46acabb2d822e82fa0e0816ab0dec78609aa74ec/src/main/java/dev/lambdaurora/aurorasdeco/mixin/world/OverworldBiomeParametersMixin.java
 @Mixin(OverworldBiomeParameters.class)

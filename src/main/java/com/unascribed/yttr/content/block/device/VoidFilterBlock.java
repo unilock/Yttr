@@ -2,8 +2,8 @@ package com.unascribed.yttr.content.block.device;
 
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
-import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.FilterNetwork.NodeType;
+import com.unascribed.yttr.world.FilterNetworks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;

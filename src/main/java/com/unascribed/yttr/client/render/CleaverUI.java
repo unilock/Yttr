@@ -1,8 +1,29 @@
 package com.unascribed.yttr.client.render;
 
-import java.util.List;
+import static com.unascribed.yttr.client.RenderBridge.glDefaultBlendFunc;
+import static com.unascribed.yttr.client.RenderBridge.glPopMCMatrix;
+import static com.unascribed.yttr.client.RenderBridge.glPushMCMatrix;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LINE_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_POINTS;
+import static org.lwjgl.opengl.GL11.GL_POINT_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_POLYGON;
+import static org.lwjgl.opengl.GL11.GL_POLYGON_OFFSET_FILL;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPointSize;
+import static org.lwjgl.opengl.GL11.glPolygonOffset;
+import static org.lwjgl.opengl.GL11.glTranslated;
+import static org.lwjgl.opengl.GL11.glVertex3d;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
-import static com.unascribed.yttr.client.RenderBridge.*;
+import java.util.List;
 
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YttrClient;

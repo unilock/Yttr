@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.item;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.inred.MultimeterProbeProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

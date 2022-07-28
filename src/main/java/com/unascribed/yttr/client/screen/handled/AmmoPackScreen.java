@@ -1,7 +1,9 @@
 package com.unascribed.yttr.client.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
+
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,7 +13,7 @@ import net.minecraft.util.Identifier;
 
 public class AmmoPackScreen extends HandledScreen<AmmoPackScreenHandler> {
 
-	private static final Identifier BG = new Identifier("yttr", "textures/gui/ammo_pack.png");
+	private static final Identifier BG = Yttr.id("textures/gui/ammo_pack.png");
 	
 	private final PlayerInventory playerInventory;
 	

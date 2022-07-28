@@ -1,5 +1,8 @@
 package com.unascribed.yttr.content.block.inred;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.unascribed.yttr.content.block.inred.InRedLogicTileBlock.BooleanMode;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
@@ -7,6 +10,7 @@ import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
 import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.inred.InactiveSelection;
+
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
@@ -16,9 +20,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InRedAndGateBlockEntity extends AbstractInRedDeviceBlockEntity {
 	private InRedHandler signal = new InRedHandler();

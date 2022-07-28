@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.inred;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,7 +18,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class InRedNotGateBlock extends InRedLogicTileBlock {
 	public static final VoxelShape NOT_CLICK_BOOLEAN = Block.createCuboidShape( 6, 2.9,  2, 10, 4.1,  6);

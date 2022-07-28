@@ -2,6 +2,7 @@ package com.unascribed.yttr.compat.emi;
 
 import java.util.function.Function;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.init.YBlocks;
@@ -21,14 +22,13 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
 
 public class YttrEmiPlugin implements EmiPlugin {
 
 	@Override
 	public void register(EmiRegistry registry) {
 		registry.addRecipe(EmiWorldInteractionRecipe.builder()
-			.id(new Identifier("yttr", "stripping/squeeze_log"))
+			.id(Yttr.id("stripping/squeeze_log"))
 			.leftInput(EmiStack.of(YBlocks.SQUEEZE_LOG))
 			.rightInput(EmiStack.of(Items.IRON_AXE), true)
 			.output(EmiStack.of(YBlocks.STRIPPED_SQUEEZE_LOG))
@@ -43,6 +43,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.removeEmiStacks(EmiStack.of(YBlocks.GIANT_COBBLESTONE));
 		registry.removeEmiStacks(EmiStack.of(YItems.LOOTBOX_OF_CONTINUITY));
 		registry.removeEmiStacks(EmiStack.of(YItems.SPATULA));
+		registry.removeEmiStacks(EmiStack::isEmpty);
 		
 		Function<Comparison, Comparison> compareNbt = c -> c.copy().nbt(true).build();
 		registry.setDefaultComparison(YItems.MERCURIAL_POTION, compareNbt);

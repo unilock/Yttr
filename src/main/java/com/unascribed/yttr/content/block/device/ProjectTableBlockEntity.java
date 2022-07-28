@@ -4,6 +4,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 import com.unascribed.yttr.util.DelegatingInventory;
+
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;

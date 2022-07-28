@@ -16,9 +16,9 @@ import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
-import com.unascribed.yttr.content.item.ProjectorItem;
 import com.unascribed.yttr.content.item.HornItem;
 import com.unascribed.yttr.content.item.InRedMultimeterItem;
+import com.unascribed.yttr.content.item.ProjectorItem;
 import com.unascribed.yttr.content.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.content.item.ShearsItem;
@@ -30,6 +30,7 @@ import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.SwallowableItem;
 import com.unascribed.yttr.content.item.VoidBucketItem;
 import com.unascribed.yttr.content.item.block.BigBlockItem;
+import com.unascribed.yttr.content.item.block.BloqueBlockItem;
 import com.unascribed.yttr.content.item.block.DyedBlockItem;
 import com.unascribed.yttr.content.item.block.InRedCableBlockItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
@@ -137,6 +138,24 @@ public class YItems {
 	public static final BlockItem DEEPSLATE_GADOLINITE = createBlockItem(YBlocks.DEEPSLATE_GADOLINITE);
 	public static final BlockItem DEEPSLATE_BROOKITE_ORE = createBlockItem(YBlocks.DEEPSLATE_BROOKITE_ORE);
 	public static final BlockItem ASH = createBlockItem(YBlocks.ASH);
+	public static final BlockItem DELRENE = createBlockItem(YBlocks.DELRENE);
+
+	public static final BlockItem WHITE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.WHITE);
+	public static final BlockItem ORANGE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.ORANGE);
+	public static final BlockItem MAGENTA_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.MAGENTA);
+	public static final BlockItem LIGHT_BLUE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.LIGHT_BLUE);
+	public static final BlockItem YELLOW_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.YELLOW);
+	public static final BlockItem LIME_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.LIME);
+	public static final BlockItem PINK_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.PINK);
+	public static final BlockItem GRAY_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.GRAY);
+	public static final BlockItem LIGHT_GRAY_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.LIGHT_GRAY);
+	public static final BlockItem CYAN_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.CYAN);
+	public static final BlockItem PURPLE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.PURPLE);
+	public static final BlockItem BLUE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.BLUE);
+	public static final BlockItem BROWN_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.BROWN);
+	public static final BlockItem GREEN_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.GREEN);
+	public static final BlockItem RED_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.RED);
+	public static final BlockItem BLACK_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.BLACK);
 	
 	public static final BlockItem WHITE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.ORANGE);
@@ -249,6 +268,10 @@ public class YItems {
 
 	private static BlockItem createBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings());
+	}
+
+	private static BlockItem createBloqueBlockItem(Block block, DyeColor color) {
+		return new BloqueBlockItem(block, color, new Item.Settings());
 	}
 
 	private static BlockItem createDyedBlockItem(Block block, DyeColor color) {
