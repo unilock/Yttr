@@ -313,7 +313,9 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 		} else {
 			welded = false;
 			doubleWelded = false;
-			computeAdjacency(false, false);
+			if (world != null && world.isClient) {
+				computeAdjacency(false, false);
+			}
 		}
 		if (world instanceof YttrWorld yw) {
 			yw.yttr$scheduleRenderUpdate(getPos());

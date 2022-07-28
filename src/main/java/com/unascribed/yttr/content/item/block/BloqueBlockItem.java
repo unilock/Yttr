@@ -5,6 +5,8 @@ import com.unascribed.yttr.content.block.decor.BloqueBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -23,6 +25,9 @@ public class BloqueBlockItem extends DyedBlockItem {
 	
 	@Override
 	protected boolean place(ItemPlacementContext context, BlockState state) {
+		if (context.getStack().getSubNbt("BlockEntityTag") != null) {
+			return super.place(context, state);
+		}
 		BlockPos bp = new BlockPos(context.getHitPos());
 		if (context.getWorld().getBlockEntity(bp) instanceof BloqueBlockEntity be && fillIn(be, context.getHitPos(), bp, context.getSide())) {
 			return true;
@@ -43,6 +48,11 @@ public class BloqueBlockItem extends DyedBlockItem {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	protected SoundEvent getPlaceSound(BlockState state) {
+		return SoundEvents.BLOCK_CANDLE_PLACE;
 	}
 
 }

@@ -609,8 +609,10 @@ public class YBlocks {
 		}
 	};
 	
-	public static final BloqueBlock BLOQUE = new BloqueBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE));
-	public static final Block DELRENE = new Block(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE));
+	public static final BloqueBlock BLOQUE = new BloqueBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE)
+			.sounds(BlockSoundGroup.CANDLE));
+	public static final Block DELRENE = new Block(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE)
+			.sounds(BlockSoundGroup.CANDLE));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

@@ -175,6 +175,8 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 					if (be.isWelded()) {
 						world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.PLAYERS, 1, 0.5f);
 						Yttr.sync(be);
+					} else {
+						world.playSound(null, pos, SoundEvents.BLOCK_CANDLE_BREAK, SoundCategory.PLAYERS, 1, 1.3f);
 					}
 					if (be.getPopCount() == 0) {
 						world.setBlockState(pos, world.getFluidState(pos).getBlockState());
