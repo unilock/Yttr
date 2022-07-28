@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:obtain_bloque",
+	"display": {
+		"icon": {
+			"item": "yttr:delrene_scrap"
+		},
+		"title": {
+			"translate": "advancements.yttr.weld_bloque.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.weld_bloque.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"weld": {
+			"trigger": "yttr:weld_bloque"
+		}
+	}
+}

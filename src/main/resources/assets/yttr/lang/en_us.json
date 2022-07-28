@@ -86,8 +86,8 @@
 	"item.yttr.delrene_scrap": "Delrene Scrap",
 	
 	"item.yttr.delrene_scrap.tip.1": "§5§oThe warranty of your Bloque® Plastic",
-	"item.yttr.delrene_scrap.tip.2": "§5§oConstruction Bricks is void due to",
-	"item.yttr.delrene_scrap.tip.3": "§5§ogross abuse of our product.",
+	"item.yttr.delrene_scrap.tip.2": "§5§oConstruction Building Bricks is void",
+	"item.yttr.delrene_scrap.tip.3": "§5§odue to gross abuse of our product.",
 	"item.yttr.delrene_scrap.tip.4": "",
 	"item.yttr.delrene_scrap.tip.5": "§5§oRefund denied.",
 	
@@ -224,6 +224,8 @@
 	"block.yttr.bloque": "Bloque® Plastic Construction Building Brick",
 	"block.yttr.delrene": "Block of Delrene Plastic",
 	
+	"block.yttr.delrene.tip.1": "§5§oBasically pink styrene.",
+	
 	"block.yttr.black_bloque": "Black Bloque® Plastic Construction Building Brick",
 	"block.yttr.blue_bloque": "Blue Bloque® Plastic Construction Building Brick",
 	"block.yttr.brown_bloque": "Brown Bloque® Plastic Construction Building Brick",
@@ -240,6 +242,12 @@
 	"block.yttr.red_bloque": "Red Bloque® Plastic Construction Building Brick",
 	"block.yttr.white_bloque": "White Bloque® Plastic Construction Building Brick",
 	"block.yttr.yellow_bloque": "Yellow Bloque® Plastic Construction Building Brick",
+	
+	"block.yttr.bloque.tip.1": "§5§oWarning: The tops of Bloque® Plastic Construction",
+	"block.yttr.bloque.tip.2": "§5§oBuilding Bricks are sharp. Bloque® Inc. is not",
+	"block.yttr.bloque.tip.3": "§5§oresponsible for injury sustained as a result of",
+	"block.yttr.bloque.tip.4": "§5§owalking atop Bloque® Plastic Construction",
+	"block.yttr.bloque.tip.5": "§5§oBuilding Bricks.",
 	
 	"block.yttr.black_project_table": "Black Project Table",
 	"block.yttr.blue_project_table": "Blue Project Table",
@@ -506,6 +514,7 @@
 	"stat.yttr.blocks_voided": "[Yttr] Blocks Voided",
 	"stat.yttr.blocks_cleaved": "[Yttr] Blocks Cleaved",
 	"stat.yttr.blocks_shifted": "[Yttr] Blocks Shifted",
+	"stat.yttr.bloques_welded": "[Yttr] Bloques® Welded",
 	
 	"advancements.yttr.root.title": "Yttr  ",
 	"advancements.yttr.root.desc": "Voidtech and other goodies",
@@ -650,6 +659,12 @@
 	
 	"advancements.yttr.find_terminus_house.title": "Luxury Apartment",
 	"advancements.yttr.find_terminus_house.desc": "Enter a hanging house in the Scorched Terminus",
+	
+	"advancements.yttr.obtain_bloque.title": "Legally Distinct",
+	"advancements.yttr.obtain_bloque.desc": "Turn some Delrene plastic into a set of Bloque® Plastic Construction Building Bricks!",
+	
+	"advancements.yttr.weld_bloque.title": "Warranty Void",
+	"advancements.yttr.weld_bloque.desc": "Use a bucket of Void to weld a collection of Bloque® Plastic Construction Building Bricks, a blatant abuse of the product",
 	
 	
 	"tag.yttr.magnetic": "Magnetic",

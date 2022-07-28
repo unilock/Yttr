@@ -1,0 +1,33 @@
+{
+	"parent": "yttr:obtain_squeeze_stem",
+	"display": {
+		"icon": {
+			"item": "yttr:red_bloque"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_bloque.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_bloque.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"bloque": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "tag": "yttr:bloques" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"bloque"
+		]
+	]
+}

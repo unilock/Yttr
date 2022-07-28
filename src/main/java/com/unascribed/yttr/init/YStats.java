@@ -39,6 +39,7 @@ public class YStats {
 	public static final Identifier BLOCKS_VOIDED = Yttr.id("blocks_voided");
 	public static final Identifier BLOCKS_CLEAVED = Yttr.id("blocks_cleaved");
 	public static final Identifier BLOCKS_SHIFTED = Yttr.id("blocks_shifted");
+	public static final Identifier BLOQUES_WELDED = Yttr.id("bloques_welded");
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented

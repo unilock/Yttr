@@ -27,6 +27,7 @@ import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompatClient;
 import com.unascribed.yttr.content.block.big.BigBlock;
+import com.unascribed.yttr.content.block.decor.BloqueBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
@@ -239,6 +240,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							if (en.getValue() instanceof DivingPlateBlock) continue;
 							if (en.getValue() instanceof DormantVoidGeyserBlock) continue;
 							if (en.getValue() instanceof CleavedBlock) continue;
+							if (en.getValue() instanceof BloqueBlock) continue;
 							if (en.getValue().getDefaultState().isAir()) continue;
 							if (en.getValue().getLootTableId().equals(LootTables.EMPTY)) continue;
 							if (!mc.getServer().getLootManager().getTableIds().contains(en.getValue().getLootTableId())) {

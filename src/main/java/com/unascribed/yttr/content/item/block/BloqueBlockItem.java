@@ -1,16 +1,26 @@
 package com.unascribed.yttr.content.item.block;
 
+import java.util.List;
+
 import com.unascribed.yttr.content.block.decor.BloqueBlockEntity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 public class BloqueBlockItem extends DyedBlockItem {
 
@@ -18,6 +28,17 @@ public class BloqueBlockItem extends DyedBlockItem {
 		super(block, color, settings);
 	}
 
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		super.appendTooltip(stack, world, tooltip, context);
+		int i = 1;
+		while (I18n.hasTranslation("block.yttr.bloque.tip."+i)) {
+			tooltip.add(new TranslatableText("block.yttr.bloque.tip."+i));
+			i++;
+		}
+	}
+	
 	@Override
 	public ItemPlacementContext getPlacementContext(ItemPlacementContext context) {
 		return context;
@@ -52,7 +73,7 @@ public class BloqueBlockItem extends DyedBlockItem {
 
 	@Override
 	protected SoundEvent getPlaceSound(BlockState state) {
-		return SoundEvents.BLOCK_CANDLE_PLACE;
+		return SoundEvents.BLOCK_CALCITE_PLACE;
 	}
 
 }

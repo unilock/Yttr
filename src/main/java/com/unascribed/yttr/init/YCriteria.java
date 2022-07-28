@@ -34,6 +34,7 @@ public class YCriteria {
 	public static final BasicCriterion HIT_WITH_FULL_SUIT = new BasicCriterion("yttr:hit_with_full_suit");
 	public static final BasicCriterion BREAK_ARMOR_WITH_CLEAVER = new BasicCriterion("yttr:break_armor_with_cleaver");
 	public static final BasicCriterion TERMINUS_HOUSE = new BasicCriterion("yttr:terminus_house");
+	public static final BasicCriterion WELD_BLOQUE = new BasicCriterion("yttr:weld_bloque");
 	
 	public static void init() {
 		Yttr.autoRegister(Criteria::register, YCriteria.class, Criterion.class);

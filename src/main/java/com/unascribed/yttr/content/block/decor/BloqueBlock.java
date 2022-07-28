@@ -8,8 +8,10 @@ import java.util.Locale;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
@@ -35,6 +37,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -130,6 +133,10 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 0, 0), 1), center.x, center.y, center.z, 18, dX, dY, dZ, 1);
 						sw.playSound(null, pos, YSounds.DISSOLVE, SoundCategory.PLAYERS, 1, 1);
 					}
+					if (!be.isWelded() && player instanceof ServerPlayerEntity spe) {
+						YCriteria.WELD_BLOQUE.trigger(spe);
+						YStats.add(player, YStats.BLOQUES_WELDED, be.getPopCount());
+					}
 					be.weld();
 				} else if (is.isOf(Items.BUCKET) && be.isWelded()) {
 					be.unweld();
@@ -176,7 +183,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 						world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.PLAYERS, 1, 0.5f);
 						Yttr.sync(be);
 					} else {
-						world.playSound(null, pos, SoundEvents.BLOCK_CANDLE_BREAK, SoundCategory.PLAYERS, 1, 1.3f);
+						world.playSound(null, pos, SoundEvents.BLOCK_CALCITE_BREAK, SoundCategory.PLAYERS, 1, 1.3f);
 					}
 					if (be.getPopCount() == 0) {
 						world.setBlockState(pos, world.getFluidState(pos).getBlockState());

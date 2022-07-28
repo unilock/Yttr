@@ -181,7 +181,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	}
 
 	public boolean isWeldable() {
-		return !welded || !doubleWelded;
+		return true;
 	}
 
 	public void set(int x, int y, int z, @Nullable DyeColor color) {

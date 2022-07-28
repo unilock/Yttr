@@ -610,7 +610,7 @@ public class YBlocks {
 	};
 	
 	public static final BloqueBlock BLOQUE = new BloqueBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE)
-			.sounds(BlockSoundGroup.CANDLE));
+			.sounds(BlockSoundGroup.CALCITE));
 	public static final Block DELRENE = new Block(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE)
 			.sounds(BlockSoundGroup.CANDLE));
 	
