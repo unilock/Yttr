@@ -590,6 +590,7 @@ public class YItems {
 	public static final SpatulaItem SPATULA = new SpatulaItem(ToolMaterials.IRON, 6, -3.2f, new Item.Settings());
 	
 	public static final Item RAW_GADOLINITE = new Item(new Item.Settings());
+	public static final Item DELRENE_SCRAP = new Item(new Item.Settings());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

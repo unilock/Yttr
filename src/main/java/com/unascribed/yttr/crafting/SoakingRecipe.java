@@ -1,6 +1,5 @@
 package com.unascribed.yttr.crafting;
 
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -13,8 +12,6 @@ import com.mojang.datafixers.util.Either;
 import com.unascribed.yttr.crafting.ingredient.FluidIngredient;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
-
-import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -38,17 +35,17 @@ public class SoakingRecipe implements Recipe<Inventory> {
 
 	protected final Identifier id;
 	protected final String group;
-	protected final DefaultedList<Ingredient> ingredients;
+	protected final Either<ItemStack, DefaultedList<Ingredient>> ingredients;
 	protected final FluidIngredient catalyst;
 	protected final Either<ItemStack, BlockState> result;
 	protected final int time;
 	protected final int multiDelay;
 	protected final @Nullable SoundEvent sound;
 
-	public SoakingRecipe(Identifier id, String group, List<Ingredient> ingredients, FluidIngredient catalyst, Either<ItemStack, BlockState> result, int time, int multiDelay, SoundEvent sound) {
+	public SoakingRecipe(Identifier id, String group, Either<ItemStack, DefaultedList<Ingredient>> ingredients, FluidIngredient catalyst, Either<ItemStack, BlockState> result, int time, int multiDelay, SoundEvent sound) {
 		this.id = id;
 		this.group = group;
-		this.ingredients = DefaultedList.copyOf(Ingredient.EMPTY, ingredients.toArray(new Ingredient[0]));
+		this.ingredients = ingredients;
 		this.catalyst = catalyst;
 		this.result = result;
 		this.time = time;
@@ -98,6 +95,10 @@ public class SoakingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public DefaultedList<Ingredient> getIngredients() {
+		return ingredients.right().orElse(DefaultedList.of());
+	}
+	
+	public Either<ItemStack, DefaultedList<Ingredient>> getSoakingIngredients() {
 		return ingredients;
 	}
 	
@@ -131,9 +132,16 @@ public class SoakingRecipe implements Recipe<Inventory> {
 		@Override
 		public SoakingRecipe read(Identifier id, JsonObject obj) {
 			String group = JsonHelper.getString(obj, "group", "");
-			List<Ingredient> ingredients = StreamSupport.stream(obj.get("ingredients").getAsJsonArray().spliterator(), false)
+			Either<ItemStack, DefaultedList<Ingredient>> ingredients;
+			if (obj.has("ingredients")) {
+				ingredients = Either.right(DefaultedList.copyOf(Ingredient.EMPTY, StreamSupport.stream(obj.get("ingredients").getAsJsonArray().spliterator(), false)
 						.map(Ingredient::fromJson)
-						.collect(Collectors.toList());
+						.collect(Collectors.toList()).toArray(new Ingredient[0])));
+			} else if (obj.has("single_ingredient")) {
+				ingredients = Either.left(ShapedRecipe.outputFromJson(obj.getAsJsonObject("single_ingredient")));
+			} else {
+				throw new RuntimeException("Soaking recipes must define ingredients or single_ingredient");
+			}
 			FluidIngredient catalyst = FluidIngredient.fromJson(obj.get("catalyst"));
 			Either<ItemStack, BlockState> result;
 			JsonObject resultJson = obj.getAsJsonObject("result");
@@ -162,9 +170,15 @@ public class SoakingRecipe implements Recipe<Inventory> {
 		public SoakingRecipe read(Identifier id, PacketByteBuf buf) {
 			String group = buf.readString();
 			int ingredientCount = buf.readVarInt();
-			List<Ingredient> ingredients = Lists.newArrayListWithCapacity(ingredientCount);
-			for (int i = 0; i < ingredientCount; i++) {
-				ingredients.add(Ingredient.fromPacket(buf));
+			Either<ItemStack, DefaultedList<Ingredient>> ingredients;
+			if (ingredientCount == 0) {
+				ingredients = Either.left(buf.readItemStack());
+			} else {
+				DefaultedList<Ingredient> ingredientsLi = DefaultedList.ofSize(ingredientCount, Ingredient.EMPTY);
+				for (int i = 0; i < ingredientCount; i++) {
+					ingredientsLi.set(i, Ingredient.fromPacket(buf));
+				}
+				ingredients = Either.right(ingredientsLi);
 			}
 			FluidIngredient catalyst = FluidIngredient.read(buf);
 			Either<ItemStack, BlockState> result;
@@ -185,8 +199,10 @@ public class SoakingRecipe implements Recipe<Inventory> {
 		@Override
 		public void write(PacketByteBuf buf, SoakingRecipe recipe) {
 			buf.writeString(recipe.group);
-			buf.writeVarInt(recipe.ingredients.size());
-			recipe.ingredients.forEach(i -> i.write(buf));
+			buf.writeVarInt(recipe.ingredients.right().map(DefaultedList::size).orElse(0));
+			recipe.ingredients
+				.ifLeft(buf::writeItemStack)
+				.ifRight(is -> is.forEach(i -> i.write(buf)));
 			recipe.catalyst.write(buf);
 			buf.writeBoolean(recipe.result.left().isPresent());
 			recipe.getResult()

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
@@ -30,8 +31,13 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -43,8 +49,10 @@ import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -110,36 +118,68 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack is = player.getStackInHand(hand);
-		if (is.getMiningSpeedMultiplier(state) <= 1) return ActionResult.PASS;
-		if (!world.isClient && world.getBlockEntity(pos) instanceof BloqueBlockEntity be) {
-			Vec3d hitVec = hit.getPos().subtract(pos.getX(), pos.getY(), pos.getZ());
-			int x = (int)((hitVec.x)*XSIZE);
-			int y = (int)((hitVec.y)*YSIZE);
-			int z = (int)((hitVec.z)*ZSIZE);
-			int slot = getSlot(x, y, z);
-			DyeColor cur = be.get(slot);
-			if (cur == null) {
-				Direction face = hit.getSide();
-				x -= face.getOffsetX();
-				y -= face.getOffsetY();
-				z -= face.getOffsetZ();
-				slot = getSlot(x, y, z);
-				cur = be.get(slot);
-			}
-			if (cur != null) {
-				be.set(slot, null);
-				ItemStack drop = new ItemStack(Registry.ITEM.get(Yttr.id(cur.name().toLowerCase(Locale.ROOT)+"_bloque")));
-				ItemEntity ie = new ItemEntity(world, pos.getX()+((x+.5)/XSIZE), pos.getY()+((y+.5)/YSIZE), pos.getZ()+((z+.5)/ZSIZE), drop);
-				world.spawnEntity(ie);
-				if (be.getPopCount() == 0) {
-					world.setBlockState(pos, world.getFluidState(pos).getBlockState());
+		if (is.isOf(YItems.VOID_BUCKET) || (is.isOf(Items.BUCKET) && player.isCreative())) {
+			if (!world.isClient && world.getBlockEntity(pos) instanceof BloqueBlockEntity be) {
+				Box box = getOutlineShape(state, world, pos, ShapeContext.absent()).getBoundingBox();
+				Vec3d center = box.getCenter().add(pos.getX(), pos.getY(), pos.getZ());
+				double dX = box.getXLength()/2;
+				double dY = box.getYLength()/2;
+				double dZ = box.getZLength()/2;
+				if (is.isOf(YItems.VOID_BUCKET) && be.isWeldable()) {
+					if (world instanceof ServerWorld sw) {
+						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 0, 0), 1), center.x, center.y, center.z, 18, dX, dY, dZ, 1);
+						sw.playSound(null, pos, YSounds.DISSOLVE, SoundCategory.PLAYERS, 1, 1);
+					}
+					be.weld();
+				} else if (is.isOf(Items.BUCKET) && be.isWelded()) {
+					be.unweld();
+					if (world instanceof ServerWorld sw) {
+						sw.spawnParticles(new DustParticleEffect(new Vec3f(1, 0, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 1, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 0, 1), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vec3f(1, 1, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 1, 1), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.PLAYERS, 1, 0.5f);
+					}
 				} else {
-					world.updateNeighborsAlways(pos, this);
+					return ActionResult.FAIL;
 				}
+				return ActionResult.SUCCESS;
 			}
 			return ActionResult.CONSUME;
 		}
-		return ActionResult.SUCCESS;
+		if (is.getMiningSpeedMultiplier(state) <= 1) return ActionResult.PASS;
+		if (world.getBlockEntity(pos) instanceof BloqueBlockEntity be && !be.isWelded()) {
+			if (!world.isClient) {
+				Vec3d hitVec = hit.getPos().subtract(pos.getX(), pos.getY(), pos.getZ());
+				int x = (int)((hitVec.x)*XSIZE);
+				int y = (int)((hitVec.y)*YSIZE);
+				int z = (int)((hitVec.z)*ZSIZE);
+				int slot = getSlot(x, y, z);
+				DyeColor cur = be.get(slot);
+				if (cur == null) {
+					Direction face = hit.getSide();
+					x -= face.getOffsetX();
+					y -= face.getOffsetY();
+					z -= face.getOffsetZ();
+					slot = getSlot(x, y, z);
+					cur = be.get(slot);
+				}
+				if (cur != null) {
+					be.set(slot, null);
+					ItemStack drop = new ItemStack(Registry.ITEM.get(Yttr.id(cur.name().toLowerCase(Locale.ROOT)+"_bloque")));
+					ItemEntity ie = new ItemEntity(world, pos.getX()+((x+.5)/XSIZE), pos.getY()+((y+.5)/YSIZE), pos.getZ()+((z+.5)/ZSIZE), drop);
+					world.spawnEntity(ie);
+					if (be.getPopCount() == 0) {
+						world.setBlockState(pos, world.getFluidState(pos).getBlockState());
+					} else {
+						world.updateNeighborsAlways(pos, this);
+					}
+				}
+			}
+			return ActionResult.success(world.isClient);
+		}
+		return ActionResult.PASS;
 	}
 	
 	public static int getSlot(Vec3d hitVec, BlockPos blockPos, Direction face) {
@@ -178,6 +218,9 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		if (builder.getNullable(LootContextParameters.BLOCK_ENTITY) instanceof BloqueBlockEntity be) {
+			if (be.isWelded()) {
+				return List.of(new ItemStack(YItems.DELRENE_SCRAP, be.getPopCount()));
+			}
 			List<ItemStack> li = new ArrayList<>();
 			for (int i = 0; i < SLOTS; i++) {
 				DyeColor color = be.get(i);
@@ -209,6 +252,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	@Override
 	public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
 		if (entity instanceof LivingEntity le) {
+			if (world.getBlockEntity(pos) instanceof BloqueBlockEntity be && be.isWelded()) return;
 			if (le.getEquippedStack(EquipmentSlot.FEET).isEmpty()) {
 				entity.damage(DAMAGE_SOURCE, 1);
 			}
@@ -228,6 +272,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	@Override
 	public boolean canReplace(BlockState state, ItemPlacementContext context) {
 		if (context.getStack().isIn(YTags.Item.BLOQUES) && context.getWorld().getBlockEntity(context.getBlockPos()) instanceof BloqueBlockEntity be) {
+			if (be.isWelded()) return false;
 			int slot = getSlot(context.getHitPos(), context.getBlockPos(), context.getSide());
 			if (slot < 0 || slot >= SLOTS) return false;
 			return be.get(slot) == null;

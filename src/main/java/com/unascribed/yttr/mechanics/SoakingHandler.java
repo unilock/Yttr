@@ -53,20 +53,34 @@ public class SoakingHandler {
 					if (sr.getCatalyst().test(f)) {
 						boolean matchedAll = true;
 						Set<ItemEntity> maybeMatched = Sets.newHashSet();
-						for (Ingredient i : sr.getIngredients()) {
-							boolean ingredientMatched = false;
+						var ing = sr.getSoakingIngredients();
+						if (ing.left().isPresent()) {
 							Iterator<ItemEntity> unmIter = unmatched.iterator();
+							ItemStack is = ing.left().get();
+							matchedAll = false;
 							while (unmIter.hasNext()) {
 								ItemEntity ie = unmIter.next();
-								if (!ie.getStack().isEmpty() && i.test(ie.getStack())) {
+								if (ItemStack.canCombine(is, ie.getStack()) && ie.getStack().getCount() >= is.getCount()) {
 									maybeMatched.add(ie);
-									ingredientMatched = true;
-									break;
+									matchedAll = true;
 								}
 							}
-							if (!ingredientMatched) {
-								matchedAll = false;
-								break;
+						} else {
+							for (Ingredient i : ing.right().get()) {
+								boolean ingredientMatched = false;
+								Iterator<ItemEntity> unmIter = unmatched.iterator();
+								while (unmIter.hasNext()) {
+									ItemEntity ie = unmIter.next();
+									if (!ie.getStack().isEmpty() && i.test(ie.getStack())) {
+										maybeMatched.add(ie);
+										ingredientMatched = true;
+										break;
+									}
+								}
+								if (!ingredientMatched) {
+									matchedAll = false;
+									break;
+								}
 							}
 						}
 						if (matchedAll) {
@@ -85,16 +99,17 @@ public class SoakingHandler {
 						timeTable.put(en.getKey(), f, recipe.getTime()-recipe.getMultiDelay());
 					}
 					int toCraft = 1;
+					int perCraft = recipe.getSoakingIngredients().left().map(ItemStack::getCount).orElse(1);
 					if (recipe.getMultiDelay() == 0 && recipe.getResult().left().isPresent()) {
 						toCraft = 64;
 						for (ItemEntity ie : matched) {
-							toCraft = Math.min(ie.getStack().getCount(), toCraft);
+							toCraft = Math.min(ie.getStack().getCount()/perCraft, toCraft);
 						}
 					}
 					final int toCraftf = toCraft;
 					for (ItemEntity ie : matched) {
 						ItemStack is = ie.getStack();
-						is.decrement(toCraft);
+						is.decrement(perCraft);
 						ie.setStack(is);
 						if (is.isEmpty()) {
 							ie.discard();

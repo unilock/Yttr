@@ -10,6 +10,9 @@ import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.block.decor.BloqueBlockEntity.Adjacency;
+import com.unascribed.yttr.content.block.decor.BloqueBlockEntity.RenderData;
+import com.unascribed.yttr.util.math.Vec2i;
 
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
@@ -36,6 +39,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.BlockRenderView;
 
 import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
@@ -50,10 +55,14 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
-		if (attachment instanceof DyeColor[] colors) {
+		if (attachment instanceof RenderData data) {
+			DyeColor[] colors = data.colors();
 			Sprite top = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_top"));
 			Sprite side = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_side"));
 			Sprite bottom = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_bottom"));
+			Sprite welded = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_welded"));
+			Sprite weldedSide = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_welded_side"));
+			Sprite weldedTop = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_welded_top"));
 			QuadEmitter qe = context.getEmitter();
 			RenderMaterial mat = RendererAccess.INSTANCE.getRenderer().materialFinder().blendMode(0, BlendMode.SOLID).find();
 			for (int y = 0; y < YSIZE; y++) {
@@ -62,6 +71,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 						int slot = getSlot(x, y, z);
 						DyeColor color = colors[slot];
 						if (color != null) {
+							Adjacency a = data.adjacency()[slot];
 							Box box = VOXEL_SHAPES[slot].getBoundingBox();
 							for (Direction d : Direction.values()) {
 								Sprite sprite = side;
@@ -72,55 +82,202 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 								float maxX = (float)box.maxX;
 								float maxY = (float)box.maxY;
 								float maxZ = (float)box.maxZ;
+								Vec3d[] vertices = new Vec3d[4];
 								switch (d) {
 									case UP:
 										sprite = top;
-										qe.pos(3, minX, maxY, minZ);
-										qe.pos(2, maxX, maxY, minZ);
-										qe.pos(1, maxX, maxY, maxZ);
-										qe.pos(0, minX, maxY, maxZ);
+										vertices[3] = new Vec3d(minX, maxY, minZ);
+										vertices[2] = new Vec3d(maxX, maxY, minZ);
+										vertices[1] = new Vec3d(maxX, maxY, maxZ);
+										vertices[0] = new Vec3d(minX, maxY, maxZ);
 										break;
 									case DOWN:
 										sprite = bottom;
-										qe.pos(0, minX, minY, minZ);
-										qe.pos(1, maxX, minY, minZ);
-										qe.pos(2, maxX, minY, maxZ);
-										qe.pos(3, minX, minY, maxZ);
+										vertices[0] = new Vec3d(minX, minY, minZ);
+										vertices[1] = new Vec3d(maxX, minY, minZ);
+										vertices[2] = new Vec3d(maxX, minY, maxZ);
+										vertices[3] = new Vec3d(minX, minY, maxZ);
 										break;
 									case NORTH:
-										qe.pos(3, minX, minY, minZ);
-										qe.pos(2, maxX, minY, minZ);
-										qe.pos(1, maxX, maxY, minZ);
-										qe.pos(0, minX, maxY, minZ);
+										vertices[3] = new Vec3d(minX, minY, minZ);
+										vertices[2] = new Vec3d(maxX, minY, minZ);
+										vertices[1] = new Vec3d(maxX, maxY, minZ);
+										vertices[0] = new Vec3d(minX, maxY, minZ);
 										break;
 									case SOUTH:
-										qe.pos(0, minX, minY, maxZ);
-										qe.pos(1, maxX, minY, maxZ);
-										qe.pos(2, maxX, maxY, maxZ);
-										qe.pos(3, minX, maxY, maxZ);
+										vertices[0] = new Vec3d(minX, minY, maxZ);
+										vertices[1] = new Vec3d(maxX, minY, maxZ);
+										vertices[2] = new Vec3d(maxX, maxY, maxZ);
+										vertices[3] = new Vec3d(minX, maxY, maxZ);
 										break;
 									case WEST:
-										qe.pos(3, minX, minY, maxZ);
-										qe.pos(2, minX, minY, minZ);
-										qe.pos(1, minX, maxY, minZ);
-										qe.pos(0, minX, maxY, maxZ);
+										vertices[3] = new Vec3d(minX, minY, maxZ);
+										vertices[2] = new Vec3d(minX, minY, minZ);
+										vertices[1] = new Vec3d(minX, maxY, minZ);
+										vertices[0] = new Vec3d(minX, maxY, maxZ);
 										break;
 									case EAST:
-										qe.pos(0, maxX, minY, maxZ);
-										qe.pos(1, maxX, minY, minZ);
-										qe.pos(2, maxX, maxY, minZ);
-										qe.pos(3, maxX, maxY, maxZ);
+										vertices[0] = new Vec3d(maxX, minY, maxZ);
+										vertices[1] = new Vec3d(maxX, minY, minZ);
+										vertices[2] = new Vec3d(maxX, maxY, minZ);
+										vertices[3] = new Vec3d(maxX, maxY, maxZ);
 										break;
 								}
 								for (int i = 0; i < 4; i++) {
 									qe.normal(i, d.getUnitVector());
 								}
-								qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
 								int packedColor = color.getFireworkColor();
-								qe.spriteColor(0, packedColor, packedColor, packedColor, packedColor);
-								qe.material(mat);
-								qe.colorIndex(0);
-								qe.emit();
+								if (data.welded() && a != null) {
+									boolean adjacentN = false;
+									boolean adjacentE = false;
+									boolean adjacentS = false;
+									boolean adjacentW = false;
+									boolean invert = false;
+									switch (d) {
+										case DOWN:
+											adjacentN = a.south();
+											adjacentE = a.east();
+											adjacentS = a.north();
+											adjacentW = a.west();
+											break;
+										case UP:
+											adjacentN = a.north();
+											adjacentE = a.east();
+											adjacentS = a.south();
+											adjacentW = a.west();
+											break;
+										case NORTH:
+											adjacentN = a.up();
+											adjacentE = a.west();
+											adjacentS = a.down();
+											adjacentW = a.east();
+											invert = true;
+											break;
+										case SOUTH:
+											adjacentN = a.up();
+											adjacentE = a.east();
+											adjacentS = a.down();
+											adjacentW = a.west();
+											break;
+										case WEST:
+											adjacentN = a.up();
+											adjacentE = a.south();
+											adjacentS = a.down();
+											adjacentW = a.north();
+											invert = true;
+											break;
+										case EAST:
+											adjacentN = a.up();
+											adjacentE = a.north();
+											adjacentS = a.down();
+											adjacentW = a.south();
+											break;
+									}
+									Vec2i qNW, qNE, qSW, qSE;
+									if (adjacentN && adjacentW) {
+										qNW = new Vec2i(1, 1);
+									} else if (adjacentN && !adjacentW) {
+										qNW = new Vec2i(1, 0);
+									} else if (!adjacentN && adjacentW) {
+										qNW = new Vec2i(0, 1);
+									} else { // !adjacentUp && !adjacentLeft
+										qNW = new Vec2i(0, 0);
+									}
+									if (adjacentN && adjacentE) {
+										qNE = new Vec2i(1, 1);
+									} else if (adjacentN && !adjacentE) {
+										qNE = new Vec2i(1, 0);
+									} else if (!adjacentN && adjacentE) {
+										qNE = new Vec2i(0, 1);
+									} else { // !adjacentUp && !adjacentRight
+										qNE = new Vec2i(0, 0);
+									}
+									if (adjacentS && adjacentW) {
+										qSW = new Vec2i(1, 1);
+									} else if (adjacentS && !adjacentW) {
+										qSW = new Vec2i(1, 0);
+									} else if (!adjacentS && adjacentW) {
+										qSW = new Vec2i(0, 1);
+									} else { // !adjacentDown && !adjacentLeft
+										qSW = new Vec2i(0, 0);
+									}
+									if (adjacentS && adjacentE) {
+										qSE = new Vec2i(1, 1);
+									} else if (adjacentS && !adjacentE) {
+										qSE = new Vec2i(1, 0);
+									} else if (!adjacentS && adjacentE) {
+										qSE = new Vec2i(0, 1);
+									} else { // !adjacentDown && !adjacentRight
+										qSE = new Vec2i(0, 0);
+									}
+									Vec2i[] quadrantUVs;
+									switch (d) {
+										case WEST:
+										case NORTH:
+											quadrantUVs = new Vec2i[] {qNE, qNW, qSW, qSE};
+											break;
+										default:
+											quadrantUVs = new Vec2i[] {qSW, qSE, qNE, qNW};
+											break;
+									}
+									float uScale = 2;
+									float vScale = 2;
+									sprite = weldedSide;
+									if (d == Direction.UP) {
+										sprite = data.doubleWelded() ? welded : weldedTop;
+									} else if (d == Direction.DOWN) {
+										sprite = welded;
+									}
+									for (int i = 0; i < vertices.length; i++) {
+										qe.pos(i, new Vec3f(vertices[i]));
+										for (int j = 0; j < vertices.length; j++) {
+											if (j != i) {
+												qe.pos(j, new Vec3f(vertices[j].lerp(vertices[i], 0.5)));
+											}
+										}
+										Vec2i uvs = quadrantUVs[i];
+										float minU = (uvs.x)/uScale;
+										float maxU = (uvs.x+.5f)/uScale;
+										float minV = (uvs.z)/vScale;
+										float maxV = (uvs.z+.5f)/vScale;
+										if (invert) {
+											float swap = minV;
+											minV = maxV;
+											maxV = swap;
+											swap = minU;
+											minU = maxU;
+											maxU = swap;
+										}
+										if (uvs == qNW || uvs == qNE) {
+											float swap = minV;
+											minV = maxV;
+											maxV = swap;
+										}
+										if (uvs == qNE || uvs == qSE) {
+											float swap = minU;
+											minU = maxU;
+											maxU = swap;
+										}
+										qe.sprite(0, 0, minU, minV);
+										qe.sprite(1, 0, maxU, minV);
+										qe.sprite(2, 0, maxU, maxV);
+										qe.sprite(3, 0, minU, maxV);
+										qe.spriteBake(0, sprite, QuadEmitter.BAKE_NORMALIZED);
+										qe.spriteColor(0, packedColor, packedColor, packedColor, packedColor);
+										qe.material(mat);
+										qe.colorIndex(0);
+										qe.emit();
+									}
+								} else {
+									for (int i = 0; i < vertices.length; i++) {
+										qe.pos(i, new Vec3f(vertices[i]));
+									}
+									qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
+									qe.spriteColor(0, packedColor, packedColor, packedColor, packedColor);
+									qe.material(mat);
+									qe.colorIndex(0);
+									qe.emit();
+								}
 							}
 						}
 					}

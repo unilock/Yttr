@@ -36,6 +36,7 @@ public class BloqueBlockItem extends DyedBlockItem {
 	}
 
 	private boolean fillIn(BloqueBlockEntity be, Vec3d hitPos, BlockPos bp, Direction side) {
+		if (be.isWelded()) return false;
 		int slot = be.getSlotForPlacement(hitPos, bp, side);
 		if (be.get(slot) == null) {
 			be.set(slot, color);

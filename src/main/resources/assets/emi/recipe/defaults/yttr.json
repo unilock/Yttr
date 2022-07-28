@@ -177,6 +177,22 @@
 		"yttr:crafting/inred_pcb",
 		"yttr:stonecutting/inred_transistor",
 		"yttr:stonecutting/inred_diode",
-		"yttr:crafting/inred_multimeter"
+		"yttr:crafting/inred_multimeter",
+		"yttr:crafting/dyeing/blue_bloque",
+		"yttr:crafting/dyeing/light_blue_bloque",
+		"yttr:crafting/dyeing/lime_bloque",
+		"yttr:crafting/dyeing/brown_bloque",
+		"yttr:crafting/dyeing/white_bloque",
+		"yttr:crafting/dyeing/gray_bloque",
+		"yttr:crafting/dyeing/red_bloque",
+		"yttr:crafting/dyeing/magenta_bloque",
+		"yttr:crafting/dyeing/purple_bloque",
+		"yttr:crafting/dyeing/yellow_bloque",
+		"yttr:crafting/dyeing/orange_bloque",
+		"yttr:crafting/dyeing/light_gray_bloque",
+		"yttr:crafting/dyeing/pink_bloque",
+		"yttr:crafting/dyeing/cyan_bloque",
+		"yttr:crafting/dyeing/green_bloque",
+		"yttr:crafting/dyeing/black_bloque"
 	]
 }

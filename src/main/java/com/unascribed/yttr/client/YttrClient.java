@@ -149,6 +149,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Yttr.INST.onPostInitialize();
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			additionalSprites.forEach(registry::register);
+			registry.register(Yttr.id("block/bloque_welded"));
+			registry.register(Yttr.id("block/bloque_welded_side"));
+			registry.register(Yttr.id("block/bloque_welded_top"));
 		});
 		doReflectionMagic();
 //		ArmorRenderingRegistry.registerTexture((entity, stack, slot, secondLayer, suffix, defaultTexture) -> {

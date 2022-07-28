@@ -83,6 +83,13 @@
 	"item.yttr.ammo_pack": "Rifle Canister Multiplexer",
 	"item.yttr.spatula": "Gigantic Spatula",
 	"item.yttr.raw_gadolinite": "Raw Gadolinite",
+	"item.yttr.delrene_scrap": "Delrene Scrap",
+	
+	"item.yttr.delrene_scrap.tip.1": "§5§oThe warranty of your Bloque® Plastic",
+	"item.yttr.delrene_scrap.tip.2": "§5§oConstruction Bricks is void due to",
+	"item.yttr.delrene_scrap.tip.3": "§5§ogross abuse of our product.",
+	"item.yttr.delrene_scrap.tip.4": "",
+	"item.yttr.delrene_scrap.tip.5": "§5§oRefund denied.",
 	
 	"item.yttr.inred_multimeter": "Multimeter",
 	"item.yttr.inred_pcb": "Circuit Board",
