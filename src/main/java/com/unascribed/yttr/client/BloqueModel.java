@@ -125,7 +125,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 										break;
 								}
 								int packedColor = color.getFireworkColor();
-								if (data.welded() && a != null) {
+								if (data.style().welded() && a != null) {
 									boolean adjacentN = false;
 									boolean adjacentE = false;
 									boolean adjacentS = false;
@@ -171,7 +171,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											adjacentW = a.south();
 											break;
 									}
-									boolean showStuds = !data.doubleWelded();
+									boolean showStuds = data.style().drawStuds();
 									if (a.merged(d)) {
 										adjacentN = adjacentE = adjacentS = adjacentW = true;
 										showStuds = false;

@@ -58,7 +58,20 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 		}
 	}
 	
-	public record RenderData(DyeColor[] colors, Adjacency[] adjacency, boolean welded, boolean doubleWelded) {}
+	public enum DrawStyle {
+		NORMAL,
+		WELDED,
+		SMOOTHED,
+		;
+		public boolean welded() {
+			return this != NORMAL;
+		}
+		public boolean drawStuds() {
+			return this != SMOOTHED;
+		}
+	}
+	
+	public record RenderData(DyeColor[] colors, Adjacency[] adjacency, DrawStyle style) {}
 	public record Adjacency(AdjType downType, AdjType upType, AdjType northType, AdjType southType, AdjType westType, AdjType eastType) {
 		public static final Adjacency NONE = new Adjacency(AdjType.NONE, AdjType.NONE, AdjType.NONE, AdjType.NONE, AdjType.NONE, AdjType.NONE);
 		public Adjacency(AdjType[] vals) {
@@ -94,7 +107,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	
 	private final DyeColor[] colors = new DyeColor[SLOTS];
 	private final Adjacency[] adjacency = new Adjacency[SLOTS];
-	private boolean welded, doubleWelded;
+	private int welds;
 	
 	public BloqueBlockEntity(BlockPos pos, BlockState state) {
 		super(YBlockEntities.BLOQUE, pos, state);
@@ -120,12 +133,15 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 
 	public void weld() {
 		if (!isWeldable()) return;
-		if (this.welded) {
-			this.doubleWelded = true;
-			computeAdjacency(true, true);
-		} else {
-			this.welded = true;
-			computeAdjacency(true, false);
+		if (welds == 0) {
+			welds = 1;
+			computeAdjacency(true, false, true);
+		} else if (welds == 1) {
+			welds = 2;
+			computeAdjacency(true, true, false);
+		} else if (welds >= 2) {
+			welds = 3;
+			computeAdjacency(true, true, true);
 		}
 		markDirty();
 		Yttr.sync(this);
@@ -133,13 +149,13 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	
 	public void unweld() {
 		if (!isWelded()) return;
-		this.welded = this.doubleWelded = false;
+		this.welds = 0;
 		Arrays.fill(adjacency, null);
 		markDirty();
 		Yttr.sync(this);
 	}
 	
-	private void computeAdjacency(boolean weld, boolean mixColors) {
+	private void computeAdjacency(boolean weld, boolean allowExternal, boolean mixColors) {
 		for (int y = 0; y < YSIZE; y++) {
 			for (int x = 0; x < XSIZE; x++) {
 				for (int z = 0; z < ZSIZE; z++) {
@@ -155,7 +171,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 						int ox = x+d.getOffsetX();
 						int oy = y+d.getOffsetY();
 						int oz = z+d.getOffsetZ();
-						DyeColor other = getMulti(ox, oy, oz);
+						DyeColor other = allowExternal ? getMulti(ox, oy, oz) : get(ox, oy, oz);
 						boolean external = false;
 						if (ox < 0 || oy < 0 || oz < 0 ||
 								ox >= XSIZE || oy >= YSIZE || oz >= ZSIZE) {
@@ -177,7 +193,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	}
 
 	public boolean isWelded() {
-		return welded;
+		return welds > 0;
 	}
 
 	public boolean isWeldable() {
@@ -189,6 +205,10 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	}
 	
 	public @Nullable DyeColor get(int x, int y, int z) {
+		if (x < 0 || y < 0 || z < 0 ||
+				x >= XSIZE || y >= YSIZE || z >= ZSIZE) {
+			return null;
+		}
 		return get(getSlot(x, y, z));
 	}
 	
@@ -257,8 +277,9 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	
 	@Override
 	public boolean onSyncedBlockEvent(int type, int data) {
+		if (!world.isClient) return true;
 		colors[type] = data == -1 ? null : DyeColor.byId(data);
-		computeAdjacency(false, false);
+		computeAdjacency(false, false, false);
 		if (world instanceof YttrWorld yw) {
 			yw.yttr$scheduleRenderUpdate(getPos());
 		}
@@ -273,9 +294,8 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 			bys[i] = (byte)(colors[i] == null ? -1 : colors[i].getId());
 		}
 		nbt.putByteArray("Colors", bys);
-		if (welded) {
-			nbt.putBoolean("Welded", true);
-			nbt.putBoolean("DoubleWelded", doubleWelded);
+		if (welds > 0) {
+			nbt.putByte("Welds", (byte)welds);
 			byte[] abys = new byte[SLOTS*6];
 			for (int i = 0; i < SLOTS; i++) {
 				int j = i*6;
@@ -298,9 +318,8 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 				colors[i] = DyeColor.byId(v);
 			}
 		}
-		welded = nbt.getBoolean("Welded");
-		if (welded && nbt.getByteArray("Adjacency").length == SLOTS*6) {
-			doubleWelded = nbt.getBoolean("DoubleWelded");
+		welds = nbt.getByte("Welds");
+		if (welds > 0 && nbt.getByteArray("Adjacency").length == SLOTS*6) {
 			byte[] abys = nbt.getByteArray("Adjacency");
 			for (int i = 0; i < SLOTS; i++) {
 				int j = i*6;
@@ -311,10 +330,8 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 				adjacency[i] = new Adjacency(types);
 			}
 		} else {
-			welded = false;
-			doubleWelded = false;
 			if (world != null && world.isClient) {
-				computeAdjacency(false, false);
+				computeAdjacency(false, true, false);
 			}
 		}
 		if (world instanceof YttrWorld yw) {
@@ -372,7 +389,14 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 				}
 			}
 		}
-		return new RenderData(colors.clone(), adj, welded, doubleWelded);
+		DrawStyle style = DrawStyle.NORMAL;
+		if (welds > 0) {
+			style = DrawStyle.WELDED;
+			if (welds > 2) {
+				style = DrawStyle.SMOOTHED;
+			}
+		}
+		return new RenderData(colors.clone(), adj, style);
 	}
 
 	public int getSlotForPlacement(Vec3d hitPos, BlockPos blockPos, Direction face) {
