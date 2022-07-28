@@ -20,6 +20,7 @@ import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.damage.DamageSource;
@@ -35,7 +36,9 @@ import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -102,6 +105,39 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 			}
 		}
 		return VoxelShapes.cuboid(0.2, 0.2, 0.2, 0.8, 0.8, 0.8);
+	}
+	
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		ItemStack is = player.getStackInHand(hand);
+		if (is.isIn(YTags.Item.BLOQUES)) return ActionResult.PASS;
+		if (!world.isClient && world.getBlockEntity(pos) instanceof BloqueBlockEntity be) {
+			Vec3d hitVec = hit.getPos().subtract(pos.getX(), pos.getY(), pos.getZ());
+			int x = (int)((hitVec.x)*XSIZE);
+			int y = (int)((hitVec.y)*YSIZE);
+			int z = (int)((hitVec.z)*ZSIZE);
+			int slot = getSlot(x, y, z);
+			DyeColor cur = be.get(slot);
+			if (cur == null) {
+				Direction face = hit.getSide();
+				x -= face.getOffsetX();
+				y -= face.getOffsetY();
+				z -= face.getOffsetZ();
+				slot = getSlot(x, y, z);
+				cur = be.get(slot);
+			}
+			if (cur != null) {
+				be.set(slot, null);
+				ItemStack drop = new ItemStack(Registry.ITEM.get(Yttr.id(cur.name().toLowerCase(Locale.ROOT)+"_bloque")));
+				ItemEntity ie = new ItemEntity(world, pos.getX()+((x+.5)/XSIZE), pos.getY()+((y+.5)/YSIZE), pos.getZ()+((z+.5)/ZSIZE), drop);
+				world.spawnEntity(ie);
+				if (be.getPopCount() == 0) {
+					world.setBlockState(pos, world.getFluidState(pos).getBlockState());
+				}
+			}
+			return ActionResult.CONSUME;
+		}
+		return ActionResult.SUCCESS;
 	}
 	
 	public static int getSlot(Vec3d hitVec, BlockPos blockPos, Direction face) {

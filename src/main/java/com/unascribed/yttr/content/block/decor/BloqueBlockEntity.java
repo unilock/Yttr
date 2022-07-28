@@ -6,8 +6,6 @@ import javax.annotation.Nullable;
 
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
-import com.unascribed.yttr.util.YLog;
-
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -30,7 +28,6 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	
 	public void set(int slot, @Nullable DyeColor color) {
 		if (slot < 0 || slot >= colors.length) {
-			YLog.warn("Attempt to set slot {} ({}) for a bloque at {}", slot, describe(slot), describe(getPos()));
 			return;
 		}
 		colors[slot] = color;
@@ -40,7 +37,6 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	
 	public @Nullable DyeColor get(int slot) {
 		if (slot < 0 || slot >= colors.length) {
-			YLog.warn("Attempt to get slot {} ({}) for a bloque at {}", slot, describe(slot), describe(getPos()));
 			return null;
 		}
 		return colors[slot];
