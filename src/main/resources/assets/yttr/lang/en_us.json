@@ -687,6 +687,10 @@
 	
 	"tooltip.yttr.suit_helmet_hud": "HUD Color: %s",
 	
-	"trinkets.slot.feet.sole": "Sole"
+	"trinkets.slot.feet.sole": "Sole",
+	
+	"msg.yttr.wireframe.enabled": "Wireframe rendering enabled",
+	"msg.yttr.wireframe.disabled": "Wireframe rendering disabled",
+	"msg.yttr.wireframe.illegal": "Wireframe can only be enabled in Creative or Spectator"
 	
 }

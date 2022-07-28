@@ -117,6 +117,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -290,13 +291,26 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}));
 		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("yttr:wireframe")
 				.executes(ctx -> {
-					wireframeMode = !wireframeMode;
+					if (ctx.getSource().getPlayer().isSpectator() || ctx.getSource().getPlayer().isCreative()) {
+						wireframeMode = !wireframeMode;
+						if (wireframeMode) {
+							ctx.getSource().sendFeedback(new TranslatableText("msg.yttr.wireframe.enabled"));
+						} else {
+							ctx.getSource().sendFeedback(new TranslatableText("msg.yttr.wireframe.disabled"));
+						}
+					} else {
+						ctx.getSource().sendError(new TranslatableText("msg.yttr.wireframe.illegal"));
+					}
 					return 0;
 				}));
 		
 		WorldRenderEvents.START.register((wrc) -> {
-			if (wireframeMode) {
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			if (mc.player != null && (mc.player.isSpectator() || mc.player.isCreative())) {
+				if (wireframeMode) {
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				}
+			} else {
+				wireframeMode = false;
 			}
 		});
 		WorldRenderEvents.END.register((wrc) -> {
