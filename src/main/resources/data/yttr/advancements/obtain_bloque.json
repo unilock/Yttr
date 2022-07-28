@@ -2,7 +2,8 @@
 	"parent": "yttr:obtain_squeeze_stem",
 	"display": {
 		"icon": {
-			"item": "yttr:red_bloque"
+			"item": "yttr:red_bloque",
+			"nbt": "{BlockEntityTag:{}}"
 		},
 		"title": {
 			"translate": "advancements.yttr.obtain_bloque.title"

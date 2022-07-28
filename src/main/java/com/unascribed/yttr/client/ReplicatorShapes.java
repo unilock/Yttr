@@ -10,13 +10,16 @@ import static org.lwjgl.opengl.GL11.glNewList;
 import static org.lwjgl.opengl.GL11.glNormal3f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
+import org.lwjgl.system.Platform;
+
+import com.unascribed.yttr.YConfig;
+
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class ReplicatorShapes {
-	
 
 	public static final int OCTAHEDRON = build(ReplicatorShapes::octahedron);
 	public static final int DODECAHEDRON = build(ReplicatorShapes::dodecahedron);
@@ -24,6 +27,7 @@ public class ReplicatorShapes {
 	public static final ImmutableList<Integer> ALL = ImmutableList.of(OCTAHEDRON, DODECAHEDRON, ICOSAHEDRON);
 
 	public static int build(Runnable r) {
+		if (!YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) return 0;
 		int list = glGenLists(1);
 		glNewList(list, GL_COMPILE);
 		glBegin(GL_TRIANGLES);

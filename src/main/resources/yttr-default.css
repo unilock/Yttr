@@ -17,6 +17,11 @@
 	 * initialized.
 	 */
 	fixup-debug-world: on;
+	
+	/*
+	 * If set to "on", enables inside-jokes and various chaos. Nothing destructive.
+	 */
+	shenanigans: off;
 }
 
 #client {
@@ -25,6 +30,16 @@
 	 * awesome.
 	 */
 	slope-smoothing: on;
+	
+	/*
+	 * If set to "on", OpenGL compatibility mode will be enabled, as it is required by some of
+	 * Yttr's rendering. "off" leaves it as vanilla.
+	 * 
+	 * "auto" acts as "off" on macOS, and "on" everywhere else.
+	 *
+	 * Running Yttr in the OpenGL Core profile is NOT SUPPORTED.
+	 */
+	 opengl-compatibility: auto;
 }
 
 #rifle {
@@ -35,14 +50,18 @@
 	 * 
 	 * Yttr adds a command, /yttr:void_undo, that allows operators to undo individual voids or all
 	 * voids performed by a player. Additionally, voids are logged to console.
+	 *
+	 * If that's not enough for you, this nuclear option off switch is offered.
 	 */
 	allow-void: on;
 	/*
 	 * If set to "off", the Explode rifle mode will be disabled. It provides a relatively cheap way
-	 * to create normal vanilla explosions.
+	 * to create normal vanilla explosions. If set to "soft", the explosions will not break any
+	 * blocks, but will still damage entities and set off Bedrock Breakers.
 	 * 
 	 * DISABLING THIS BREAKS YTTR'S PROGRESSION. You need to provide an alternate way to create
-	 * Void Geysers and obtain Bedrock Shards.
+	 * Void Geysers and obtain Bedrock Shards. If you are afraid of explosions, it's recommended to
+	 * use "soft" rather than "off".
 	 */
 	allow-explode: on;
 	/*
@@ -107,17 +126,4 @@
 	 * Drops of Continuity.
 	 */
 	continuity: on;
-}
-
-#debug {
-	/*
-	 * Print out verbose debug information about everything going on in the game's registries.
-	 */
-	registries: off;
-	
-	/*
-	 * Simulate this many milliseconds of network latency in singleplayer.
-	 */
-	simulate-latency: 0;
-	simulate-latency-jitter: 15;
 }

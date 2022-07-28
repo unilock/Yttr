@@ -23,6 +23,12 @@ public class YConfig {
 			return this == ON;
 		}
 	}
+
+	public enum TrileanSoft {
+		OFF,
+		SOFT,
+		ON,
+	}
 	
 	private static final QDCSS defaults;
 	private static final QDCSS data;
@@ -63,6 +69,7 @@ public class YConfig {
 	public static final class General {
 		public static final boolean trustPlayers    = data.getBoolean("general.trust-players").orElse(false);
 		public static final boolean fixupDebugWorld = data.getBoolean("general.fixup-debug-world").orElse(true);
+		public static final boolean shenanigans = data.getBoolean("general.shenanigans").orElse(false);
 		
 		private static void touch() {}
 		private General() {}
@@ -70,6 +77,7 @@ public class YConfig {
 	
 	public static final class Client {
 		public static final boolean slopeSmoothing = data.getBoolean("client.slope-smoothing").orElse(true);
+		public static final Trilean openglCompatibility = data.getEnum("client.opengl-compatibility", Trilean.class).orElse(Trilean.AUTO);
 		
 		private static void touch() {}
 		private Client() {}
@@ -77,7 +85,7 @@ public class YConfig {
 	
 	public static final class Rifle {
 		public static final boolean allowVoid    = data.getBoolean("rifle.allow-void").orElse(true);
-		public static final boolean allowExplode = data.getBoolean("rifle.allow-explode").orElse(true);
+		public static final TrileanSoft allowExplode = data.getEnum("rifle.allow-explode", TrileanSoft.class).orElse(TrileanSoft.ON);
 		public static final boolean allowFire    = data.getBoolean("rifle.allow-fire").orElse(true);
 		
 		private static void touch() {}
@@ -101,9 +109,6 @@ public class YConfig {
 	}
 	
 	public static final class Debug {
-		public static final boolean registries            = data.getBoolean("debug.registries").orElse(false);
-		public static final int     simulateLatency       = data.getInt("debug.simulate-latency").orElse(0);
-		public static final int     simulateLatencyJitter = data.getInt("debug.simulate-latency-jitter").orElse(15);
 		
 		private static void touch() {}
 		private Debug() {}

@@ -1,3 +1,9 @@
 {
-  "parent": "yttr:item/bloque"
+	"parent": "yttr:item/bloque",
+	"overrides": [
+		{
+			"predicate": { "yttr:has_block_entity": 1 },
+			"model": "yttr:item/bloques"
+		}
+	]
 }

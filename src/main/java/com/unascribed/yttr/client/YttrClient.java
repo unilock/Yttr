@@ -4,6 +4,8 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -119,6 +121,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -141,6 +144,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	private final List<Identifier> additionalSprites = Lists.newArrayList();
 	
 	private boolean hasCheckedRegistry = false;
+	private boolean firstWorldTick = true;
 	private boolean wireframeMode = false;
 	
 	public static boolean onlyRenderOpaqueParticles = false;
@@ -212,6 +216,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		ModelPredicateProviderRegistry.register(Yttr.id("gui"), (stack, world, entity, seed) -> {
 			return renderingGui ? 1 : 0;
 		});
+		ModelPredicateProviderRegistry.register(Yttr.id("has_block_entity"), (stack, world, entity, seed) -> {
+			return stack.getSubNbt("BlockEntityTag") != null ? 1 : 0;
+		});
 		
 
 		if (FabricLoader.getInstance().isModLoaded("ears")) {
@@ -230,6 +237,23 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		}
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
+			if (mc.world != null) {
+				if (firstWorldTick) {
+					firstWorldTick = false;
+					Calendar c = Calendar.getInstance();
+					c.setTime(new Date());
+					int month = c.get(Calendar.MONTH)+1;
+					int day = c.get(Calendar.DAY_OF_MONTH);
+					if (YConfig.General.shenanigans) {
+						if (month == 1 && (day >= 9 && day <= 15)) {
+							mc.player.sendMessage(new TranslatableText("chat.type.text", new LiteralText(">:]").formatted(Formatting.AQUA),
+									new TranslatableText("msg.yttr.well_wishes")), false);
+						}
+					}
+				}
+			} else {
+				firstWorldTick = true;
+			}
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
 					hasCheckedRegistry = true;
@@ -280,10 +304,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.render(matrixStack, tickDelta);
 			RifleHUDRenderer.render(matrixStack, tickDelta);
 			ShifterUI.render(matrixStack, tickDelta);
-			if (YConfig.Debug.simulateLatency > 0) {
-				int latency = YConfig.Debug.simulateLatency+(YConfig.Debug.simulateLatencyJitter/2);
-				MinecraftClient.getInstance().textRenderer.drawWithShadow(matrixStack, "\u26A0 §lSIMULATING NETWORK LATENCY§r: ~"+latency+"ms", 2, 2, 0xFFFFFF55);
-			}
 		});
 		
 		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("yttr:profiler")
@@ -352,7 +372,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			@Override
 			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("", new LiteralText("dfgplokyhjwrst7yoiuawhrkyijt"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
+				consumer.accept(factory.create("", new LiteralText("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 			}
 		};

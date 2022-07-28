@@ -33,7 +33,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.lwjgl.system.Platform;
+
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.ReplicatorShapes;
 import com.unascribed.yttr.client.YttrClient;
@@ -175,7 +178,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.pop();
 			}
 			
-			if (pass == 1) {
+			if (pass == 1 && YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) {
 				int solid1 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
 				int solid2 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
 

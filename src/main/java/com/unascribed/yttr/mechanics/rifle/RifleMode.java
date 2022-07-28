@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.YConfig.TrileanSoft;
 import com.unascribed.yttr.content.entity.RifleDummyEntity;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YBlocks;
@@ -49,15 +50,19 @@ public enum RifleMode {
 	EXPLODE(Formatting.GRAY, 0xAAAAAA, () -> Items.GUNPOWDER, 1, 1) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
-			user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2, power > 1.2 ? DestructionType.DESTROY : DestructionType.BREAK);
+			user.world.createExplosion(null, DamageSource.explosion(user),
+					null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2,
+							YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? DestructionType.NONE : power > 1.2 ? DestructionType.DESTROY : DestructionType.BREAK);
 		}
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
-			user.world.createExplosion(null, DamageSource.explosion(user), null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false, DestructionType.DESTROY);
+			user.world.createExplosion(null, DamageSource.explosion(user),
+					null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false,
+					YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? DestructionType.NONE : DestructionType.DESTROY);
 		}
 		@Override
 		public boolean isEnabled() {
-			return YConfig.Rifle.allowExplode;
+			return YConfig.Rifle.allowExplode != TrileanSoft.OFF;
 		}
 	},
 	TELEPORT(Formatting.LIGHT_PURPLE, 0xFF00FF, () -> Items.CHORUS_FRUIT, 3, 1.5f) {

@@ -21,9 +21,13 @@ import static org.lwjgl.opengl.GL11.glVertex3d;
 
 import java.util.Set;
 
+import org.lwjgl.system.Platform;
+
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.item.ShifterItem;
 import com.unascribed.yttr.network.MessageC2SShifterMode;
 import com.unascribed.yttr.util.math.Interp;
@@ -31,6 +35,8 @@ import com.unascribed.yttr.util.math.Interp;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -71,22 +77,39 @@ public class ShifterUI extends IHasAClient {
 				lastPositions = positions;
 				lastShape = shanpe;
 				
-				glShadeModel(GL_SMOOTH);
-				glEnable(GL_LINE_SMOOTH);
-				glLineWidth(2);
-				glEnable(GL_BLEND);
-				glDisable(GL_TEXTURE_2D);
-				glDisable(GL_LIGHTING);
-				glDefaultBlendFunc();
-				glPushMCMatrix(wrc.matrixStack());
+				boolean goodLines = YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX);
+				
+				if (goodLines) {
+					glShadeModel(GL_SMOOTH);
+					glEnable(GL_LINE_SMOOTH);
+					glLineWidth(2);
+					glEnable(GL_BLEND);
+					glDisable(GL_TEXTURE_2D);
+					glDisable(GL_LIGHTING);
+					glDefaultBlendFunc();
+					glPushMCMatrix(wrc.matrixStack());
+				}
 				for (int p = 0; p < 2; p++) {
-					if (p == 0) {
-						glEnable(GL_DEPTH_TEST);
+					final VertexConsumer vc;
+					if (goodLines) {
+						vc = null;
+						if (p == 0) {
+							glEnable(GL_DEPTH_TEST);
+						} else {
+							glDisable(GL_DEPTH_TEST);
+						}
+						glBegin(GL_LINES);
 					} else {
-						glDisable(GL_DEPTH_TEST);
+						vc = mc.getBufferBuilders().getEntityVertexConsumers().getBuffer(RenderLayer.getLines());
+						RenderSystem.enableBlend();
+						RenderSystem.defaultBlendFunc();
+						if (p == 0) {
+							RenderSystem.enableDepthTest();
+						} else {
+							RenderSystem.disableDepthTest();
+						}
 					}
-					glBegin(GL_LINES);
-					int a = (p == 0 ? 255 : 96);
+					float a = (p == 0 ? 1 : 0.375f);
 					double x = -wrc.camera().getPos().x;
 					double y = -wrc.camera().getPos().y;
 					double z = -wrc.camera().getPos().z;
@@ -98,15 +121,35 @@ public class ShifterUI extends IHasAClient {
 						if (h2 < 0) h2 += 1;
 						int c1 = MathHelper.hsvToRgb(h1, 0.3f, 1);
 						int c2 = MathHelper.hsvToRgb(h2, 0.3f, 1);
-						glColor4f(((c1 >> 16)&0xFF)/255f, ((c1 >> 8)&0xFF)/255f, ((c1&0xFF))/255f, a/255f);
-						glVertex3d(x1+x, y1+y, z1+z);
-						glColor4f(((c2 >> 16)&0xFF)/255f, ((c2 >> 8)&0xFF)/255f, ((c2&0xFF))/255f, a/255f);
-						glVertex3d(x2+x, y2+y, z2+z);
+						float r1 = ((c1 >> 16)&0xFF)/255f;
+						float g1 = ((c1 >> 8)&0xFF)/255f;
+						float b1 = ((c1&0xFF))/255f;
+						float r2 = ((c2 >> 16)&0xFF)/255f;
+						float g2 = ((c2 >> 8)&0xFF)/255f;
+						float b2 = ((c2&0xFF))/255f;
+						if (goodLines) {
+							glColor4f(r1, g1, b1, a);
+							glVertex3d(x1+x, y1+y, z1+z);
+							glColor4f(r2, g2, b2, a);
+							glVertex3d(x2+x, y2+y, z2+z);
+						} else {
+							YttrClient.addLine(wrc.matrixStack(), vc,
+									x1+x, y1+y, z1+z,
+									x2+x, y2+y, z2+z,
+									r1, g1, b1, a,
+									r2, g2, b2, a);
+						}
 					});
-					glEnd();
+					if (goodLines) {
+						glEnd();
+					} else {
+						mc.getBufferBuilders().getEntityVertexConsumers().draw(RenderLayer.getLines());
+					}
 				}
-				glPopMCMatrix();
-				glEnable(GL_DEPTH_TEST);
+				if (goodLines) {
+					glPopMCMatrix();
+					glEnable(GL_DEPTH_TEST);
+				}
 				return false;
 			}
 		}

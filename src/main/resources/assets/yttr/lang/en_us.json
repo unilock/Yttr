@@ -706,6 +706,7 @@
 	
 	"msg.yttr.wireframe.enabled": "Wireframe rendering enabled",
 	"msg.yttr.wireframe.disabled": "Wireframe rendering disabled",
-	"msg.yttr.wireframe.illegal": "Wireframe can only be enabled in Creative or Spectator"
+	"msg.yttr.wireframe.illegal": "Wireframe can only be enabled in Creative or Spectator",
+	"msg.yttr.well_wishes": "Have a nice day!"
 	
 }

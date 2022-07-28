@@ -1,0 +1,51 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "yttr:block/bloque_bundle",
+		"particle": "yttr:block/bloque_bundle"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 8],
+			"to": [16, 5.33333, 16],
+			"faces": {
+				"north": {"uv": [0, 5.33333, 8, 10.66667], "texture": "#0"},
+				"east": {"uv": [0, 5.33333, 8, 10.66667], "texture": "#0"},
+				"south": {"uv": [0, 5.33333, 8, 10.66667], "texture": "#0"},
+				"up": {"uv": [10.66667, 10.66667, 16, 16], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [8, 5.33333, 8],
+			"faces": {
+				"north": {"uv": [0, 10.66667, 8, 16], "texture": "#0"},
+				"east": {"uv": [0, 10.66667, 8, 16], "texture": "#0"},
+				"west": {"uv": [0, 10.66667, 8, 16], "texture": "#0"},
+				"up": {"uv": [10.66667, 5.33333, 16, 10.66667], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 5.3333, 8],
+			"to": [8, 10.66663, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"east": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"south": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"west": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"up": {"uv": [10.66667, 0, 16, 5.33333], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 8],
+			"to": [8, 5.33333, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"east": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"south": {"uv": [0, 0, 8, 5.33333], "texture": "#0"},
+				"west": {"uv": [0, 0, 8, 5.33333], "texture": "#0"}
+			}
+		}
+	]
+}
