@@ -2,6 +2,7 @@ package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.ItemSubGroup;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.block.BloqueBlockItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mixin.accessor.AccessorItem;
 
@@ -27,6 +28,7 @@ public class YItemGroups {
 	public static final ItemSubGroup EQUIPMENT = ItemSubGroup.create(PARENT, Yttr.id("equipment"));
 	public static final ItemSubGroup SNARE = ItemSubGroup.create(PARENT, Yttr.id("snare"));
 	public static final ItemSubGroup LAMP = ItemSubGroup.create(PARENT, Yttr.id("lamp"));
+	public static final ItemSubGroup BLOQUES = ItemSubGroup.create(PARENT, Yttr.id("bloques"));
 	public static final ItemSubGroup POTION = ItemSubGroup.create(PARENT, Yttr.id("potion"));
 	public static final ItemSubGroup RUINED = ItemSubGroup.create(PARENT, Yttr.id("ruined"));
 	public static final ItemSubGroup INRED = ItemSubGroup.create(PARENT, Yttr.id("inred"));
@@ -39,6 +41,8 @@ public class YItemGroups {
 				ItemGroup group = MISC;
 				if (i instanceof LampBlockItem) {
 					group = LAMP;
+				} else if (i instanceof BloqueBlockItem) {
+					group = BLOQUES;
 				} else if (i instanceof PotionItem) {
 					group = POTION;
 				} else if (i instanceof BlockItem && ((BlockItem)i).getBlock().getLootTableId().equals(Yttr.id("blocks/ruined"))) {
@@ -95,7 +99,9 @@ public class YItemGroups {
 				YItems.CUPROSTEEL_BLOCK,
 				YItems.SOUL_PLANKS,
 				YItems.NEODYMIUM_BLOCK,
-				YItems.NEODYMIUM_SLAB
+				YItems.NEODYMIUM_SLAB,
+				YItems.DELRENE,
+				YItems.DELRENE_SCRAP
 			);
 		assign(FILTERING,
 				YItems.COMPRESSED_ULTRAPURE_CARBON,
