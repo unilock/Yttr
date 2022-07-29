@@ -336,7 +336,7 @@ public class WastelandPopulator {
 				if (info.nbt != null) {
 					if ("yttr:quarry_hole".equals(info.nbt.getString("metadata"))) {
 						BlockPos.Mutable bp = info.pos.mutableCopy();
-						for (int y = info.pos.getY(); y >= 0; y--) {
+						for (int y = info.pos.getY(); y >= world.getBottomY(); y--) {
 							bp.setY(y);
 							BlockState bs = world.getBlockState(bp);
 							if (bs.isOf(Blocks.BEDROCK)) break;
