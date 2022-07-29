@@ -1,9 +1,9 @@
 package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock.Mode;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.util.YTickable;
 
 import com.google.common.base.Objects;
 

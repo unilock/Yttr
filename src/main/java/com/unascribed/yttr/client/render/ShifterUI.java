@@ -1,23 +1,6 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.yttr.client.RenderBridge.glDefaultBlendFunc;
-import static com.unascribed.yttr.client.RenderBridge.glPopMCMatrix;
-import static com.unascribed.yttr.client.RenderBridge.glPushMCMatrix;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.GL_LINE_SMOOTH;
-import static org.lwjgl.opengl.GL11.GL_SMOOTH;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLineWidth;
-import static org.lwjgl.opengl.GL11.glShadeModel;
-import static org.lwjgl.opengl.GL11.glVertex3d;
+import static com.unascribed.yttr.client.RenderBridge.*;
 
 import java.util.Set;
 
@@ -81,6 +64,7 @@ public class ShifterUI extends IHasAClient {
 				
 				if (goodLines) {
 					glShadeModel(GL_SMOOTH);
+					glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 					glEnable(GL_LINE_SMOOTH);
 					glLineWidth(2);
 					glEnable(GL_BLEND);

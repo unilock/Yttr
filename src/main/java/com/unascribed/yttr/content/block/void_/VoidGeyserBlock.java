@@ -2,9 +2,9 @@ package com.unascribed.yttr.content.block.void_;
 
 import java.util.Random;
 
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
+import com.unascribed.yttr.util.YTickable;
 import com.unascribed.yttr.world.GeysersState;
 
 import net.minecraft.block.Block;

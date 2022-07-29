@@ -41,3 +41,7 @@ accessible method net/minecraft/world/gen/feature/VegetationConfiguredFeatures c
 accessible class net/minecraft/world/gen/surfacebuilder/SurfaceRules$SequenceMaterialRule
 
 mutable field net/minecraft/client/MinecraftClient particleManager Lnet/minecraft/client/particle/ParticleManager;
+
+extendable method net/minecraft/client/particle/ParticleManager registerDefaultFactories ()V
+mutable field net/minecraft/client/particle/ParticleManager particleAtlasTexture Lnet/minecraft/client/texture/SpriteAtlasTexture;
+accessible field net/minecraft/client/particle/ParticleManager particleAtlasTexture Lnet/minecraft/client/texture/SpriteAtlasTexture;

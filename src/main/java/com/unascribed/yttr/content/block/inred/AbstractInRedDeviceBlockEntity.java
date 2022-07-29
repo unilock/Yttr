@@ -1,9 +1,9 @@
 package com.unascribed.yttr.content.block.inred;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.inred.InRedDevice;
 import com.unascribed.yttr.inred.InRedHandler;
+import com.unascribed.yttr.util.YTickable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

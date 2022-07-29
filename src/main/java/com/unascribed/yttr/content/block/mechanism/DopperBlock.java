@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
-import com.unascribed.yttr.fuckmojang.YTickable;
+import com.unascribed.yttr.util.YTickable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

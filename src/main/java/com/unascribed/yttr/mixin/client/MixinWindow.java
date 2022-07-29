@@ -35,8 +35,7 @@ public class MixinWindow {
 		// Asking for any profile, version 1.0, causes GLFW to attempt to negotiate the newest possible
 		// compatibility context it can. On Windows and Linux, this works as you would expect, and
 		// results in a 4.6 (or whatever the newest GL the driver supports is) context with
-		// ARB_compatibility available. This will not work on macOS, but frankly fuck macOS. I just
-		// want to port my mod without turning into an SCP.
+		// ARB_compatibility available. This will not work on macOS.
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);

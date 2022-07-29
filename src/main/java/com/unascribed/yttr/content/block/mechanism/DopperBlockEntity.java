@@ -1,9 +1,9 @@
 package com.unascribed.yttr.content.block.mechanism;
 
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorHopperBlockEntity;
+import com.unascribed.yttr.util.YTickable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;

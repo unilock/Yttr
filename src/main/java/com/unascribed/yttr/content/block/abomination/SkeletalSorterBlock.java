@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.unascribed.yttr.content.block.decor.TableBlock;
 import com.unascribed.yttr.content.item.block.SkeletalSorterBlockItem;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.util.YTickable;
 
 import com.google.common.base.Ascii;
 import com.google.common.collect.Lists;

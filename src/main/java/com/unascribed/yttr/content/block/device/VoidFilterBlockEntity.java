@@ -5,12 +5,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
+import com.unascribed.yttr.util.YTickable;
 import com.unascribed.yttr.world.FilterNetwork;
 import com.unascribed.yttr.world.FilterNetworks;
 

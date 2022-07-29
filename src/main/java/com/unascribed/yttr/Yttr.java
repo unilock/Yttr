@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -50,6 +51,7 @@ import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
+import com.unascribed.yttr.mixinsupport.ParticleScreen;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
@@ -70,6 +72,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -79,6 +83,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -91,6 +96,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -392,6 +398,34 @@ public class Yttr implements ModInitializer {
 		if (!be.hasWorld()) return;
 		if (be.getWorld().isClient) return;
 		be.getWorld().updateListeners(be.getPos(), Blocks.AIR.getDefaultState(), be.getCachedState(), 3);
+	}
+	
+	public static void spawnGuiParticles(ParticleEffect particle, double x, double y, double z, int count, double deltaX, double deltaY, double deltaZ, double speed) {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			var r = ThreadLocalRandom.current();
+			for (int i = 0; i < count; ++i) {
+				double xo = r.nextGaussian() * deltaX;
+				double yo = r.nextGaussian() * deltaY;
+				double zo = r.nextGaussian() * deltaZ;
+				double vx = r.nextGaussian() * speed;
+				double vy = r.nextGaussian() * speed;
+				double vz = r.nextGaussian() * speed;
+				spawnGuiParticle(particle, x + xo, y + yo, z + zo, vx, vy, vz);
+			}
+		}
+	}
+	
+	public static void spawnGuiParticle(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			spawnGuiParticleClient(parameters, x, y, z, velocityX, velocityY, velocityZ);
+		}
+	}
+	
+	@Environment(EnvType.CLIENT)
+	public static void spawnGuiParticleClient(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+		if (MinecraftClient.getInstance().currentScreen instanceof ParticleScreen ps) {
+			ps.yttr$getParticleWorld().addParticle(parameters, x, y, z, velocityX, velocityY, velocityZ);
+		}
 	}
 
 	/**

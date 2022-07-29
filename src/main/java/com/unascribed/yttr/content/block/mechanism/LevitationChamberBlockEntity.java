@@ -1,10 +1,10 @@
 package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
+import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;

@@ -1,13 +1,10 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
+import static com.unascribed.yttr.client.RenderBridge.*;
 
+import org.lwjgl.system.Platform;
+
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
@@ -30,8 +27,6 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 	public void render(SqueezedLeavesBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		if (entity.getCachedState().get(SqueezedLeavesBlock.SQUEEZING)) {
 			Immediate imm = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-			// make sure there's no junk in the buffer before we do weird stuff
-			imm.draw();
 			
 			// this is done in this weird way so the block entity doesn't have to be tickable
 			long ticks = MinecraftClient.getInstance().world.getTime();
@@ -41,17 +36,22 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 			float time = ((ticks-entity.squeezeBegin)+tickDelta)%4;
 			final float TAU = (float)(Math.PI*2);
 			float a = 0.75f+((MathHelper.sin((time/4)*TAU)+1)/8);
-			glMatrixMode(GL_TEXTURE);
-			glPushMatrix();
+			boolean texhack = YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX);
 			Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/squeeze_leaves"));
 			float w = sprite.getMaxU()-sprite.getMinU();
 			float h = sprite.getMaxV()-sprite.getMinV();
-			glTranslatef(sprite.getMinU(), sprite.getMinV(), 0);
-			glTranslatef(w/2, h/2, 0);
-			glScalef(a, a, a);
-			glTranslatef(-w/2, -h/2, 0);
-			glTranslatef(-sprite.getMinU(), -sprite.getMinV(), 0);
-			glMatrixMode(GL_MODELVIEW);
+			if (texhack) {
+				// make sure there's no junk in the buffer before we do weird stuff
+				imm.draw();
+				glMatrixMode(GL_TEXTURE);
+				glPushMatrix();
+				glTranslatef(sprite.getMinU(), sprite.getMinV(), 0);
+				glTranslatef(w/2, h/2, 0);
+				glScalef(a, a, a);
+				glTranslatef(-w/2, -h/2, 0);
+				glTranslatef(-sprite.getMinU(), -sprite.getMinV(), 0);
+				glMatrixMode(GL_MODELVIEW);
+			}
 			matrices.push();
 			matrices.translate(0.5, 0.5, 0.5);
 			matrices.scale(a, a, a);
@@ -63,10 +63,11 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 					imm.getBuffer(layer), true, entity.getWorld().random);
 			imm.draw(layer);
 			matrices.pop();
-			
-			glMatrixMode(GL_TEXTURE);
-			glPopMatrix();
-			glMatrixMode(GL_MODELVIEW);
+			if (texhack) {
+				glMatrixMode(GL_TEXTURE);
+				glPopMatrix();
+				glMatrixMode(GL_MODELVIEW);
+			}
 		} else {
 			entity.squeezeBegin = -1;
 		}

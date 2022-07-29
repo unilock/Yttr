@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.util.YTickable;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;

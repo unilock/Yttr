@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Locale;
 
 import com.unascribed.yttr.Substitutes;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.util.YTickable;
 
 import com.google.common.collect.Lists;
 

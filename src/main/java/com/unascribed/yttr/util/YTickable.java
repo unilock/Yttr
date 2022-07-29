@@ -1,4 +1,4 @@
-package com.unascribed.yttr.fuckmojang;
+package com.unascribed.yttr.util;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

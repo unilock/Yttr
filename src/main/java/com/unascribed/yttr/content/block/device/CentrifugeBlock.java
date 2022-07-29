@@ -2,9 +2,9 @@ package com.unascribed.yttr.content.block.device;
 
 import java.util.Random;
 
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
+import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

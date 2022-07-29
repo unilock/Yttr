@@ -8,13 +8,13 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.fuckmojang.YTickable;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
+import com.unascribed.yttr.util.YTickable;
 import com.unascribed.yttr.util.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;

@@ -2,7 +2,7 @@ package com.unascribed.yttr.content.block.mechanism;
 
 import java.util.stream.Stream;
 
-import com.unascribed.yttr.fuckmojang.YTickable;
+import com.unascribed.yttr.util.YTickable;
 
 import com.google.common.collect.ImmutableMap;
 
