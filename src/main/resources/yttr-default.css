@@ -21,7 +21,7 @@
 	/*
 	 * If set to "on", enables inside-jokes and various chaos. Nothing destructive.
 	 */
-	shenanigans: off;
+	shenanigans: on;
 }
 
 #client {

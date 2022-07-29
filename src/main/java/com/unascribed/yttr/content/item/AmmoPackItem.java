@@ -13,12 +13,15 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -65,6 +68,26 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 				is.getItem().appendTooltip(is, world, tooltip, context);
 			}
 		}
+	}
+	
+	@Override
+	public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+		if (clickType == ClickType.RIGHT && cursorStackReference.get().isEmpty()) {
+			player.openHandledScreen(new NamedScreenHandlerFactory() {
+				
+				@Override
+				public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+					return new AmmoPackScreenHandler(asInventory(stack), syncId, inv);
+				}
+				
+				@Override
+				public Text getDisplayName() {
+					return stack.getName();
+				}
+			});
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

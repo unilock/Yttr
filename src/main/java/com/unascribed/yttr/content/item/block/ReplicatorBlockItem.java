@@ -14,15 +14,18 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ThrowablePotionItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
@@ -65,12 +68,35 @@ public class ReplicatorBlockItem extends BlockItem {
 		return YSounds.SILENCE;
 	}
 	
+	@Override
+	public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+		if (clickType == ClickType.RIGHT) {
+			ItemStack held = getHeldItem(stack);
+			if (!held.isEmpty()) {
+				if (cursorStackReference.get().isEmpty()) {
+					player.playSound(YSounds.REPLICATOR_VEND, 1, 1);
+					cursorStackReference.set(held.copy());
+					return true;
+				}
+			} else if (!cursorStackReference.get().isEmpty()) {
+				player.playSound(YSounds.REPLICATOR_UPDATE, 1, 1.25f);
+				setHeldItem(stack, otherStack.copy());
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static ItemStack getHeldItem(ItemStack stack) {
 		NbtCompound entityTag = stack.getSubNbt("BlockEntityTag");
 		if (entityTag != null) {
 			return ItemStack.fromNbt(entityTag.getCompound("Item"));
 		}
 		return ItemStack.EMPTY;
+	}
+	
+	public static void setHeldItem(ItemStack stack, ItemStack held) {
+		stack.getOrCreateSubNbt("BlockEntityTag").put("Item", held.writeNbt(new NbtCompound()));
 	}
 	
 	@Override

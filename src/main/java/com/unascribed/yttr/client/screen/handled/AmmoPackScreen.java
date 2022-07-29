@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,14 +17,23 @@ public class AmmoPackScreen extends HandledScreen<AmmoPackScreenHandler> {
 
 	private static final Identifier BG = Yttr.id("textures/gui/ammo_pack.png");
 	
+	private final Screen parent;
+	
 	private final PlayerInventory playerInventory;
 	
 	public AmmoPackScreen(AmmoPackScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		parent = MinecraftClient.getInstance().currentScreen;
 		playerInventory = inventory;
 		backgroundWidth = 176;
 		backgroundHeight = 163;
 		playerInventoryTitleY = 70;
+	}
+	
+	@Override
+	public void onClose() {
+		super.onClose();
+		this.client.setScreen(parent);
 	}
 	
 	@Override

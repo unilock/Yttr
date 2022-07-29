@@ -1,0 +1,14 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"LT"
+	],
+	"key": {
+		"L": { "item": "yttr:panel" },
+		"T": { "item": "minecraft:redstone_torch" }
+	},
+	"result": {
+		"item": "yttr:panel"
+	},
+	"yttr:misc": true
+}

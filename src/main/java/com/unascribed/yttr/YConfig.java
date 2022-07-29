@@ -69,7 +69,7 @@ public class YConfig {
 	public static final class General {
 		public static final boolean trustPlayers    = data.getBoolean("general.trust-players").orElse(false);
 		public static final boolean fixupDebugWorld = data.getBoolean("general.fixup-debug-world").orElse(true);
-		public static final boolean shenanigans = data.getBoolean("general.shenanigans").orElse(false);
+		public static final boolean shenanigans = data.getBoolean("general.shenanigans").orElse(true);
 		
 		private static void touch() {}
 		private General() {}

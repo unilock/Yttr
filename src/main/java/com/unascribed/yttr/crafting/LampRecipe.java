@@ -49,6 +49,13 @@ public class LampRecipe extends ShapedRecipe {
 	public boolean isIgnoredInRecipeBook() {
 		return !important;
 	}
+
+	public int getPriority() {
+		if (important) {
+			return misc ? 2 : 3;
+		}
+		return misc ? 0 : 1;
+	}
 	
 	@Override
 	public ItemStack craft(CraftingInventory inv) {

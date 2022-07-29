@@ -1,5 +1,6 @@
 {
 	"type": "yttr:lamp_crafting",
+	"yttr:important": true,
 	"pattern": [
 		"L",
 		"L"

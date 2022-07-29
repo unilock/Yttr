@@ -43,10 +43,15 @@ public class VoidBucketItem extends BucketItem {
 	public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
 		if (otherStack.isEmpty() || otherStack.isIn(YTags.Item.VOID_IMMUNE)) return false;
 		player.playSound(YSounds.DISSOLVE, 0.7f, 1);
-		if (clickType == ClickType.LEFT) {
-			otherStack.setCount(0);
+		if (otherStack.isOf(Items.BUNDLE)) {
+			player.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.7f, 1);
+			otherStack.removeSubNbt("Items");
 		} else {
-			otherStack.decrement(1);
+			if (clickType == ClickType.LEFT) {
+				otherStack.setCount(0);
+			} else {
+				otherStack.decrement(1);
+			}
 		}
 		Yttr.spawnGuiParticles(VoidFluid.BLACK_DUST,
 				slot.x+8, slot.y+3, 0,

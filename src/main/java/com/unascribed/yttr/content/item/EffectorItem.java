@@ -23,12 +23,15 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -92,6 +95,17 @@ public class EffectorItem extends Item {
 		if (!context.getPlayer().getAbilities().creativeMode) setFuel(stack, fuel-amt);
 		new MessageS2CEffectorHole(pos, dir, amt).sendToAllWatching(context.getPlayer());
 		return ActionResult.SUCCESS;
+	}
+	
+	@Override
+	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+		if (slot.getStack().isOf(YItems.VOID_BUCKET)) {
+			slot.setStack(new ItemStack(Items.BUCKET));
+			player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1, 1);
+			setFuel(stack, MAX_FUEL);
+			return true;
+		}
+		return false;
 	}
 	
 	public int getFuel(ItemStack stack) {
