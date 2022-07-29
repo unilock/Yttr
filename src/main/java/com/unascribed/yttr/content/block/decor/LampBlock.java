@@ -133,13 +133,17 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
 		int rem = 9-(LampColor.values().length%9);
+		list.add(getLoot(getDefaultState().with(COLOR, LampColor.COLORLESS)));
 		for (LampColor color : LampColor.VALUES) {
+			if (color == LampColor.COLORLESS) continue;
 			list.add(getLoot(getDefaultState().with(COLOR, color)));
 		}
 		for (int i = 0; i < rem; i++) {
 			list.add(ItemStack.EMPTY);
 		}
+		list.add(getLoot(getDefaultState().with(COLOR, LampColor.COLORLESS).with(INVERTED, true)));
 		for (LampColor color : LampColor.VALUES) {
+			if (color == LampColor.COLORLESS) continue;
 			list.add(getLoot(getDefaultState().with(COLOR, color).with(INVERTED, true)));
 		}
 		for (int i = 0; i < rem; i++) {
