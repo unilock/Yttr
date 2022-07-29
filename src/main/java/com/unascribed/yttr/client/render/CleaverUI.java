@@ -4,9 +4,6 @@ import static com.unascribed.yttr.client.RenderBridge.*;
 
 import java.util.List;
 
-import org.lwjgl.system.Platform;
-
-import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
@@ -42,7 +39,7 @@ public class CleaverUI extends IHasAClient {
 					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
 					BlockState bs = wrc.world().getBlockState(pos);
 					if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
-						if (!YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) return true;
+						if (!canUseCompatFunctions()) return true;
 						glPushMCMatrix(wrc.matrixStack());
 						glTranslated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
 						glDisable(GL_TEXTURE_2D);

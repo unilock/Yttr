@@ -4,8 +4,10 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL21;
+import org.lwjgl.system.Platform;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderSystem;
 
 import net.minecraft.client.util.math.MatrixStack;
@@ -15,6 +17,10 @@ import net.minecraft.util.math.Vec3f;
 public class RenderBridge extends GL21 {
 
 	private static final FloatBuffer MATRIX_BUFFER = BufferUtils.createFloatBuffer(4*4);
+	
+	public static boolean canUseCompatFunctions() {
+		return YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX);
+	}
 	
 	public static void glMultMatrixf(Matrix4f mat) {
 		mat.writeColumnMajor(MATRIX_BUFFER);

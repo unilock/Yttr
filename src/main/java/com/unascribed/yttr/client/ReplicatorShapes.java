@@ -1,18 +1,6 @@
 package com.unascribed.yttr.client;
 
-import static org.lwjgl.opengl.GL11.GL_COMPILE;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glEndList;
-import static org.lwjgl.opengl.GL11.glGenLists;
-import static org.lwjgl.opengl.GL11.glNewList;
-import static org.lwjgl.opengl.GL11.glNormal3f;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-
-import org.lwjgl.system.Platform;
-
-import com.unascribed.yttr.YConfig;
+import static com.unascribed.yttr.client.RenderBridge.*;
 
 import com.google.common.collect.ImmutableList;
 
@@ -27,7 +15,7 @@ public class ReplicatorShapes {
 	public static final ImmutableList<Integer> ALL = ImmutableList.of(OCTAHEDRON, DODECAHEDRON, ICOSAHEDRON);
 
 	public static int build(Runnable r) {
-		if (!YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) return 0;
+		if (!canUseCompatFunctions()) return 0;
 		int list = glGenLists(1);
 		glNewList(list, GL_COMPILE);
 		glBegin(GL_TRIANGLES);

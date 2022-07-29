@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.lwjgl.system.Platform;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.client.RenderBridge;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Sets;
@@ -38,7 +38,7 @@ public class MixinSplashTextResourceSupplier {
 
 	@Inject(at=@At("RETURN"), method="apply")
 	protected void apply(List<String> li, ResourceManager mgr, Profiler prof, CallbackInfo ci) {
-		if (YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) {
+		if (RenderBridge.canUseCompatFunctions()) {
 			if (Collections.replaceAll(splashTexts, "Now on OpenGL 3.2 core profile!",
 					"Now on OpenGL 3.2 §mcore§r §ocompatibility§r profile!")) {
 				splashTexts.add("Core profile? More like snore profile!");

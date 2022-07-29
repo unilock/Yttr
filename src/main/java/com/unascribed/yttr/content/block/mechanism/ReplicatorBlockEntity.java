@@ -45,7 +45,6 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 			removedTicks++;
 		} else if (!addedClient) {
 			addedClient = true;
-			ReplicatorRenderer.replicators.add(this);
 		}
 	}
 	

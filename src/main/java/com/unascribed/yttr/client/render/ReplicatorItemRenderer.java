@@ -29,12 +29,12 @@ public class ReplicatorItemRenderer extends IHasAClient {
 			item = new ItemStack(Items.APPLE);
 			// ¿¿¿¿¿
 		}
-		ReplicatorRenderer.render(matrices, mc.world == null ? 0 : mc.getTickDelta(), seed, item, BlockPos.ORIGIN, mc.world == null ? 0 : (int)mc.world.getTime(), null, mode == Mode.GUI ? -1 : 0);
+		ReplicatorRenderer.render(matrices, mc.world == null ? 0 : mc.getTickDelta(), seed, item, BlockPos.ORIGIN, mc.world == null ? 0 : (int)mc.world.getTime(), null, mode == Mode.GUI ? -1 : 0, 0.5f);
 		if (fudge) {
 			matrices.pop();
 		}
 		RenderSystem.depthMask(false);
-		ReplicatorRenderer.render(matrices, mc.world == null ? 0 : mc.getTickDelta(), seed, item, BlockPos.ORIGIN, mc.world == null ? 0 : (int)mc.world.getTime(), null, 1);
+		ReplicatorRenderer.render(matrices, mc.world == null ? 0 : mc.getTickDelta(), seed, item, BlockPos.ORIGIN, mc.world == null ? 0 : (int)mc.world.getTime(), null, 1, 0.5f);
 		RenderSystem.depthMask(true);
 	}
 	

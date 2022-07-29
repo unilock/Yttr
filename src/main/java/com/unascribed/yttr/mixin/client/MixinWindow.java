@@ -8,13 +8,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 
-import org.lwjgl.system.Platform;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.client.RenderBridge;
 import com.unascribed.yttr.util.YLog;
 
 import net.fabricmc.api.EnvType;
@@ -28,7 +27,7 @@ public class MixinWindow {
 	@Inject(at=@At(value="INVOKE", target="org/lwjgl/glfw/GLFW.glfwCreateWindow(IILjava/lang/CharSequence;JJ)J"),
 			method="<init>")
 	private void modifyGlfwHints(CallbackInfo ci) {
-		if (!YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) {
+		if (!RenderBridge.canUseCompatFunctions()) {
 			YLog.warn("Launching with OpenGL Core Profile. This is NOT SUPPORTED!");
 			return;
 		}

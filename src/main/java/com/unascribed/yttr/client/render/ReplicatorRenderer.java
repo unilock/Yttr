@@ -1,31 +1,6 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.yttr.client.RenderBridge.glCopyMCLight;
-import static com.unascribed.yttr.client.RenderBridge.glDefaultBlendFunc;
-import static com.unascribed.yttr.client.RenderBridge.glPopMCMatrix;
-import static com.unascribed.yttr.client.RenderBridge.glPushMCMatrix;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_MATERIAL;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LEQUAL;
-import static org.lwjgl.opengl.GL11.GL_LESS;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glCallList;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glDepthFunc;
-import static org.lwjgl.opengl.GL11.glDepthMask;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL12.GL_RESCALE_NORMAL;
-import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
+import static com.unascribed.yttr.client.RenderBridge.*;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -33,10 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.lwjgl.system.Platform;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.ReplicatorShapes;
 import com.unascribed.yttr.client.YttrClient;
@@ -134,7 +106,7 @@ public class ReplicatorRenderer extends IHasAClient {
 		return true;
 	}
 	
-	public static void render(MatrixStack matrices, float tickDelta, int seed, ItemStack item, BlockPos pos, int ticks, Camera cam, int pass) {
+	public static void render(MatrixStack matrices, float tickDelta, int seed, ItemStack item, BlockPos pos, int ticks, Camera cam, int pass, float detail) {
 		if (pass < 2 || pass == -1) {
 			matrices.push();
 			matrices.translate(0.5, 0.5, 0.5);
@@ -178,7 +150,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.pop();
 			}
 			
-			if (pass == 1 && YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX)) {
+			if (pass == 1 && canUseCompatFunctions()) {
 				int solid1 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
 				int solid2 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
 
@@ -211,10 +183,11 @@ public class ReplicatorRenderer extends IHasAClient {
 				float b = (0.25f+(rand.nextFloat()*0.75f))/2;
 				glDisable(GL_LIGHTING);
 				glPushMatrix();
-				for (int i = 0; i < (MinecraftClient.isFancyGraphicsOrBetter() ? 6 : 1); i++) {
-					glColor4f(r, g, b, i == 0 ? 0.4f : 0.1f);
+				for (int i = 0; i < Math.ceil((MinecraftClient.isFancyGraphicsOrBetter() ? 6 : 1)*detail); i++) {
+					glColor4f(r, g, b, i == 0 ? 0.4f : (0.1f/detail));
 					glCallList(solid1);
-					glScalef(1.05f, 1.05f, 1.05f);
+					float s = 1+(0.05f/detail);
+					glScalef(s, s, s);
 				}
 				glPopMatrix();
 				
@@ -300,7 +273,15 @@ public class ReplicatorRenderer extends IHasAClient {
 						matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(a*720));
 						matrices.translate(-0.5, -0.5, -0.5);
 					}
-					render(matrices, wrc.tickDelta(), rbe.seed, rbe.item, rbe.getPos(), rbe.clientAge, wrc.camera(), pass);
+					float detail = 1;
+					if (rbe.distTmp < 2*2) {
+						detail = 2;
+					} else if (rbe.distTmp > 12*12) {
+						detail = 0.5f;
+					} else if (rbe.distTmp > 32*32) {
+						detail = 0.1f;
+					}
+					render(matrices, wrc.tickDelta(), rbe.seed, rbe.item, rbe.getPos(), rbe.clientAge, wrc.camera(), pass, detail);
 					matrices.pop();
 				}
 				wrc.profiler().pop();
@@ -316,8 +297,7 @@ public class ReplicatorRenderer extends IHasAClient {
 		Set<ReplicatorBlockEntity> valid = Sets.newHashSet();
 		if (mc.world != null) {
 			for (BlockEntity be : YttrClient.getBlockEntities()) {
-				if (be instanceof ReplicatorBlockEntity) {
-					ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
+				if (be instanceof ReplicatorBlockEntity rbe) {
 					valid.add(rbe);
 					rbe.clientTick();
 				}
@@ -326,7 +306,8 @@ public class ReplicatorRenderer extends IHasAClient {
 			replicators.clear();
 			removing.clear();
 		}
-		replicators.retainAll(valid);
+		replicators.clear();
+		replicators.addAll(valid);
 		Iterator<ReplicatorBlockEntity> iter = removing.iterator();
 		while (iter.hasNext()) {
 			ReplicatorBlockEntity rbe = iter.next();

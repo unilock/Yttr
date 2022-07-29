@@ -2,9 +2,6 @@ package com.unascribed.yttr.client.render.block_entity;
 
 import static com.unascribed.yttr.client.RenderBridge.*;
 
-import org.lwjgl.system.Platform;
-
-import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
@@ -36,7 +33,7 @@ public class SqueezedLeavesBlockEntityRenderer implements BlockEntityRenderer<Sq
 			float time = ((ticks-entity.squeezeBegin)+tickDelta)%4;
 			final float TAU = (float)(Math.PI*2);
 			float a = 0.75f+((MathHelper.sin((time/4)*TAU)+1)/8);
-			boolean texhack = YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX);
+			boolean texhack = canUseCompatFunctions();
 			Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/squeeze_leaves"));
 			float w = sprite.getMaxU()-sprite.getMinU();
 			float h = sprite.getMaxV()-sprite.getMinV();

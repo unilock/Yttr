@@ -4,10 +4,7 @@ import static com.unascribed.yttr.client.RenderBridge.*;
 
 import java.util.Set;
 
-import org.lwjgl.system.Platform;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YttrClient;
@@ -60,7 +57,7 @@ public class ShifterUI extends IHasAClient {
 				lastPositions = positions;
 				lastShape = shanpe;
 				
-				boolean goodLines = YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX);
+				boolean goodLines = canUseCompatFunctions();
 				
 				if (goodLines) {
 					glShadeModel(GL_SMOOTH);
