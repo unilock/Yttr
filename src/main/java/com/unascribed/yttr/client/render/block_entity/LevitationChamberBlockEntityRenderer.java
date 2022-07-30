@@ -22,15 +22,18 @@ public class LevitationChamberBlockEntityRenderer implements BlockEntityRenderer
 			MinecraftClient.getInstance().getEntityModelLoader(),
 			MinecraftClient.getInstance().textRenderer
 		));
-	private final ShulkerBulletEntity dummy = new ShulkerBulletEntity(EntityType.SHULKER_BULLET, null) {
-		@Override
-		public boolean shouldRenderName() {
-			return false;
-		}
-	};
+	private ShulkerBulletEntity dummy;
 
 	@Override
 	public void render(LevitationChamberBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		if (dummy == null) {
+			dummy = new ShulkerBulletEntity(EntityType.SHULKER_BULLET, null) {
+				@Override
+				public boolean shouldRenderName() {
+					return false;
+				}
+			};
+		}
 		Vec3d eyes = MinecraftClient.getInstance().getCameraEntity().getCameraPosVec(1);
 		switch (entity.getCachedState().get(LevitationChamberBlock.OBSTRUCTION)) {
 			case CHUTE:
