@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
@@ -68,6 +69,7 @@ import net.minecraft.util.registry.Registry;
 public class YttrEmiPlugin implements EmiPlugin {
 
 	public static final EmiRecipeCategory SHATTERING = new EmiRecipeCategory(Yttr.id("shattering"), createShatteringPickaxe(Items.DIAMOND_PICKAXE));
+	public static final EmiRecipeCategory CONTINUITY_GIFTS = new EmiRecipeCategory(Yttr.id("continuity_gifts"), EmiStack.of(YItems.DROP_OF_CONTINUITY));
 	
 	static class Texture {
 		public static final EmiTexture SHATTERING = new EmiTexture(Yttr.id("textures/gui/shattering.png"), 0, 0, 24, 17, 24, 17, 24, 33);
@@ -76,6 +78,10 @@ public class YttrEmiPlugin implements EmiPlugin {
 	@Override
 	public void register(EmiRegistry registry) {
 		registry.addCategory(SHATTERING);
+		registry.addCategory(CONTINUITY_GIFTS);
+		
+		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
+		
 		List<EmiStack> pickaxes = new ArrayList<>();
 		for (var en : Registry.ITEM.getEntries()) {
 			if (YEnchantments.SHATTERING_CURSE.isAcceptableItem(new ItemStack(en.getValue()))) {
@@ -92,6 +98,10 @@ public class YttrEmiPlugin implements EmiPlugin {
 				return tooltip;
 			}
 		});
+		
+		registry.addRecipe(new EmiGiftRecipe(DropOfContinuityItem.getPossibilities().stream()
+				.map(EmiStack::of)
+				.toList()));
 		
 		registry.addRecipe(EmiWorldInteractionRecipe.builder()
 			.id(Yttr.id("stripping/squeeze_log"))

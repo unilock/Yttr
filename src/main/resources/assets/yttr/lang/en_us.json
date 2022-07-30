@@ -687,7 +687,7 @@
 	"emi.category.yttr.piston_smashing": "Piston Smashing",
 	"emi.category.yttr.centrifuging": "Centrifuging",
 	"emi.category.yttr.soaking": "Soaking",
-	"emi.category.yttr.continuity": "Gifts",
+	"emi.category.yttr.continuity_gifts": "Gifts",
 	"emi.category.yttr.ruined": "Forgotten Crafting",
 	"emi.category.yttr.lamp_crafting": "Misc. Lamp Crafting",
 	"emi.category.yttr.shattering": "Shattering",
@@ -699,7 +699,8 @@
 	
 	"emi.category.yttr.soaking.consumes_catalyst": "Consumes fluid",
 	
-	"emi.category.yttr.continuity.chance": "%s%%",
+	"emi.category.yttr.continuity_gifts.chance": "%s%%",
+	"emi.category.yttr.continuity_gifts.chance.tooltip": "Chance of any one specific item",
 	
 	"emi.category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
 	
