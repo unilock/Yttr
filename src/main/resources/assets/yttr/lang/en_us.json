@@ -683,23 +683,25 @@
 	"tag.trinkets.feet.sole": "Sole Trinkets",
 	"tag.trinkets.chest.back": "Back Trinkets",
 	
-	"category.yttr.void_filtering": "Void Filtering",
-	"category.yttr.piston_smashing": "Piston Smashing",
-	"category.yttr.centrifuging": "Centrifuging",
-	"category.yttr.soaking": "Soaking",
-	"category.yttr.continuity": "Gifts",
-	"category.yttr.ruined": "Forgotten Crafting",
-	"category.yttr.lamp_crafting": "Misc. Lamp Crafting",
-	"category.yttr.shattering": "Shattering",
+	"emi.category.yttr.void_filtering": "Void Filtering",
+	"emi.category.yttr.piston_smashing": "Piston Smashing",
+	"emi.category.yttr.centrifuging": "Centrifuging",
+	"emi.category.yttr.soaking": "Soaking",
+	"emi.category.yttr.continuity": "Gifts",
+	"emi.category.yttr.ruined": "Forgotten Crafting",
+	"emi.category.yttr.lamp_crafting": "Misc. Lamp Crafting",
+	"emi.category.yttr.shattering": "Shattering",
 	
-	"category.yttr.void_filtering.chance": "Chance: %s%%",
-	"category.yttr.void_filtering.chance.short": "%s%%",
+	"emi.tooltip.yttr.any_tool": "Any Tool",
 	
-	"category.yttr.soaking.consumes_catalyst": "Consumes fluid",
+	"emi.category.yttr.void_filtering.chance": "Chance: %s%%",
+	"emi.category.yttr.void_filtering.chance.short": "%s%%",
 	
-	"category.yttr.continuity.chance": "%s%%",
+	"emi.category.yttr.soaking.consumes_catalyst": "Consumes fluid",
 	
-	"category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
+	"emi.category.yttr.continuity.chance": "%s%%",
+	
+	"emi.category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
 	
 	"tooltip.yttr.suit_helmet_hud": "HUD Color: %s",
 	

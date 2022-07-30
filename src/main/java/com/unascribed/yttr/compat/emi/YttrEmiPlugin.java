@@ -1,45 +1,61 @@
 package com.unascribed.yttr.compat.emi;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixinsupport.ItemGroupParent;
 import com.unascribed.yttr.mixinsupport.SubTabLocation;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
+import dev.emi.emi.EmiRenderHelper;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
+import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
+import dev.emi.emi.api.render.EmiRenderable;
+import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.screen.tooltip.IngredientTooltipComponent;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
@@ -47,11 +63,36 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
 
 public class YttrEmiPlugin implements EmiPlugin {
 
+	public static final EmiRecipeCategory SHATTERING = new EmiRecipeCategory(Yttr.id("shattering"), createShatteringPickaxe(Items.DIAMOND_PICKAXE));
+	
+	static class Texture {
+		public static final EmiTexture SHATTERING = new EmiTexture(Yttr.id("textures/gui/shattering.png"), 0, 0, 24, 17, 24, 17, 24, 33);
+	}
+	
 	@Override
 	public void register(EmiRegistry registry) {
+		registry.addCategory(SHATTERING);
+		List<EmiStack> pickaxes = new ArrayList<>();
+		for (var en : Registry.ITEM.getEntries()) {
+			if (YEnchantments.SHATTERING_CURSE.isAcceptableItem(new ItemStack(en.getValue()))) {
+				pickaxes.add(createShatteringPickaxe(en.getValue()));
+			}
+		}
+		registry.addWorkstation(SHATTERING, new ListEmiIngredient(pickaxes, 1) {
+			@Override
+			public List<TooltipComponent> getTooltip() {
+				List<TooltipComponent> tooltip = Lists.newArrayList();
+				tooltip.add(TooltipComponent.of(new TranslatableText("emi.tooltip.yttr.any_tool").asOrderedText()));
+				tooltip.add(TooltipComponent.of(YEnchantments.SHATTERING_CURSE.getName(1).asOrderedText()));
+				tooltip.add(new IngredientTooltipComponent(pickaxes));
+				return tooltip;
+			}
+		});
+		
 		registry.addRecipe(EmiWorldInteractionRecipe.builder()
 			.id(Yttr.id("stripping/squeeze_log"))
 			.leftInput(EmiStack.of(YBlocks.SQUEEZE_LOG))
@@ -87,6 +128,18 @@ public class YttrEmiPlugin implements EmiPlugin {
 				out.accept(new Bounds(stl.yttr$getX(), stl.yttr$getY(), stl.yttr$getW(), stl.yttr$getH()));
 			}
 		});
+		
+		registry.getRecipeManager().listAllOfType(YRecipeTypes.SHATTERING).stream()
+			.map(EmiShatteringRecipe::new)
+			.forEach(registry::addRecipe);
+		registry.getRecipeManager().listAllOfType(RecipeType.STONECUTTING).stream()
+			.filter(r -> r.getOutput().getCount() == 1 && !r.getIngredients().isEmpty())
+			.map(EmiShatteringRecipe::new)
+			.forEach(registry::addRecipe);
+		registry.getRecipeManager().listAllOfType(RecipeType.CRAFTING).stream()
+			.filter(r -> r.fits(1, 1) && !r.getIngredients().isEmpty())
+			.map(EmiShatteringRecipe::new)
+			.forEach(registry::addRecipe);
 		
 		Hash.Strategy<ItemStack> itemStackStrategy = new Hash.Strategy<ItemStack>() {
 
@@ -230,6 +283,12 @@ public class YttrEmiPlugin implements EmiPlugin {
 		}
 	}
 	
+	private static EmiStack createShatteringPickaxe(Item item) {
+		ItemStack is = new ItemStack(item);
+		EnchantmentHelper.set(ImmutableMap.of(YEnchantments.SHATTERING_CURSE, 1), is);
+		return EmiStack.of(is);
+	}
+
 	private void permute(ItemStack is, BiConsumer<ItemStack, Boolean> cb) {
 		if (is.getItem() instanceof LampBlockItem) {
 			for (LampColor lc : LampColor.VALUES) {
@@ -248,5 +307,11 @@ public class YttrEmiPlugin implements EmiPlugin {
 		}
 	}
 
+	private static EmiRenderable simplifiedRenderer(int u, int v) {
+		return (matrices, x, y, delta) -> {
+			RenderSystem.setShaderTexture(0, EmiRenderHelper.WIDGETS);
+			DrawableHelper.drawTexture(matrices, x, y, u, v, 16, 16, 256, 256);
+		};
+	}
 
 }
