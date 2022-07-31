@@ -31,7 +31,6 @@ public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDisp
 	private MethodHandle tryPutFilledBottle;
 	
 	@Inject(at=@At("HEAD"), method={
-			"(Lgk;Lbuw;)Lbuw;", // obf (just in case)
 			"method_10135(Lnet/minecraft/class_2342;Lnet/minecraft/class_1799;)Lnet/minecraft/class_1799;", // intermediary
 			"m_clhynwvb(Lnet/minecraft/C_wzdnszcs;Lnet/minecraft/C_sddaxwyk;)Lnet/minecraft/C_sddaxwyk;", // hashed
 			"dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", // quilt mappings
@@ -40,10 +39,11 @@ public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDisp
 		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(ptr.getWorld(), new Box(ptr.getPos()).expand(0.5));
 		if (r != null) {
 			setSuccess(true);
+			Object self = this;
 			if (tryPutFilledBottle == null) {
 				Method tpfb = null;
 				var sig = List.of(BlockPointer.class, ItemStack.class, ItemStack.class);
-				for (Method m : getClass().getDeclaredMethods()) {
+				for (Method m : self.getClass().getDeclaredMethods()) {
 					if (Arrays.asList(m.getParameterTypes()).equals(sig)) {
 						tpfb = m;
 						break;
@@ -57,7 +57,7 @@ public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDisp
 				}
 			}
 			try {
-				ci.setReturnValue((ItemStack)tryPutFilledBottle.invoke(this, ptr, stack, r.getCloudOutput().copy()));
+				ci.setReturnValue((ItemStack)tryPutFilledBottle.invoke(self, ptr, stack, r.getCloudOutput().copy()));
 			} catch (RuntimeException e) {
 				throw e;
 			} catch (Throwable e) {

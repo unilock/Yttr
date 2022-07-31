@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -76,7 +77,20 @@ public class EffectorRenderer extends IHasAClient {
 					drawVoidCap(w, ms, mut, hole.length, axisX, axisY, a, hole.start, hole.dir);
 					drawVoidCap(w, ms, mut, 0, axisX, axisY, a, hole.start.offset(hole.dir, hole.length-1), hole.dir.getOpposite());
 				}
-				bb.begin(DrawMode.QUADS, RenderLayer.getSolid().getVertexFormat());
+				RenderSystem.setShader(GameRenderer::getRenderTypeCutoutShader);
+				RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+				bb.begin(DrawMode.QUADS, RenderLayer.getCutout().getVertexFormat());
+				ms.push();
+				var trans = hole.dir.getUnitVector().copy();
+				trans.scale(hole.length/2f);
+				ms.translate(trans.getX(), trans.getY(), trans.getZ());
+				float s = (hole.length-0.01f)/hole.length;
+				switch (axisZ) {
+					case X -> ms.scale(s, 1, 1);
+					case Y -> ms.scale(1, s, 1);
+					case Z -> ms.scale(1, 1, s);
+				}
+				ms.translate(-trans.getX(), -trans.getY(), -trans.getZ());
 				for (int z = 0; z < hole.length; z++) {
 					mut.set(hole.start).move(hole.dir, z);
 					EffectorItem.move(mut, axisY, -2);
@@ -107,12 +121,11 @@ public class EffectorRenderer extends IHasAClient {
 						EffectorItem.move(mut, axisY, 1);
 					}
 				}
+				ms.pop();
 				RenderSystem.depthMask(false);
-				RenderSystem.disableTexture();
 				RenderSystem.enablePolygonOffset();
-				RenderSystem.polygonOffset(-3, -3);
+				RenderSystem.polygonOffset(-1, 1);
 				tess.draw();
-				RenderSystem.enableTexture();
 				RenderSystem.depthMask(true);
 				RenderSystem.depthFunc(GL11.GL_LESS);
 				RenderSystem.disablePolygonOffset();
@@ -123,6 +136,7 @@ public class EffectorRenderer extends IHasAClient {
 	}
 	
 	private static void drawVoidCap(ClientWorld w, MatrixStack ms, BlockPos.Mutable mut, int l, Axis axisX, Axis axisY, float a, BlockPos pos, Direction dir) {
+		RenderSystem.setShader(GameRenderer::getPositionShader);
 		Tessellator tess = Tessellator.getInstance();
 		BufferBuilder bb = tess.getBuffer();
 		ms.push();
@@ -132,7 +146,6 @@ public class EffectorRenderer extends IHasAClient {
 		Matrix4f mat = ms.peek().getModel();
 		if (a != 0) {
 			float s = a*1.5f;
-			RenderSystem.disableTexture();
 			if (l > 0) {
 				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
@@ -176,25 +189,27 @@ public class EffectorRenderer extends IHasAClient {
 			RenderSystem.colorMask(true, true, true, true);
 			RenderSystem.setShaderColor(1, 1, 1, 1);
 			RenderSystem.enableCull();
-			RenderSystem.enableTexture();
 		}
 		ms.pop();
+		RenderSystem.setShader(GameRenderer::getRenderTypeCutoutShader);
 		RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-		bb.begin(DrawMode.QUADS, RenderLayer.getSolid().getVertexFormat());
-//		DiffuseLighting.enable();
+		bb.begin(DrawMode.QUADS, RenderLayer.getCutout().getVertexFormat());
+		mc.gameRenderer.getLightmapTextureManager().enable();
 		Random r = new Random();
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
 				mut.set(pos);
 				EffectorItem.move(mut, axisX, x);
 				EffectorItem.move(mut, axisY, y);
+				mut.move(dir, -1);
 				int sky = w.getLightLevel(LightType.SKY, mut);
 				int block = w.getLightLevel(LightType.BLOCK, mut);
 				int light = LightmapTextureManager.pack(block, sky);
+				mut.move(dir, 1);
 				BlockState state = mc.world.getBlockState(mut);
 				BakedModel model = mc.getBlockRenderManager().getModel(state);
 				if (model == null) continue;
-				r.setSeed(42);
+				r.setSeed(state.getRenderingSeed(mut));
 				Iterable<BakedQuad> quads = model.getQuads(state, dir.getOpposite(), r);
 				if (quads == null) continue;
 				ms.push();
@@ -207,10 +222,10 @@ public class EffectorRenderer extends IHasAClient {
 			}
 		}
 		tess.draw();
-//		DiffuseLighting.disable();
+		mc.gameRenderer.getLightmapTextureManager().disable();
+		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.colorMask(false, false, false, false);
 		RenderSystem.disableCull();
-		RenderSystem.disableTexture();
 		bb.begin(DrawMode.QUADS, VertexFormats.POSITION);
 		bb.vertex(mat, -1.5f, 0, -1.5f).next();
 		bb.vertex(mat,  1.5f, 0, -1.5f).next();
@@ -218,7 +233,6 @@ public class EffectorRenderer extends IHasAClient {
 		bb.vertex(mat, -1.5f, 0,  1.5f).next();
 		tess.draw();
 		RenderSystem.colorMask(true, true, true, true);
-		RenderSystem.enableTexture();
 		RenderSystem.enableCull();
 	}
 	
