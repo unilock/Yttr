@@ -98,6 +98,8 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -163,15 +165,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			registry.register(Yttr.id("block/bloque_welded_top"));
 		});
 		doReflectionMagic();
-//		ArmorRenderingRegistry.registerTexture((entity, stack, slot, secondLayer, suffix, defaultTexture) -> {
-//			String namespace = "minecraft";
-//			String name = "diamond";
-//			if (stack.hasNbt() && stack.getNbt().getInt("yttr:DurabilityBonus") > 0) {
-//				namespace = "yttr";
-//				name = "ultrapure_diamond";
-//			}
-//			return new Identifier(namespace, "textures/models/armor/" + name + "_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
-//		}, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS);
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))
@@ -623,6 +616,17 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Matrix3f normal = matrices.peek().getNormal();
 		vc.vertex(model, x1, y1, z1).color(r1, g1, b1, a1).normal(normal, dX, dY, dZ).next();
 		vc.vertex(model, x2, y2, z2).color(r2, g2, b2, a2).normal(normal, dX, dY, dZ).next();
+	}
+
+	public static Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, String suffix, Identifier id) {
+		if ((stack.isOf(Items.DIAMOND_HELMET) ||
+					stack.isOf(Items.DIAMOND_CHESTPLATE) ||
+					stack.isOf(Items.DIAMOND_LEGGINGS) ||
+					stack.isOf(Items.DIAMOND_BOOTS)
+				) && stack.hasNbt() && stack.getNbt().getInt("yttr:DurabilityBonus") > 0) {
+			return new Identifier("textures/models/armor/yttr_ultrapure_diamond_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
+		}
+		return id;
 	}
 	
 }
