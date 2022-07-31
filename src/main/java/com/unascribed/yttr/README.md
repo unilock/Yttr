@@ -48,7 +48,7 @@ I don't use them.
 
 `world`.
 
-## REI and other mods support
+## EMI and other mods support
 
 `compat`. Each mod Yttr has compat with gets its own subpackage.
 

@@ -4,7 +4,7 @@
 # Replicator *(0.4.2)*
 
 Replicators are normally-Creative-only items that can infinitely duplicate a given item. They can
-be retrieved from the Yttr creative tab, or REI, or /give, whatever you have available.
+be retrieved from the Yttr creative tab, EMI, or /give, whatever you have available.
 
 A Replicator can be placed like a block, and once right-clicked with any item, it will be configured
 to produce that item. It can be used with automation such as hoppers, and acts as an infinite source

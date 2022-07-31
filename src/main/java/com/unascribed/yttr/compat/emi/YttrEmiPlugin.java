@@ -1,6 +1,8 @@
 package com.unascribed.yttr.compat.emi;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -9,6 +11,7 @@ import java.util.function.Function;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.LampRecipe;
@@ -44,6 +47,7 @@ import dev.emi.emi.screen.tooltip.IngredientTooltipComponent;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
@@ -58,11 +62,13 @@ import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 
@@ -70,6 +76,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 
 	public static final EmiRecipeCategory SHATTERING = new EmiRecipeCategory(Yttr.id("shattering"), createShatteringPickaxe(Items.DIAMOND_PICKAXE));
 	public static final EmiRecipeCategory CONTINUITY_GIFTS = new EmiRecipeCategory(Yttr.id("continuity_gifts"), EmiStack.of(YItems.DROP_OF_CONTINUITY));
+	public static final EmiRecipeCategory FORGOTTEN_CRAFTING = new EmiRecipeCategory(Yttr.id("forgotten_crafting"), EmiStack.of(YItems.WASTELAND_DIRT));
 	
 	static class Texture {
 		public static final EmiTexture SHATTERING = new EmiTexture(Yttr.id("textures/gui/shattering.png"), 0, 0, 24, 17, 24, 17, 24, 33);
@@ -79,6 +86,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 	public void register(EmiRegistry registry) {
 		registry.addCategory(SHATTERING);
 		registry.addCategory(CONTINUITY_GIFTS);
+		registry.addCategory(FORGOTTEN_CRAFTING);
 		
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
 		
@@ -150,6 +158,27 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.filter(r -> r.fits(1, 1) && !r.getIngredients().isEmpty())
 			.map(EmiShatteringRecipe::new)
 			.forEach(registry::addRecipe);
+		
+		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
+		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
+			String name = id.getPath();
+			name = name.substring(27, name.length()-4);
+			if (id.getNamespace().equals("yttr") && (name.equals("border") || name.equals("overlay"))) continue;
+			Identifier itemId = new Identifier(id.getNamespace(), name);
+			Item result = Registry.ITEM.getOrEmpty(itemId).orElse(null);
+			if (result != null) {
+				RuinedRecipeResourceMetadata meta = null;
+				try {
+					meta = rm.getResource(id).getMetadata(RuinedRecipeResourceMetadata.READER);
+				} catch (IOException e) {
+				}
+				Set<Integer> emptySlots = Collections.emptySet();
+				if (meta != null) {
+					emptySlots = meta.getEmptySlots();
+				}
+				registry.addRecipe(new EmiForgottenRecipe(itemId, emptySlots, EmiStack.of(result)));
+			}
+		}
 		
 		Hash.Strategy<ItemStack> itemStackStrategy = new Hash.Strategy<ItemStack>() {
 
