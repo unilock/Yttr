@@ -1,0 +1,18 @@
+{
+	"type": "yttr:centrifuging",
+	"time": 400,
+	"ingredient": {
+		"item": "minecraft:dandelion",
+		"count": 1
+	},
+	"results": [
+		{
+			"item": "minecraft:green_dye",
+			"count": 1
+		},
+		{
+			"item": "minecraft:yellow_dye",
+			"count": 2
+		}
+	]
+}

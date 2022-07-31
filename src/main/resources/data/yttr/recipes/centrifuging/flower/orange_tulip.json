@@ -1,0 +1,18 @@
+{
+	"type": "yttr:centrifuging",
+	"time": 400,
+	"ingredient": {
+		"item": "minecraft:orange_tulip",
+		"count": 1
+	},
+	"results": [
+		{
+			"item": "minecraft:green_dye",
+			"count": 1
+		},
+		{
+			"item": "minecraft:orange_dye",
+			"count": 2
+		}
+	]
+}

@@ -133,7 +133,6 @@ public class YttrEmiPlugin implements EmiPlugin {
 						|| (it instanceof CraftingRecipe cr && (cr.getIngredients().size() > 9
 								|| (cr instanceof ShapedRecipe sr && (sr.getWidth() > 3 || sr.getHeight() > 3))))).orElse(false));
 		
-		registry.removeEmiStacks(EmiStack.of(YBlocks.DUST));
 		registry.removeEmiStacks(EmiStack.of(YBlocks.RAFTER));
 		registry.removeEmiStacks(EmiStack.of(YBlocks.GIANT_COBBLESTONE));
 		registry.removeEmiStacks(EmiStack.of(YItems.LOOTBOX_OF_CONTINUITY));
