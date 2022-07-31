@@ -1,6 +1,6 @@
 {
 	"type": "yttr:centrifuging",
-	"time": 400,
+	"time": 200,
 	"ingredient": {
 		"item": "minecraft:sunflower",
 		"count": 1

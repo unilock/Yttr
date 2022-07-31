@@ -36,7 +36,7 @@ public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
 		float prog = handler.getSpinTime()/(float)handler.getMaxSpinTime();
 		int p = Math.round(41*prog);
-		int pr = 41-p;
+		int pr = 40-p;
 		int a = p-37;
 		int ar = 4-a;
 		if (p > 36) {

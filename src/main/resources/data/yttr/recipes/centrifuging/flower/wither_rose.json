@@ -1,6 +1,6 @@
 {
 	"type": "yttr:centrifuging",
-	"time": 400,
+	"time": 200,
 	"ingredient": {
 		"item": "minecraft:wither_rose",
 		"count": 1

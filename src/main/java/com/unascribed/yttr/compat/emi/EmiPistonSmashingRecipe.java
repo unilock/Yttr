@@ -71,7 +71,7 @@ public class EmiPistonSmashingRecipe implements EmiRecipe {
 	@Override
 	public List<EmiIngredient> getInputs() {
 		List<EmiIngredient> li = Lists.newArrayList();
-		if (!cloudOutput.isEmpty()) li.add(EmiStack.of(Items.GLASS_BOTTLE));
+		if (!cloudOutput.isEmpty()) li.add(EmiStack.of(Items.GLASS_BOTTLE, cloudOutput.getAmount()));
 		li.add(EmiIngredient.of(input.stream().map(EmiStack::of).toList()));
 		return li;
 	}
