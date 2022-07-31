@@ -313,7 +313,8 @@ public class YttrEmiPlugin implements EmiPlugin {
 									if (!result.isEmpty()) {
 										boolean isColorless = colorless || colorless2;
 										if (ingredients.size() == 1) isColorless = colorless2;
-										if (result.getItem() instanceof LampBlockItem && LampBlockItem.getColor(result) == LampColor.COLORLESS) {
+										if (result.getItem() instanceof LampBlockItem && LampBlockItem.getColor(result) == LampColor.COLORLESS
+												|| result.getItem() == YItems.SUIT_HELMET) {
 											isColorless = false;
 										}
 										(isColorless ? resultsToColorlessInputs : resultsToInputs)
@@ -358,7 +359,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 										.map(EmiStack::of)
 										.toList()))
 								.toList(),
-							EmiStack.of(result),
+							result.isOf(YItems.SUIT_HELMET) ? new SuitHelmetEmiStack(result) : EmiStack.of(result),
 							Yttr.id(r.getId().getPath()+names[k]+permutation),
 							shapeless
 						);

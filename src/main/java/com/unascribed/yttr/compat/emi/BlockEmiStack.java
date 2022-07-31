@@ -10,8 +10,6 @@ import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -51,22 +49,10 @@ public class BlockEmiStack extends ItemEmiStack {
 			EmiRender.renderRemainderIcon(this, matrices, x, y);
 		}
 	}
-
+	
 	@Override
-	public void renderForBatch(VertexConsumerProvider vcp, MatrixStack matrices, int x, int y, int z, float delta) {
-		ItemStack stack = this.getItemStack();
-		ItemRenderer ir = MinecraftClient.getInstance().getItemRenderer();
-		BakedModel model = ir.getHeldItemModel(stack, null, null, 0);
-		
-		matrices.push();
-		try {
-			matrices.translate(x, y, 100.0F + z + (model.hasDepth() ? 50 : 0));
-			matrices.translate(8.0D, 8.0D, 0.0D);
-			matrices.scale(16.0F, 16.0F, 16.0F);
-			ir.renderItem(stack, Mode.NONE, false, matrices, vcp, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, model);
-		} finally {
-			matrices.pop();
-		}
+	public boolean isUnbatchable() {
+		return true;
 	}
 
 }

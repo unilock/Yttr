@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 
 public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 
-	private static final Identifier BG = Yttr.id("textures/gui/suit_station.png");
+	public static final Identifier BG = Yttr.id("textures/gui/suit_station.png");
 	
 	public SuitStationScreen(SuitStationScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
