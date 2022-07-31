@@ -2,7 +2,6 @@ package com.unascribed.yttr.compat.emi;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -14,9 +13,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
-import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
-import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEnchantments;
@@ -77,6 +74,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 	// actual crafting methods
 	public static final EmiRecipeCategory PISTON_SMASHING = category(EmiStack.of(Items.PISTON));
 	public static final EmiRecipeCategory CENTRIFUGING = category(EmiStack.of(YItems.CENTRIFUGE));
+	public static final EmiRecipeCategory SOAKING = category(EmiStack.of(YItems.VOID_BUCKET));
 	
 	// miscellaneous
 	public static final EmiRecipeCategory SHATTERING = category(createShatteringPickaxe(Items.DIAMOND_PICKAXE));
@@ -172,24 +170,18 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.map(EmiShatteringRecipe::new)
 			.forEach(registry::addRecipe);
 		
-		for (PistonSmashingRecipe r : registry.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING)) {
-			ItemStack multCloudOutput = r.getCloudOutput().copy();
-			multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
-			registry.addRecipe(new EmiPistonSmashingRecipe(r.getId(), r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(),
-					EmiStack.of(r.getOutput()), r.getCloudColor(), EmiStack.of(multCloudOutput)));
-		}
+		registry.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING).stream()
+			.map(EmiPistonSmashingRecipe::new)
+			.forEach(registry::addRecipe);
 		
-		for (CentrifugingRecipe r : registry.getRecipeManager().listAllOfType(YRecipeTypes.CENTRIFUGING)) {
-			var inputs = EmiIngredient.of(Arrays.stream(r.getInput().getMatchingStacks())
-					.map(ItemStack::copy)
-					.peek(is -> is.setCount(r.getInputCount()))
-					.map(EmiStack::of)
-					.toList());
-			var outputs = r.getOutputs().stream()
-					.map(EmiStack::of)
-					.toList();
-			registry.addRecipe(new EmiCentrifugingRecipe(r.getId(), inputs, outputs));
-		}
+		registry.getRecipeManager().listAllOfType(YRecipeTypes.CENTRIFUGING).stream()
+			.map(EmiCentrifugingRecipe::new)
+			.forEach(registry::addRecipe);
+		
+		registry.getRecipeManager().listAllOfType(YRecipeTypes.SOAKING).stream()
+			.map(EmiSoakingRecipe::new)
+			.forEach(registry::addRecipe);
+		
 		
 		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
 		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.compress.utils.Lists;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -12,6 +13,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -25,6 +27,17 @@ public class EmiPistonSmashingRecipe implements EmiRecipe {
 	private final EmiStack output;
 	private final int cloudColor;
 	private final EmiStack cloudOutput;
+	
+	public EmiPistonSmashingRecipe(PistonSmashingRecipe r) {
+		this.id = r.getId();
+		this.input = r.getInput().getMatchingBlocks();
+		this.catalysts = r.getCatalyst().getMatchingBlocks();
+		this.output = EmiStack.of(r.getOutput());
+		this.cloudColor = r.getCloudColor();
+		ItemStack multCloudOutput = r.getCloudOutput().copy();
+		multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
+		this.cloudOutput = EmiStack.of(multCloudOutput);
+	}
 	
 	public EmiPistonSmashingRecipe(Identifier id, List<Block> input, List<Block> catalysts, EmiStack output, int cloudColor, EmiStack cloudOutput) {
 		this.id = id;

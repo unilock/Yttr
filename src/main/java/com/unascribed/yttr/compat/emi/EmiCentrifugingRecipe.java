@@ -1,14 +1,17 @@
 package com.unascribed.yttr.compat.emi;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.crafting.CentrifugingRecipe;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 
@@ -17,6 +20,18 @@ public class EmiCentrifugingRecipe implements EmiRecipe {
 	private final Identifier id;
 	private final EmiIngredient input;
 	private final List<EmiStack> outputs;
+	
+	public EmiCentrifugingRecipe(CentrifugingRecipe r) {
+		this.id = r.getId();
+		this.input = EmiIngredient.of(Arrays.stream(r.getInput().getMatchingStacks())
+				.map(ItemStack::copy)
+				.peek(is -> is.setCount(r.getInputCount()))
+				.map(EmiStack::of)
+				.toList());
+		this.outputs = r.getOutputs().stream()
+				.map(EmiStack::of)
+				.toList();
+	}
 	
 	public EmiCentrifugingRecipe(Identifier id, EmiIngredient input, List<EmiStack> outputs) {
 		this.id = id;

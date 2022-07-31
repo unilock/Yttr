@@ -1,8 +1,0 @@
-{
-	"type": "yttr:soaking",
-	"ingredients": [ { "item": "yttr:music_disc_papillons" } ],
-	"catalyst": { "fluid": "yttr:void" },
-	"result": { "item": "yttr:music_disc_void" },
-	"time": 120,
-	"sound": "yttr:dissolve"
-}
