@@ -25,11 +25,11 @@ public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDisp
 		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(ptr.getWorld(), new Box(ptr.getPos()).expand(0.5));
 		if (r != null) {
 			setSuccess(true);
-			ci.setReturnValue(tryPutFilledBottle(ptr, stack, r.getCloudOutput().copy()));
+			ci.setReturnValue(method_22141(ptr, stack, r.getCloudOutput().copy()));
 		}
 	}
 	
 	@Shadow
-	private ItemStack tryPutFilledBottle(BlockPointer var1, ItemStack var2, ItemStack var3) { return null; }
+	private ItemStack method_22141(BlockPointer var1, ItemStack var2, ItemStack var3) { return null; }
 	
 }
