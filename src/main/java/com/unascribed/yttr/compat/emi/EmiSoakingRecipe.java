@@ -32,7 +32,7 @@ public class EmiSoakingRecipe implements EmiRecipe {
 					li -> li.stream().map(EmiIngredient::of).toList()
 				);
 		this.catalyst = EmiIngredient.of(r.getCatalyst().getMatchingFluids().stream()
-				.map(f -> EmiStack.of(f, 1000))
+				.map(f -> EmiStack.of(f, 81000))
 				.toList());
 		this.output = EmiStack.of(r.getResult().map(
 					is -> is,
