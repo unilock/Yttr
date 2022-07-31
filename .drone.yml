@@ -25,7 +25,7 @@ steps:
     base_url: https://git.sleeping.town
     files:
       - build/libs/yttr-*.jar
-    title: "[1.18.2] Dev Build (INCOMPLETE)"
+    title: "[1.18.2] Dev Build"
     prerelease: true
     tag: dev-1.18
     note: note.txt
