@@ -1,6 +1,11 @@
 package com.unascribed.yttr.compat.emi;
 
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,8 +18,12 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
+import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
+import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
+import com.unascribed.yttr.crafting.ShatteringRecipe;
+import com.unascribed.yttr.crafting.SoakingRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YItems;
@@ -31,6 +40,7 @@ import com.google.common.collect.Multimaps;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
@@ -57,6 +67,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.resource.ResourceManager;
@@ -71,12 +82,23 @@ import net.minecraft.util.registry.Registry;
 
 public class YttrEmiPlugin implements EmiPlugin {
 
+	@Retention(RetentionPolicy.RUNTIME)
+	private @interface Simple {
+		Class<? extends Recipe<?>> from();
+		Class<? extends EmiRecipe> to();
+	}
+	
 	// actual crafting methods
+	@Simple(from=PistonSmashingRecipe.class, to=EmiPistonSmashingRecipe.class)
 	public static final EmiRecipeCategory PISTON_SMASHING = category(EmiStack.of(Items.PISTON));
+	@Simple(from=CentrifugingRecipe.class, to=EmiCentrifugingRecipe.class)
 	public static final EmiRecipeCategory CENTRIFUGING = category(EmiStack.of(YItems.CENTRIFUGE));
+	@Simple(from=SoakingRecipe.class, to=EmiSoakingRecipe.class)
 	public static final EmiRecipeCategory SOAKING = category(EmiStack.of(YItems.VOID_BUCKET));
+	public static final EmiRecipeCategory VOID_FILTERING = category(EmiStack.of(YItems.VOID_FILTER));
 	
 	// miscellaneous
+	@Simple(from=ShatteringRecipe.class, to=EmiShatteringRecipe.class)
 	public static final EmiRecipeCategory SHATTERING = category(createShatteringPickaxe(Items.DIAMOND_PICKAXE));
 	public static final EmiRecipeCategory CONTINUITY_GIFTS = category(EmiStack.of(YItems.DROP_OF_CONTINUITY));
 	public static final EmiRecipeCategory FORGOTTEN_CRAFTING = category(EmiStack.of(YItems.WASTELAND_DIRT));
@@ -95,9 +117,22 @@ public class YttrEmiPlugin implements EmiPlugin {
 			}
 			registry.addCategory(c);
 		}, YttrEmiPlugin.class, EmiRecipeCategory.class);
+		Yttr.eachRegisterableField(YttrEmiPlugin.class, EmiRecipeCategory.class, Simple.class, (f, t, a) -> {
+			if (a == null) return;
+			try {
+				RecipeType rt = Registry.RECIPE_TYPE.get(t.id);
+				MethodHandle cons = MethodHandles.lookup().findConstructor(a.to(), MethodType.methodType(void.class, a.from()));
+				for (Recipe r : (Iterable<Recipe>)registry.getRecipeManager().listAllOfType(rt)) {
+					registry.addRecipe((EmiRecipe)cons.invoke(r));
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		});
 
 		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.PISTON));
 		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.STICKY_PISTON));
+		registry.addWorkstation(VOID_FILTERING, EmiStack.of(YItems.VOID_FILTER));
 		registry.addWorkstation(CENTRIFUGING, EmiStack.of(YItems.CENTRIFUGE));
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
 		
@@ -157,9 +192,12 @@ public class YttrEmiPlugin implements EmiPlugin {
 			}
 		});
 		
-		registry.getRecipeManager().listAllOfType(YRecipeTypes.SHATTERING).stream()
-			.map(EmiShatteringRecipe::new)
+		registry.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING).stream()
+			.filter(r -> !r.isHidden())
+			.sorted((a, b) -> Float.compare(b.getChance(), a.getChance()))
+			.map(EmiVoidFilteringRecipe::new)
 			.forEach(registry::addRecipe);
+		
 		registry.getRecipeManager().listAllOfType(RecipeType.STONECUTTING).stream()
 			.filter(r -> r.getOutput().getCount() == 1 && !r.getIngredients().isEmpty())
 			.map(EmiShatteringRecipe::new)
@@ -168,19 +206,6 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.filter(r -> r.fits(1, 1) && !r.getIngredients().isEmpty())
 			.map(EmiShatteringRecipe::new)
 			.forEach(registry::addRecipe);
-		
-		registry.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING).stream()
-			.map(EmiPistonSmashingRecipe::new)
-			.forEach(registry::addRecipe);
-		
-		registry.getRecipeManager().listAllOfType(YRecipeTypes.CENTRIFUGING).stream()
-			.map(EmiCentrifugingRecipe::new)
-			.forEach(registry::addRecipe);
-		
-		registry.getRecipeManager().listAllOfType(YRecipeTypes.SOAKING).stream()
-			.map(EmiSoakingRecipe::new)
-			.forEach(registry::addRecipe);
-		
 		
 		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
 		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {

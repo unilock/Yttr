@@ -29,6 +29,10 @@ public class EmiShatteringRecipe implements EmiRecipe {
 		this.exclusive = recipe instanceof ShatteringRecipe;
 	}
 	
+	public EmiShatteringRecipe(ShatteringRecipe recipe) {
+		this((Recipe<CraftingInventory>)recipe);
+	}
+	
 	public EmiShatteringRecipe(StonecuttingRecipe recipe) {
 		this.id = Yttr.id("shattering/"+recipe.getId().getNamespace()+"/"+recipe.getId().getPath());
 		this.input = EmiStack.of(recipe.getOutput());
