@@ -19,6 +19,8 @@ import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YItems;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
@@ -37,6 +39,7 @@ import net.minecraft.util.Identifier;
 // They removed this in favor of just shitting your armor textures into the minecraft namespace
 // But that won't work for me since I need to change armor models for vanilla items conditionally...
 
+@Environment(EnvType.CLIENT)
 @Mixin(ArmorFeatureRenderer.class)
 public abstract class MixinArmorFeatureRenderer extends FeatureRenderer {
 
