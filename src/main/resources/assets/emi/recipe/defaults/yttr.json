@@ -342,6 +342,10 @@
 		"yttr:crafting/lamp/lamp_dye/colorless.3",
 		"yttr:crafting/lamp/lamp_dye/colorless.16",
 		"yttr:crafting/lamp/lamp_dye/colorless.25",
-		"yttr:crafting/lamp/lamp_dye/colorless.1"
+		"yttr:crafting/lamp/lamp_dye/colorless.1",
+		"yttr:smashing/ultrapure_diamond",
+		"yttr:smashing/glowdamp",
+		"yttr:smashing/compressed_ultrapure_carbon",
+		"yttr:crafting/ultrapure_carbon_block"
 	]
 }

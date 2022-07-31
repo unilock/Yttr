@@ -15,6 +15,7 @@ import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.LampRecipe;
+import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEnchantments;
@@ -74,9 +75,13 @@ import net.minecraft.util.registry.Registry;
 
 public class YttrEmiPlugin implements EmiPlugin {
 
-	public static final EmiRecipeCategory SHATTERING = new EmiRecipeCategory(Yttr.id("shattering"), createShatteringPickaxe(Items.DIAMOND_PICKAXE));
-	public static final EmiRecipeCategory CONTINUITY_GIFTS = new EmiRecipeCategory(Yttr.id("continuity_gifts"), EmiStack.of(YItems.DROP_OF_CONTINUITY));
-	public static final EmiRecipeCategory FORGOTTEN_CRAFTING = new EmiRecipeCategory(Yttr.id("forgotten_crafting"), EmiStack.of(YItems.WASTELAND_DIRT));
+	// actual crafting methods
+	public static final EmiRecipeCategory PISTON_SMASHING = category(EmiStack.of(Items.PISTON));
+	
+	// miscellaneous
+	public static final EmiRecipeCategory SHATTERING = category(createShatteringPickaxe(Items.DIAMOND_PICKAXE));
+	public static final EmiRecipeCategory CONTINUITY_GIFTS = category(EmiStack.of(YItems.DROP_OF_CONTINUITY));
+	public static final EmiRecipeCategory FORGOTTEN_CRAFTING = category(EmiStack.of(YItems.WASTELAND_DIRT));
 	
 	static class Texture {
 		public static final EmiTexture SHATTERING = new EmiTexture(Yttr.id("textures/gui/shattering.png"), 0, 0, 24, 17, 24, 17, 24, 33);
@@ -84,10 +89,17 @@ public class YttrEmiPlugin implements EmiPlugin {
 	
 	@Override
 	public void register(EmiRegistry registry) {
-		registry.addCategory(SHATTERING);
-		registry.addCategory(CONTINUITY_GIFTS);
-		registry.addCategory(FORGOTTEN_CRAFTING);
-		
+		Yttr.autoRegister((id, c) -> {
+			c.id = id;
+			Identifier iconId = Yttr.id("textures/gui/emi_simple/"+id.getPath()+".png");
+			if (MinecraftClient.getInstance().getResourceManager().containsResource(iconId)) {
+				c.simplified = new EmiTexture(iconId, 0, 0, 16, 16, 16, 16, 16, 16);
+			}
+			registry.addCategory(c);
+		}, YttrEmiPlugin.class, EmiRecipeCategory.class);
+
+		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.PISTON));
+		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.STICKY_PISTON));
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
 		
 		List<EmiStack> pickaxes = new ArrayList<>();
@@ -158,6 +170,13 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.filter(r -> r.fits(1, 1) && !r.getIngredients().isEmpty())
 			.map(EmiShatteringRecipe::new)
 			.forEach(registry::addRecipe);
+		
+		for (PistonSmashingRecipe r : registry.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING)) {
+			ItemStack multCloudOutput = r.getCloudOutput().copy();
+			multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
+			registry.addRecipe(new EmiPistonSmashingRecipe(r.getId(), r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(),
+					EmiStack.of(r.getOutput()), r.getCloudColor(), EmiStack.of(multCloudOutput)));
+		}
 		
 		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
 		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
@@ -320,6 +339,10 @@ public class YttrEmiPlugin implements EmiPlugin {
 				k++;
 			}
 		}
+	}
+	
+	private static EmiRecipeCategory category(EmiRenderable icon) {
+		return new EmiRecipeCategory(null, icon);
 	}
 	
 	private static EmiStack createShatteringPickaxe(Item item) {

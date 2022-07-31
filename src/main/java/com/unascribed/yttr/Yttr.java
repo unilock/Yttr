@@ -6,12 +6,12 @@ import java.lang.reflect.Modifier;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -63,6 +63,7 @@ import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 import com.unascribed.yttr.world.WastelandPopulator;
 
+import com.google.common.base.Ascii;
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultiset;
@@ -327,29 +328,37 @@ public class Yttr implements ModInitializer {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
-		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
-			String id;
-			if (ann != null) {
-				if (ann.value().contains(":")) {
-					id = ann.value();
-				} else {
-					id = "yttr:"+ann.value();
-				}
-			} else {
-				id = "yttr:"+f.getName().toLowerCase(Locale.ROOT);
-			}
-			Registry.register(registry, id, (T)v);
+		autoRegister((id, t) -> Registry.register(registry, id, (T)t), holder, type);
+	}
+
+	/**
+	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
+	 * in the given ad-hoc registry.
+	 */
+	public static <T> void autoRegister(Consumer<T> adhocRegistry, Class<?> holder, Class<T> type) {
+		eachRegisterableField(holder, type, null, (f, v, na) -> {
+			adhocRegistry.accept(v);
 		});
 	}
 
 	/**
 	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
 	 * in the yttr namespace with a path equal to the field's name as lower case in the given
-	 * ad-hoc registry.
+	 * registry.
 	 */
-	public static <T> void autoRegister(Consumer<T> adhocRegistry, Class<?> holder, Class<T> type) {
-		eachRegisterableField(holder, type, null, (f, v, na) -> {
-			adhocRegistry.accept(v);
+	public static <T> void autoRegister(BiConsumer<Identifier, T> registry, Class<?> holder, Class<T> type) {
+		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
+			Identifier id;
+			if (ann != null) {
+				if (ann.value().contains(":")) {
+					id = new Identifier(ann.value());
+				} else {
+					id = id(ann.value());
+				}
+			} else {
+				id = id(Ascii.toLowerCase(f.getName()));
+			}
+			registry.accept(id, v);
 		});
 	}
 
