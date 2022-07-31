@@ -2,6 +2,7 @@ package com.unascribed.yttr.compat.emi;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -9,11 +10,11 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
+import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
@@ -30,7 +31,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
-import dev.emi.emi.EmiRenderHelper;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
@@ -49,7 +49,6 @@ import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -77,6 +76,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 
 	// actual crafting methods
 	public static final EmiRecipeCategory PISTON_SMASHING = category(EmiStack.of(Items.PISTON));
+	public static final EmiRecipeCategory CENTRIFUGING = category(EmiStack.of(YItems.CENTRIFUGE));
 	
 	// miscellaneous
 	public static final EmiRecipeCategory SHATTERING = category(createShatteringPickaxe(Items.DIAMOND_PICKAXE));
@@ -100,6 +100,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 
 		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.PISTON));
 		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.STICKY_PISTON));
+		registry.addWorkstation(CENTRIFUGING, EmiStack.of(YItems.CENTRIFUGE));
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
 		
 		List<EmiStack> pickaxes = new ArrayList<>();
@@ -176,6 +177,18 @@ public class YttrEmiPlugin implements EmiPlugin {
 			multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
 			registry.addRecipe(new EmiPistonSmashingRecipe(r.getId(), r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(),
 					EmiStack.of(r.getOutput()), r.getCloudColor(), EmiStack.of(multCloudOutput)));
+		}
+		
+		for (CentrifugingRecipe r : registry.getRecipeManager().listAllOfType(YRecipeTypes.CENTRIFUGING)) {
+			var inputs = EmiIngredient.of(Arrays.stream(r.getInput().getMatchingStacks())
+					.map(ItemStack::copy)
+					.peek(is -> is.setCount(r.getInputCount()))
+					.map(EmiStack::of)
+					.toList());
+			var outputs = r.getOutputs().stream()
+					.map(EmiStack::of)
+					.toList();
+			registry.addRecipe(new EmiCentrifugingRecipe(r.getId(), inputs, outputs));
 		}
 		
 		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
@@ -367,13 +380,6 @@ public class YttrEmiPlugin implements EmiPlugin {
 		} else {
 			cb.accept(is, false);
 		}
-	}
-
-	private static EmiRenderable simplifiedRenderer(int u, int v) {
-		return (matrices, x, y, delta) -> {
-			RenderSystem.setShaderTexture(0, EmiRenderHelper.WIDGETS);
-			DrawableHelper.drawTexture(matrices, x, y, u, v, 16, 16, 256, 256);
-		};
 	}
 
 }

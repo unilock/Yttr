@@ -78,7 +78,7 @@ public class EmiPistonSmashingRecipe implements EmiRecipe {
 
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
-		int x = (widgets.getWidth()/2)-8;
+		int x = (widgets.getWidth()/2)-24;
 		widgets.addSlot(EmiIngredient.of(input.stream().map(BlockEmiStack::new).toList()), x, 24)
 			.drawBack(false);
 		widgets.addSlot(EmiIngredient.of(catalysts.stream().map(BlockEmiStack::new).toList()), x-16, 24)
@@ -93,7 +93,7 @@ public class EmiPistonSmashingRecipe implements EmiRecipe {
 		if (!output.isEmpty()) {
 			widgets.addSlot(output, x, 0)
 				.recipeContext(this);
-			x += 20;
+			x += 22;
 		}
 		if (!cloudOutput.isEmpty()) {
 			widgets.add(new ColoredTextureWidget(new Identifier("textures/particle/effect_4.png"), x, 6, 8, 8, 0, 0, 8, 8, 8, 8, cloudColor));
