@@ -14,7 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Box;
 
-@Mixin(targets="net/minecraft/block/dispenser/DispenserBehavior$17")
+@Mixin(targets={
+	"net/minecraft/block/dispenser/DispenserBehavior$C_tfeacyls", // hashed mojmap
+	"net/minecraft/block/dispenser/DispenserBehavior$17"
+})
 public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDispenserBehavior {
 
 	@Inject(at=@At("HEAD"), method="dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", cancellable=true)
@@ -22,11 +25,11 @@ public abstract class MixinGlassBottleDispenserBehavior extends FallibleItemDisp
 		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(ptr.getWorld(), new Box(ptr.getPos()).expand(0.5));
 		if (r != null) {
 			setSuccess(true);
-			ci.setReturnValue(method_22141(ptr, stack, r.getCloudOutput().copy()));
+			ci.setReturnValue(tryPutFilledBottle(ptr, stack, r.getCloudOutput().copy()));
 		}
 	}
 	
 	@Shadow
-	private ItemStack method_22141(BlockPointer var1, ItemStack var2, ItemStack var3) { return null; }
+	private ItemStack tryPutFilledBottle(BlockPointer var1, ItemStack var2, ItemStack var3) { return null; }
 	
 }

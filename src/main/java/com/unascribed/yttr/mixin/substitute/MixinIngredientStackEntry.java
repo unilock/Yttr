@@ -27,7 +27,6 @@ public class MixinIngredientStackEntry implements SetNoSubstitution {
 	@Inject(at=@At("HEAD"), method="getStacks()Ljava/util/Collection;", cancellable=true)
 	public void getStacks(CallbackInfoReturnable<Collection<ItemStack>> ci) {
 		if (!yttr$noSubstitution && Substitutes.getSubstitute(stack.getItem()) != null) {
-			System.out.println("sdffggdfgd");
 			ci.setReturnValue(Lists.newArrayList(stack, Substitutes.sub(stack)));
 		}
 	}

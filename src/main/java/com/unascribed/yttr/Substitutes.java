@@ -2,7 +2,6 @@ package com.unascribed.yttr;
 
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -12,8 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.unascribed.yttr.mixin.accessor.AccessorNamespaceResourceManager;
-import com.unascribed.yttr.mixin.accessor.AccessorReloadableResourceManagerImpl;
 import com.unascribed.yttr.util.YLog;
 
 import com.google.common.base.Charsets;
@@ -34,16 +31,7 @@ public class Substitutes {
 	
 	public static void reload(ResourceManager mgr) {
 		MAP.clear();
-		Iterable<String> namespaces;
-		if (mgr instanceof AccessorReloadableResourceManagerImpl) {
-			namespaces = ((AccessorReloadableResourceManagerImpl)mgr).yttr$getResources().getAllNamespaces();
-		} else if (mgr instanceof AccessorNamespaceResourceManager) {
-			namespaces = Collections.singleton(((AccessorNamespaceResourceManager)mgr).yttr$getNamespace());
-		} else {
-			YLog.warn("Found no namespaces in resource manager...");
-			namespaces = Collections.emptySet();
-		}
-		for (String ns : namespaces) {
+		for (String ns : mgr.getAllNamespaces()) {
 			Identifier id = new Identifier(ns, "yttr_substitutes.json");
 			try {
 				Resource r = mgr.getResource(id);
