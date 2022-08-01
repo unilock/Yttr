@@ -41,11 +41,9 @@ import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.mixin.accessor.client.AccessorChunkInfo;
 import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
-import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
@@ -73,7 +71,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
@@ -131,11 +128,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.chunk.WorldChunk;
-
 import static com.unascribed.yttr.client.RenderBridge.*;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
@@ -230,6 +226,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		}
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
+			Profiler prof = mc.getProfiler();
+			prof.swap("yttr");
 			if (mc.world != null) {
 				if (firstWorldTick) {
 					firstWorldTick = false;
@@ -282,15 +280,22 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 			if (mc.isPaused()) return;
+			prof.push("effector");
 			EffectorRenderer.tick();
+			prof.swap("suit");
 			SuitHUDRenderer.tick();
+			prof.swap("replicator");
 			ReplicatorRenderer.tick();
+			prof.swap("lamp");
 			LampRenderer.tick();
+			prof.swap("rifle");
 			RifleHUDRenderer.tick();
+			prof.swap("shifter");
 			ShifterUI.tick();
 			if (mc.player != null && mc.player.isCreative() && mc.player.getStackInHand(Hand.MAIN_HAND).getItem() == YItems.SHIFTER) {
 				((AccessorClientPlayerInteractionManager)mc.interactionManager).yttr$setBlockBreakingCooldown(0);
 			}
+			prof.pop();
 		});
 		
 		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
@@ -574,16 +579,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 		});
-	}
-
-	public static Iterable<BlockEntity> getBlockEntities() {
-		return ((AccessorWorldRenderer)mc.worldRenderer).yttr$getChunkInfos().stream()
-			.<BlockEntity>mapMulti((ci, r) -> {
-				WorldChunk c = (WorldChunk) mc.world.getChunk(((AccessorChunkInfo)ci).yttr$getChunk().getOrigin());
-				c.getBlockEntities().values().forEach(r);
-			})
-			.distinct()
-			::iterator;
 	}
 	
 	public static void addLine(MatrixStack matrices, VertexConsumer vc,

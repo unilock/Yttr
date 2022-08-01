@@ -6,6 +6,7 @@ import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mechanics.SimpleLootBlock;
 import com.unascribed.yttr.util.Resolvable;
+import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,6 +16,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
@@ -79,6 +82,11 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 		return ActionResult.FAIL;
 	}
 	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return world.isClient ? YTickable::tick : null;
+	}
+
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new LampBlockEntity(pos, state);

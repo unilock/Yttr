@@ -11,7 +11,6 @@ import java.util.Set;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.ReplicatorShapes;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
@@ -48,6 +47,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.profiler.Profiler;
 
 public class ReplicatorRenderer extends IHasAClient {
 
@@ -293,13 +293,18 @@ public class ReplicatorRenderer extends IHasAClient {
 		wrc.profiler().swap("particles");
 	}
 	
+	public static void notifyCreated(ReplicatorBlockEntity rbe) {
+		replicators.add(rbe);
+	}
+	
 	public static void tick() {
+		Profiler p = mc.getProfiler();
+		p.push("main");
 		Set<ReplicatorBlockEntity> valid = Sets.newHashSet();
 		if (mc.world != null) {
-			for (BlockEntity be : YttrClient.getBlockEntities()) {
-				if (be instanceof ReplicatorBlockEntity rbe) {
+			for (ReplicatorBlockEntity rbe : replicators) {
+				if (!rbe.isRemoved() && rbe.getWorld() == mc.world) {
 					valid.add(rbe);
-					rbe.clientTick();
 				}
 			}
 		} else {
@@ -308,6 +313,7 @@ public class ReplicatorRenderer extends IHasAClient {
 		}
 		replicators.clear();
 		replicators.addAll(valid);
+		p.swap("removed");
 		Iterator<ReplicatorBlockEntity> iter = removing.iterator();
 		while (iter.hasNext()) {
 			ReplicatorBlockEntity rbe = iter.next();
@@ -317,6 +323,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				iter.remove();
 			}
 		}
+		p.pop();
 	}
 
 }

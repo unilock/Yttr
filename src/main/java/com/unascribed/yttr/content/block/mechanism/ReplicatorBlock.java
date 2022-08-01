@@ -2,12 +2,15 @@ package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.util.YTickable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -33,6 +36,11 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return world.isClient ? YTickable::tick : null;
 	}
 	
 	@Override

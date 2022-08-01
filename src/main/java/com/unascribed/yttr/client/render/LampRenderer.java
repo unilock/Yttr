@@ -43,6 +43,7 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.World;
 
 public class LampRenderer extends IHasAClient {
@@ -203,9 +204,24 @@ public class LampRenderer extends IHasAClient {
 		}
 		wrc.profiler().swap("particles");
 	}
+	
+	public static <T extends BlockEntity & HaloBlockEntity> void notifyCreated(T be) {
+		ChunkSectionPos cs = ChunkSectionPos.from(be.getPos());
+		if (!lampsBySection.containsEntry(cs, be)) {
+			if (lampsByBlock.containsKey(be.getPos())) {
+				BlockEntity other = lampsByBlock.remove(be.getPos());
+				lampsBySection.remove(ChunkSectionPos.from(be.getPos()), other);
+			}
+			lampsByBlock.put(be.getPos(), be);
+			lampsBySection.put(cs, be);
+		}
+	}
+	
 
 	public static void tick() {
 		if (mc.world != null) {
+			Profiler p = mc.getProfiler();
+			p.push("validate");
 			Iterator<BlockEntity> iter = lampsBySection.values().iterator();
 			while (iter.hasNext()) {
 				BlockEntity be = iter.next();
@@ -218,19 +234,7 @@ public class LampRenderer extends IHasAClient {
 					iter.remove();
 				}
 			}
-			for (BlockEntity be : YttrClient.getBlockEntities()) {
-				if (be instanceof HaloBlockEntity) {
-					ChunkSectionPos cs = ChunkSectionPos.from(be.getPos());
-					if (!lampsBySection.containsEntry(cs, be)) {
-						if (lampsByBlock.containsKey(be.getPos())) {
-							BlockEntity other = lampsByBlock.remove(be.getPos());
-							lampsBySection.remove(ChunkSectionPos.from(be.getPos()), other);
-						}
-						lampsByBlock.put(be.getPos(), be);
-						lampsBySection.put(cs, be);
-					}
-				}
-			}
+			p.pop();
 		} else {
 			lampsByBlock.clear();
 			lampsBySection.clear();

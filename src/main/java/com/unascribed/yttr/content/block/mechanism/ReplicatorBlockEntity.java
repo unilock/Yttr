@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.util.SideyInventory;
+import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,7 +21,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory {
+public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory, YTickable {
 
 	public int seed = ThreadLocalRandom.current().nextInt();
 	public ItemStack item = ItemStack.EMPTY;
@@ -37,7 +38,13 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 		super(YBlockEntities.REPLICATOR, pos, state);
 	}
 	
+	@Override
+	public void tick() {
+		// not used
+	}
+	
 	@Environment(EnvType.CLIENT)
+	@Override
 	public void clientTick() {
 		clientAge++;
 		if (isRemoved()) {
@@ -45,6 +52,7 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 			removedTicks++;
 		} else if (!addedClient) {
 			addedClient = true;
+			ReplicatorRenderer.notifyCreated(this);
 		}
 	}
 	
