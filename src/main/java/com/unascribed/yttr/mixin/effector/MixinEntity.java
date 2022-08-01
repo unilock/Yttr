@@ -93,4 +93,14 @@ public abstract class MixinEntity {
 		return in;
 	}
 	
+	// isInsideWall lambda
+	@ModifyVariable(at=@At(value="INVOKE_ASSIGN", target="net/minecraft/world/World.getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"),
+			ordinal=0, method="method_30022(Lnet/minecraft/util/math/Box;Lnet/minecraft/util/math/BlockPos;)Z")
+	public BlockState replaceBlockStateForSuffocation(BlockState in, Box box, BlockPos pos) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(pos)) {
+			return Blocks.VOID_AIR.getDefaultState();
+		}
+		return in;
+	}
+	
 }

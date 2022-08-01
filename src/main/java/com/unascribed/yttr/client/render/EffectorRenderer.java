@@ -81,8 +81,9 @@ public class EffectorRenderer extends IHasAClient {
 				RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				bb.begin(DrawMode.QUADS, RenderLayer.getCutout().getVertexFormat());
 				ms.push();
-				var trans = hole.dir.getUnitVector().copy();
+				var trans = hole.dir.getUnitVector();
 				trans.scale(hole.length/2f);
+				ms.translate(hole.start.getX(), hole.start.getY(), hole.start.getZ());
 				ms.translate(trans.getX(), trans.getY(), trans.getZ());
 				float s = (hole.length-0.01f)/hole.length;
 				switch (axisZ) {
@@ -91,6 +92,7 @@ public class EffectorRenderer extends IHasAClient {
 					case Z -> ms.scale(1, 1, s);
 				}
 				ms.translate(-trans.getX(), -trans.getY(), -trans.getZ());
+				ms.translate(-hole.start.getX(), -hole.start.getY(), -hole.start.getZ());
 				for (int z = 0; z < hole.length; z++) {
 					mut.set(hole.start).move(hole.dir, z);
 					EffectorItem.move(mut, axisY, -2);
