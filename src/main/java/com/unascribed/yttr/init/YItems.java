@@ -14,6 +14,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.AmmoCanItem;
 import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
+import com.unascribed.yttr.content.item.CreaseItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.HornItem;
@@ -139,6 +140,9 @@ public class YItems {
 	public static final BlockItem DEEPSLATE_BROOKITE_ORE = createBlockItem(YBlocks.DEEPSLATE_BROOKITE_ORE);
 	public static final BlockItem ASH = createBlockItem(YBlocks.ASH);
 	public static final BlockItem DELRENE = createBlockItem(YBlocks.DELRENE);
+	public static final BlockItem SCORCHED_OBSIDIAN = createBlockItem(YBlocks.SCORCHED_OBSIDIAN);
+	public static final BlockItem POLISHED_SCORCHED_OBSIDIAN = createBlockItem(YBlocks.POLISHED_SCORCHED_OBSIDIAN);
+	public static final BlockItem POLISHED_SCORCHED_OBSIDIAN_CAPSTONE = createBlockItem(YBlocks.POLISHED_SCORCHED_OBSIDIAN_CAPSTONE);
 
 	public static final BlockItem WHITE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.ORANGE);
@@ -406,25 +410,20 @@ public class YItems {
 		
 	};
 	
-	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_HELMET = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.HEAD, new Item.Settings()
 			.fireproof());
 	
-	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_CHESTPLATE = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.CHEST, new Item.Settings()
 			.fireproof());
 	
-	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_LEGGINGS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.LEGS, new Item.Settings()
 			.fireproof());
 	
-	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.FEET, new Item.Settings()
 			.fireproof());
 	
 	public static final Item ARMOR_PLATING = new Item(new Item.Settings());
 	
-	@SimpleArmorTexture("yttr:goggles")
 	public static final ArmorItem GOGGLES = new ArmorItem(new ArmorMaterial() {
 		
 		@Override
@@ -592,14 +591,14 @@ public class YItems {
 	public static final Item RAW_GADOLINITE = new Item(new Item.Settings());
 	public static final Item DELRENE_SCRAP = new Item(new Item.Settings());
 	
+	@BuiltinRenderer("CreaseRenderer")
+	public static final CreaseItem CREASE = new CreaseItem(new Item.Settings()
+			.maxCount(1));
+	
+	public static final Item HAEMOPAL = new Item(new Item.Settings());
+	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
-	}
-	
-	@Retention(RUNTIME)
-	@Target(FIELD)
-	public @interface SimpleArmorTexture {
-		String value();
 	}
 	
 	@Retention(RUNTIME)

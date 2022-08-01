@@ -85,6 +85,8 @@
 	"item.yttr.spatula": "Gigantic Spatula",
 	"item.yttr.raw_gadolinite": "Raw Gadolinite",
 	"item.yttr.delrene_scrap": "Delrene Scrap",
+	"item.yttr.crease": "Crease",
+	"item.yttr.haemopal": "Haemopal",
 	
 	"item.yttr.delrene_scrap.tip.1": "§5§oThe warranty of your Bloque® Plastic",
 	"item.yttr.delrene_scrap.tip.2": "§5§oConstruction Building Bricks is void",
@@ -224,6 +226,10 @@
 	"block.yttr.ash": "Ash",
 	"block.yttr.bloque": "Bloque® Plastic Construction Building Brick",
 	"block.yttr.delrene": "Block of Delrene Plastic",
+	"block.yttr.scorched_obsidian": "Scorched Obsidian",
+	"block.yttr.polished_scorched_obsidian": "Polished Scorched Obsidian",
+	"block.yttr.polished_scorched_obsidian_capstone": "Polished Scorched Obsidian Capstone",
+	"block.yttr.polished_scorched_obsidian_holster": "Polished Scorched Obsidian Holster",
 	
 	"block.yttr.delrene.tip.1": "§5§oBasically pink styrene.",
 	

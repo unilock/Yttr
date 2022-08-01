@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "yttr:block/polished_scorched_obsidian_capstone"
+  }
+}

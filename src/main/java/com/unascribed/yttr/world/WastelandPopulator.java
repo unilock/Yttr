@@ -330,7 +330,7 @@ public class WastelandPopulator {
 				return block;
 			}));
 		}
-		s.place(world, origin, origin, spd, rand, 0);
+		s.place(world, origin, origin, spd, rand, 3);
 		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
 			if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
 				if (info.nbt != null) {

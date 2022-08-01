@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "yttr:block/polished_scorched_obsidian_holster",
+    "east": "yttr:block/polished_scorched_obsidian_holster",
+    "south": "yttr:block/polished_scorched_obsidian_holster",
+    "west": "yttr:block/polished_scorched_obsidian_holster",
+    "up": "yttr:block/polished_scorched_obsidian_capstone",
+    "down": "yttr:block/polished_scorched_obsidian",
+    "particle": "yttr:block/polished_scorched_obsidian_holster"
+  }
+}

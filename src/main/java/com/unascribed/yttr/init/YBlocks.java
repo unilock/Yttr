@@ -77,6 +77,7 @@ import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
+import net.minecraft.block.AbstractBlock.TypedContextPredicate;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -94,6 +95,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.TorchBlock;
 import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -601,8 +603,12 @@ public class YBlocks {
 	
 	public static final Block RAW_GADOLINITE_BLOCK = new Block(FabricBlockSettings.copyOf(Blocks.RAW_IRON_BLOCK));
 	
+	private static final TypedContextPredicate<EntityType<?>> NOT_IN_TERMINUS = (state, world, pos, et) -> {
+		return !(world instanceof World w && w.getBiome(pos).isRegistryKeyId(Yttr.id("scorched_terminus")));
+	};
+	
 	public static final FallingBlock ASH = new FallingBlock(FabricBlockSettings.copyOf(Blocks.SAND)
-			.allowsSpawning((state, world, pos, et) -> false)) {
+			.allowsSpawning(NOT_IN_TERMINUS)) {
 		@Override
 		public int getColor(BlockState state, BlockView world, BlockPos pos) {
 			return 0xFF181018;
@@ -613,6 +619,25 @@ public class YBlocks {
 			.sounds(BlockSoundGroup.CALCITE));
 	public static final Block DELRENE = new Block(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE)
 			.sounds(BlockSoundGroup.CANDLE));
+	
+	
+	public static final Block SCORCHED_OBSIDIAN = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
+			.mapColor(MapColor.DULL_RED)
+			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
+			.allowsSpawning(NOT_IN_TERMINUS));
+	public static final Block POLISHED_SCORCHED_OBSIDIAN = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
+			.mapColor(MapColor.DULL_RED)
+			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
+			.allowsSpawning(NOT_IN_TERMINUS));
+	public static final Block POLISHED_SCORCHED_OBSIDIAN_CAPSTONE = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
+			.mapColor(MapColor.DULL_RED)
+			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
+			.allowsSpawning(NOT_IN_TERMINUS));
+	public static final Block POLISHED_SCORCHED_OBSIDIAN_HOLSTER = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
+			.mapColor(MapColor.RED)
+			.luminance(4)
+			.sounds(BlockSoundGroup.NETHERITE)
+			.allowsSpawning(NOT_IN_TERMINUS));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

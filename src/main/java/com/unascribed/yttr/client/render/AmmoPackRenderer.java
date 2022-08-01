@@ -4,8 +4,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.AmmoCanItem;
-import com.unascribed.yttr.content.item.AmmoPackItem;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.util.InventoryProviderItem;
 
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.block.Blocks;
@@ -23,6 +23,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.math.Direction;
@@ -46,9 +47,10 @@ public class AmmoPackRenderer {
 				for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
 					vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 				}
+				Inventory inv = ((InventoryProviderItem)is.getItem()).asInventory(is);
 				for (Direction d : Direction.values()) {
 					int i = d.ordinal();
-					ItemStack slot = ((AmmoPackItem)is.getItem()).getStack(is, i);
+					ItemStack slot = inv.getStack(i);
 					if (!slot.isEmpty()) {
 						int color = slot.getItem() instanceof AmmoCanItem ? ((AmmoCanItem)slot.getItem()).getColor(slot, 1) : 0xFF284946;
 						float r = ((color>>16)&0xFF)/255f;

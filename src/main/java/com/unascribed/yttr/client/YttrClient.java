@@ -428,8 +428,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					throw new RuntimeException(e1);
 				}
 			}
-			YItems.SimpleArmorTexture satAnn = f.getAnnotation(YItems.SimpleArmorTexture.class);
-//			if (satAnn != null) ArmorRenderingRegistry.registerSimpleTexture(new Identifier(satAnn.value()), i);
 			YItems.BuiltinRenderer birAnn = f.getAnnotation(YItems.BuiltinRenderer.class);
 			if (birAnn != null) {
 				try {
