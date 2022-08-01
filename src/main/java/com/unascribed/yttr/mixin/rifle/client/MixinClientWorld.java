@@ -34,7 +34,6 @@ public abstract class MixinClientWorld extends World {
 
 	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, Holder<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
 		super(properties, registryRef, registryEntry, profiler, isClient, debugWorld, seed);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Inject(at=@At("HEAD"), method="playSoundFromEntity", cancellable=true)

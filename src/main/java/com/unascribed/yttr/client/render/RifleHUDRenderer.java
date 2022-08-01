@@ -12,6 +12,7 @@ import com.unascribed.yttr.util.math.Interp;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.VertexFormats;
@@ -58,14 +59,15 @@ public class RifleHUDRenderer extends IHasAClient {
 				RenderSystem.defaultBlendFunc();
 				RifleMode mode = rifleItem.getMode(rifleStack);
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
-				int col = ((int)(scopeA*255)&0xFF)<<24;
 				DrawableHelper.drawTexture(matrices, -1, -1, 0, 0, 2, 2, 2, 2);
-				DrawableHelper.fill(matrices, -100, -2, -1, 2, col);
-				DrawableHelper.fill(matrices, 1, -2, 100, 2, col);
-				DrawableHelper.fill(matrices, -1, -2, 1, -1, col);
-				DrawableHelper.fill(matrices, -1, 1, 1, 2, col);
+				RenderSystem.setShaderColor(0, 0, 0, scopeA);
+				DrawableHelper.fill(matrices, -100, -2, -1, 2, -1);
+				DrawableHelper.fill(matrices, 1, -2, 100, 2, -1);
+				DrawableHelper.fill(matrices, -1, -2, 1, -1, -1);
+				DrawableHelper.fill(matrices, -1, 1, 1, 2, -1);
 				matrices.scale(0.25f, 0.75f, 1);
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
+				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				for (int p = 0; p < 2; p++) {
 					RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA/(p+1));
 					RenderSystem.setShaderTexture(0, MODES);

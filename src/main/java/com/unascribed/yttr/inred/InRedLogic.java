@@ -16,7 +16,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class InRedLogic {
-	public static final int MAX_SIGNAL = 0b11_1111; //TODO: stay with 0-63?
+	public static final int MAX_SIGNAL = 0b11_1111;
 	private static final int INTER_IR_TICKS = 1;
 	public static int tickCount = 0;
 

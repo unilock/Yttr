@@ -20,7 +20,6 @@ import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.enums.StructureBlockMode;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.structure.Structure;
 import net.minecraft.structure.Structure.StructureBlockInfo;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.tag.BlockTags;
@@ -301,7 +300,9 @@ public class WastelandPopulator {
 	}
 	
 	private static boolean tryPlaceSchematic(ChunkRandom rand, ServerWorld world, BlockPos pos, String id, int yOffset, boolean eatDirt, boolean fill) {
-		Structure s = world.getStructureManager().getStructure(new Identifier(id)).get(); //TODO: unsafe
+		var opt = world.getStructureManager().getStructure(new Identifier(id));
+		if (!opt.isPresent()) return false;
+		var s = opt.get();
 		BlockRotation rot = BlockRotation.random(rand);
 		StructurePlacementData spd = new StructurePlacementData();
 		spd.setRotation(rot);
