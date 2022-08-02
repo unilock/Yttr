@@ -136,7 +136,7 @@ public class YttrConfigScreen extends Screen {
 				} else if (currentSection == Section.WORLDGEN) {
 					drawBoolean(matrices, "gadolinite", YConfig.WorldGen.gadolinite, 6, 24, delta);
 					drawBoolean(matrices, "brookite", YConfig.WorldGen.brookite, 6, 46, delta);
-					drawBoolean(matrices, "squeeze trees", YConfig.WorldGen.squeezeTrees, 6, 74, delta);
+					drawBoolean(matrices, "squeeze trees", YConfig.WorldGen.squeezeTrees, 6, 68, delta);
 					drawBoolean(matrices, "wasteland", YConfig.WorldGen.wasteland, 6, 96, delta);
 					drawBoolean(matrices, "core lava", YConfig.WorldGen.coreLava, 6, 124, delta);
 					drawBoolean(matrices, "scorched", YConfig.WorldGen.scorched, 6, 146, delta);
