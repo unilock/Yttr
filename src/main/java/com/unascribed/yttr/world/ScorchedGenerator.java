@@ -1,11 +1,14 @@
 package com.unascribed.yttr.world;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YTags;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.common.collect.Lists;
 
@@ -21,6 +24,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.Structure.StructureBlockInfo;
 import net.minecraft.structure.StructurePlacementData;
@@ -29,12 +33,15 @@ import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkStatus;
+import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
@@ -42,7 +49,7 @@ import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class ScorchedGenerator {
 
-	public static void populate(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
+	public static void generateTerminus(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
 		if (!YConfig.WorldGen.scorched) return;
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
@@ -245,38 +252,17 @@ public class ScorchedGenerator {
 		}
 	}
 
-	public static void buildSurface(ChunkRegion region, Chunk chunk) {
+	public static void generateSummit(ChunkRegion region, Chunk chunk) {
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
-			if (YConfig.WorldGen.coreLava && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
-				for (int x = 0; x < 16; x++) {
-					for (int z = 0; z < 16; z++) {
-						bp.set(x, 0, z);
-						chunk.setBlockState(bp, Blocks.BARRIER.getDefaultState(), false);
-						for (int y = 1; y < 4; y++) {
-							bp.set(x, y, z);
-							chunk.setBlockState(bp, YBlocks.CORE_LAVA.getDefaultState(), false);
-						}
-						bp.set(x, 4, z);
-						chunk.setBlockState(bp, Blocks.AIR.getDefaultState(), false);
-						bp.set(x, 5, z);
-						chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
-					}
-				}
-			}
-			bp.setY(127);
-			if (YConfig.WorldGen.scorched && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
+			boolean scorch = replaceBedrocks(bp, region, chunk, false);
+			bp.set(0, 127, 0);
+			if (scorch) {
 				ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(region.getSeed()));
 				OctaveSimplexNoiseSampler noise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(1, 4, 8));
 				OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
 				for (int x = 0; x < 16; x++) {
 					for (int z = 0; z < 16; z++) {
-						for (int y = 120; y < 128; y++) {
-							bp.set(x, y, z);
-							if (chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
-								chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
-							}
-						}
 						int bX = (chunk.getPos().getStartX()+x);
 						int bZ = (chunk.getPos().getStartZ()+z);
 						double height = (noise.sample(bX/200D, bZ/200D, true)+0.2)*6;
@@ -308,6 +294,108 @@ public class ScorchedGenerator {
 				}
 			}
 		}
+	}
+
+	private static boolean replaceBedrocks(BlockPos.Mutable bp, ChunkRegion region, Chunk chunk, boolean careful) {
+		bp.set(0, 0, 0);
+		if (YConfig.WorldGen.coreLava && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
+			for (int x = 0; x < 16; x++) {
+				for (int z = 0; z < 16; z++) {
+					bp.set(x, 0, z);
+					if (!careful || canClobber(chunk.getBlockState(bp))) {
+						chunk.setBlockState(bp, Blocks.BARRIER.getDefaultState(), false);
+					}
+					for (int y = 1; y < 4; y++) {
+						bp.set(x, y, z);
+						if (!careful || canClobber(chunk.getBlockState(bp))) {
+							chunk.setBlockState(bp, YBlocks.CORE_LAVA.getDefaultState(), false);
+						}
+					}
+					bp.set(x, 4, z);
+					if (!careful || canClobber(chunk.getBlockState(bp))) {
+						chunk.setBlockState(bp, Blocks.AIR.getDefaultState(), false);
+					}
+					bp.set(x, 5, z);
+					if (!careful || canClobber(chunk.getBlockState(bp))) {
+						chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
+					}
+				}
+			}
+		}
+		bp.setY(127);
+		if (YConfig.WorldGen.scorched && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
+			for (int x = 0; x < 16; x++) {
+				for (int z = 0; z < 16; z++) {
+					for (int y = 120; y < 128; y++) {
+						bp.set(x, y, z);
+						if (chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
+							chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
+						}
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean canClobber(BlockState bs) {
+		return bs.isAir() || bs.isIn(YTags.Block.SCORCHED_RETROGEN_IGNORABLE);
+	}
+
+	public static boolean isEligibleForRetrogen(ServerWorld world, WorldChunk chunk) {
+		return YConfig.WorldGen.scorchedRetrogen && world.getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID) && chunk.getBlockState(new BlockPos(0, 127, 0)).isOf(Blocks.BEDROCK);
+	}
+
+	public static void retrogen(long seed, ServerWorld world, ChunkPos pos) {
+		Chunk c = world.getChunk(pos.x, pos.z);
+		boolean fullRetrogen = true;
+		boolean terminusRetrogen = true;
+		// getStartPos always returns 0 for Y
+		for (BlockPos bp : BlockPos.iterate(new BlockPos(0, 120, 0), new BlockPos(15, 160, 15))) {
+			if (!canClobber(c.getBlockState(bp))) {
+				fullRetrogen = false;
+				break;
+			}
+		}
+		for (BlockPos bp : BlockPos.iterate(new BlockPos(0, 192, 0), new BlockPos(15, world.getTopY(), 15))) {
+			if (!canClobber(c.getBlockState(bp))) {
+				terminusRetrogen = false;
+				break;
+			}
+		}
+		int r = terminusRetrogen ? 2 : 0;
+		List<Chunk> chunks = new ArrayList<>();
+		for (int x = pos.x-r; x <= pos.x+r; x++) {
+			for (int z = pos.z-r; z <= pos.z+r; z++) {
+				chunks.add(world.getChunk(x, z, ChunkStatus.EMPTY));
+			}
+		}
+		ChunkRegion region = new ChunkRegion(world, chunks, ChunkStatus.FULL, 1);
+		if (fullRetrogen) {
+			YLog.info("Retrogen at "+pos);
+			generateSummit(region, c);
+		} else {
+			YLog.info("Partial retrogen at "+pos);
+			replaceBedrocks(new BlockPos.Mutable(), region, c, true);
+		}
+		if (terminusRetrogen) {
+			YLog.info("Terminus retrogen at "+pos);
+			generateTerminus(seed, region, world.getStructureAccessor());
+		}
+		// this causes chunks to never load on the client
+//		for (int x = 0; x < BiomeCoords.SIZE; x++) {
+//			for (int z = 0; z < BiomeCoords.SIZE; z++) {
+//				for (int y = BiomeCoords.fromBlock(120); y < BiomeCoords.fromBlock(c.getTopY()); y++) {
+//					ChunkSection sec = c.getSection(c.getSectionIndex(BiomeCoords.toBlock(y)));
+//					if (y > BiomeCoords.fromBlock(192)) {
+//						sec.getBiomeContainer().set(x, y&BiomeCoords.MASK, z, YBiomes.SCORCHED_TERMINUS_HOLDER);
+//					} else {
+//						sec.getBiomeContainer().set(x, y&BiomeCoords.MASK, z, YBiomes.SCORCHED_SUMMIT_HOLDER);
+//					}
+//				}
+//			}
+//		}
 	}
 	
 }

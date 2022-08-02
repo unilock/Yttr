@@ -4,9 +4,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import com.unascribed.yttr.init.YBiomes;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.surfacebuilder.SurfaceRules;
 import net.minecraft.world.gen.surfacebuilder.SurfaceRules.SequenceMaterialRule;
 import net.minecraft.world.gen.surfacebuilder.VanillaSurfaceRules;
@@ -19,7 +21,7 @@ public class MixinVanillaSurfaceRules {
 	private static SurfaceRules.MaterialRule modifyDirtRule(SurfaceRules.MaterialRule rule) {
 		((SequenceMaterialRule)rule).sequence().add(0,
 				SurfaceRules.condition(
-					SurfaceRules.biome(YBiomes.WASTELAND_HOLDER.getKey().get()),
+					SurfaceRules.biome(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("wasteland"))),
 					SurfaceRules.block(YBlocks.WASTELAND_DIRT.getDefaultState())
 				));
 		return rule;
@@ -30,7 +32,7 @@ public class MixinVanillaSurfaceRules {
 	private static SurfaceRules.MaterialRule modifyGrassRule(SurfaceRules.MaterialRule rule) {
 		((SequenceMaterialRule)rule).sequence().add(0,
 				SurfaceRules.condition(
-					SurfaceRules.biome(YBiomes.WASTELAND_HOLDER.getKey().get()),
+					SurfaceRules.biome(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("wasteland"))),
 					SurfaceRules.block(YBlocks.WASTELAND_DIRT.getDefaultState())
 				));
 		return rule;

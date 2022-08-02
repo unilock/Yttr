@@ -3,16 +3,13 @@ package com.unascribed.yttr.init;
 import java.util.function.Consumer;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.util.LatchHolder;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
-import net.minecraft.util.Holder;
 import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.BiomeParticleConfig;
@@ -92,10 +89,11 @@ public class YBiomes {
 				)
 			.build();
 	
-	public static final Holder<Biome> WASTELAND_HOLDER = Holder.Reference.create(BuiltinRegistries.BIOME, RegistryKey.of(Registry.BIOME_KEY, Yttr.id("wasteland")));
+	public static final LatchHolder<Biome> WASTELAND_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<Biome> SCORCHED_SUMMIT_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<Biome> SCORCHED_TERMINUS_HOLDER = LatchHolder.unset();
 	
 	public static void init() {
-		Blocks.SAND.asItem();
 		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
 	}
 

@@ -42,6 +42,7 @@ public final class YTags {
 		public static final TagKey<net.minecraft.block.Block> LESSER_ORES = TagKey.of(Registry.BLOCK_KEY, Yttr.id("lesser_ores"));
 		public static final TagKey<net.minecraft.block.Block> CLAMBER_BLOCKS = TagKey.of(Registry.BLOCK_KEY, Yttr.id("clamber_blocks"));
 		public static final TagKey<net.minecraft.block.Block> MAGNETIC = TagKey.of(Registry.BLOCK_KEY, Yttr.id("magnetic"));
+		public static final TagKey<net.minecraft.block.Block> SCORCHED_RETROGEN_IGNORABLE = TagKey.of(Registry.BLOCK_KEY, Yttr.id("scorched_retrogen_ignorable"));
 		
 		private static void init() {}
 		

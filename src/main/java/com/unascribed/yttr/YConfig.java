@@ -105,6 +105,8 @@ public class YConfig {
 		
 		public static final boolean continuity = data.getBoolean("worldgen.continuity").orElse(true);
 		
+		public static final boolean scorchedRetrogen = data.getBoolean("worldgen.scorched-retrogen").orElse(true);
+		
 		private static void touch() {}
 		private WorldGen() {}
 	}

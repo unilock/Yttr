@@ -465,6 +465,9 @@
 	"memorandum": {
 		"sounds": [ { "name": "yttr:memorandum", "stream": true } ]
 	},
+	"torus": {
+		"sounds": [ { "name": "yttr:torus.yttr_xm", "stream": true } ]
+	},
 	"vorpalhit1": {
 		"sounds": [
 			"minecraft:entity/player/attack/knockback1",

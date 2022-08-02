@@ -89,6 +89,7 @@ public class YSounds {
 	public static final SoundEvent PROJECT = create("project");
 	public static final SoundEvent SHIFT = create("shift");
 	public static final SoundEvent MAGNET_STEP = create("magnet_step");
+	public static final SoundEvent TORUS = create("torus");
 	
 	public static final SoundEvent HIGH_NOTE_BANJO = create("high_note.banjo");
 	public static final SoundEvent HIGH_NOTE_BASEDRUM = create("high_note.basedrum");

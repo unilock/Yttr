@@ -55,12 +55,14 @@ import com.unascribed.yttr.mixinsupport.ParticleScreen;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
+import com.unascribed.yttr.util.LatchHolder;
 import com.unascribed.yttr.util.SlotReference;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.RegisteredAs;
 import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
+import com.unascribed.yttr.world.ScorchedGenerator;
 import com.unascribed.yttr.world.WastelandPopulator;
 
 import com.google.common.base.Ascii;
@@ -106,6 +108,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.chunk.DebugChunkGenerator;
 
 public class Yttr implements ModInitializer {
@@ -249,6 +252,11 @@ public class Yttr implements ModInitializer {
 					WastelandPopulator.populate(world.getSeed(), world, chunk.getPos());
 				}));
 			}
+			if (ScorchedGenerator.isEligibleForRetrogen(world, chunk)) {
+				world.getServer().send(new ServerTask(world.getServer().getTicks(), () -> {
+					ScorchedGenerator.retrogen(world.getSeed(), world, chunk.getPos());
+				}));
+			}
 		});
 	}
 	
@@ -332,7 +340,17 @@ public class Yttr implements ModInitializer {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
-		autoRegister((id, t) -> Registry.register(registry, id, (T)t), holder, type);
+		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
+			Identifier id = deriveId(f, ann);
+			Registry.register(registry, id, (T)v);
+			try {
+				Field holderField = holder.getDeclaredField(f.getName()+"_HOLDER");
+				if (holderField.getType() == LatchHolder.class
+						&& Modifier.isStatic(holderField.getModifiers()) && !Modifier.isTransient(holderField.getModifiers())) {
+					((LatchHolder)holderField.get(null)).set(registry.getOrCreateHolder(RegistryKey.of(registry.getKey(), id)));
+				}
+			} catch (Exception e) {}
+		});
 	}
 
 	/**
@@ -352,18 +370,22 @@ public class Yttr implements ModInitializer {
 	 */
 	public static <T> void autoRegister(BiConsumer<Identifier, T> registry, Class<?> holder, Class<T> type) {
 		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
-			Identifier id;
-			if (ann != null) {
-				if (ann.value().contains(":")) {
-					id = new Identifier(ann.value());
-				} else {
-					id = id(ann.value());
-				}
-			} else {
-				id = id(Ascii.toLowerCase(f.getName()));
-			}
-			registry.accept(id, v);
+			registry.accept(deriveId(f, ann), v);
 		});
+	}
+
+	private static Identifier deriveId(Field f, RegisteredAs ann) {
+		Identifier id;
+		if (ann != null) {
+			if (ann.value().contains(":")) {
+				id = new Identifier(ann.value());
+			} else {
+				id = id(ann.value());
+			}
+		} else {
+			id = id(Ascii.toLowerCase(f.getName()));
+		}
+		return id;
 	}
 
 	/**

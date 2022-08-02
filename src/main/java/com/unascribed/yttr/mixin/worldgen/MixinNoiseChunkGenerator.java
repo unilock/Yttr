@@ -32,7 +32,7 @@ public abstract class MixinNoiseChunkGenerator extends ChunkGenerator {
 	
 	@Inject(at=@At("TAIL"), method="buildSurface")
 	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk, CallbackInfo ci) {
-		ScorchedGenerator.buildSurface(region, chunk);
+		ScorchedGenerator.generateSummit(region, chunk);
 	}
 	
 }
