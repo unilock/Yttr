@@ -37,7 +37,14 @@ public abstract class MixinChunkGenerator {
 				int y = chunk.sampleHeightmap(Type.OCEAN_FLOOR_WG, x, z);
 				int waterSurface = chunk.sampleHeightmap(Type.WORLD_SURFACE_WG, x, z);
 				if (waterSurface - y > 20) {
-					new SqueezeSaplingGenerator().generate(world, chunk.getPos().getStartPos().add(x, y, z), chunkRandom);
+					// for some reason, in 1.18 the ocean floor heightmap doesn't include surface blocks like gravel
+					// so try to generate it at the ocean floor, and a few blocks up, until we succeed
+					for (int i = 0; i < 4; i++) {
+						if (new SqueezeSaplingGenerator().generate(world, chunk.getPos().getStartPos().add(x, y, z), chunkRandom)) {
+							break;
+						}
+						y++;
+					}
 				}
 			}
 		}
