@@ -28,7 +28,7 @@ public class YItemGroups {
 	public static final ItemSubGroup EQUIPMENT = ItemSubGroup.create(PARENT, Yttr.id("equipment"));
 	public static final ItemSubGroup SNARE = ItemSubGroup.create(PARENT, Yttr.id("snare"));
 	public static final ItemSubGroup LAMP = ItemSubGroup.create(PARENT, Yttr.id("lamp"));
-	public static final ItemSubGroup BLOQUES = ItemSubGroup.create(PARENT, Yttr.id("bloques"));
+	public static final ItemSubGroup DECORATION = ItemSubGroup.create(PARENT, Yttr.id("decoration"));
 	public static final ItemSubGroup POTION = ItemSubGroup.create(PARENT, Yttr.id("potion"));
 	public static final ItemSubGroup RUINED = ItemSubGroup.create(PARENT, Yttr.id("ruined"));
 	public static final ItemSubGroup INRED = ItemSubGroup.create(PARENT, Yttr.id("inred"));
@@ -42,7 +42,7 @@ public class YItemGroups {
 				if (i instanceof LampBlockItem) {
 					group = LAMP;
 				} else if (i instanceof BloqueBlockItem) {
-					group = BLOQUES;
+					group = DECORATION;
 				} else if (i instanceof PotionItem) {
 					group = POTION;
 				} else if (i instanceof BlockItem && ((BlockItem)i).getBlock().getLootTableId().equals(Yttr.id("blocks/ruined"))) {
@@ -101,7 +101,10 @@ public class YItemGroups {
 				YItems.NEODYMIUM_BLOCK,
 				YItems.NEODYMIUM_SLAB,
 				YItems.DELRENE,
-				YItems.DELRENE_SCRAP
+				YItems.DELRENE_SCRAP,
+				YItems.ASH,
+				YItems.HAEMOPAL,
+				YItems.DUST
 			);
 		assign(FILTERING,
 				YItems.COMPRESSED_ULTRAPURE_CARBON,
@@ -138,7 +141,9 @@ public class YItemGroups {
 				YItems.BOGGED_NOTE_BLOCK,
 				YItems.BOGGED_HIGH_NOTE_BLOCK,
 				YItems.BOGGED_LOW_NOTE_BLOCK,
-				YItems.CUPROSTEEL_PLATE
+				YItems.CUPROSTEEL_PLATE,
+				YItems.CLAMBER_BLOCK,
+				YItems.SOUL_CLAMBER_BLOCK
 			);
 		assign(EQUIPMENT,
 				YItems.BROOKITE_SWORD,
@@ -172,6 +177,15 @@ public class YItemGroups {
 		assign(RUINED,
 				YItems.RUINED_CONTAINER,
 				YItems.RUBBLE
+			);
+		assign(DECORATION,
+				YItems.YTTRIUM_PLATING,
+				YItems.SCORCHED_OBSIDIAN,
+				YItems.POLISHED_SCORCHED_OBSIDIAN,
+				YItems.POLISHED_SCORCHED_OBSIDIAN_CAPSTONE,
+				YItems.POLISHED_OBSIDIAN,
+				YItems.POLISHED_OBSIDIAN_CAPSTONE,
+				YItems.CONTINUOUS_PLATFORM
 			);
 	}
 

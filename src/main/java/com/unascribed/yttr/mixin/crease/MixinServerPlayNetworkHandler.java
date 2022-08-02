@@ -22,7 +22,7 @@ public class MixinServerPlayNetworkHandler {
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/network/packet/c2s/play/ClickSlotC2SPacket.getRevision()I"), method="onClickSlot", cancellable=true)
 	public void onClickSlot(ClickSlotC2SPacket packet, CallbackInfo ci) {
 		int slotId = packet.getSlot();
-		if (player.currentScreenHandler.getSlot(slotId).getStack().isOf(YItems.CREASE)) {
+		if (slotId >= 0 && player.currentScreenHandler.getSlot(slotId).getStack().isOf(YItems.CREASE)) {
 			YLog.warn("Player {} clicked crease at index {}", player.getEntityName(), slotId);
 			player.currentScreenHandler.syncState();
 			ci.cancel();

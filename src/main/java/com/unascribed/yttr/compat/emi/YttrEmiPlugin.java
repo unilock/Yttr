@@ -173,6 +173,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.removeEmiStacks(EmiStack.of(YItems.LOOTBOX_OF_CONTINUITY));
 		registry.removeEmiStacks(EmiStack.of(YItems.SPATULA));
 		registry.removeEmiStacks(EmiStack.of(YItems.LOGO));
+		registry.removeEmiStacks(EmiStack.of(YItems.CREASE));
 		registry.removeEmiStacks(EmiStack::isEmpty);
 		
 		Function<Comparison, Comparison> compareNbt = c -> c.copy().nbt(true).build();

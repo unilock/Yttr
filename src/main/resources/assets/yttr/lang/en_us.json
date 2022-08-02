@@ -7,7 +7,7 @@
 	"itemGroup.yttr.equipment": "Equipment",
 	"itemGroup.yttr.snare": "Full Snares",
 	"itemGroup.yttr.lamp": "Lamps & Lazors",
-	"itemGroup.yttr.bloques": "Bloques®",
+	"itemGroup.yttr.decoration": "Decoration",
 	"itemGroup.yttr.potion": "Potions",
 	"itemGroup.yttr.ruined": "Wasteland",
 	"itemGroup.yttr.inred": "Circuitry",
@@ -230,6 +230,8 @@
 	"block.yttr.polished_scorched_obsidian": "Polished Scorched Obsidian",
 	"block.yttr.polished_scorched_obsidian_capstone": "Polished Scorched Obsidian Capstone",
 	"block.yttr.polished_scorched_obsidian_holster": "Polished Scorched Obsidian Holster",
+	"block.yttr.polished_obsidian": "Polished Obsidian",
+	"block.yttr.polished_obsidian_capstone": "Polished Obsidian Capstone",
 	
 	"block.yttr.delrene.tip.1": "§5§oBasically pink styrene.",
 	

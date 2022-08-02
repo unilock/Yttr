@@ -7,9 +7,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.ClickType;
+import net.minecraft.util.collection.DefaultedList;
 
 public class CreaseItem extends Item implements InventoryProviderItem {
 
@@ -30,6 +32,10 @@ public class CreaseItem extends Item implements InventoryProviderItem {
 	@Override
 	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
 		return true;
+	}
+	
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 	}
 
 }

@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"ingredient": {
+		"item": "yttr:polished_scorched_obsidian"
+	},
+	"result": "yttr:polished_scorched_obsidian_capstone",
+	"count": 1
+}

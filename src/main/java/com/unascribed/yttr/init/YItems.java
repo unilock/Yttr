@@ -143,6 +143,8 @@ public class YItems {
 	public static final BlockItem SCORCHED_OBSIDIAN = createBlockItem(YBlocks.SCORCHED_OBSIDIAN);
 	public static final BlockItem POLISHED_SCORCHED_OBSIDIAN = createBlockItem(YBlocks.POLISHED_SCORCHED_OBSIDIAN);
 	public static final BlockItem POLISHED_SCORCHED_OBSIDIAN_CAPSTONE = createBlockItem(YBlocks.POLISHED_SCORCHED_OBSIDIAN_CAPSTONE);
+	public static final BlockItem POLISHED_OBSIDIAN = createBlockItem(YBlocks.POLISHED_OBSIDIAN);
+	public static final BlockItem POLISHED_OBSIDIAN_CAPSTONE = createBlockItem(YBlocks.POLISHED_OBSIDIAN_CAPSTONE);
 
 	public static final BlockItem WHITE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.ORANGE);
