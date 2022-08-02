@@ -190,13 +190,26 @@ public class Yttr implements ModInitializer {
 		YHandledScreens.init();
 		YEnchantments.init();
 		
-		// general initialization
+		// miscellaneous other stuff
 		YStats.init();
 		YCriteria.init();
 		YBrewing.init();
 		YTrades.init();
 		YNetwork.init();
 		YFuels.init();
+		
+		// conditional content
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			try {
+				YttrTrinketsCompat.init();
+				YTrinkets.init();
+			} catch (Throwable t) {
+				YLog.warn("Failed to load Trinkets compat", t);
+			}
+		}
+		
+		// general initialization
+		
 		YItemGroups.init();
 		
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
@@ -237,15 +250,6 @@ public class Yttr implements ModInitializer {
 				}));
 			}
 		});
-		
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			try {
-				YttrTrinketsCompat.init();
-				YTrinkets.init();
-			} catch (Throwable t) {
-				YLog.warn("Failed to load Trinkets compat", t);
-			}
-		}
 	}
 	
 	public void onPostInitialize() {
