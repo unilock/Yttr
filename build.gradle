@@ -91,7 +91,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
 	modImplementation "com.unascribed:ears-api:1.4.5"
-	modImplementation("dev.emi:emi:0.2.0+1.18.2") { transitive = false }
+	modImplementation "dev.emi:emi:0.3.1+1.18.2"
 	
 	modImplementation "dev.emi:trinkets:3.3.0"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.1.4"
