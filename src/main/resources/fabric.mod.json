@@ -3,14 +3,15 @@
 	"id": "yttr",
 	"version": "${version}",
 	"name": "Yttr",
-	"description": "A mod about nothing. Just a hodgepodge of things I thought would be fun or useful.",
-	"authors": [
-		"unascribed"
-	],
+	"description": "A mod about the Void, what has gone before, and where you'll go from here. A vanilla overhaul crossed with a \"tech mod\".",
+	"authors": [ "unascribed" ],
+	"contributors": [ "Kat", "LemmaEOF" ],
 	"contact": {
 		"homepage": "https://unascribed.com/yttr/",
 		"sources": "https://git.sleeping.town/unascribed/Yttr",
-		"issues": "https://git.sleeping.town/unascribed/Yttr/issues"
+		"issues": "https://git.sleeping.town/unascribed/Yttr/issues",
+		"discord": "https://discord.gg/8WBauq2eYK",
+		"matrix": "https://matrix.to/#/#unascribed:sleeping.town"
 	},
 	"license": "Yttr License",
 	"icon": "assets/yttr/textures/icon-32.png",
@@ -32,8 +33,21 @@
 	},
 	"breaks": { "roughlyenoughitems": "*" },
 	"conflicts": { "jei": "*" },
-	"suggests": { "emi": "*" },
+	"suggests": { "trinkets": "*" },
+	"recommends": { "emi": "*" },
 	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.wiki": "https://unascribed.com/yttr/",
+				"modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/yttr",
+				"modmenu.modrinth": "https://modrinth.com/mod/yttr",
+				"modmenu.discord": "https://discord.gg/8WBauq2eYK",
+				"yttr.modmenu.matrix": "https://matrix.to/#/#unascribed:sleeping.town",
+				"yttr.modmenu.soundtrack": "https://www.youtube.com/playlist?list=PL9NJOGs_EhnOUqmoPf4uqWhe_02v-AFB4",
+				"yttr.modmenu.donate": "https://donate.unascribed.com/?project=14",
+				"modmenu.patreon": "https://patreon.com/unascribed"
+			}
+		},
 		"lithium:options": {
 			"mixin.entity.collisions": false,
 			"mixin.entity.fast_suffocation_check": false

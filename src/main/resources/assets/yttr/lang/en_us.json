@@ -717,6 +717,10 @@
 	"msg.yttr.wireframe.enabled": "Wireframe rendering enabled",
 	"msg.yttr.wireframe.disabled": "Wireframe rendering disabled",
 	"msg.yttr.wireframe.illegal": "Wireframe can only be enabled in Creative or Spectator",
-	"msg.yttr.well_wishes": "Have a nice day!"
+	"msg.yttr.well_wishes": "Have a nice day!",
+	
+	"yttr.modmenu.matrix": "Matrix",
+	"yttr.modmenu.soundtrack": "Soundtrack",
+	"yttr.modmenu.donate": "Donate"
 	
 }
