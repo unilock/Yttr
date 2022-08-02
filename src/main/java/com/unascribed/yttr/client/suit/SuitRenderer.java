@@ -34,6 +34,7 @@ public class SuitRenderer {
 	private float r = 1;
 	private float g = 1;
 	private float b = 1;
+	private float a = 1;
 	
 	public void setColor(LampColor color) {
 		setColor(color.glowColor);
@@ -51,6 +52,10 @@ public class SuitRenderer {
 		this.r = r*0.65f;
 		this.g = g*0.65f;
 		this.b = b*0.65f;
+	}
+	
+	public void setAlpha(float a) {
+		this.a = a;
 	}
 	
 	public void setUp() {
@@ -128,6 +133,8 @@ public class SuitRenderer {
 		if (flickeriness > 0 && independentRand.nextInt(flickeriness*8) == 0) {
 			a *= 0.85f;
 		}
+		
+		a *= this.a;
 
 		RenderSystem.setShaderColor(r, g, b, a * 0.1f);
 		for (int xo = -1; xo <= 1; xo++) {

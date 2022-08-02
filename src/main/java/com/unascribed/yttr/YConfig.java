@@ -30,8 +30,8 @@ public class YConfig {
 		ON,
 	}
 	
-	private static final QDCSS defaults;
-	private static final QDCSS data;
+	public static final QDCSS defaults;
+	public static final QDCSS data;
 	static {
 		URL url = YConfig.class.getResource("/yttr-default.css");
 		try {
@@ -42,6 +42,7 @@ public class YConfig {
 		File cfg = new File("config/yttr.css");
 		if (!cfg.exists()) {
 			try {
+				Files.createParentDirs(cfg);
 				Resources.asByteSource(url).copyTo(Files.asByteSink(cfg));
 			} catch (IOException e) {
 				YLog.error("IO error when copying default configuration", e);

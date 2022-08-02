@@ -20,7 +20,8 @@
 		"main": [ "com.unascribed.yttr.Yttr" ],
 		"client": [ "com.unascribed.yttr.client.YttrClient" ],
 		"server": [ "com.unascribed.yttr.YttrServer" ],
-		"emi": [ "com.unascribed.yttr.compat.emi.YttrEmiPlugin" ]
+		"emi": [ "com.unascribed.yttr.compat.emi.YttrEmiPlugin" ],
+		"modmenu": [ "com.unascribed.yttr.compat.modmenu.YttrModMenu" ]
 	},
 	"mixins": [
 		"yttr.mixins.json"
