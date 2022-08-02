@@ -59,7 +59,7 @@ steps:
     files:
       - build/libs/yttr-*.jar
     title: v${DRONE_TAG}
-    tag: ${DRONE_TAG}
+    tag: "${DRONE_TAG}"
     note: CHANGELOG.md
 
 trigger:
@@ -69,3 +69,24 @@ trigger:
       exclude:
       - refs/tags/dev-1.18
       - refs/tags/dev-1.16
+
+---
+
+kind: pipeline
+name: promotetag
+
+steps:
+- name: retag
+  image: alpine/git:latest
+  environment:
+    GITEA_KEY:
+      from_secret: gitea_key
+  commands:
+  - git tag dev-1.18 1.18.2
+  - "git push https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git dev-1.18"
+
+trigger:
+    branch:
+    - "1.18.2"
+    event:
+    - push
