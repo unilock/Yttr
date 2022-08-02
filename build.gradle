@@ -1,15 +1,25 @@
 buildscript {
 	repositories {
 		mavenCentral()
+		gradlePluginPortal()
 	}
 	dependencies {
 		classpath 'com.google.code.gson:gson:2.8.7'
+		classpath 'com.modrinth.minotaur:Minotaur:2.4.3'
+		classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
 	}
 }
 plugins {
 	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'io.github.juuxel.loom-quiltflower' version '1.7.3'
 	id 'org.quiltmc.quilt-mappings-on-loom' version '4.2.0'
+}
+
+if (System.getenv("MODRINTH_TOKEN")) {
+	apply plugin: "com.modrinth.minotaur"
+}
+if (System.getenv("CURSE_TOKEN")) {
+	apply plugin: "com.matthewprenger.cursegradle"
 }
 
 sourceCompatibility = JavaVersion.toVersion(17)
@@ -24,7 +34,6 @@ if (version.contains("{COMMIT}")) {
 if (version.contains("{COMMITNUM}")) {
 	version = version.replace("{COMMITNUM}", 'git rev-list --count HEAD'.execute().getText().trim())
 }
-version += "+"+project.minecraft_version
 group = project.maven_group
 
 repositories {
@@ -151,3 +160,57 @@ task amendJar {
 }
 
 tasks.remapJar.finalizedBy amendJar
+
+if (System.getenv("MODRINTH_TOKEN")) {
+	modrinth {
+		token = System.getenv("MODRINTH_TOKEN")
+		projectId = 'yttr'
+		versionNumber = project.version
+		versionName = 'v'+project.version
+		versionType = 'release'
+		uploadFile = remapJar
+		gameVersions = ['1.18.2']
+		loaders = ['fabric', 'quilt']
+		detectLoaders = false
+		changelog = file('CHANGELOG.md').text
+		dependencies {
+			required.project 'fabric-api'
+			required.project 'qsl'
+			optional.project 'emi'
+			optional.project 'trinkets'
+			embedded.project 'no-indium'
+		}
+	}
+}
+
+if (System.getenv("CURSE_TOKEN")) {
+	curseforge {
+		apiKey = System.getenv("CURSE_TOKEN")
+		project {
+			id = '467267'
+			releaseType = 'release'
+			changelogType = 'markdown'
+			changelog = file('CHANGELOG.md')
+
+			addGameVersion '1.18.2'
+			addGameVersion 'Fabric'
+			addGameVersion 'Quilt'
+
+			mainArtifact(remapJar) {
+				displayName = 'v'+project.version
+			}
+			relations {
+				requiredDependency 'fabric-api'
+				requiredDependency 'qsl'
+				optionalDependency 'emi'
+				optionalDependency 'trinkets'
+				embeddedLibrary 'no-indium'
+			}
+		}
+		options {
+			javaIntegration = false
+			forgeGradleIntegration = false
+			javaVersionAutoDetect = false
+		}
+	}
+}

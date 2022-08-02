@@ -1,13 +1,11 @@
 kind: pipeline
-name: default
+name: autobuild
 
 steps:
 - name: build
   image: gradle:7.4-jdk17
   commands:
   - gradle clean build
-  - "echo 10 most recent commits: > note.txt"
-  - "git log --pretty=tformat:%B -n10 >> note.txt"
 - name: retag
   image: alpine/git:latest
   environment:
@@ -28,7 +26,7 @@ steps:
     title: "[1.18.2] Dev Build"
     prerelease: true
     tag: dev-1.18
-    note: note.txt
+    note: CHANGELOG.md
     allow_edit: true
 
 trigger:
@@ -36,3 +34,38 @@ trigger:
     - "1.18.2"
     event:
     - push
+
+---
+
+kind: pipeline
+name: tagbuild
+
+steps:
+- name: build
+  image: gradle:7.4-jdk17
+  environment:
+    CURSE_TOKEN:
+      from_secret: curse_token
+    MODRINTH_TOKEN:
+      from_secret: modrinth_token
+  commands:
+  - gradle clean build modrinth curseforge
+- name: release
+  image: unascribed/drone-gitea-release
+  settings:
+    api_key:
+      from_secret: gitea_key
+    base_url: https://git.sleeping.town
+    files:
+      - build/libs/yttr-*.jar
+    title: v${DRONE_TAG}
+    tag: ${DRONE_TAG}
+    note: CHANGELOG.md
+
+trigger:
+    event:
+    - tag
+    ref:
+      exclude:
+      - refs/tags/dev-1.18
+      - refs/tags/dev-1.16
