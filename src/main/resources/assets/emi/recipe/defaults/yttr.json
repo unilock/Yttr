@@ -366,6 +366,12 @@
 		"yttr:crafting/lamp/lazor_emitter.12",
 		"yttr:crafting/lamp/lazor_emitter.17",
 		"yttr:soaking/glassy_void",
-		"yttr:soaking/delrene"
+		"yttr:soaking/delrene",
+		"yttr:crafting/scorched_obsidian",
+		"yttr:crafting/bedrock_smasher",
+		"yttr:stonecutting/polished_obsidian",
+		"yttr:stonecutting/polished_scorched_obsidian_capstone",
+		"yttr:stonecutting/polished_obsidian_capstone",
+		"yttr:stonecutting/polished_scorched_obsidian"
 	]
 }
