@@ -197,7 +197,7 @@ if (System.getenv("CURSE_TOKEN")) {
 			addGameVersion 'Quilt'
 
 			mainArtifact(remapJar) {
-				displayName = 'v'+project.version
+				displayName = 'Yttr v'+project.version
 			}
 			relations {
 				requiredDependency 'fabric-api'
