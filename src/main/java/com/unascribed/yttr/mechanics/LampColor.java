@@ -11,7 +11,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -61,10 +60,17 @@ public enum LampColor implements StringIdentifiable {
 	}
 	
 	LampColor(DyeColor inherit, int glowColor) {
-		this(inherit, null, NativeImage.getAbgrColor(255, (int)(inherit.getColorComponents()[0]*255),
-				(int)(inherit.getColorComponents()[1]*255), (int)(inherit.getColorComponents()[2]*255)), glowColor);
+		this(inherit, null, packColor(inherit.getColorComponents()), glowColor);
 	}
 	
+	private static int packColor(float[] colorComponents) {
+		int a = 255;
+		int r = (int)(colorComponents[0]*255)&0xFF;
+		int g = (int)(colorComponents[1]*255)&0xFF;
+		int b = (int)(colorComponents[2]*255)&0xFF;
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
 	LampColor(String item, int baseColor, int glowColor) {
 		this(null, item, baseColor, glowColor);
 	}
