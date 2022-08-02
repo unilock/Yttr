@@ -1,10 +1,14 @@
-package com.unascribed.yttr.compat.emi;
+package com.unascribed.yttr.compat.emi.recipe;
 
 import java.util.List;
 
 import org.apache.commons.compress.utils.Lists;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
+import com.unascribed.yttr.compat.emi.stack.BlockEmiStack;
+import com.unascribed.yttr.compat.emi.widget.ColoredTextureWidget;
+import com.unascribed.yttr.compat.emi.widget.RotatedTextureWidget;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 
 import dev.emi.emi.api.recipe.EmiRecipe;

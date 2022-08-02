@@ -1,4 +1,4 @@
-package com.unascribed.yttr.compat.emi;
+package com.unascribed.yttr.compat.emi.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 

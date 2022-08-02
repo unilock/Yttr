@@ -1,8 +1,9 @@
-package com.unascribed.yttr.compat.emi;
+package com.unascribed.yttr.compat.emi.recipe;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
+import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.init.YItems;
 
 import net.minecraft.client.gui.tooltip.TooltipComponent;

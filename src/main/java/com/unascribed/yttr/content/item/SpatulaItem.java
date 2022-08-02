@@ -50,12 +50,12 @@ public class SpatulaItem extends ShovelItem {
 		BlockState bs = w.getBlockState(pos);
 		if (bs.getHardness(w, pos) < 0) return ActionResult.FAIL;
 		if (!w.isClient) {
-			FallingBlockEntity fbe = new FallingBlockEntity(w, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, bs);
+			FallingBlockEntity fbe = FallingBlockEntity.fall(w, pos, bs);
 			fbe.setVelocity(p.getRotationVector().multiply(p.isSprinting() ? 0.7 : 0.5).add(0, 1, 0));
+			fbe.velocityModified = true;
 			p.world.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, p.getSoundCategory(), 1, 1.25f);
 			p.world.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, p.getSoundCategory(), 1, 1.75f);
 			w.playSound(null, pos, ((AccessorBlockSoundGroup)bs.getSoundGroup()).yttr$getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1);
-			w.spawnEntity(fbe);
 			p.getItemCooldownManager().set(this, 10);
 			context.getStack().damage(1, p, (t) -> p.sendEquipmentBreakStatus(context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND));
 		}

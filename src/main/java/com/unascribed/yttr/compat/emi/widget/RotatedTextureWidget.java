@@ -1,4 +1,4 @@
-package com.unascribed.yttr.compat.emi;
+package com.unascribed.yttr.compat.emi.widget;
 
 import dev.emi.emi.api.widget.TextureWidget;
 import net.minecraft.client.util.math.MatrixStack;

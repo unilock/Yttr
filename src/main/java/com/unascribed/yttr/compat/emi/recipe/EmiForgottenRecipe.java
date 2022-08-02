@@ -1,4 +1,4 @@
-package com.unascribed.yttr.compat.emi;
+package com.unascribed.yttr.compat.emi.recipe;
 
 import java.util.List;
 import java.util.Set;
@@ -6,6 +6,9 @@ import java.util.Set;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
+import com.unascribed.yttr.compat.emi.widget.RuinedInputWidget;
+import com.unascribed.yttr.compat.emi.widget.RuinedOutputWidget;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;

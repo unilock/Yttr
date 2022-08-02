@@ -16,6 +16,14 @@ import java.util.function.Function;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
+import com.unascribed.yttr.compat.emi.recipe.EmiCentrifugingRecipe;
+import com.unascribed.yttr.compat.emi.recipe.EmiForgottenRecipe;
+import com.unascribed.yttr.compat.emi.recipe.EmiGiftRecipe;
+import com.unascribed.yttr.compat.emi.recipe.EmiPistonSmashingRecipe;
+import com.unascribed.yttr.compat.emi.recipe.EmiShatteringRecipe;
+import com.unascribed.yttr.compat.emi.recipe.EmiSoakingRecipe;
+import com.unascribed.yttr.compat.emi.recipe.EmiVoidFilteringRecipe;
+import com.unascribed.yttr.compat.emi.stack.SuitHelmetEmiStack;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
@@ -103,7 +111,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 	public static final EmiRecipeCategory CONTINUITY_GIFTS = category(EmiStack.of(YItems.DROP_OF_CONTINUITY));
 	public static final EmiRecipeCategory FORGOTTEN_CRAFTING = category(EmiStack.of(YItems.WASTELAND_DIRT));
 	
-	static class Texture {
+	public static class Texture {
 		public static final EmiTexture SHATTERING = new EmiTexture(Yttr.id("textures/gui/shattering.png"), 0, 0, 24, 17, 24, 17, 24, 33);
 	}
 	

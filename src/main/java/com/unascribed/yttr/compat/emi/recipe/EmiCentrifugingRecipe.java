@@ -1,9 +1,10 @@
-package com.unascribed.yttr.compat.emi;
+package com.unascribed.yttr.compat.emi.recipe;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
