@@ -21,6 +21,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction.Axis;
@@ -57,14 +60,14 @@ public class MixinEntity implements Magnetized {
 			receptiveAbove = true;
 		} else if (self instanceof LivingEntity) {
 			LivingEntity le = (LivingEntity)self;
-			if (le.getEquippedStack(EquipmentSlot.FEET).isIn(YTags.Item.MAGNETIC)) {
+			if (yttr$isInSafe(le.getEquippedStack(EquipmentSlot.FEET), YTags.Item.MAGNETIC)) {
 				receptiveBelow = true;
 			}
-			if (le.getEquippedStack(EquipmentSlot.HEAD).isIn(YTags.Item.MAGNETIC)) {
+			if (yttr$isInSafe(le.getEquippedStack(EquipmentSlot.HEAD), YTags.Item.MAGNETIC)) {
 				receptiveAbove = true;
 			}
 		} else if (self instanceof ItemEntity) {
-			if (((ItemEntity)self).getStack().isIn(YTags.Item.MAGNETIC)) {
+			if (yttr$isInSafe(((ItemEntity)self).getStack(), YTags.Item.MAGNETIC)) {
 				receptiveBelow = true;
 				receptiveAbove = true;
 			}
@@ -103,6 +106,12 @@ public class MixinEntity implements Magnetized {
 		}
 	}
 	
+	private boolean yttr$isInSafe(ItemStack stack, TagKey<Item> tag) {
+		if (stack.getItem() == null) return false; // aaAAaaAA
+		if (stack.getItem().getBuiltInRegistryHolder() == null) return false; // AAAAAAAA
+		return stack.isIn(tag);
+	}
+
 	@Inject(at=@At("RETURN"), method="getJumpVelocityMultiplier", cancellable=true)
 	protected void getJumpVelocityMultiplier(CallbackInfoReturnable<Float> ci) {
 		if (yttr$magnetizedBelow) ci.setReturnValue(ci.getReturnValueF()*0.1f);
