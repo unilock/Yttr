@@ -50,6 +50,7 @@ public class YttrConfigScreen extends Screen {
 	
 	private int mouseX, mouseY;
 	private boolean clicked;
+	private boolean rclicked;
 	private Section currentSection = null;
 	private Section prevSection = null;
 	
@@ -73,6 +74,7 @@ public class YttrConfigScreen extends Screen {
 			
 			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
+			.put("client.config-color", "customize the color of this very setup utility")
 			
 			.put("rifle.allow-void", "off disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
 			.put("rifle.allow-explode", "off disables the yttric rifle explode mode to avoid griefing concerns - breaks progression - prefer soft to disable block damage")
@@ -100,7 +102,6 @@ public class YttrConfigScreen extends Screen {
 	public YttrConfigScreen(Screen parent) {
 		super(new LiteralText("Yttr configuration"));
 		this.parent = parent;
-		sr.setColor(LampColor.TEAL);
 	}
 	
 	@Override
@@ -122,6 +123,7 @@ public class YttrConfigScreen extends Screen {
 	
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		sr.setColor(YConfig.Client.configColor);
 		anyDescDrawnThisFrame = false;
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
@@ -203,7 +205,7 @@ public class YttrConfigScreen extends Screen {
 								v = !v;
 								if (badSettings.get(k) == Boolean.valueOf(v)) {
 									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
-									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
+									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 0.6f));
 								}
 								timesModified.add(label);
 								YConfig.data.put(k, v ? "on" : "off");
@@ -214,10 +216,17 @@ public class YttrConfigScreen extends Screen {
 						} else if (type.isEnum()) {
 							Enum<?> v = (Enum<?>)YConfig.data.getEnum(k, (Class)type).get();
 							if (drawEnum(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
-								v = (Enum<?>) type.getEnumConstants()[(v.ordinal()+1)%type.getEnumConstants().length];
+								int idx;
+								if (rclicked) {
+									idx = (v.ordinal()-1);
+									if (idx < 0) idx = type.getEnumConstants().length+idx;
+								} else {
+									idx = (v.ordinal()+1)%type.getEnumConstants().length;
+								}
+								v = (Enum<?>) type.getEnumConstants()[idx];
 								if (badSettings.get(k) == v) {
 									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
-									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
+									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 0.6f));
 								}
 								timesModified.add(label);
 								YConfig.data.put(k, Ascii.toLowerCase(v.name()));
@@ -258,6 +267,7 @@ public class YttrConfigScreen extends Screen {
 		}
 		super.render(matrices, mouseX, mouseY, delta);
 		clicked = false;
+		rclicked = false;
 		if (!anyDescDrawnThisFrame) {
 			drawingDesc = false;
 		}
@@ -281,7 +291,19 @@ public class YttrConfigScreen extends Screen {
 	private boolean drawEnum(MatrixStack matrices, String label, Enum<?> value, int x, int y, String desc, float delta) {
 		drawDescription(matrices, x, y, 160, 16, desc, delta);
 		sr.drawText(matrices, uniq+label, label, x, y+4, delta);
-		return drawButton(matrices, label, uniq+timesModified.count(label), Ascii.toLowerCase(value.name()), x+120, y, 40, delta);
+		String display;
+		if (value instanceof LampColor lc) {
+			display = switch (lc) {
+				case COLORLESS -> "warm";
+				case LIGHT_BLUE -> "lblue";
+				case LIGHT_GRAY -> "silver";
+				case MAGENTA -> "mgnta";
+				default -> Ascii.toLowerCase(value.name());
+			};
+		} else {
+			display = Ascii.toLowerCase(value.name());
+		}
+		return drawButton(matrices, label, uniq+timesModified.count(label), display, x+120, y, 40, delta);
 	}
 
 	private void drawDescription(MatrixStack matrices, int x, int y, int w, int h, String desc, float delta) {
@@ -355,8 +377,9 @@ public class YttrConfigScreen extends Screen {
 	
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (button == 0) {
+		if (button == 0 || button == 1) {
 			clicked = true;
+			rclicked = button == 1;
 			this.mouseX = (int)mouseX;
 			this.mouseY = (int)mouseY;
 		}

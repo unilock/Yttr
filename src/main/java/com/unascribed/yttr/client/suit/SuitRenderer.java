@@ -37,7 +37,17 @@ public class SuitRenderer {
 	private float a = 1;
 	
 	public void setColor(LampColor color) {
-		setColor(color.glowColor);
+		if (color == LampColor.COLORLESS) {
+			setColor(0xFFD7AD);
+		} else if (color == LampColor.BLACK) {
+			setColor(0x333388);
+		} else if (color == LampColor.LIGHT_BLUE) {
+			setColor(0x9AC0FF);
+		} else if (color == LampColor.BLUE) {
+			setColor(0x0066FF);
+		} else {
+			setColor(color.glowColor);
+		}
 	}
 	
 	public void setColor(int color) {

@@ -39,6 +39,11 @@
 	 * CRASHES.
 	 */
 	force-opengl-core: var(client.force-opengl-core);
+	
+	/*
+	 * The color of the ingame configuration menu.
+	 */
+	config-color: var(client.config-color);
 }
 
 #rifle {

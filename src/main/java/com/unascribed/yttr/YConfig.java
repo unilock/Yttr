@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.util.QDCSS;
 import com.unascribed.yttr.util.QDCSS.SyntaxErrorException;
 import com.unascribed.yttr.util.YLog;
@@ -164,6 +165,8 @@ public class YConfig {
 		public static boolean slopeSmoothing = true;
 		@Key("client.force-opengl-core")
 		public static Trilean forceOpenGLCore = Trilean.AUTO;
+		@Key("client.config-color")
+		public static LampColor configColor = LampColor.TEAL;
 		
 		private Client() {}
 	}
