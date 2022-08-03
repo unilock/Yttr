@@ -4,3 +4,4 @@
 * More config screen tweaks
 * Fixed welded Bloques® not rendering properly on Create trains/contraptions
 * New "Vector Suit" built-in resource pack
+* Fixed the Rifle Canister Multiplexer voiding items

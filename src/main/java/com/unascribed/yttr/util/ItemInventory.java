@@ -8,17 +8,17 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
 public class ItemInventory implements Inventory {
-	private final ItemStack stack;
+	private final ItemStack invStack;
 	private final int size;
 
 	public ItemInventory(ItemStack stack, int size) {
-		this.stack = stack;
+		this.invStack = stack;
 		this.size = size;
 	}
 
 	@Override
 	public void clear() {
-		if (stack.hasNbt()) stack.getNbt().remove("Contents");
+		if (invStack.hasNbt()) invStack.getNbt().remove("Contents");
 	}
 
 	@Override
@@ -29,18 +29,18 @@ public class ItemInventory implements Inventory {
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		if (slot < 0 || slot >= size) throw new IndexOutOfBoundsException(""+slot);
-		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
-		NbtList inv = stack.getNbt().getList("Contents", NbtType.COMPOUND);
+		if (!invStack.hasNbt()) invStack.setNbt(new NbtCompound());
+		NbtList inv = invStack.getNbt().getList("Contents", NbtType.COMPOUND);
 		ensureSize(inv, size);
 		inv.set(slot, stack.isEmpty() ? new NbtCompound() : stack.writeNbt(new NbtCompound()));
-		stack.getNbt().put("Contents", inv);
+		invStack.getNbt().put("Contents", inv);
 	}
 
 	@Override
 	public ItemStack getStack(int slot) {
 		if (slot < 0 || slot >= size) throw new IndexOutOfBoundsException(""+slot);
-		if (!stack.hasNbt()) return ItemStack.EMPTY;
-		NbtList inv = stack.getNbt().getList("Contents", NbtType.COMPOUND);
+		if (!invStack.hasNbt()) return ItemStack.EMPTY;
+		NbtList inv = invStack.getNbt().getList("Contents", NbtType.COMPOUND);
 		ensureSize(inv, size);
 		NbtCompound comp = inv.getCompound(slot);
 		if (comp.getSize() == 0) return ItemStack.EMPTY;
