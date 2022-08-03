@@ -146,12 +146,12 @@ public class SuitRenderer {
 		
 		a *= this.a;
 
-		RenderSystem.setShaderColor(r, g, b, a * 0.1f);
+		RenderSystem.setShaderColor(r, g, b, a * (Yttr.vectorSuit ? 0.03f : 0.1f));
 		float o = 1;
 		float s = 1;
 		if (Yttr.vectorSuit) {
-			o = 0.4f;
-			s = 0.4f;
+			o = 0.8f;
+			s = 0.2f;
 		}
 		for (float xo = -o; xo <= o; xo += s) {
 			for (float yo = -o; yo <= o; yo += s) {
