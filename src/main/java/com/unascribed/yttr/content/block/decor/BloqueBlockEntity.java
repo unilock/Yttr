@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
-import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import com.google.common.base.MoreObjects;
@@ -19,12 +18,9 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 
@@ -365,20 +361,6 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 							if (type.cullable() && getMulti(x, y, z, d) != null) {
 								type = type.culled();
 								changed = true;
-							} else if (type == AdjType.CULL_EDGE) {
-								BlockPos ofs = pos.offset(d);
-								BlockState other = world.getBlockState(ofs);
-								if (!other.isOf(YBlocks.BLOQUE)) {
-									VoxelShape otherShape = other.getCullingShape(world, pos);
-									if (otherShape != null && !otherShape.isEmpty()) {
-										VoxelShape shape = VOXEL_SHAPES[slot];
-										VoxelShape touching = VoxelShapes.combine(shape.getFace(d), otherShape.getFace(d.getOpposite()), BooleanBiFunction.ONLY_FIRST);
-										if (touching.isEmpty()) {
-											type = type.culled();
-											changed = true;
-										}
-									}
-								}
 							}
 						}
 						nw[d.ordinal()] = type;
