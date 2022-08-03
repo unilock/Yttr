@@ -147,9 +147,18 @@ public class SuitRenderer {
 		a *= this.a;
 
 		RenderSystem.setShaderColor(r, g, b, a * 0.1f);
-		for (int xo = -1; xo <= 1; xo++) {
-			for (int yo = -1; yo <= 1; yo++) {
-				DrawableHelper.drawTexture(matrices, x+xo, y+yo, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+		float o = 1;
+		float s = 1;
+		if (Yttr.vectorSuit) {
+			o = 0.4f;
+			s = 0.4f;
+		}
+		for (float xo = -o; xo <= o; xo += s) {
+			for (float yo = -o; yo <= o; yo += s) {
+				matrices.push();
+				matrices.translate(xo, yo, 0);
+				DrawableHelper.drawTexture(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+				matrices.pop();
 			}
 		}
 		RenderSystem.setShaderColor(r, g, b, a);

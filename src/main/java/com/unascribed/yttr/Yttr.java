@@ -124,8 +124,9 @@ public class Yttr implements ModInitializer {
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	public static final Multimap<Identifier, Identifier> discoveries = HashMultimap.create();
-	
+
 	public static boolean lessCreepyAwareHopper;
+	public static boolean vectorSuit;
 	
 	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
 	

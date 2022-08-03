@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg228"
+   width="280"
+   height="200"
+   viewBox="0 0 280 200"
+   sodipodi:docname="suit-vector.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs232" />
+  <sodipodi:namedview
+     id="namedview230"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="true"
+     inkscape:zoom="32"
+     inkscape:cx="13.921875"
+     inkscape:cy="23.140625"
+     inkscape:window-width="2080"
+     inkscape:window-height="1251"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g234">
+    <inkscape:grid
+       type="xygrid"
+       id="grid346"
+       empspacing="2"
+       spacingx="0.5"
+       spacingy="0.5"
+       color="#0099e5"
+       opacity="0.14901961"
+       empcolor="#0099e5"
+       empopacity="0.54901961" />
+  </sodipodi:namedview>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g234">
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       id="rect2804"
+       width="280"
+       height="200"
+       x="0"
+       y="0"
+       sodipodi:insensitive="true" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
+       d="m 4.5,8.5 v -6 l -2,-2 -2,2 v 6"
+       id="path1028" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
+       d="m 0.5,4.5 h 4"
+       id="path1030" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
+       d="m 5.5,0.5 h 2 l 1,1 v 2 l 1,1 v 3 l -1,1 h -3 z"
+       id="path1446" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
+       d="m 5.5,4.5 h 4"
+       id="path1448" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 14.5,0.5 h -3 l -1,1 v 6 l 1,1 h 3"
+       id="path1661"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 15.5,0.5 4,1 v 3 3 l -4,1 z"
+       id="path1728"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 25,0.5 h -4.5 v 8 H 25"
+       id="path1793"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 20.5,4.5 H 25"
+       id="path1795" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 29.5,0.5 h -4 v 8"
+       id="path1895"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 25.5,4.5 h 4"
+       id="path1897"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 35,0.5 h -3.5 l -1,1 v 6 l 1,1 h 3 v -3 l -1,-1 H 32"
+       id="path1899" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 35.5,0.5 v 8"
+       id="path1903" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 35.5,4.5 h 4"
+       id="path1905" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 39.5,0.5 v 8"
+       id="path1907" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 40.5,0.5 h 4"
+       id="path1909" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 40.5,8.5 h 4"
+       id="path1911" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 42.5,8.5 v -8"
+       id="path1913" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 48.5,0.5 h 1 v 7 l -1,1 h -2 l -1,-1"
+       id="path1915" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 50.5,0.5 v 8"
+       id="path1917" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 54.5,0.5 -4,4"
+       id="path1921" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 50.5,4.5 h 4 v 4"
+       id="path1923" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 55.5,0.5 v 8 h 4"
+       id="path1925" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 60.5,8.5 v -7 l 1,-1 1,1 1,-1 1,1 v 7"
+       id="path1927" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 62.5,1.5 v 7"
+       id="path1929" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 0.5,17.5 v -8 l 4,8 v -8"
+       id="path1931" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 6.5,9.5 -1,1 v 6 l 1,1 h 2 l 1,-1 v -6 l -1,-1 z"
+       id="path1933" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 10.5,17.5 v -8 h 3 l 1,1 v 2 l -1,1 h -3"
+       id="path1935" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 16.5,9.5 h 2 l 1,1 v 6 l -1,1 h -2 l -1,-1 v -6 z"
+       id="path1937" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 18.5,16.5 1,1"
+       id="path1939" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 20.5,17.5 v -8 h 3 l 1,1 v 2 l -1,1 h -3"
+       id="path1941" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 21.5,13.5 3,4"
+       id="path1943" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 29.5,9.5 h -3 l -1,1 v 1 l 4,4 v 1 c 0,0 -1,1 -1,1 h -3"
+       id="path1945" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 30.5,9.5 h 4"
+       id="path1947" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 32.5,9.5 v 8"
+       id="path1949" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 35.5,9.5 v 7 l 1,1 h 2 l 1,-1 v -7"
+       id="path1951" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 40.5,9.5 v 5 l 2,3 2,-3 v -5"
+       id="path1953" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 45.5,9.5 v 7 l 1,1 1,-1 1,1 1,-1 v -7"
+       id="path1955" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 47.5,9.5 v 7"
+       id="path1957" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 50.5,9.5 4,8"
+       id="path1959" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 54.5,9.5 -4,8"
+       id="path1961" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 57.5,17.5 v -4"
+       id="path1967" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 55.5,9.5 2,4"
+       id="path1969" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 59.5,9.5 -2,4"
+       id="path1971" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 60.5,9.5 h 4 l -4,8 h 4"
+       id="path1973" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 0.65655615,29.5 H 10.343444 L 5.5,19.5 Z"
+       id="path1975"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 5.5,23.5 v 2"
+       id="path1977" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 5.5,27.6 V 27.4"
+       id="path1979" />
+    <ellipse
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       id="path2035"
+       cx="16.75"
+       cy="24"
+       rx="5.2708335"
+       ry="5.5" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 14.5,24 h 5"
+       id="path2037" />
+    <path
+       id="path2057"
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 28.5,20.5 v -1 l 1,1 m 0,1 h 2 l 1,1 v 1 l -3,-1.657495 V 29.5 m -1,-0.8125 V 21.881282 L 25.5,23.5 v -1 l 1,-1 h 2 m 5,6 -2,2 h -2 l -0.5,-1 -1.5,1 h -1 l -2,-2 m 7,0 -1.898437,1.875 M 26.5,27.5 l 0.960937,1.898437"
+       sodipodi:nodetypes="cccccccccccccccccccccccccc" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 38.5,21.5 h -1 v -3 h 7 v 6 h -3 v 2 h -1 v -3 h 3 v -4 h -5 z"
+       id="path2059" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 40.5,28.5 h 1 v 1 h -1 z"
+       id="path2061" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 0.5,30.5 h 79 v 7 h -79 z"
+       id="path2063" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 2.5,40.5 h 75 v 3 h -75 z"
+       id="path2065" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 1.5,46.5 h 2 l 1,1 v 6 l -1,1 h -2 l -1,-1 v -6 z"
+       id="path2406" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 4,47 1,54"
+       id="path2408" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 5.5,47.5 2,-1 v 8"
+       id="path2410"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 5.5,54.5 h 4"
+       id="path2412" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 10.5,46.5 h 3 l 1,1 v 2 l -1,1 h -2 l -1,1 v 3 h 4"
+       id="path2414" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 15,46.5 h 3.5 l 1,1 v 2 l -1,1 1,1 v 2 l -1,1 h -3"
+       id="path2416" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 18.5,50.5 h -3"
+       id="path2418" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 24.5,50.5 h -4 l 4,-4 v 8"
+       id="path2420" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 29.5,46.5 h -4 v 4 h 3 l 1,1 v 2 l -1,1 h -3"
+       id="path2422" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 34.5,46.5 h -3 l -1,1 v 6 l 1,1 h 2 l 1,-1 v -2 l -1,-1 h -2 l -1,1"
+       id="path2424"
+       sodipodi:nodetypes="ccccccccccc" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 35.5,46.5 h 4 l -4,8"
+       id="path2426" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 41.5,46.5 h 2 l 1,1 v 2 l -1,1 1,1 v 2 l -1,1 h -2 l -1,-1 v -2 l 1,-1 -1,-1 v -2 l 1,-1"
+       id="path2428" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 41.5,50.5 h 2"
+       id="path2430" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 49.5,54.5 v -7 l -1,-1 h -2 l -1,1 v 2 l 1,1 h 2 l 1,-1"
+       id="path2432" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 52.5,48.6 V 48.4"
+       id="path2434" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 52.5,52.6 V 52.4"
+       id="path2436" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 57.5,48.6 V 48.4"
+       id="path2438" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 57.5,52.5 -1,1"
+       id="path2509" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 63.5,48.5 -2,2 2,2"
+       id="path2511" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 66.5,49.5 h 2"
+       id="path2513" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 68.5,51.5 h -2"
+       id="path2515" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 71.5,48.5 2,2 -2,2"
+       id="path2517" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 75.5,49.5 v -2 l 1,-1 h 2 l 1,1 v 2 l -1,1 h -1 v 2"
+       id="path2519" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 77.5,54.6 V 54.4"
+       id="path2521" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 0.5,55.5 h 80 v 7 h -80 z"
+       id="path2523" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 2.5,62.5 v -2"
+       id="path2525" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 4.5,62.5 v -3"
+       id="path2527" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 6.5,62.5 v -2"
+       id="path2529" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 8.5,62.5 v -5"
+       id="path2531" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 10.5,62.5 v -2"
+       id="path2533" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 12.5,62.5 v -3"
+       id="path2535" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 14.5,62.5 v -2"
+       id="path2537" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 16.5,62.5 v -5"
+       id="path2539" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 18.5,62.5 v -2"
+       id="path2541" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 20.5,62.5 v -3"
+       id="path2543" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 22.5,62.5 v -2"
+       id="path2545" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 24.5,62.5 v -5"
+       id="path2547" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 26.5,62.5 v -2"
+       id="path2549" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 28.5,62.5 v -3"
+       id="path2551" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 30.5,62.5 v -2"
+       id="path2553" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 32.5,62.5 v -5"
+       id="path2555" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 34.5,62.5 v -2"
+       id="path2557" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 36.5,62.5 v -3"
+       id="path2559" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 38.5,62.5 v -2"
+       id="path2561" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 40.5,62.5 v -5"
+       id="path2563" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 42.5,62.5 v -2"
+       id="path2565" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 44.5,62.5 v -3"
+       id="path2567" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 46.5,62.5 v -2"
+       id="path2569" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 48.5,62.5 v -5"
+       id="path2571" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 50.5,62.5 v -2"
+       id="path2573" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 52.5,62.5 v -3"
+       id="path2575" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 54.5,62.5 v -2"
+       id="path2577" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 56.5,62.5 v -5"
+       id="path2579" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 58.5,62.5 v -2"
+       id="path2581" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 60.5,62.5 v -3"
+       id="path2583" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 62.5,62.5 v -2"
+       id="path2585" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 64.5,62.5 v -5"
+       id="path2587" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 66.5,62.5 v -2"
+       id="path2589" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 68.5,62.5 v -3"
+       id="path2591" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 70.5,62.5 v -2"
+       id="path2593" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 72.5,62.5 v -5"
+       id="path2595" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 74.5,62.5 v -2"
+       id="path2597" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 76.5,62.5 v -3"
+       id="path2599" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 78.5,62.5 v -2"
+       id="path2601" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 0.5,68.5 1,-5 1,5"
+       id="path2605" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 0.5,69.5 h 15 v 4 h -15 z"
+       id="path2607" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 15.5,69.5 h 16 v 4 h -16"
+       id="path2609" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 2.5,78.5 1,1"
+       id="path2611" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 2.5,76.5 3,3"
+       id="path2613" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 4.5,76.5 3,3"
+       id="path2615" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 6.5,76.5 3,3"
+       id="path2617" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 8.5,76.5 3,3"
+       id="path2619" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 10.5,76.5 3,3"
+       id="path2621" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 12.5,76.5 3,3"
+       id="path2623" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 14.5,76.5 3,3"
+       id="path2625" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 16.5,76.5 3,3"
+       id="path2627" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 18.5,76.5 3,3"
+       id="path2629" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 20.5,76.5 3,3"
+       id="path2631" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 22.5,76.5 3,3"
+       id="path2633" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 24.5,76.5 3,3"
+       id="path2635" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 26.5,76.5 3,3"
+       id="path2637" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 28.5,76.5 3,3"
+       id="path2639" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 30.5,76.5 3,3"
+       id="path2641" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 32.5,76.5 3,3"
+       id="path2643" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 34.5,76.5 3,3"
+       id="path2645" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 36.5,76.5 3,3"
+       id="path2647" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 38.5,76.5 3,3"
+       id="path2649" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 40.5,76.5 3,3"
+       id="path2651" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 42.5,76.5 3,3"
+       id="path2653" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 44.5,76.5 3,3"
+       id="path2655" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 46.5,76.5 3,3"
+       id="path2657" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 48.5,76.5 3,3"
+       id="path2659" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 50.5,76.5 3,3"
+       id="path2661" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 52.5,76.5 3,3"
+       id="path2663" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 54.5,76.5 3,3"
+       id="path2665" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 56.5,76.5 3,3"
+       id="path2667" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 58.5,76.5 3,3"
+       id="path2669" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 60.5,76.5 3,3"
+       id="path2671" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 62.5,76.5 3,3"
+       id="path2673" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 64.5,76.5 3,3"
+       id="path2675" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 66.5,76.5 3,3"
+       id="path2677" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 68.5,76.5 3,3"
+       id="path2679" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 70.5,76.5 3,3"
+       id="path2681" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 72.5,76.5 3,3"
+       id="path2683" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 74.5,76.5 3,3"
+       id="path2685" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 76.5,76.5 1,1"
+       id="path2687"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 2.5,82.5 v 6"
+       id="path2693" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 2.5,90.6 V 90.4"
+       id="path2695" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 6.5,82.5 v 1"
+       id="path2697" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 8.5,82.5 v 1"
+       id="path2699" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 11.5,82.5 v 8"
+       id="path2701" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 13.5,90.5 v -8"
+       id="path2703" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 10.5,84.5 h 4"
+       id="path2705" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 14.5,88.5 h -4"
+       id="path2707" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 19.5,82.5 h -3 l -1,1 v 1 l 4,4 v 1 c 0,0 -1,1 -1,1 h -3"
+       id="path2709" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 17.5,82 v 9"
+       id="path2711" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 20.5,84.6 V 84.4"
+       id="path2713" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 24.5,88.6 V 88.4"
+       id="path2715" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 24.5,84.5 -4,4"
+       id="path2717" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 27.5,85.5 v 2"
+       id="path2719" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 26.5,86.5 h 2"
+       id="path2721" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 32.5,82.5 -1,2"
+       id="path2723" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 38.5,82.5 -2,2 v 4 l 2,2"
+       id="path2725" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 41.5,90.5 2,-2 v -4 l -2,-2"
+       id="path2727" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 46.5,85.5 2,2"
+       id="path2729" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 48.5,85.5 -2,2"
+       id="path2731" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 52.5,85.5 v 2"
+       id="path2733" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 51.5,86.5 h 2"
+       id="path2735" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 57.5,89.5 -1,1"
+       id="path2737" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 61.5,86.5 h 2"
+       id="path2739" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 70.5,90.5 4,-8"
+       id="path2741" />
+    <path
+       style="fill:none;fill-opacity:0.156863;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 67.5,90.6 V 90.4"
+       id="path2743" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 179.5,102.5 h 1 v -2 h 2 v -1 h -2 v -2 h -1 v 2 h -2 v 1 h 2 z"
+       id="path2745" />
+    <path
+       id="path2749"
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.4;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       d="m 279.5,199.5 c -66.33333,-5.33333 -132.66667,-5.33333 -199,0 V 4.5 c 66.33333,-5.33333339 132.66667,-5.33333328 199,0 z"
+       sodipodi:nodetypes="cccc" />
+  </g>
+</svg>

@@ -383,6 +383,11 @@ public class YttrConfigScreen extends Screen {
 			this.mouseX = (int)mouseX;
 			this.mouseY = (int)mouseY;
 		}
+		if (button == 3 && currentSection != null) {
+			currentSection = null;
+			uniq = ThreadLocalRandom.current().nextInt();
+			client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DIVE_THRUST, ThreadLocalRandom.current().nextFloat(1.4f, 1.8f), 1));
+		}
 		return true;
 	}
 	

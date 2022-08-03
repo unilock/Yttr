@@ -182,8 +182,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				TextureColorThief.clearCache();
 				LampRenderer.clearCache();
 			}));
-			rm.registerReloader(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(Yttr.id("lcah-marker"))));
+			rm.registerReloader(reloader("yttr:detect", (manager) -> {
+				Yttr.lessCreepyAwareHopper = manager.containsResource(Yttr.id("lcah-marker"));
+				Yttr.vectorSuit = manager.containsResource(Yttr.id("vector-marker"));
+			}));
 			Yttr.lessCreepyAwareHopper = rm.containsResource(Yttr.id("lcah-marker"));
+			Yttr.vectorSuit = rm.containsResource(Yttr.id("vector-marker"));
 		});
 		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -370,7 +374,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			@Override
 			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("", new LiteralText("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
+				consumer.accept(factory.create("yttr:lcah", new LiteralText("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 8),
+						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
+				f = () -> new EmbeddedResourcePack("vector");
+				consumer.accept(factory.create("yttr:vector", new LiteralText("Vector Suit"), false, f, new PackResourceMetadata(new LiteralText("Gives the suit HUD a more true vector aesthetic."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 			}
 		};
