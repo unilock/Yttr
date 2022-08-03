@@ -97,7 +97,6 @@ public class YConfig {
 					if (k != null) {
 						try {
 							keyTypes.put(k.value(), f.getType());
-							System.out.println(k.value()+" is "+f.getType());
 							if (f.getType() == boolean.class) {
 								f.set(null, data.getBoolean(k.value()).get());
 							} else if (f.getType().isEnum()) {

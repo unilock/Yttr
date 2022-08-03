@@ -153,9 +153,10 @@ public class YttrConfigScreen extends Screen {
 			sr.setAlpha(sa);
 			sr.setUp();
 			if (currentSection == null) {
-				int y = 6;
+				drawHeading(matrices, "sections", 6, 6, delta);
+				int y = 24;
 				for (Section s : Section.values()) {
-					if (drawButton(matrices, Ascii.toLowerCase(s.name()), 6, y, delta)) {
+					if (drawButton(matrices, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 100, delta)) {
 						currentSection = s;
 						uniq = ThreadLocalRandom.current().nextInt();
 					}
@@ -264,10 +265,6 @@ public class YttrConfigScreen extends Screen {
 				i++;
 			}
 		}
-	}
-
-	private boolean drawButton(MatrixStack matrices, String text, int x, int y, float delta) {
-		return drawButton(matrices, text, uniq, text, x, y, 100, delta);
 	}
 	
 	private boolean drawButton(MatrixStack matrices, String id, int uniq, String text, int x, int y, int w, float delta) {
