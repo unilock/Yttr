@@ -72,9 +72,9 @@ public class YttrConfigScreen extends Screen {
 			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
 			
-			.put("rifle.allow-void", "disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
-			.put("rifle.allow-explode", "disables the yttric rifle explode mode to avoid griefing concerns - breaks progression - prefer soft to disable block damage")
-			.put("rifle.allow-fire", "disables the yttric rifle fire mode to avoid griefing concerns")
+			.put("rifle.allow-void", "off disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
+			.put("rifle.allow-explode", "off disables the yttric rifle explode mode to avoid griefing concerns - breaks progression - prefer soft to disable block damage")
+			.put("rifle.allow-fire", "off disables the yttric rifle fire mode to avoid griefing concerns")
 			
 			.put("worldgen.gadolinite", "generates gadolinite in the overworld, a source of yttrium and iron - required for progression")
 			.put("worldgen.brookite", "generates brookite ore in the overworld - required for some recipes, and future progression")
@@ -131,7 +131,17 @@ public class YttrConfigScreen extends Screen {
 			initialMouseY = mouseY;
 		}
 		if (a < 1) {
+			MatrixStack modelView = RenderSystem.getModelViewStack();
+			matrices.push();
+			modelView.push();
+			modelView.translate(initialMouseX, initialMouseY, 0);
+			modelView.scale(1+(a/2), 1+(a/2), 1);
+			modelView.translate(-initialMouseX, -initialMouseY, 0);
+			RenderSystem.applyModelViewMatrix();
 			parent.render(matrices, -200, -200, delta);
+			modelView.pop();
+			RenderSystem.applyModelViewMatrix();
+			matrices.pop();
 			float r = (Math.max(initialMouseX, height-initialMouseY)*1.1f)*a;
 			matrices.push();
 			matrices.translate(initialMouseX, initialMouseY, 0);
