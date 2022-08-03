@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.item.block;
 import java.util.List;
 
 import com.unascribed.yttr.content.block.decor.BloqueBlockEntity;
+import com.unascribed.yttr.init.YStatusEffects;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,6 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
@@ -17,10 +21,14 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 public class BloqueBlockItem extends DyedBlockItem {
 
@@ -59,6 +67,44 @@ public class BloqueBlockItem extends DyedBlockItem {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.EAT;
+	}
+	
+	@Override
+	public int getMaxUseTime(ItemStack stack) {
+		return 48;
+	}
+	
+	@Override
+	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+		if (remainingUseTicks % 5 == 0) {
+			user.playSound(SoundEvents.BLOCK_CALCITE_HIT, 1, 1);
+		}
+		super.usageTick(world, user, stack, remainingUseTicks);
+	}
+	
+	@Override
+	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+		user.playSound(SoundEvents.BLOCK_CALCITE_BREAK, 1, 1);
+		user.playSound(SoundEvents.BLOCK_CALCITE_BREAK, 1, 2);
+		user.emitGameEvent(GameEvent.EAT);
+		user.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, 600, 0));
+		user.addStatusEffect(new StatusEffectInstance(YStatusEffects.DELICACENESS, 20, 0));
+		stack.decrement(1);
+		return stack;
+	}
+	
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+		if (hand == Hand.OFF_HAND && user.isSneaking()) {
+			user.setCurrentHand(hand);
+			return TypedActionResult.success(user.getStackInHand(hand), false);
+		}
+		return TypedActionResult.pass(user.getStackInHand(hand));
 	}
 
 	private boolean fillIn(BloqueBlockEntity be, Vec3d hitPos, BlockPos bp, Direction side) {
