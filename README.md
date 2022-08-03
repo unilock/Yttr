@@ -1,4 +1,4 @@
-<img src="docs/img/logo.png" align="right" width="180px"/>
+<img src="logo.png" align="right" width="180px"/>
 
 # Yttr
 *A mod about the Void, what has gone before, and where you'll go from here.
