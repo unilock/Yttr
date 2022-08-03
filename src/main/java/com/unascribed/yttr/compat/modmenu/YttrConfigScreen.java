@@ -17,6 +17,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multiset;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -200,7 +201,14 @@ public class YttrConfigScreen extends Screen {
 			}
 			
 			if (!anyDescDrawnThisFrame) {
-				sr.drawText(matrices, "setup"+descUniq, "yttr setup utility", width-113, 6, delta);
+				String v = FabricLoader.getInstance().getModContainer("yttr").get().getMetadata().getVersion().getFriendlyString();
+				if (v.equals("${version}")) {
+					v = "dev";
+				}
+				sr.drawText(matrices, "setup"+descUniq, "yttr "+v+" setup utility", width-113-((v.length()+1)*6), 6, delta);
+				if (currentSection != null) {
+					sr.drawText(matrices, "setup2"+descUniq+uniq, "hover for descriptions", width-137, 17, delta);
+				}
 			}
 			
 			if (drawButton(matrices, "cornerbutton", uniq, currentSection != null ? "back" : "done", width-110, height-30, 100, delta)) {
@@ -249,16 +257,16 @@ public class YttrConfigScreen extends Screen {
 				drawingDesc = true;
 				descUniq++;
 			}
-			int initialX = width-120;
+			int initialX = width-130;
 			x = initialX;
 			int i = 0;
 			y = 8;
 			for (String word : desc.split(" ")) {
 				int w = (word.length()+1)*6;
-				int x2 = x + w;
+				int x2 = x + w - 6;
 				if (x2 >= width) {
 					x = initialX;
-					y += 10;
+					y += 12;
 				}
 				sr.drawText(matrices, "description"+i+descUniq+desc.hashCode(), word, x, y, delta);
 				x += w;
