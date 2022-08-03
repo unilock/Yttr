@@ -2,14 +2,24 @@ package com.unascribed.yttr;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.unascribed.yttr.util.QDCSS;
 import com.unascribed.yttr.util.QDCSS.SyntaxErrorException;
 import com.unascribed.yttr.util.YLog;
 
+import com.google.common.base.Ascii;
+import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+
 
 public class YConfig {
 
@@ -30,90 +40,173 @@ public class YConfig {
 		ON,
 	}
 	
+	@Retention(RetentionPolicy.RUNTIME)
+	private @interface Key {
+		String value();
+	}
+
 	public static final QDCSS defaults;
-	public static final QDCSS data;
+	public static QDCSS data;
+	
+	private static final List<Class<?>> sections = List.of(
+			General.class, Client.class, Rifle.class, WorldGen.class, Debug.class
+		);
+	private static final Map<String, Class<?>> keyTypes = new HashMap<>();
+	
 	static {
-		URL url = YConfig.class.getResource("/yttr-default.css");
+		URL defaultsUrl = YConfig.class.getResource("/yttr-default.css");
 		try {
-			defaults = QDCSS.load(url);
+			defaults = QDCSS.load(defaultsUrl);
 		} catch (IOException e) {
 			throw new Error("Could not load config defaults", e);
 		}
-		File cfg = new File("config/yttr.css");
-		if (!cfg.exists()) {
-			try {
-				Files.createParentDirs(cfg);
-				Resources.asByteSource(url).copyTo(Files.asByteSink(cfg));
-			} catch (IOException e) {
-				YLog.error("IO error when copying default configuration", e);
+		load();
+		save();
+	}
+	
+	public static Class<?> getKeyType(String key) {
+		return keyTypes.getOrDefault(key, void.class);
+	}
+	
+	public static void copyFieldsToData() {
+		for (Class<?> section : sections) {
+			for (Field f : section.getFields()) {
+				if (Modifier.isStatic(f.getModifiers())) {
+					Key k = f.getAnnotation(Key.class);
+					if (k != null) {
+						try {
+							if (f.getType() == boolean.class) {
+								data.put(k.value(), f.getBoolean(null) ? "on" : "off");
+							} else if (f.getType().isEnum()) {
+								data.put(k.value(), Ascii.toLowerCase(((Enum<?>)f.get(null)).name()));
+							}
+						} catch (Exception e) {
+							YLog.error("Could not serialize config", e);
+						}
+					}
+				}
 			}
 		}
-		QDCSS dataTmp;
-		try {
-			dataTmp = QDCSS.load(cfg);
-		} catch (IOException e) {
-			YLog.error("IO error when reading configuration. Using defaults", e);
-			dataTmp = defaults;
-		} catch (SyntaxErrorException e) {
-			YLog.error("Syntax error in configuration: {}. Using defaults", e.getMessage());
-			dataTmp = defaults;
+	}
+	
+	public static void copyDataToFields() {
+		for (Class<?> section : sections) {
+			for (Field f : section.getFields()) {
+				if (Modifier.isStatic(f.getModifiers())) {
+					Key k = f.getAnnotation(Key.class);
+					if (k != null) {
+						try {
+							keyTypes.put(k.value(), f.getType());
+							System.out.println(k.value()+" is "+f.getType());
+							if (f.getType() == boolean.class) {
+								f.set(null, data.getBoolean(k.value()).get());
+							} else if (f.getType().isEnum()) {
+								f.set(null, data.getEnum(k.value(), (Class)f.getType()).get());
+							}
+						} catch (Exception e) {
+							YLog.error("Could not memoize config", e);
+						}
+					}
+				}
+			}
 		}
-		data = defaults.merge(dataTmp);
-		
-		General.touch();
-		Client.touch();
-		Rifle.touch();
-		WorldGen.touch();
-		Debug.touch();
+	}
+	
+	public static void load() {
+		File cfg = new File("config/yttr.css");
+		if (!cfg.exists()) {
+			data = defaults.copy();
+			save();
+		} else {
+			QDCSS dataTmp;
+			try {
+				dataTmp = QDCSS.load(cfg);
+			} catch (IOException e) {
+				YLog.error("IO error when reading configuration. Using defaults", e);
+				dataTmp = defaults;
+			} catch (SyntaxErrorException e) {
+				YLog.error("Syntax error in configuration: {}. Using defaults", e.getMessage());
+				dataTmp = defaults;
+			}
+			data = defaults.merge(dataTmp);
+		}
+		copyDataToFields();
+	}
+	
+	public static void save() {
+		copyFieldsToData();
+		URL templateUrl = YConfig.class.getResource("/yttr-template.css");
+		File cfg = new File("config/yttr.css");
+		try {
+			Files.createParentDirs(cfg);
+			String s = Resources.asCharSource(templateUrl, Charsets.UTF_8).read();
+			for (Map.Entry<String, String> en : data.flatten().entrySet()) {
+				s = s.replace("var("+en.getKey()+")", en.getValue());
+			}
+			Files.asCharSink(cfg, Charsets.UTF_8).write(s);
+		} catch (IOException e) {
+			YLog.error("IO error when copying default configuration", e);
+		}
 	}
 	
 	public static final class General {
-		public static final boolean trustPlayers    = data.getBoolean("general.trust-players").orElse(false);
-		public static final boolean fixupDebugWorld = data.getBoolean("general.fixup-debug-world").orElse(true);
-		public static final boolean shenanigans = data.getBoolean("general.shenanigans").orElse(true);
+		@Key("general.trust-players")
+		public static boolean trustPlayers    = false;
+		@Key("general.fixup-debug-world")
+		public static boolean fixupDebugWorld = true;
+		@Key("general.shenanigans")
+		public static boolean shenanigans     = true;
 		
-		private static void touch() {}
 		private General() {}
 	}
 	
 	public static final class Client {
-		public static final boolean slopeSmoothing = data.getBoolean("client.slope-smoothing").orElse(true);
-		public static final Trilean openglCompatibility = data.getEnum("client.opengl-compatibility", Trilean.class).orElse(Trilean.AUTO);
+		@Key("client.slope-smoothing")
+		public static boolean slopeSmoothing = true;
+		@Key("client.force-opengl-core")
+		public static Trilean forceOpenGLCore = Trilean.AUTO;
 		
-		private static void touch() {}
 		private Client() {}
 	}
 	
 	public static final class Rifle {
-		public static final boolean allowVoid    = data.getBoolean("rifle.allow-void").orElse(true);
-		public static final TrileanSoft allowExplode = data.getEnum("rifle.allow-explode", TrileanSoft.class).orElse(TrileanSoft.ON);
-		public static final boolean allowFire    = data.getBoolean("rifle.allow-fire").orElse(true);
+		@Key("rifle.allow-void")
+		public static boolean     allowVoid    = true;
+		@Key("rifle.allow-explode")
+		public static TrileanSoft allowExplode = TrileanSoft.ON;
+		@Key("rifle.allow-fire")
+		public static boolean     allowFire    = true;
 		
-		private static void touch() {}
 		private Rifle() {}
 	}
 	
 	public static final class WorldGen {
-		public static final boolean gadolinite = data.getBoolean("worldgen.gadolinite").orElse(true);
-		public static final boolean brookite   = data.getBoolean("worldgen.brookite").orElse(true);
+		@Key("worldgen.gadolinite")
+		public static boolean gadolinite = true;
+		@Key("worldgen.brookite")
+		public static boolean brookite   = true;
 		
-		public static final boolean squeezeTrees = data.getBoolean("worldgen.squeeze-trees").orElse(true);
-		public static final boolean wasteland    = data.getBoolean("worldgen.wasteland").orElse(true);
+		@Key("worldgen.squeeze-trees")
+		public static boolean squeezeTrees = true;
+		@Key("worldgen.wasteland")
+		public static boolean wasteland    = true;
 		
-		public static final boolean coreLava = data.getBoolean("worldgen.core-lava").orElse(true);
-		public static final boolean scorched  = data.getBoolean("worldgen.scorched").orElse(true);
+		@Key("worldgen.core-lava")
+		public static boolean coreLava = true;
+		@Key("worldgen.scorched")
+		public static boolean scorched  = true;
 		
-		public static final boolean continuity = data.getBoolean("worldgen.continuity").orElse(true);
+		@Key("worldgen.continuity")
+		public static boolean continuity = true;
 		
-		public static final boolean scorchedRetrogen = data.getBoolean("worldgen.scorched-retrogen").orElse(true);
+		@Key("worldgen.scorched-retrogen")
+		public static boolean scorchedRetrogen = true;
 		
-		private static void touch() {}
 		private WorldGen() {}
 	}
 	
 	public static final class Debug {
 		
-		private static void touch() {}
 		private Debug() {}
 	}
 	

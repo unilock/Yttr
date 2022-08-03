@@ -19,7 +19,7 @@ public class RenderBridge extends GL21 {
 	private static final FloatBuffer MATRIX_BUFFER = BufferUtils.createFloatBuffer(4*4);
 	
 	public static boolean canUseCompatFunctions() {
-		return YConfig.Client.openglCompatibility.resolve(Platform.get() != Platform.MACOSX);
+		return !YConfig.Client.forceOpenGLCore.resolve(Platform.get() == Platform.MACOSX);
 	}
 	
 	public static void glMultMatrixf(Matrix4f mat) {

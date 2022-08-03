@@ -1,5 +1,6 @@
 package com.unascribed.yttr.compat.modmenu;
 
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
@@ -12,6 +13,9 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import com.google.common.base.Ascii;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Multiset;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -44,8 +48,12 @@ public class YttrConfigScreen extends Screen {
 	private int mouseX, mouseY;
 	private boolean clicked;
 	private Section currentSection = null;
+	private Section prevSection = null;
 	
 	private int uniq;
+	private int descUniq;
+	private boolean drawingDesc;
+	private boolean anyDescDrawnThisFrame;
 	
 	private final SuitRenderer sr = new SuitRenderer();
 	private final SuitMusic music = new SuitMusic(YSounds.TORUS, 1, SoundCategory.MUSIC) {
@@ -55,10 +63,41 @@ public class YttrConfigScreen extends Screen {
 		}
 	};
 	
+	private static final Map<String, String> shortDescs = ImmutableMap.<String, String>builder()
+			.put("general.trust-players", "makes things more reliable despite lag, but makes cheating on servers easier")
+			.put("general.fixup-debug-world", "adds missing modded blockstates to the vanilla debug world")
+			.put("general.shenanigans", "inside-jokes and various chaos - nothing destructive")
+			
+			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
+			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
+			
+			.put("rifle.allow-void", "disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
+			.put("rifle.allow-explode", "disables the yttric rifle explode mode to avoid griefing concerns - breaks progression - prefer soft to disable block damage")
+			.put("rifle.allow-fire", "disables the yttric rifle fire mode to avoid griefing concerns")
+			
+			.put("worldgen.gadolinite", "generates gadolinite in the overworld, a source of yttrium and iron - required for progression")
+			.put("worldgen.brookite", "generates brookite ore in the overworld - required for some recipes, and future progression")
+			.put("worldgen.squeeze-trees", "generates squeeze trees in deep oceans - required for some recipes")
+			.put("worldgen.wasteland", "generates the wasteland biome in the overworld")
+			.put("worldgen.core-lava", "replaces nether lower bedrock with core lava for lore consistency")
+			.put("worldgen.scorched", "replaces nether ceiling with a brand new biome - required for future progression")
+			.put("worldgen.scorched-retrogen", "performs scorched generation in existing chunks - will not destroy existing structures")
+			.put("worldgen.continuity", "generates roots of continuity under small end islands - required for progression")
+			
+			.build();
+	
+	private final Multiset<String> timesModified = HashMultiset.create();
+	
 	public YttrConfigScreen(Screen parent) {
 		super(new LiteralText("Yttr configuration"));
 		this.parent = parent;
 		sr.setColor(LampColor.TEAL);
+	}
+	
+	@Override
+	protected void init() {
+		parent.init(client, width, height);
+		super.init();
 	}
 	
 	@Override
@@ -74,6 +113,9 @@ public class YttrConfigScreen extends Screen {
 	
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		anyDescDrawnThisFrame = false;
+		this.mouseX = mouseX;
+		this.mouseY = mouseY;
 		float t = time+delta;
 		float ct = closeTime+delta;
 		float a;
@@ -110,7 +152,6 @@ public class YttrConfigScreen extends Screen {
 		if (time > 15 && sa > 0) {
 			sr.setAlpha(sa);
 			sr.setUp();
-			sr.drawText(matrices, "yttr setup utility", width-113, 6, delta);
 			if (currentSection == null) {
 				int y = 6;
 				for (Section s : Section.values()) {
@@ -121,30 +162,47 @@ public class YttrConfigScreen extends Screen {
 					y += 24;
 				}
 			} else {
-				drawHeading(matrices, Ascii.toLowerCase(currentSection.name()), 6, 6, delta);
-				if (currentSection == Section.GENERAL) {
-					drawBoolean(matrices, "trust players", YConfig.General.trustPlayers, 6, 24, delta);
-					drawBoolean(matrices, "fixup debug world", YConfig.General.trustPlayers, 6, 46, delta);
-					drawBoolean(matrices, "shenanigans", YConfig.General.shenanigans, 6, 68, delta);
-				} else if (currentSection == Section.CLIENT) {
-					drawBoolean(matrices, "slope smoothing", YConfig.Client.slopeSmoothing, 6, 24, delta);
-					drawEnum(matrices, "force opengl core", YConfig.Client.openglCompatibility, 6, 46, delta);
-				} else if (currentSection == Section.RIFLE) {
-					drawBoolean(matrices, "allow void", YConfig.Rifle.allowVoid, 6, 24, delta);
-					drawEnum(matrices, "allow explode", YConfig.Rifle.allowExplode, 6, 46, delta);
-					drawBoolean(matrices, "allow fire", YConfig.Rifle.allowFire, 6, 68, delta);
-				} else if (currentSection == Section.WORLDGEN) {
-					drawBoolean(matrices, "gadolinite", YConfig.WorldGen.gadolinite, 6, 24, delta);
-					drawBoolean(matrices, "brookite", YConfig.WorldGen.brookite, 6, 46, delta);
-					drawBoolean(matrices, "squeeze trees", YConfig.WorldGen.squeezeTrees, 6, 68, delta);
-					drawBoolean(matrices, "wasteland", YConfig.WorldGen.wasteland, 6, 96, delta);
-					drawBoolean(matrices, "core lava", YConfig.WorldGen.coreLava, 6, 124, delta);
-					drawBoolean(matrices, "scorched", YConfig.WorldGen.scorched, 6, 146, delta);
-					drawBoolean(matrices, "scorched retrogen", YConfig.WorldGen.scorchedRetrogen, 6, 168, delta);
+				String currentSectionStr = Ascii.toLowerCase(currentSection.name());
+				drawHeading(matrices, currentSectionStr, 6, 6, delta);
+				int y = 24;
+				for (String k : YConfig.data.keySet()) {
+					int dot = k.indexOf('.');
+					String section = k.substring(0, dot);
+					if (section.equals(currentSectionStr)) {
+						String name = k.substring(dot+1);
+						Class<?> type = YConfig.getKeyType(k);
+						if (type == void.class) continue;
+						if (type == boolean.class) {
+							boolean v = YConfig.data.getBoolean(k).get();
+							String label = name.replace('-', ' ');
+							if (drawBoolean(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
+								v = !v;
+								timesModified.add(label);
+								YConfig.data.put(k, v ? "on" : "off");
+								YConfig.copyDataToFields();
+								YConfig.save();
+							}
+						} else if (type.isEnum()) {
+							Enum<?> v = (Enum<?>)YConfig.data.getEnum(k, (Class)type).get();
+							String label = name.replace('-', ' ');
+							if (drawEnum(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
+								v = (Enum<?>) type.getEnumConstants()[(v.ordinal()+1)%type.getEnumConstants().length];
+								timesModified.add(label);
+								YConfig.data.put(k, Ascii.toLowerCase(v.name()));
+								YConfig.copyDataToFields();
+								YConfig.save();
+							}
+						}
+						y += 22;
+					}
 				}
 			}
 			
-			if (drawButton(matrices, currentSection != null ? "back" : "done", "cornerbutton", width-110, height-30, 100, delta)) {
+			if (!anyDescDrawnThisFrame) {
+				sr.drawText(matrices, "setup"+descUniq, "yttr setup utility", width-113, 6, delta);
+			}
+			
+			if (drawButton(matrices, "cornerbutton", uniq, currentSection != null ? "back" : "done", width-110, height-30, 100, delta)) {
 				if (currentSection != null) {
 					currentSection = null;
 					uniq = ThreadLocalRandom.current().nextInt();
@@ -156,6 +214,9 @@ public class YttrConfigScreen extends Screen {
 		}
 		super.render(matrices, mouseX, mouseY, delta);
 		clicked = false;
+		if (!anyDescDrawnThisFrame) {
+			drawingDesc = false;
+		}
 	}
 
 	private void drawHeading(MatrixStack matrices, String text, int x, int y, float delta) {
@@ -167,21 +228,49 @@ public class YttrConfigScreen extends Screen {
 		matrices.pop();
 	}
 	
-	private void drawBoolean(MatrixStack matrices, String label, boolean value, int x, int y, float delta) {
+	private boolean drawBoolean(MatrixStack matrices, String label, boolean value, int x, int y, String desc, float delta) {
+		drawDescription(matrices, x, y, desc, delta);
 		sr.drawText(matrices, uniq+label, label, x, y+5, delta);
-		drawButton(matrices, value ? "on" : "off", label+value+uniq, x+110, y, 40, delta);
+		return drawButton(matrices, label, uniq+timesModified.count(label), value ? "on" : "off", x+110, y, 40, delta);
 	}
 	
-	private void drawEnum(MatrixStack matrices, String label, Enum<?> value, int x, int y, float delta) {
+	private boolean drawEnum(MatrixStack matrices, String label, Enum<?> value, int x, int y, String desc, float delta) {
+		drawDescription(matrices, x, y, desc, delta);
 		sr.drawText(matrices, uniq+label, label, x, y+5, delta);
-		drawButton(matrices, Ascii.toLowerCase(value.name()), label+value+uniq, x+110, y, 40, delta);
+		return drawButton(matrices, label, uniq+timesModified.count(label), Ascii.toLowerCase(value.name()), x+110, y, 40, delta);
+	}
+
+	private void drawDescription(MatrixStack matrices, int x, int y, String desc, float delta) {
+		if (mouseX >= x && mouseX <= x+160 &&
+				mouseY >= y && mouseY <= y+20) {
+			anyDescDrawnThisFrame = true;
+			if (!drawingDesc) {
+				drawingDesc = true;
+				descUniq++;
+			}
+			int initialX = width-120;
+			x = initialX;
+			int i = 0;
+			y = 8;
+			for (String word : desc.split(" ")) {
+				int w = (word.length()+1)*6;
+				int x2 = x + w;
+				if (x2 >= width) {
+					x = initialX;
+					y += 10;
+				}
+				sr.drawText(matrices, "description"+i+descUniq+desc.hashCode(), word, x, y, delta);
+				x += w;
+				i++;
+			}
+		}
 	}
 
 	private boolean drawButton(MatrixStack matrices, String text, int x, int y, float delta) {
-		return drawButton(matrices, text, text, x, y, 100, delta);
+		return drawButton(matrices, text, uniq, text, x, y, 100, delta);
 	}
 	
-	private boolean drawButton(MatrixStack matrices, String text, String id, int x, int y, int w, float delta) {
+	private boolean drawButton(MatrixStack matrices, String id, int uniq, String text, int x, int y, int w, float delta) {
 		matrices.push();
 		matrices.translate(x, 0, 0);
 		if (w > 50) {

@@ -304,12 +304,16 @@ public class QDCSS {
 				List<BlameString> merged = new ArrayList<>(newData.get(en.getKey()).size()+en.getValue().size());
 				merged.addAll(newData.get(en.getKey()));
 				merged.addAll(en.getValue());
-				newData.put(en.getKey(), Collections.unmodifiableList(merged));
+				newData.put(en.getKey(), merged);
 			} else {
 				newData.put(en.getKey(), en.getValue());
 			}
 		}
-		return new QDCSS(prelude+", merged with "+that.prelude, Collections.unmodifiableMap(newData));
+		return new QDCSS(that == EMPTY ? prelude : prelude+", merged with "+that.prelude, newData);
+	}
+	
+	public QDCSS copy() {
+		return merge(EMPTY);
 	}
 
 	/**
@@ -453,6 +457,12 @@ public class QDCSS {
 
 	public static QDCSS load(String fileName, Reader r) throws IOException {
 		return load(fileName, CharStreams.toString(r));
+	}
+	
+	private static final QDCSS EMPTY = new QDCSS("<empty>", Map.of());
+	
+	public static QDCSS empty() {
+		return EMPTY;
 	}
 
 }
