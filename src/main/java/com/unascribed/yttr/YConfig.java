@@ -35,9 +35,9 @@ public class YConfig {
 	}
 
 	public enum TrileanSoft {
-		OFF,
-		SOFT,
 		ON,
+		SOFT,
+		OFF,
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)

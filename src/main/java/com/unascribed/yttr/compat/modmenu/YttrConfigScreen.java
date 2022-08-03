@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.YConfig.Trilean;
+import com.unascribed.yttr.YConfig.TrileanSoft;
 import com.unascribed.yttr.client.suit.SuitMusic;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.init.YSounds;
@@ -57,7 +59,7 @@ public class YttrConfigScreen extends Screen {
 	private boolean anyDescDrawnThisFrame;
 	
 	private final SuitRenderer sr = new SuitRenderer();
-	private final SuitMusic music = new SuitMusic(YSounds.TORUS, 1, SoundCategory.MUSIC) {
+	private final SuitMusic music = new SuitMusic(YSounds.TORUS, 0.6f, SoundCategory.MUSIC) {
 		@Override
 		public boolean isDone() {
 			return !(MinecraftClient.getInstance().currentScreen instanceof YttrConfigScreen);
@@ -85,6 +87,12 @@ public class YttrConfigScreen extends Screen {
 			.put("worldgen.scorched-retrogen", "performs scorched generation in existing chunks - will not destroy existing structures")
 			.put("worldgen.continuity", "generates roots of continuity under small end islands - required for progression")
 			
+			.build();
+	
+	private static final Map<String, Object> badSettings = ImmutableMap.<String, Object>builder()
+			.put("client.force-opengl-core", Trilean.ON)
+			.put("rifle.allow-explode", TrileanSoft.OFF)
+			.put("worldgen.gadolinite", false)
 			.build();
 	
 	private final Multiset<String> timesModified = HashMultiset.create();
@@ -120,11 +128,14 @@ public class YttrConfigScreen extends Screen {
 		float t = time+delta;
 		float ct = closeTime+delta;
 		float a;
+		float sca;
 		if (isClosing) {
 			a = sCurve5(1-MathHelper.clamp(ct/20f, 0, 1));
-			music.setVolume(a);
+			sca = sCurve5(1-MathHelper.clamp(ct/15f, 0, 1));
+			music.setVolume(a*0.6f);
 		} else {
 			a = sCurve5(MathHelper.clamp(t/10f, 0, 1));
+			sca = sCurve5(MathHelper.clamp(t/7f, 0, 1));
 		}
 		if (initialMouseX == -1) {
 			initialMouseX = mouseX;
@@ -135,7 +146,7 @@ public class YttrConfigScreen extends Screen {
 			matrices.push();
 			modelView.push();
 			modelView.translate(initialMouseX, initialMouseY, 0);
-			modelView.scale(1+(a/2), 1+(a/2), 1);
+			modelView.scale(1+(sca/2), 1+(sca/2), 1);
 			modelView.translate(-initialMouseX, -initialMouseY, 0);
 			RenderSystem.applyModelViewMatrix();
 			parent.render(matrices, -200, -200, delta);
@@ -165,13 +176,13 @@ public class YttrConfigScreen extends Screen {
 			sr.setUp();
 			if (currentSection == null) {
 				drawHeading(matrices, "sections", 6, 6, delta);
-				int y = 24;
+				int y = 26;
 				for (Section s : Section.values()) {
-					if (drawButton(matrices, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 100, delta)) {
+					if (drawButton(matrices, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 80, delta)) {
 						currentSection = s;
 						uniq = ThreadLocalRandom.current().nextInt();
 					}
-					y += 24;
+					y += 22;
 				}
 			} else {
 				String currentSectionStr = Ascii.toLowerCase(currentSection.name());
@@ -184,29 +195,48 @@ public class YttrConfigScreen extends Screen {
 						String name = k.substring(dot+1);
 						Class<?> type = YConfig.getKeyType(k);
 						if (type == void.class) continue;
+						Object objV = null;
+						String label = name.replace('-', ' ');
 						if (type == boolean.class) {
 							boolean v = YConfig.data.getBoolean(k).get();
-							String label = name.replace('-', ' ');
 							if (drawBoolean(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
 								v = !v;
+								if (badSettings.get(k) == Boolean.valueOf(v)) {
+									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
+									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
+								}
 								timesModified.add(label);
 								YConfig.data.put(k, v ? "on" : "off");
 								YConfig.copyDataToFields();
 								YConfig.save();
 							}
+							objV = v;
 						} else if (type.isEnum()) {
 							Enum<?> v = (Enum<?>)YConfig.data.getEnum(k, (Class)type).get();
-							String label = name.replace('-', ' ');
 							if (drawEnum(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
 								v = (Enum<?>) type.getEnumConstants()[(v.ordinal()+1)%type.getEnumConstants().length];
+								if (badSettings.get(k) == v) {
+									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
+									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
+								}
 								timesModified.add(label);
 								YConfig.data.put(k, Ascii.toLowerCase(v.name()));
 								YConfig.copyDataToFields();
 								YConfig.save();
 							}
+							objV = v;
+						}
+						if (badSettings.get(k) == objV) {
+							drawDescription(matrices, 170, y+2, 18, 18, "this setting is not supported and may cause problems", delta);
+							sr.drawElement(matrices, "ogl-warning"+uniq+timesModified.count(label), 170, y+2, 0, 18, 11, 12, delta);
 						}
 						y += 22;
 					}
+				}
+				drawDescription(matrices, 6, 2, 18, 18, "go back to the section list", delta);
+				if (drawButton(matrices, "back"+uniq, uniq, "<", 6, 2, 18, delta)) {
+					currentSection = null;
+					uniq = ThreadLocalRandom.current().nextInt();
 				}
 			}
 			
@@ -221,13 +251,8 @@ public class YttrConfigScreen extends Screen {
 				}
 			}
 			
-			if (drawButton(matrices, "cornerbutton", uniq, currentSection != null ? "back" : "done", width-110, height-30, 100, delta)) {
-				if (currentSection != null) {
-					currentSection = null;
-					uniq = ThreadLocalRandom.current().nextInt();
-				} else {
-					onClose();
-				}
+			if (drawButton(matrices, "done", 0, "done", width-90, height-24, 80, delta)) {
+				onClose();
 			}
 			sr.tearDown();
 		}
@@ -239,29 +264,29 @@ public class YttrConfigScreen extends Screen {
 	}
 
 	private void drawHeading(MatrixStack matrices, String text, int x, int y, float delta) {
-		sr.drawText(matrices, uniq+text, text, x, y, delta);
+		sr.drawText(matrices, uniq+text, text, currentSection == null ? x : x+22, y, delta);
 		matrices.push();
 		matrices.translate(x, 0, 0);
 		matrices.scale(2, 1, 1);
-		sr.drawElement(matrices, text+"separator"+uniq, 0, y+14, 0, 30, 80, 1, delta);
+		sr.drawElement(matrices, "separator", 0, y+15, 0, 30, 80, 1, delta);
 		matrices.pop();
 	}
 	
 	private boolean drawBoolean(MatrixStack matrices, String label, boolean value, int x, int y, String desc, float delta) {
-		drawDescription(matrices, x, y, desc, delta);
-		sr.drawText(matrices, uniq+label, label, x, y+5, delta);
-		return drawButton(matrices, label, uniq+timesModified.count(label), value ? "on" : "off", x+110, y, 40, delta);
+		drawDescription(matrices, x, y, 160, 16, desc, delta);
+		sr.drawText(matrices, uniq+label, label, x, y+4, delta);
+		return drawButton(matrices, label, uniq+timesModified.count(label), value ? "on" : "off", x+120, y, 40, delta);
 	}
 	
 	private boolean drawEnum(MatrixStack matrices, String label, Enum<?> value, int x, int y, String desc, float delta) {
-		drawDescription(matrices, x, y, desc, delta);
-		sr.drawText(matrices, uniq+label, label, x, y+5, delta);
-		return drawButton(matrices, label, uniq+timesModified.count(label), Ascii.toLowerCase(value.name()), x+110, y, 40, delta);
+		drawDescription(matrices, x, y, 160, 16, desc, delta);
+		sr.drawText(matrices, uniq+label, label, x, y+4, delta);
+		return drawButton(matrices, label, uniq+timesModified.count(label), Ascii.toLowerCase(value.name()), x+120, y, 40, delta);
 	}
 
-	private void drawDescription(MatrixStack matrices, int x, int y, String desc, float delta) {
-		if (mouseX >= x && mouseX <= x+160 &&
-				mouseY >= y && mouseY <= y+20) {
+	private void drawDescription(MatrixStack matrices, int x, int y, int w, int h, String desc, float delta) {
+		if (mouseX >= x && mouseX <= x+w &&
+				mouseY >= y && mouseY <= y+h) {
 			anyDescDrawnThisFrame = true;
 			if (!drawingDesc) {
 				drawingDesc = true;
@@ -272,14 +297,14 @@ public class YttrConfigScreen extends Screen {
 			int i = 0;
 			y = 8;
 			for (String word : desc.split(" ")) {
-				int w = (word.length()+1)*6;
-				int x2 = x + w - 6;
+				int wordW = (word.length()+1)*6;
+				int x2 = x + wordW - 6;
 				if (x2 >= width) {
 					x = initialX;
 					y += 12;
 				}
 				sr.drawText(matrices, "description"+i+descUniq+desc.hashCode(), word, x, y, delta);
-				x += w;
+				x += wordW;
 				i++;
 			}
 		}
@@ -291,18 +316,22 @@ public class YttrConfigScreen extends Screen {
 		if (w > 50) {
 			matrices.scale(w/50f, 1, 1);
 			sr.drawElement(matrices, id+"top", 0, y, 0, 30, 50, 1, delta);
-			sr.drawElement(matrices, id+"bot", 0, y+19, 0, 30, 50, 1, delta);
+			sr.drawElement(matrices, id+"bot", 0, y+16, 0, 30, 50, 1, delta);
 		} else {
 			sr.drawElement(matrices, id+"top", 0, y, 0, 30, w, 1, delta);
-			sr.drawElement(matrices, id+"bot", 0, y+19, 0, 30, w, 1, delta);
+			sr.drawElement(matrices, id+"bot", 0, y+16, 0, 30, w, 1, delta);
 		}
 		matrices.pop();
-		sr.drawElement(matrices, id+"left", x, y, 80, 4, 1, 20, delta);
-		sr.drawElement(matrices, id+"right", x+w-1, y, 80, 4, 1, 20, delta);
+		sr.drawElement(matrices, id+"left", x, y, 80, 4, 1, 16, delta);
+		sr.drawElement(matrices, id+"right", x+w-1, y, 80, 4, 1, 16, delta);
 		int tw = 6*text.length();
-		sr.drawText(matrices, id+uniq, text, x+(w-tw)/2, y+5, delta);
-		return clicked && mouseX >= x && mouseX <= x+100 &&
-				mouseY >= y && mouseY <= y+20;
+		sr.drawText(matrices, id+uniq, text, x+(w-tw)/2, y+4, delta);
+		boolean rtrn = clicked && mouseX >= x && mouseX <= x+w &&
+				mouseY >= y && mouseY <= y+16;
+		if (rtrn) {
+			client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DIVE_THRUST, ThreadLocalRandom.current().nextFloat(1.4f, 1.8f), 1));
+		}
+		return rtrn;
 	}
 	
 	@Override
