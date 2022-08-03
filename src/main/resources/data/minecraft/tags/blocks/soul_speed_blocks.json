@@ -1,6 +1,14 @@
 {
 	"values": [
 		"yttr:soul_clamber_block",
-		"yttr:soul_planks"
+		"yttr:soul_planks",
+		{
+			"id": "aurorasdeco:bench/yttr/soul",
+			"required": false
+		},
+		{
+			"id": "aurorasdeco:shelf/yttr/soul",
+			"required": false
+		}
 	]
 }

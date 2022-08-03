@@ -111,8 +111,12 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
+	protected void spawnBreakParticles(World world, PlayerEntity player, BlockPos pos, BlockState state) {
+	}
+	
+	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		world.playSound(player, pos, YSounds.REPLICATOR_DISAPPEAR, SoundCategory.BLOCKS, 1, 1);
+		world.playSound(null, pos, YSounds.REPLICATOR_DISAPPEAR, SoundCategory.BLOCKS, 1, 1);
 		if (!player.isCreative()) {
 			dropStack(world, pos, getStack(world, pos));
 		}
