@@ -33,28 +33,30 @@ return {
 			}
 		}
 		def refmap = fs.getPath("yttr-refmap.json")
-		def gson = new GsonBuilder().setPrettyPrinting().create()
-		def obj = gson.fromJson(new String(Files.readAllBytes(refmap), StandardCharsets.UTF_8), JsonObject.class)
-		def sorter
-		sorter = {
-			List<String> keys = new ArrayList<>()
-			// no keySet, can't addAll... thanks google
-			for (Map.Entry<String, JsonElement> en : it.entrySet()) {
-				keys.add(en.getKey())
-			}
-			Collections.sort(keys)
-			def out = new JsonObject()
-			for (String k : keys) {
-				def ele = it.get(k)
-				if (ele.isJsonObject()) {
-					ele = sorter(ele)
+		if (Files.exists(refmap)) {
+			def gson = new GsonBuilder().setPrettyPrinting().create()
+			def obj = gson.fromJson(new String(Files.readAllBytes(refmap), StandardCharsets.UTF_8), JsonObject.class)
+			def sorter
+			sorter = {
+				List<String> keys = new ArrayList<>()
+				// no keySet, can't addAll... thanks google
+				for (Map.Entry<String, JsonElement> en : it.entrySet()) {
+					keys.add(en.getKey())
 				}
-				out.add(k, ele)
+				Collections.sort(keys)
+				def out = new JsonObject()
+				for (String k : keys) {
+					def ele = it.get(k)
+					if (ele.isJsonObject()) {
+						ele = sorter(ele)
+					}
+					out.add(k, ele)
+				}
+				return out
 			}
-			return out
+			def sortedObj = sorter(obj)
+			Files.write(refmap, gson.toJson(sortedObj).getBytes(StandardCharsets.UTF_8))
 		}
-		def sortedObj = sorter(obj)
-		Files.write(refmap, gson.toJson(sortedObj).getBytes(StandardCharsets.UTF_8))
 	} finally {
 		fs.close()
 	}
