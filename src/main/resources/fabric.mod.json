@@ -23,13 +23,14 @@
 		"emi": [ "com.unascribed.yttr.compat.emi.YttrEmiPlugin" ],
 		"modmenu": [ "com.unascribed.yttr.compat.modmenu.YttrModMenu" ]
 	},
-	"mixins": [ "yttr.mixins.json" ],
+	"mixins": [
+		"yttr.mixins.json"
+	],
 	"accessWidener": "yttr.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.7.4",
 		"fabric": "*",
-		"minecraft": "^1.18.2",
-		"yttr_resources": "=${version}"
+		"minecraft": "^1.18.2"
 	},
 	"breaks": { "roughlyenoughitems": "*" },
 	"conflicts": { "jei": "*" },
@@ -52,8 +53,5 @@
 			"mixin.entity.collisions": false,
 			"mixin.entity.fast_suffocation_check": false
 		}
-	},
-	"jars": [
-		{ "file": "META-INF/jars/yttrresources-${version}.jar" }
-	]
+	}
 }

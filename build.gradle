@@ -119,31 +119,6 @@ processResources {
 	}
 }
 
-task resourcesJar(type: Zip) {
-	inputs.property "version", project.version
-
-	from 'src/main/bulkresources'
-	baseName 'yttrresources'
-
-	destinationDirectory.dir('build/tmp')
-	extension 'jar'
-	entryCompression 'stored'
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
-
-task amendResourcesJar {
-	def amender = evaluate(file("JarAmender.groovy"))
-	dependsOn resourcesJar
-	doFirst {
-		amender(resourcesJar.archivePath)
-	}
-}
-
-resourcesJar.finalizedBy amendResourcesJar
-
 tasks.withType(JavaCompile).configureEach {
 	// ensure that the encoding is set to UTF-8, no matter what the system default is
 	// this fixes some edge cases with special characters not displaying correctly
@@ -158,7 +133,6 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 jar {
-	dependsOn resourcesJar
 	doFirst {
 		File dir = file('build/classes/java/main');
 		def classes = []
@@ -178,9 +152,6 @@ jar {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
 	from "build/tmp/yttr-classes.txt"
-	from(resourcesJar.archivePath) {
-		into 'META-INF/jars'
-	}
 }
 
 task amendJar {
