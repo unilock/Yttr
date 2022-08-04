@@ -82,6 +82,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -100,6 +101,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -243,9 +245,10 @@ public class Yttr implements ModInitializer {
 			}
 		});
 		
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Substitutes.RELOADER);
+		
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
 			discoveries.clear();
-			Substitutes.reload(mgr);
 		});
 		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (WastelandPopulator.isEligible(world, chunk)) {
