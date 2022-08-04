@@ -3,6 +3,7 @@ package com.unascribed.yttr.compat.modmenu;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -58,6 +59,9 @@ public class YttrConfigScreen extends Screen {
 	private int descUniq;
 	private boolean drawingDesc;
 	private boolean anyDescDrawnThisFrame;
+	
+	private boolean textTestMode = false;
+	private StringBuilder textTestContent = new StringBuilder("hello, world!");
 	
 	private final SuitRenderer sr = new SuitRenderer();
 	private final SuitMusic music = new SuitMusic(YSounds.TORUS, 0.6f, SoundCategory.MUSIC) {
@@ -176,7 +180,22 @@ public class YttrConfigScreen extends Screen {
 		if (time > 15 && sa > 0) {
 			sr.setAlpha(sa);
 			sr.setUp();
-			if (currentSection == null) {
+			if (textTestMode) {
+				String content = textTestContent.toString();
+				int x = width/4;
+				int y = 3;
+				matrices.push();
+				matrices.scale(2, 2, 1);
+				for (String line : content.split("\n")) {
+					sr.drawText(matrices, "test"+uniq+y, line, x-(line.length()*3), y, delta);
+					y += 12;
+				}
+				matrices.pop();
+				
+				if (drawButton(matrices, "reset", 0, "reset", width-180, height-24, 80, delta)) {
+					uniq++;
+				}
+			} else if (currentSection == null) {
 				drawHeading(matrices, "sections", 6, 6, delta);
 				int y = 26;
 				for (Section s : Section.values()) {
@@ -185,6 +204,12 @@ public class YttrConfigScreen extends Screen {
 						uniq = ThreadLocalRandom.current().nextInt();
 					}
 					y += 22;
+				}
+				y += 8;
+				drawHeading(matrices, "extras", 6, y, delta);
+				y += 20;
+				if (drawButton(matrices, "texttest"+uniq, uniq, "text test", 6, y, 80, delta)) {
+					textTestMode = true;
 				}
 			} else {
 				String currentSectionStr = Ascii.toLowerCase(currentSection.name());
@@ -249,7 +274,7 @@ public class YttrConfigScreen extends Screen {
 				}
 			}
 			
-			if (!anyDescDrawnThisFrame) {
+			if (!textTestMode && !anyDescDrawnThisFrame) {
 				String v = FabricLoader.getInstance().getModContainer("yttr").get().getMetadata().getVersion().getFriendlyString();
 				if (v.equals("${version}")) {
 					v = "dev";
@@ -261,7 +286,12 @@ public class YttrConfigScreen extends Screen {
 			}
 			
 			if (drawButton(matrices, "done", 0, "done", width-90, height-24, 80, delta)) {
-				onClose();
+				if (textTestMode) {
+					textTestMode = false;
+					uniq++;
+				} else {
+					onClose();
+				}
 			}
 			sr.tearDown();
 		}
@@ -387,6 +417,24 @@ public class YttrConfigScreen extends Screen {
 			currentSection = null;
 			uniq = ThreadLocalRandom.current().nextInt();
 			client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DIVE_THRUST, ThreadLocalRandom.current().nextFloat(1.4f, 1.8f), 1));
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (keyCode == GLFW.GLFW_KEY_ENTER) {
+			textTestContent.append("\n");
+		} else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && textTestContent.length() > 0) {
+			textTestContent.setLength(textTestContent.length()-1);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean charTyped(char chr, int modifiers) {
+		if (textTestMode) {
+			textTestContent.append(Ascii.toLowerCase(chr));
 		}
 		return true;
 	}
