@@ -21,7 +21,8 @@ public class MixinSound {
 	
 	@Inject(at=@At("HEAD"), method="getLocation", cancellable=true)
 	public void getLocation(CallbackInfoReturnable<Identifier> ci) {
-		if (id.getPath().endsWith(".yttr_xm") || id.getPath().endsWith(".yttr_s3m") || id.getPath().endsWith(".yttr_mod")) {
+		if (id.getPath().endsWith(".yttr_xm") || id.getPath().endsWith(".yttr_s3m") || id.getPath().endsWith(".yttr_mod") ||
+				id.getPath().endsWith(".yttr_xm.bz2") || id.getPath().endsWith(".yttr_s3m.bz2") || id.getPath().endsWith(".yttr_mod.bz2")) {
 			ci.setReturnValue(new Identifier(id.getNamespace(), "sounds/"+id.getPath()));
 		}
 	}
