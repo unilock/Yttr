@@ -188,9 +188,6 @@ public class Yttr implements ModInitializer {
 		YWorldGen.init();
 		YBiomes.init();
 		
-		YBiomes.DESERT_HEAT_LATCH.set(YSounds.DESERT_HEAT);
-		YBiomes.MEMORANDUM_LATCH.set(YSounds.MEMORANDUM);
-		
 		// auxillary content
 		YStatusEffects.init();
 		YRecipeTypes.init();

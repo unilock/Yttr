@@ -14,3 +14,4 @@
 * Workaround for some weird crashes
 * Reworked the ultrapure item substitutes loader to adhere to modern practices
   * This fixes various kinds of data loading issues
+* Fix SoundEvent NullPointerException when loading a world

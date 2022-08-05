@@ -4,12 +4,9 @@ import java.util.function.Consumer;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.util.LatchHolder;
-import com.unascribed.yttr.util.LatchMusicSound;
-import com.unascribed.yttr.util.LatchReference;
-
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.MusicSound;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
@@ -23,11 +20,6 @@ import net.minecraft.world.gen.feature.OrePlacedFeatures;
 
 public class YBiomes {
 
-	// Getting some weird initialization order premature registration crashes. Let's use latches.
-	
-	public static final LatchReference<SoundEvent> DESERT_HEAT_LATCH = LatchReference.unset();
-	public static final LatchReference<SoundEvent> MEMORANDUM_LATCH = LatchReference.unset();
-	
 	public static final Biome SCORCHED_SUMMIT = new Biome.Builder()
 			.precipitation(Biome.Precipitation.NONE)
 			.category(Biome.Category.NETHER)
@@ -38,7 +30,7 @@ public class YBiomes {
 					.waterFogColor(0x50533)
 					.fogColor(0x330808)
 					.skyColor(0x220000)
-					.music(new LatchMusicSound(DESERT_HEAT_LATCH, 12000, 24000, false))
+					.music(new MusicSound(YSounds.DESERT_HEAT, 12000, 24000, false))
 					.particleConfig(new BiomeParticleConfig(ParticleTypes.FLAME, 0.0015f))
 					.build())
 			.spawnSettings(TheNetherBiomeCreator.createNetherWastes().getSpawnSettings())
@@ -55,7 +47,7 @@ public class YBiomes {
 					.waterFogColor(0x50533)
 					.fogColor(0x000000)
 					.skyColor(0x000000)
-					.music(new LatchMusicSound(DESERT_HEAT_LATCH, 12000, 24000, false))
+					.music(new MusicSound(YSounds.DESERT_HEAT, 12000, 24000, false))
 					.particleConfig(new BiomeParticleConfig(ParticleTypes.FLAME, 0.003f))
 					.build())
 			.spawnSettings(TheNetherBiomeCreator.createNetherWastes().getSpawnSettings())
@@ -75,7 +67,7 @@ public class YBiomes {
 					.grassColor(0x58503F)
 					.foliageColor(0x58503F)
 					.moodSound(BiomeMoodSound.CAVE)
-					.music(new LatchMusicSound(MEMORANDUM_LATCH, 3000, 6000, true))
+					.music(new MusicSound(YSounds.MEMORANDUM, 3000, 6000, true))
 					.build())
 			.spawnSettings(modify(new SpawnSettings.Builder(),
 						DefaultBiomeFeatures::addCaveMobs,
