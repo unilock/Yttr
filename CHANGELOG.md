@@ -9,3 +9,8 @@
 * Removed Vistas panoramas as they're way too large and nobody really used them
   * If you want them back let me know and I'll provide a resource pack as a separate download
 * Made the JAR a bit smaller
+* Bloques® can now be ingested (but I wouldn't say they're *edible*)
+* Added some registry debugging facilities that only activate when needed
+* Workaround for some weird crashes
+* Reworked the ultrapure item substitutes loader to adhere to modern practices
+  * This fixes various kinds of data loading issues
