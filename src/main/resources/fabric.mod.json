@@ -32,8 +32,7 @@
 		"fabric": "*",
 		"minecraft": "^1.18.2"
 	},
-	"breaks": { "roughlyenoughitems": "*" },
-	"conflicts": { "jei": "*" },
+	"conflicts": { "roughlyenoughitems": "*", "jei": "*" },
 	"suggests": { "trinkets": "*" },
 	"recommends": { "emi": "*" },
 	"custom": {
