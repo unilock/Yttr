@@ -74,7 +74,8 @@ public class MixinConstructionTracker implements Blameable {
 
 	private static final boolean yttr$debugRegistration = Boolean.getBoolean("yttr.debugRegistration");
 	
-	private Throwable yttr$blame;
+	// Xaero's Minimap likes to serialize things it shouldn't
+	private transient Throwable yttr$blame;
 	
 	@Inject(at=@At("RETURN"), method="<init>", allow=900)
 	public void onConstruct(CallbackInfo ci) {

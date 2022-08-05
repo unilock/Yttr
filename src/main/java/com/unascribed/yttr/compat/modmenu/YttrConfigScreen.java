@@ -187,13 +187,18 @@ public class YttrConfigScreen extends Screen {
 				matrices.push();
 				matrices.scale(2, 2, 1);
 				for (String line : content.split("\n")) {
-					sr.drawText(matrices, "test"+uniq+y, line, x-(line.length()*3), y, delta);
+					if (time-15 > y) {
+						sr.drawText(matrices, "test"+uniq+y, line, x-(line.length()*3), y, delta);
+					}
 					y += 12;
 				}
 				matrices.pop();
 				
 				if (drawButton(matrices, "reset", 0, "reset", width-180, height-24, 80, delta)) {
 					uniq++;
+					if (rclicked) {
+						time = 15;
+					}
 				}
 			} else if (currentSection == null) {
 				drawHeading(matrices, "sections", 6, 6, delta);
