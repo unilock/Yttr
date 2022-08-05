@@ -50,6 +50,7 @@ import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
+import com.unascribed.yttr.mixinsupport.Blameable;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.mixinsupport.ParticleScreen;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
@@ -186,6 +187,9 @@ public class Yttr implements ModInitializer {
 		YEntities.init();
 		YWorldGen.init();
 		YBiomes.init();
+		
+		YBiomes.DESERT_HEAT_LATCH.set(YSounds.DESERT_HEAT);
+		YBiomes.MEMORANDUM_LATCH.set(YSounds.MEMORANDUM);
 		
 		// auxillary content
 		YStatusEffects.init();
@@ -337,6 +341,8 @@ public class Yttr implements ModInitializer {
 		}
 	}
 
+	private static final boolean debugRegistration = Boolean.getBoolean("yttr.debugRegistration");
+	
 	/**
 	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
 	 * in the yttr namespace with a path equal to the field's name as lower case in the given
@@ -346,7 +352,28 @@ public class Yttr implements ModInitializer {
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
 		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
 			Identifier id = deriveId(f, ann);
-			Registry.register(registry, id, (T)v);
+			try {
+				Registry.register(registry, id, (T)v);
+				if (debugRegistration) {
+					YLog.info("Registered {} in {} from {} - assigned id is {}", id, registry.getKey().getValue(), f.getName(), registry.getRawId((T)v));
+				}
+			} catch (RuntimeException e) {
+				T val = registry.get(id);
+				int rid = registry.getRawId(val);
+				val = registry.get(rid);
+				YLog.error("Could not register {} in {} from {} - current registration: {} {} {} - we wanted to register {}", id, registry.getKey().getValue(), f.getName(), rid,
+						registry.getId(val), describe(val), describe(v), e);
+				if (val instanceof Blameable b) {
+					if (b.yttr$getConstructionBlame() != null) {
+						YLog.error("The interloper's registration stack trace is:", b.yttr$getConstructionBlame());
+					} else {
+						YLog.error("Add -Dyttr.debugRegistration=true to your JVM arguments for more information.");
+					}
+				} else {
+					YLog.error("Blame data is not available for this registry, regardless of the value of -Dyttr.debugRegistration - sorry.");
+				}
+				YLog.error("Dazed and confused, but trying to continue...");
+			}
 			try {
 				Field holderField = holder.getDeclaredField(f.getName()+"_HOLDER");
 				if (holderField.getType() == LatchHolder.class
@@ -355,6 +382,16 @@ public class Yttr implements ModInitializer {
 				}
 			} catch (Exception e) {}
 		});
+	}
+
+	private static String describe(Object val) {
+		String identity = Integer.toHexString(System.identityHashCode(val));
+		if (val instanceof SoundEvent se) {
+			return "SoundEvent["+se.getId()+"]@"+identity;
+		}
+		String str = String.valueOf(val);
+		if (str.contains(identity)) return str;
+		return str+"@"+identity;
 	}
 
 	/**
