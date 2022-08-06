@@ -12,13 +12,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+import com.mojang.blaze3d.glfw.Window;
 import com.unascribed.yttr.client.RenderBridge;
 import com.unascribed.yttr.util.YLog;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.util.Window;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Window.class)

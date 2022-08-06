@@ -1,5 +1,6 @@
 package com.unascribed.yttr.compat.trinkets;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -14,6 +15,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Pair;
 
 public class YttrTrinketsCompat {
 	

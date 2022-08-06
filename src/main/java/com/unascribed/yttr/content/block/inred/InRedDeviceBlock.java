@@ -13,7 +13,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -55,7 +55,7 @@ public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedP
 			return ((AbstractInRedDeviceBlockEntity) be).getProbeMessage();
 		}
 		//TODO: better fallback message? this should never happen anyway lol
-		return new TranslatableText("tip.yttr.inred.multimeter.block");
+		return new TranslatableComponent("tip.yttr.inred.multimeter.block");
 	}
 	
 	@Override

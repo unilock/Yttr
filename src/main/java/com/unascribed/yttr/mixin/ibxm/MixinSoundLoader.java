@@ -44,7 +44,7 @@ public class MixinSoundLoader {
 			ci.setReturnValue(CompletableFuture.supplyAsync(() -> {
 				try {
 					Resource resource = this.resourceManager.getResource(id);
-					InputStream inputStream = resource.getInputStream();
+					InputStream inputStream = resource.open();
 					DelegateFactory factory;
 					IBXMResourceMetadata meta = resource.getMetadata(IBXMResourceMetadata.READER);
 					boolean isAmiga = fpath.endsWith(".yttr_mod");

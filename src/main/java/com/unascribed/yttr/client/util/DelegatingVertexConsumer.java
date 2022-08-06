@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client.util;
 
-import net.minecraft.client.render.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class DelegatingVertexConsumer implements VertexConsumer {
 
@@ -21,8 +21,8 @@ public class DelegatingVertexConsumer implements VertexConsumer {
 	}
 
 	@Override
-	public VertexConsumer texture(float u, float v) {
-		return delegate.texture(u, v);
+	public VertexConsumer uv(float u, float v) {
+		return delegate.uv(u, v);
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class DelegatingVertexConsumer implements VertexConsumer {
 	}
 
 	@Override
-	public void fixedColor(int var1, int var2, int var3, int var4) {
-		delegate.fixedColor(var1, var2, var3, var4);
+	public void fixColor(int var1, int var2, int var3, int var4) {
+		delegate.fixColor(var1, var2, var3, var4);
 	}
 
 	@Override

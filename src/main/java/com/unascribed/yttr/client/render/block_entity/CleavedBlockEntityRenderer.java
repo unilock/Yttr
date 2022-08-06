@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
 import java.util.Random;
-
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
@@ -9,7 +9,6 @@ import com.unascribed.yttr.util.math.partitioner.Polygon;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;

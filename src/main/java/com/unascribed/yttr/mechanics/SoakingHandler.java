@@ -12,7 +12,7 @@ import com.unascribed.yttr.mixinsupport.WetWorld;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
-
+import com.mojang.datafixers.util.Either;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.fluid.Fluid;

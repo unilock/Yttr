@@ -37,7 +37,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
@@ -108,7 +108,7 @@ public class CleaverItem extends Item implements Attackable {
 					setCleaveBlock(stack, null);
 					setCleaveStart(stack, null);
 					setCleaveCorner(stack, null);
-					player.sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")), true);
+					player.sendMessage(new TranslatableComponent("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")), true);
 				}
 			}
 		}
@@ -128,7 +128,7 @@ public class CleaverItem extends Item implements Attackable {
 			boolean wasSelected = stack.getNbt().getBoolean("Selected");
 			if (selected && !wasSelected) {
 				if (stack.getNbt().contains("LastCut")) {
-					((PlayerEntity)entity).sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")+".post"), true);
+					((PlayerEntity)entity).sendMessage(new TranslatableComponent("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")+".post"), true);
 				}
 				stack.getNbt().putBoolean("Selected", true);
 			} else if (!selected && wasSelected) {

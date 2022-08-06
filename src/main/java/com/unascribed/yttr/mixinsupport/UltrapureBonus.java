@@ -6,7 +6,7 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Style;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 
 public class UltrapureBonus {
 
@@ -25,7 +25,7 @@ public class UltrapureBonus {
 		}
 		if (anyPure) {
 			if (!out.hasCustomName()) {
-				out.setCustomName(new TranslatableText("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
+				out.setCustomName(new TranslatableComponent("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
 			}
 			if (!out.hasNbt()) {
 				out.setNbt(new NbtCompound());

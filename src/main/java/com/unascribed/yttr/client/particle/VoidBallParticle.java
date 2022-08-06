@@ -3,20 +3,20 @@ package com.unascribed.yttr.client.particle;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexBuffer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.Yttr;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.particle.BillboardParticle;
 import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Shader;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexFormat.DrawMode;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
@@ -47,7 +47,7 @@ public class VoidBallParticle extends BillboardParticle {
 				buf1 = buf2 = buf3 = null;
 			}
 			RenderSystem.setShaderTexture(0, TEXTURE);
-			Tessellator.getInstance().getBuffer().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
+			Tessellator.getInstance().getBufferBuilder().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 			setColorAlpha(age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
 			super.buildGeometry(vertexConsumer, camera, tickDelta);
 			Tessellator.getInstance().draw();
@@ -57,7 +57,7 @@ public class VoidBallParticle extends BillboardParticle {
 			buf1 = new VertexBuffer();
 			buf2 = new VertexBuffer();
 			buf3 = new VertexBuffer();
-			BufferBuilder bb = Tessellator.getInstance().getBuffer();
+			BufferBuilder bb = Tessellator.getInstance().getBufferBuilder();
 			
 			final float PI = (float)Math.PI;
 			int slices = 40;
@@ -146,7 +146,7 @@ public class VoidBallParticle extends BillboardParticle {
 		float oz = (float)(MathHelper.lerp(tickDelta, prevPosZ, z) - cam.getZ());
 		MatrixStack ms = RenderSystem.getModelViewStack();
 		ms.push();
-		Shader old = RenderSystem.getShader();
+		ShaderProgram old = RenderSystem.getShader();
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(0, 0, 0, age < 10 ? 1 : 1-((age-10)/(float)(maxAge-10)));
 		ms.translate(ox, oy, oz);
@@ -154,9 +154,9 @@ public class VoidBallParticle extends BillboardParticle {
 		RenderSystem.depthMask(false);
 		RenderSystem.disableCull();
 		
-		buf1.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
-		buf2.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
-		buf3.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf1.setShader(ms.peek().getPosition(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf2.setShader(ms.peek().getPosition(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+		buf3.setShader(ms.peek().getPosition(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 		
 		VertexBuffer.unbind();
 		ms.pop();

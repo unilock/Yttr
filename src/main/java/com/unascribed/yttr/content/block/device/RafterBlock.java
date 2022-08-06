@@ -9,7 +9,7 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -37,7 +37,7 @@ public class RafterBlock extends Block {
 	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
 		return new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) -> {
 			return new RafterScreenHandler(i, playerInventory, ScreenHandlerContext.create(world, pos));
-		}, new TranslatableText("block.yttr.rafter"));
+		}, new TranslatableComponent("block.yttr.rafter"));
 	}
 
 }

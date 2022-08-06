@@ -32,7 +32,7 @@ public class DyedBlockItem extends BlockItem implements ItemColorProvider {
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		if (this.isIn(group)) {
+		if (this.isInGroup(group)) {
 			stacks.add(new ItemStack(this));
 		}
 	}

@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
-
+import com.mojang.blaze3d.MemoryUntracker;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
@@ -30,12 +30,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.Untracker;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.component.LiteralComponent;
 import net.minecraft.util.math.MathHelper;
 
 public class SuitScreen extends Screen {
@@ -78,7 +77,7 @@ public class SuitScreen extends Screen {
 	private float zoom = 1;
 	
 	public SuitScreen(int x, int z, List<Geyser> geysers) {
-		super(new LiteralText(""));
+		super(new LiteralComponent(""));
 		posX = x+0.5f;
 		posZ = z+0.5f;
 		this.geysers = Lists.newArrayList(geysers);
@@ -207,7 +206,7 @@ public class SuitScreen extends Screen {
 	}
 	
 	private static final FloatBuffer MATRIX_BUFFER = GLX.make(MemoryUtil.memAllocFloat(16), (floatBuffer) -> {
-		Untracker.untrack(MemoryUtil.memAddress(floatBuffer));
+		MemoryUntracker.untrack(MemoryUtil.memAddress(floatBuffer));
 	});
 	
 	@Override

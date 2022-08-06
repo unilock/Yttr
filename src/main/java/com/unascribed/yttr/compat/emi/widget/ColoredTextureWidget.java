@@ -1,11 +1,10 @@
 package com.unascribed.yttr.compat.emi.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.texture.NativeImage;
 import dev.emi.emi.api.widget.TextureWidget;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 

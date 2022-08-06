@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mechanics;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TypeFilter;
+import net.minecraft.world.chunk.WorldChunk;
 
 public class TickAlwaysItemHandler {
 

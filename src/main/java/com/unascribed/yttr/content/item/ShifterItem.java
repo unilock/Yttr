@@ -49,7 +49,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -59,7 +59,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class ShifterItem extends Item {
@@ -74,13 +73,13 @@ public class ShifterItem extends Item {
 		boolean curHidden = stack.hasNbt() && stack.getNbt().getBoolean("ReplaceHidden");
 		boolean curPlane = stack.hasNbt() && stack.getNbt().getBoolean("PlaneRestrict");
 		if (disconnected != curDisconnected) {
-			player.sendMessage(new TranslatableText("tip.yttr.shifter.disconnected."+(disconnected ? "en" : "dis")+"abled"), true);
+			player.sendMessage(new TranslatableComponent("tip.yttr.shifter.disconnected."+(disconnected ? "en" : "dis")+"abled"), true);
 		}
 		if (hidden != curHidden) {
-			player.sendMessage(new TranslatableText("tip.yttr.shifter.hidden."+(hidden ? "en" : "dis")+"abled"), true);
+			player.sendMessage(new TranslatableComponent("tip.yttr.shifter.hidden."+(hidden ? "en" : "dis")+"abled"), true);
 		}
 		if (plane != curPlane) {
-			player.sendMessage(new TranslatableText("tip.yttr.shifter.plane."+(plane ? "en" : "dis")+"abled"), true);
+			player.sendMessage(new TranslatableComponent("tip.yttr.shifter.plane."+(plane ? "en" : "dis")+"abled"), true);
 		}
 		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		stack.getNbt().putBoolean("ReplaceDisconnected", disconnected);

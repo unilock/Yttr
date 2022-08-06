@@ -2,6 +2,7 @@ package com.unascribed.yttr.client.render;
 
 import static com.unascribed.yttr.client.RenderBridge.*;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
 
 import com.unascribed.yttr.client.IHasAClient;
@@ -17,7 +18,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutli
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;

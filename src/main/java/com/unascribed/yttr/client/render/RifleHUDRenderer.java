@@ -1,6 +1,11 @@
 package com.unascribed.yttr.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferRenderer;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.item.RifleItem;
@@ -10,12 +15,7 @@ import com.unascribed.yttr.network.MessageC2SRifleMode;
 import com.unascribed.yttr.util.math.Interp;
 
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat.DrawMode;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -80,7 +80,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float height = 2;
 						int textureWidth = RifleMode.ALL_VALUES.size()*2;
 						int textureHeight = 2;
-						Matrix4f mat = matrices.peek().getModel();
+						Matrix4f mat = matrices.peek().getPosition();
 						float x1 = 4.4f-(p/8f);
 						float x2 = x1 + width;
 						float y1 = -0.88f;
@@ -89,12 +89,12 @@ public class RifleHUDRenderer extends IHasAClient {
 						float maxU = (u + width) / textureWidth;
 						float minV = (v + 0) / textureHeight;
 						float maxV = (v + height) / textureHeight;
-						BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+						BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 						bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-						bufferBuilder.vertex(mat, x1, y2-0.2f, 0).texture(minU, maxV).next();
-						bufferBuilder.vertex(mat, x2, y2, 0).texture(maxU, maxV).next();
-						bufferBuilder.vertex(mat, x2, y1, 0).texture(maxU, minV).next();
-						bufferBuilder.vertex(mat, x1, y1-0.2f, 0).texture(minU, minV).next();
+						bufferBuilder.vertex(mat, x1, y2-0.2f, 0).uv(minU, maxV).next();
+						bufferBuilder.vertex(mat, x2, y2, 0).uv(maxU, maxV).next();
+						bufferBuilder.vertex(mat, x2, y1, 0).uv(maxU, minV).next();
+						bufferBuilder.vertex(mat, x1, y1-0.2f, 0).uv(minU, minV).next();
 						bufferBuilder.end();
 						BufferRenderer.draw(bufferBuilder);
 					}
@@ -109,7 +109,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float height = mH-f;
 						float textureWidth = mH;
 						float textureHeight = mH;
-						Matrix4f mat = matrices.peek().getModel();
+						Matrix4f mat = matrices.peek().getPosition();
 						float x1 = -1.3f+(p/32f);
 						float x2 = x1 + width;
 						float y1 = f-(mH/2);
@@ -118,12 +118,12 @@ public class RifleHUDRenderer extends IHasAClient {
 						float maxU = (u + width) / textureWidth;
 						float minV = (v + 0) / textureHeight;
 						float maxV = (v + height) / textureHeight;
-						BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+						BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 						bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-						bufferBuilder.vertex(mat, x1, y2, 0).texture(minU, maxV).next();
-						bufferBuilder.vertex(mat, x2, y2, 0).texture(maxU, maxV).next();
-						bufferBuilder.vertex(mat, x2, y1, 0).texture(maxU, minV).next();
-						bufferBuilder.vertex(mat, x1, y1, 0).texture(minU, minV).next();
+						bufferBuilder.vertex(mat, x1, y2, 0).uv(minU, maxV).next();
+						bufferBuilder.vertex(mat, x2, y2, 0).uv(maxU, maxV).next();
+						bufferBuilder.vertex(mat, x2, y1, 0).uv(maxU, minV).next();
+						bufferBuilder.vertex(mat, x1, y1, 0).uv(minU, minV).next();
 						bufferBuilder.end();
 						BufferRenderer.draw(bufferBuilder);
 					}

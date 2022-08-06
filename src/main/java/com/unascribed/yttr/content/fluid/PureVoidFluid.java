@@ -36,7 +36,7 @@ public abstract class PureVoidFluid extends VoidFluid {
 		}
 
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return false;
 		}
 	}
@@ -49,7 +49,7 @@ public abstract class PureVoidFluid extends VoidFluid {
 		}
 		
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return true;
 		}
 		
@@ -107,7 +107,7 @@ public abstract class PureVoidFluid extends VoidFluid {
 	
 	@Override
 	public void onRandomTick(World world, BlockPos pos, FluidState state, Random random) {
-		if (state.isStill() && random.nextInt(100) == 0 && world.getBlockState(pos).isOf(YBlocks.PURE_VOID)) {
+		if (state.isSource() && random.nextInt(100) == 0 && world.getBlockState(pos).isOf(YBlocks.PURE_VOID)) {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		}
 		Direction dir = Direction.byId(random.nextInt(5)+1);

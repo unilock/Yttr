@@ -100,7 +100,7 @@ public class CleavedBlockMeshes {
 				sprite = particle;
 			} else {
 				uvo.reset();
-				uvo.quad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
+				uvo.bakedQuad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
 				sprite = DummySprite.create(uvo.getMinU(), uvo.getMinV(), uvo.getMaxU(), uvo.getMaxV());
 				tintIndex = firstQuad.getColorIndex();;
 			}

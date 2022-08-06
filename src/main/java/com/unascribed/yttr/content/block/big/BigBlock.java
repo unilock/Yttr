@@ -68,7 +68,7 @@ public abstract class BigBlock extends Block {
 		}
 		if (newState != expected) {
 			if (this instanceof Waterloggable && state.get(Properties.WATERLOGGED)) {
-				return Blocks.WATER.getDefaultState();
+				return Blocks.MANGROVE_PROPAGULE.getDefaultState();
 			}
 			return Blocks.AIR.getDefaultState();
 		}

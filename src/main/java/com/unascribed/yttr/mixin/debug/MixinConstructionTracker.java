@@ -16,7 +16,7 @@ import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.Schedule;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.decoration.painting.PaintingMotive;
+import net.minecraft.entity.decoration.painting.PaintingVariant;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -49,7 +49,7 @@ import net.minecraft.world.poi.PointOfInterestType;
 	Potion.class,
 	ParticleType.class,
 	BlockEntityType.class,
-	PaintingMotive.class,
+	PaintingVariant.class,
 	Identifier.class,
 	ChunkStatus.class,
 	ScreenHandlerType.class,

@@ -44,7 +44,7 @@ public class RenderBridge extends GL21 {
 	
 	public static void glPushMCMatrix(MatrixStack matrices) {
 		glPushMCMatrix();
-		glMultMatrixf(matrices.peek().getModel());
+		glMultMatrixf(matrices.peek().getPosition());
 	}
 	
 	public static void glPopMCMatrix() {

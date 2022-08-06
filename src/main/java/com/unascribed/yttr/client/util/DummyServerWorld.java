@@ -13,12 +13,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.color.biome.BiomeColorProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.InstrumentItem;
 import net.minecraft.item.map.MapState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -42,7 +44,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.LightType;
 import net.minecraft.world.LocalDifficulty;
@@ -57,7 +58,6 @@ import net.minecraft.world.chunk.light.LightingProvider;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.level.storage.LevelStorage.Session;
 
@@ -200,7 +200,7 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public int getColor(BlockPos pos, ColorResolver colorResolver) {
+	public int getColor(BlockPos pos, BiomeColorProvider colorResolver) {
 		return getDelegate().getColor(pos, colorResolver);
 	}
 
@@ -454,7 +454,7 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public void updateNeighbor(BlockPos sourcePos, Block sourceBlock,
+	public void m_asiupuuh(BlockPos sourcePos, Block sourceBlock,
 			BlockPos neighborPos) {
 	}
 
@@ -677,7 +677,7 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public GameRules getGameRules() {
+	public InstrumentItem getGameRules() {
 		return getDelegate().getGameRules();
 	}
 

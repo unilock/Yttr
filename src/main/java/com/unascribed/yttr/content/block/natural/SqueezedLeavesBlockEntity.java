@@ -81,7 +81,7 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 					scannedThisLayer.clear();
 				} else if (world.getBlockState(pos.up()).getMaterial().isReplaceable()) {
 					world.setBlockState(pos.up(), getCachedState());
-					world.setBlockState(pos, Blocks.WATER.getDefaultState());
+					world.setBlockState(pos, Blocks.MANGROVE_PROPAGULE.getDefaultState());
 				} else {
 					finished = true;
 				}
@@ -96,7 +96,7 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 			scannedThisLayer.add(bp);
 			iter.remove();
 			boolean filled = fill(bp);
-			if (filled || bp.equals(pos) || world.getBlockState(bp).isOf(Blocks.WATER)) {
+			if (filled || bp.equals(pos) || world.getBlockState(bp).isOf(Blocks.MANGROVE_PROPAGULE)) {
 				for (Direction d : Direction.Type.HORIZONTAL) {
 					tmp.set(bp).move(d);
 					if (canFill(tmp)) {
@@ -128,7 +128,7 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 			if (bs.getBlock() instanceof FluidFillable) {
 				return ((FluidFillable)bs.getBlock()).tryFillWithFluid(world, pos, bs, Fluids.WATER.getDefaultState());
 			} else if (bs.getMaterial().isReplaceable()) {
-				return world.setBlockState(pos, Blocks.WATER.getDefaultState());
+				return world.setBlockState(pos, Blocks.MANGROVE_PROPAGULE.getDefaultState());
 			}
 		}
 		return false;

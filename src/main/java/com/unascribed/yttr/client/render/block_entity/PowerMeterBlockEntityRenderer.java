@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client.render.block_entity;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
@@ -7,7 +8,6 @@ import com.unascribed.yttr.init.YBlocks;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -59,12 +59,12 @@ public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerM
 			for (int i = readout.length()-1; i >= 0; i--) {
 				char c = readout.charAt(i);
 				float u = Character.digit(c, 10)/10f;
-				Matrix4f mat = matrices.peek().getModel();
+				Matrix4f mat = matrices.peek().getPosition();
 				Matrix3f nrm = matrices.peek().getNormal();
-				vc.vertex(mat, 0, 7/16f, 0).color(1f, 1f, 1f, a).texture(u+0.1f, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
-				vc.vertex(mat, 4/16f, 7/16f, 0).color(1f, 1f, 1f, a).texture(u, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
-				vc.vertex(mat, 4/16f, 0, 0).color(1f, 1f, 1f, a).texture(u, 1).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
-				vc.vertex(mat, 0, 0, 0).color(1f, 1f, 1f, a).texture(u+0.1f, 1).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
+				vc.vertex(mat, 0, 7/16f, 0).color(1f, 1f, 1f, a).uv(u+0.1f, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
+				vc.vertex(mat, 4/16f, 7/16f, 0).color(1f, 1f, 1f, a).uv(u, 0).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
+				vc.vertex(mat, 4/16f, 0, 0).color(1f, 1f, 1f, a).uv(u, 1).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
+				vc.vertex(mat, 0, 0, 0).color(1f, 1f, 1f, a).uv(u+0.1f, 1).overlay(overlay).light(light).normal(nrm, 0, 0, 1).next();
 				matrices.translate(5/16f, 0, 0);
 			}
 			matrices.pop();

@@ -19,7 +19,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -66,7 +66,7 @@ public abstract class MixinLivingEntity extends Entity {
 					public Text getDeathMessage(LivingEntity entity) {
 						// no .item support
 						String string = "death.attack." + this.name;
-						return new TranslatableText(string, entity.getDisplayName(), this.source.getDisplayName());
+						return new TranslatableComponent(string, entity.getDisplayName(), this.source.getDisplayName());
 					}
 				};
 			}

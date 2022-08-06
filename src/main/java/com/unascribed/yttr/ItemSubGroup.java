@@ -11,7 +11,7 @@ import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -35,7 +35,7 @@ public class ItemSubGroup extends ItemGroup {
 			isg.index = igp.yttr$getChildren().size();
 			isg.id = id.getNamespace()+"."+id.getPath();
 			isg.parent = parent;
-			isg.translationKey = new TranslatableText("itemGroup."+isg.id);
+			isg.translationKey = new TranslatableComponent("itemGroup."+isg.id);
 			isg.additionalStacks = Lists.newArrayList();
 			igp.yttr$getChildren().add(isg);
 			if (igp.yttr$getSelectedChild() == null) {

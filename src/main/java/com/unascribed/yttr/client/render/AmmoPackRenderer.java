@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render;
 
 import java.util.concurrent.ThreadLocalRandom;
-
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.AmmoCanItem;
 import com.unascribed.yttr.init.YItems;
@@ -12,7 +12,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -45,7 +44,7 @@ public class AmmoPackRenderer {
 				matrices.translate(-8/16f, -12/16f, 2/16f);
 				VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutoutNoCull(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE));
 				for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
-					vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+					vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 				}
 				Inventory inv = ((InventoryProviderItem)is.getItem()).asInventory(is);
 				for (Direction d : Direction.values()) {
@@ -57,7 +56,7 @@ public class AmmoPackRenderer {
 						float g = ((color>> 8)&0xFF)/255f;
 						float b = ((color>> 0)&0xFF)/255f;
 						for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), d, ThreadLocalRandom.current())) {
-							vc.quad(matrices.peek(), bq, bq.hasColor() ? r : 1, bq.hasColor() ? g : 1, bq.hasColor() ? b : 1, light, OverlayTexture.DEFAULT_UV);
+							vc.bakedQuad(matrices.peek(), bq, bq.hasColor() ? r : 1, bq.hasColor() ? g : 1, bq.hasColor() ? b : 1, light, OverlayTexture.DEFAULT_UV);
 						}
 					}
 				}
@@ -75,7 +74,7 @@ public class AmmoPackRenderer {
 					matrices.push();
 						matrices.push();
 							for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
-								vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+								vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 							}
 						matrices.pop();
 	
@@ -84,7 +83,7 @@ public class AmmoPackRenderer {
 						matrices.push();
 							matrices.scale(1, 5.5f, 1);
 							for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
-								vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+								vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 							}
 						matrices.pop();
 	
@@ -97,7 +96,7 @@ public class AmmoPackRenderer {
 						matrices.push();
 							matrices.scale(1, len, 1);
 							for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
-								vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+								vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 							}
 						matrices.pop();
 					matrices.pop();
@@ -106,13 +105,13 @@ public class AmmoPackRenderer {
 					matrices.push();
 						matrices.scale(1, (12-h)-4.5f, 1);
 						for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
-							vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+							vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 						}
 					matrices.pop();
 				} else {
 					for (int y = 0; y < 10; y++) {
 						for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, ThreadLocalRandom.current())) {
-							vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+							vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 						}
 						matrices.translate(0, -1/16f, 0);
 					}

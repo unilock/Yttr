@@ -40,7 +40,7 @@ public abstract class VoidFluid extends FlowableFluid {
 		}
 
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return false;
 		}
 	}
@@ -53,7 +53,7 @@ public abstract class VoidFluid extends FlowableFluid {
 		}
 		
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return true;
 		}
 		

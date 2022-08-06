@@ -33,8 +33,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.state.property.Property;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.LiteralComponent;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -59,7 +59,7 @@ public class VoidUndoCommand {
 							} else {
 								count = 0;
 							}
-							ctx.getSource().sendFeedback(new TranslatableText("commands.yttr.void_undo.clean", count), true);
+							ctx.getSource().sendFeedback(new TranslatableComponent("commands.yttr.void_undo.clean", count), true);
 						} catch (IOException e) {
 							YLog.warn("Failed to clean undos", e);
 							throw new UncheckedIOException(e);
@@ -84,17 +84,17 @@ public class VoidUndoCommand {
 										List<Pair<Double, Runnable>> suggestorsByDistance = Lists.newArrayList();
 										for (int x = -2; x <= 2; x++) {
 											for (int z = -2; z <= 2; z++) {
-												String s = (chunkPos.x+x)+" "+(chunkPos.z+z);
+												String s = (chunkPos.field_38224+x)+" "+(chunkPos.z+z);
 												if (byChunk.contains(s, NbtType.LIST)) {
 													NbtList list = byChunk.getList(s, NbtType.COMPOUND);
 													for (int i = 0; i < list.size(); i++) {
 														NbtCompound entry = list.getCompound(i);
 														if (!entry.getString("Dim").equals(dim)) continue;
 														int hpos = entry.getByte("HPos")&0xFF;
-														BlockPos entryPos = new ChunkPos(chunkPos.x+x, chunkPos.z+z).getStartPos().add((hpos>>4)&0xF, entry.getInt("YPos"), hpos&0xF);
+														BlockPos entryPos = new ChunkPos(chunkPos.field_38224+x, chunkPos.z+z).getStartPos().add((hpos>>4)&0xF, entry.getInt("YPos"), hpos&0xF);
 														double dist = entryPos.getSquaredDistance(pos);
 														if (dist < 32*32) {
-															suggestorsByDistance.add(Pair.of(dist, () -> bldr.suggest(entry.getString("Name"), new TranslatableText("commands.yttr.void_undo.location", entryPos.getX(), entryPos.getY(), entryPos.getZ(), (int)MathHelper.sqrt((float)dist)))));
+															suggestorsByDistance.add(Pair.of(dist, () -> bldr.suggest(entry.getString("Name"), new TranslatableComponent("commands.yttr.void_undo.location", entryPos.getX(), entryPos.getY(), entryPos.getZ(), (int)MathHelper.sqrt((float)dist)))));
 														}
 													}
 												}
@@ -127,13 +127,13 @@ public class VoidUndoCommand {
 										NbtIo.writeCompressed(index, indexFile.toFile());
 										Files.delete(file);
 									}
-									ctx.getSource().sendFeedback(new TranslatableText("commands.yttr.void_undo.success", count), true);
+									ctx.getSource().sendFeedback(new TranslatableComponent("commands.yttr.void_undo.success", count), true);
 								} catch (IOException e) {
 									YLog.warn("Failed to undo", e);
 									throw new UncheckedIOException(e);
 								}
 							} else {
-								throw new CommandException(new TranslatableText("commands.yttr.void_undo.not_found"));
+								throw new CommandException(new TranslatableComponent("commands.yttr.void_undo.not_found"));
 							}
 							return 1;
 						})
@@ -152,7 +152,7 @@ public class VoidUndoCommand {
 										NbtCompound byUser = index.getCompound("ByUser");
 										for (String k : byUser.getKeys()) {
 											NbtCompound tag = byUser.getCompound(k);
-											bldr.suggest(tag.getString("Username"), new LiteralText(k));
+											bldr.suggest(tag.getString("Username"), new LiteralComponent(k));
 										}
 									}
 									return bldr.build();
@@ -196,14 +196,14 @@ public class VoidUndoCommand {
 												YLog.warn("Failed to undo "+fname, e);
 											}
 										}
-										ctx.getSource().sendFeedback(new TranslatableText("commands.yttr.void_undo.success_multi", count, success), true);
+										ctx.getSource().sendFeedback(new TranslatableComponent("commands.yttr.void_undo.success_multi", count, success), true);
 										removeFromIndex(index, fnames);
 										NbtIo.writeCompressed(index, indexFile.toFile());
 									} else {
-										throw new CommandException(new TranslatableText("commands.yttr.void_undo.not_found"));
+										throw new CommandException(new TranslatableComponent("commands.yttr.void_undo.not_found"));
 									}
 								} else {
-									throw new CommandException(new TranslatableText("commands.yttr.void_undo.not_found"));
+									throw new CommandException(new TranslatableComponent("commands.yttr.void_undo.not_found"));
 								}
 							} catch (IOException e) {
 								YLog.warn("Failed to read/update index", e);
@@ -220,7 +220,7 @@ public class VoidUndoCommand {
 		Identifier dim = new Identifier(data.getString("Dim"));
 		World world = server.getWorld(RegistryKey.of(Registry.WORLD_KEY, dim));
 		if (world == null) {
-			throw new CommandException(new TranslatableText("commands.yttr.void_undo.no_world", dim.toString()));
+			throw new CommandException(new TranslatableComponent("commands.yttr.void_undo.no_world", dim.toString()));
 		}
 		int[] posArr = data.getIntArray("Pos");
 		BlockPos pos = new BlockPos(posArr[0], posArr[1], posArr[2]);

@@ -1,5 +1,6 @@
 package com.unascribed.yttr.network;
 
+import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.network.concrete.NetworkContext;
@@ -16,7 +17,6 @@ import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.RedDustParticle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;

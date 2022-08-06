@@ -8,6 +8,11 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
@@ -18,15 +23,10 @@ import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexFormat.DrawMode;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
@@ -38,6 +38,7 @@ import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
@@ -57,7 +58,7 @@ public class EffectorRenderer extends IHasAClient {
 			BlockPos.Mutable mut = new BlockPos.Mutable();
 			List<Axis> axes = Arrays.asList(Direction.Axis.values());
 			Tessellator tess = Tessellator.getInstance();
-			BufferBuilder bb = tess.getBuffer();
+			BufferBuilder bb = tess.getBufferBuilder();
 			for (EffectorHole hole : effectorHoles) {
 				Axis axisZ = hole.dir.getAxis();
 				Axis axisX = Iterables.find(axes, a -> a != axisZ);
@@ -140,12 +141,12 @@ public class EffectorRenderer extends IHasAClient {
 	private static void drawVoidCap(ClientWorld w, MatrixStack ms, BlockPos.Mutable mut, int l, Axis axisX, Axis axisY, float a, BlockPos pos, Direction dir) {
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		Tessellator tess = Tessellator.getInstance();
-		BufferBuilder bb = tess.getBuffer();
+		BufferBuilder bb = tess.getBufferBuilder();
 		ms.push();
 		ms.translate(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
 		ms.translate(dir.getOffsetX()*-0.5, dir.getOffsetY()*-0.5, dir.getOffsetZ()*-0.5);
 		ms.multiply(dir.getRotationQuaternion());
-		Matrix4f mat = ms.peek().getModel();
+		Matrix4f mat = ms.peek().getPosition();
 		if (a != 0) {
 			float s = a*1.5f;
 			if (l > 0) {
@@ -218,7 +219,7 @@ public class EffectorRenderer extends IHasAClient {
 				ms.translate(mut.getX(), mut.getY(), mut.getZ());
 				for (BakedQuad q : quads) {
 					int color = q.hasColor() ? mc.getBlockColors().getColor(state, w, pos, q.getColorIndex()) : -1;
-					bb.quad(ms.peek(), q, ((color >> 16)&0xFF)/255f, ((color >> 8)&0xFF)/255f, (color&0xFF)/255f, light, OverlayTexture.DEFAULT_UV);
+					bb.bakedQuad(ms.peek(), q, ((color >> 16)&0xFF)/255f, ((color >> 8)&0xFF)/255f, (color&0xFF)/255f, light, OverlayTexture.DEFAULT_UV);
 				}
 				ms.pop();
 			}
@@ -249,7 +250,7 @@ public class EffectorRenderer extends IHasAClient {
 		ms.push();
 		ms.translate(pos.getX(), pos.getY(), pos.getZ());
 		for (BakedQuad q : quads) {
-			vc.quad(ms.peek(), q, 0, 0, 0, LightmapTextureManager.pack(0, 0), OverlayTexture.DEFAULT_UV);
+			vc.bakedQuad(ms.peek(), q, 0, 0, 0, LightmapTextureManager.pack(0, 0), OverlayTexture.DEFAULT_UV);
 		}
 		ms.pop();
 	}

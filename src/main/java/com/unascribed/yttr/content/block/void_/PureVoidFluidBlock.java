@@ -59,12 +59,12 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 	
 	@Override
 	public PistonBehavior getPistonBehavior(BlockState state) {
-		return getFluidState(state).isStill() ? PistonBehavior.PUSH_ONLY : PistonBehavior.DESTROY;
+		return getFluidState(state).isSource() ? PistonBehavior.PUSH_ONLY : PistonBehavior.DESTROY;
 	}
 	
 	@Override
 	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return !getFluidState(state).isStill();
+		return !getFluidState(state).isSource();
 	}
 	
 	@Override

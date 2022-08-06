@@ -16,7 +16,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.registry.Registry;
 
 @Environment(EnvType.CLIENT)
@@ -30,7 +30,7 @@ public class MixinItemStack {
 		if (Registry.ITEM.getId(self.getItem()).getNamespace().equals("yttr")) {
 			int i = 1;
 			while (I18n.hasTranslation(self.getTranslationKey()+".tip."+i)) {
-				tooltip.add(new TranslatableText(self.getTranslationKey()+".tip."+i));
+				tooltip.add(new TranslatableComponent(self.getTranslationKey()+".tip."+i));
 				i++;
 			}
 		}

@@ -9,6 +9,7 @@ import java.lang.invoke.MethodType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -83,10 +84,11 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 
 public class YttrEmiPlugin implements EmiPlugin {
 
@@ -145,7 +147,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
 		
 		List<EmiStack> pickaxes = new ArrayList<>();
-		for (var en : Registry.ITEM.getEntries()) {
+		for (var en : Registry.ITEM.getKeys()) {
 			if (YEnchantments.SHATTERING_CURSE.isAcceptableItem(new ItemStack(en.getValue()))) {
 				pickaxes.add(createShatteringPickaxe(en.getValue()));
 			}
@@ -154,7 +156,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			@Override
 			public List<TooltipComponent> getTooltip() {
 				List<TooltipComponent> tooltip = Lists.newArrayList();
-				tooltip.add(TooltipComponent.of(new TranslatableText("emi.tooltip.yttr.any_tool").asOrderedText()));
+				tooltip.add(TooltipComponent.of(new TranslatableComponent("emi.tooltip.yttr.any_tool").asOrderedText()));
 				tooltip.add(TooltipComponent.of(YEnchantments.SHATTERING_CURSE.getName(1).asOrderedText()));
 				tooltip.add(new IngredientTooltipComponent(pickaxes));
 				return tooltip;
@@ -359,7 +361,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 					List<Text> tip = Lists.newArrayList();
 					if (result.getItem() == YItems.SUIT_HELMET) {
 						LampColor color = LampBlockItem.getColor(result);
-						tip.add(new TranslatableText("emi.yttr.suit_helmet_hud", new TranslatableText("color.yttr."+color.asString())
+						tip.add(new TranslatableComponent("emi.yttr.suit_helmet_hud", new TranslatableComponent("color.yttr."+color.asString())
 								.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
 					}
 					EmiCraftingRecipe ecr = new EmiCraftingRecipe(

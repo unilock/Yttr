@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.ReplicatorShapes;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlockEntity;
@@ -28,7 +29,6 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -36,9 +36,9 @@ import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+import net.minecraft.text.component.LiteralComponent;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +55,7 @@ public class ReplicatorRenderer extends IHasAClient {
 	public static final Set<ReplicatorBlockEntity> removing = Sets.newLinkedHashSet();
 	private static final List<ReplicatorBlockEntity> renderList = Lists.newArrayList();
 	
-	private static final Screen dummyScreen = new Screen(new LiteralText("")) {};
+	private static final Screen dummyScreen = new Screen(new LiteralComponent("")) {};
 	private static final Random rand = new Random();
 	
 	public static boolean renderOutline(WorldRenderContext wrc, BlockOutlineContext boc) {

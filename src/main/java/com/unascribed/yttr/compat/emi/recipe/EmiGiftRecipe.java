@@ -7,7 +7,7 @@ import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.init.YItems;
 
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Identifier;
 import dev.emi.emi.api.recipe.EmiIngredientRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -68,11 +68,11 @@ public class EmiGiftRecipe extends EmiIngredientRecipe {
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
 		super.addWidgets(widgets);
-		widgets.add(new TextWidget(new TranslatableText("emi.category.yttr.continuity_gifts.chance", DECIMAL_FORMAT.format(100D/stacks.size())).asOrderedText(),
+		widgets.add(new TextWidget(new TranslatableComponent("emi.category.yttr.continuity_gifts.chance", DECIMAL_FORMAT.format(100D/stacks.size())).asOrderedText(),
 				86, 5, 0xFF404040, false) {
 			@Override
 			public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-				return List.of(TooltipComponent.of(new TranslatableText("emi.category.yttr.continuity_gifts.chance.tooltip").asOrderedText()));
+				return List.of(TooltipComponent.of(new TranslatableComponent("emi.category.yttr.continuity_gifts.chance.tooltip").asOrderedText()));
 			}
 		});
 	}

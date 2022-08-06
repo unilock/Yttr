@@ -27,7 +27,7 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.component.LiteralComponent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
@@ -104,7 +104,7 @@ public class YttrConfigScreen extends Screen {
 	private final Multiset<String> timesModified = HashMultiset.create();
 	
 	public YttrConfigScreen(Screen parent) {
-		super(new LiteralText("Yttr configuration"));
+		super(new LiteralComponent("Yttr configuration"));
 		this.parent = parent;
 	}
 	
@@ -115,7 +115,7 @@ public class YttrConfigScreen extends Screen {
 	}
 	
 	@Override
-	public void onClose() {
+	public void closeScreen() {
 		if (isClosing) {
 			client.setScreen(parent);
 			client.getMusicTracker().stop();
@@ -295,7 +295,7 @@ public class YttrConfigScreen extends Screen {
 					textTestMode = false;
 					uniq++;
 				} else {
-					onClose();
+					closeScreen();
 				}
 			}
 			sr.tearDown();

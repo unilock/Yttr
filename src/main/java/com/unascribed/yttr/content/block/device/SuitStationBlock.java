@@ -14,7 +14,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -51,7 +51,7 @@ public class SuitStationBlock extends Block implements BlockEntityProvider {
 				
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("block.yttr.suit_station");
+					return new TranslatableComponent("block.yttr.suit_station");
 				}
 			});
 		}

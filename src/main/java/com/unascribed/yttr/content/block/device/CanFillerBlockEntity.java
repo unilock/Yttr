@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -169,7 +169,7 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 	
 	@Override
 	public Text getName() {
-		return new TranslatableText("block.yttr.can_filler");
+		return new TranslatableComponent("block.yttr.can_filler");
 	}
 	
 	@Override

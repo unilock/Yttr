@@ -11,7 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -92,7 +92,7 @@ public class InRedNotGateBlockEntity extends AbstractInRedDeviceBlockEntity {
 
 	@Override
 	public Text getProbeMessage() {
-		return new TranslatableText("tip.yttr.inred.multimeter.out", getValue(signal));
+		return new TranslatableComponent("tip.yttr.inred.multimeter.out", getValue(signal));
 	}
 
 	@Override

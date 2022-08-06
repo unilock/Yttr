@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -35,7 +35,7 @@ public class InRedMultimeterItem extends Item {
 		} else if (block == YBlocks.INRED_CABLE || block == YBlocks.INRED_SCAFFOLD) {
 			// One of our wires. Take a search in all directions and return the signal being passed through.
 			value = getWireValue(world, pos);
-			message = new TranslatableText("tip.yttr.inred.multimeter.cable", value);
+			message = new TranslatableComponent("tip.yttr.inred.multimeter.cable", value);
 //        } else if (block == ModBlocks.DEVICE_LIQUID_CRYSTAL) {
 			// Liquid Crystal is not currently implemented, hopefully it'll be fixed sometime!
 //            value = getValue(world, pos, facing);
@@ -43,7 +43,7 @@ public class InRedMultimeterItem extends Item {
 		} else if (InRedLogic.checkCandidacy(world, pos, ctx.getPlayerFacing())) {
 			// Someone else's InRed-compat block, but it doesn't have a provider. Check using a general getValue.
 			value = getValue(world, pos, ctx.getPlayerFacing());
-			message = new TranslatableText("tip.yttr.inred.multimeter.direction", ctx.getPlayerFacing().getName(), value);
+			message = new TranslatableComponent("tip.yttr.inred.multimeter.direction", ctx.getPlayerFacing().getName(), value);
 		} else {
 			// Not something the Multimeter can detect. Nothing to send.
 			return ActionResult.PASS;

@@ -8,6 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BackgroundRenderer;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.dimension.DimensionType;
 
 @Environment(EnvType.CLIENT)

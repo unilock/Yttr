@@ -6,7 +6,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.SlotWidget;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Formatting;
 
 public class RuinedInputWidget extends SlotWidget {
@@ -24,7 +24,7 @@ public class RuinedInputWidget extends SlotWidget {
 	
 	@Override
 	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-		return disableTooltip ? List.of() : List.of(TooltipComponent.of(new TranslatableText("container.enchant.clue")
+		return disableTooltip ? List.of() : List.of(TooltipComponent.of(new TranslatableComponent("container.enchant.clue")
 				.formatted(Formatting.ITALIC).asOrderedText()));
 	}
 

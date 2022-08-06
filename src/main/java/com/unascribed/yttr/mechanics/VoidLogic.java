@@ -81,7 +81,7 @@ public class VoidLogic {
 			
 			NbtCompound byChunk = index.getCompound("ByChunk");
 			ChunkPos chunkPos = new ChunkPos(pos);
-			String chunkKey = chunkPos.x+" "+chunkPos.z;
+			String chunkKey = chunkPos.field_38224+" "+chunkPos.z;
 			NbtList chunkList = byUser.getList(chunkKey, NbtType.COMPOUND);
 			NbtCompound chunkListEntry = new NbtCompound();
 			chunkListEntry.putByte("HPos", (byte)(((pos.getX()&0xF)<<4)|(pos.getZ()&0xF)));

@@ -9,7 +9,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
 public class MercurialPotionItem extends PotionItem implements ItemColorProvider {
@@ -20,7 +20,7 @@ public class MercurialPotionItem extends PotionItem implements ItemColorProvider
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		return new TranslatableText("item.yttr.mercurial_potion.prefix", Items.POTION.getName(stack));
+		return new TranslatableComponent("item.yttr.mercurial_potion.prefix", Items.POTION.getName(stack));
 	}
 	
 	@Override

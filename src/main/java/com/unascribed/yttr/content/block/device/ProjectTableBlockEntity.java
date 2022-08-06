@@ -16,7 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
 
 public class ProjectTableBlockEntity extends LockableContainerBlockEntity implements DelegatingInventory {
@@ -50,7 +50,7 @@ public class ProjectTableBlockEntity extends LockableContainerBlockEntity implem
 
 	@Override
 	protected Text getContainerName() {
-		return new TranslatableText("block.yttr.project_table");
+		return new TranslatableComponent("block.yttr.project_table");
 	}
 
 	@Override

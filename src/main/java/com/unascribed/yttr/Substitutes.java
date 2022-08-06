@@ -47,7 +47,7 @@ public class Substitutes extends SinglePreparationResourceReloader<BiMap<Item, I
 			if (mgr.containsResource(id)) {
 				try {
 					Resource r = mgr.getResource(id);
-					try (InputStreamReader isr = new InputStreamReader(r.getInputStream(), Charsets.UTF_8)) {
+					try (InputStreamReader isr = new InputStreamReader(r.open(), Charsets.UTF_8)) {
 						JsonObject obj = gson.fromJson(isr, JsonObject.class);
 						for (Map.Entry<String, JsonElement> en : obj.entrySet()) {
 							String k = en.getKey();

@@ -7,6 +7,11 @@ import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.VertexBuffer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.YttrClient;
@@ -24,14 +29,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.VertexBuffer;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexFormat.DrawMode;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
@@ -84,7 +84,7 @@ public class LampRenderer extends IHasAClient {
 					float normalX, float normalY, float normalZ
 				) {
 					vertex(x, y, z);
-					texture(u, v);
+					uv(u, v);
 					color(red, green, blue, alpha);
 					normal(normalX, normalY, normalZ);
 					next();
@@ -111,12 +111,12 @@ public class LampRenderer extends IHasAClient {
 		}
 
 		for (BakedQuad bq : bm.getQuads(state, null, world.random)) {
-			dvc.quad(matrices.peek(), bq, r, g, b, 0, 0);
+			dvc.bakedQuad(matrices.peek(), bq, r, g, b, 0, 0);
 		}
 		for (Direction dir : Direction.values()) {
 			if (pos == null || Block.shouldDrawSide(state, MinecraftClient.getInstance().world, pos, dir, pos.offset(dir))) {
 				for (BakedQuad bq : bm.getQuads(state, dir, world.random)) {
-					dvc.quad(matrices.peek(), bq, r, g, b, 0, 0);
+					dvc.bakedQuad(matrices.peek(), bq, r, g, b, 0, 0);
 				}
 			}
 		}
@@ -188,7 +188,7 @@ public class LampRenderer extends IHasAClient {
 						VertexBuffer buf = buffers.get(pos);
 						buf.bind();
 						YRenderLayers.getLampHalo().startDrawing();
-						buf.setShader(matrices.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionTexColorNormalShader());
+						buf.setShader(matrices.peek().getPosition(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionTexColorNormalShader());
 						YRenderLayers.getLampHalo().endDrawing();
 						VertexBuffer.unbind();
 					matrices.pop();

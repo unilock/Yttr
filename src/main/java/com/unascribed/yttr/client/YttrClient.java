@@ -51,7 +51,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
@@ -80,7 +80,6 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -117,9 +116,9 @@ import net.minecraft.resource.pack.metadata.PackResourceMetadata;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.LiteralComponent;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -241,8 +240,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					int day = c.get(Calendar.DAY_OF_MONTH);
 					if (YConfig.General.shenanigans) {
 						if (month == 1 && (day >= 9 && day <= 15)) {
-							mc.player.sendMessage(new TranslatableText("chat.type.text", new LiteralText(">:]").formatted(Formatting.AQUA),
-									new TranslatableText("msg.yttr.well_wishes")), false);
+							mc.player.sendMessage(new TranslatableComponent("chat.type.text", new LiteralComponent(">:]").formatted(Formatting.AQUA),
+									new TranslatableComponent("msg.yttr.well_wishes")), false);
 						}
 					}
 				}
@@ -252,7 +251,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
 					hasCheckedRegistry = true;
-					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
+					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getKeys()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
@@ -271,12 +270,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							}
 						}
 					}
-					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
+					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getKeys()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
-					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
+					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getKeys()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
@@ -374,10 +373,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			@Override
 			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("yttr:lcah", new LiteralText("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 8),
+				consumer.accept(factory.create("yttr:lcah", new LiteralComponent("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralComponent("Makes the Aware Hopper less creepy."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 				f = () -> new EmbeddedResourcePack("vector");
-				consumer.accept(factory.create("yttr:vector", new LiteralText("Vector Suit"), false, f, new PackResourceMetadata(new LiteralText("Gives the suit HUD a more true vector aesthetic."), 8),
+				consumer.accept(factory.create("yttr:vector", new LiteralComponent("Vector Suit"), false, f, new PackResourceMetadata(new LiteralComponent("Gives the suit HUD a more true vector aesthetic."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 			}
 		};
@@ -524,14 +523,14 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				if (!fluidColors.containsKey(f.getType().getSuperclass())) {
 					fluidColors.put(f.getType().getSuperclass(), new int[] { -1, -1 });
 				}
-				fluidColors.get(f.getType().getSuperclass())[fl.isStill(fl.getDefaultState()) ? 0 : 1] = colAnn.value();
+				fluidColors.get(f.getType().getSuperclass())[fl.isSource(fl.getDefaultState()) ? 0 : 1] = colAnn.value();
 			}
 			YFluids.Sprite spriteAnn = f.getAnnotation(YFluids.Sprite.class);
 			if (spriteAnn != null) {
 				if (!fluidSprites.containsKey(f.getType().getSuperclass())) {
 					fluidSprites.put(f.getType().getSuperclass(), new Identifier[] { new Identifier("missingno"), new Identifier("missingno") });
 				}
-				fluidSprites.get(f.getType().getSuperclass())[fl.isStill(fl.getDefaultState()) ? 0 : 1] = new Identifier(spriteAnn.value());
+				fluidSprites.get(f.getType().getSuperclass())[fl.isSource(fl.getDefaultState()) ? 0 : 1] = new Identifier(spriteAnn.value());
 			}
 		});
 		int[] white = new int[] { -1, -1 };
@@ -551,7 +550,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 				@Override
 				public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
-					return state.isStill() ? colors[0] : colors[1];
+					return state.isSource() ? colors[0] : colors[1];
 				}
 			};
 			FluidRenderHandlerRegistry.INSTANCE.register(en.getKey(), frh);
@@ -612,7 +611,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		dX /= dist;
 		dY /= dist;
 		dZ /= dist;
-		Matrix4f model = matrices.peek().getModel();
+		Matrix4f model = matrices.peek().getPosition();
 		Matrix3f normal = matrices.peek().getNormal();
 		vc.vertex(model, x1, y1, z1).color(r1, g1, b1, a1).normal(normal, dX, dY, dZ).next();
 		vc.vertex(model, x2, y2, z2).color(r2, g2, b2, a2).normal(normal, dX, dY, dZ).next();

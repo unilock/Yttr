@@ -32,7 +32,7 @@ public class MixinCraftingResultSlot {
 		ChunkPos cp = new ChunkPos(player.getBlockPos());
 		for (int cX = -1; cX <= 1; cX++) {
 			for (int cZ = -1; cZ <= 1; cZ++) {
-				WorldChunk c = player.world.getChunk(cp.x+cX, cp.z+cZ);
+				WorldChunk c = player.world.getChunk(cp.field_38224+cX, cp.z+cZ);
 				for (BlockEntity be : c.getBlockEntities().values()) {
 					if (be instanceof AwareHopperBlockEntity) {
 						AwareHopperBlockEntity ah = (AwareHopperBlockEntity)be;

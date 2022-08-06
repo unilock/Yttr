@@ -3,8 +3,7 @@ package com.unascribed.yttr.client;
 import static com.unascribed.yttr.client.RenderBridge.*;
 
 import com.google.common.collect.ImmutableList;
-
-import net.minecraft.client.render.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class ReplicatorShapes {

@@ -28,7 +28,7 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -140,7 +140,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 					
 					@Override
 					public Text getDisplayName() {
-						return new TranslatableText("block.yttr.dsu");
+						return new TranslatableComponent("block.yttr.dsu");
 					}
 				});
 			}

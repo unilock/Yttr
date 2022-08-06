@@ -3,7 +3,7 @@ package com.unascribed.yttr.world;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Optional;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
@@ -27,16 +27,18 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.Structure.StructureBlockInfo;
+import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Style;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
+import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
@@ -44,16 +46,14 @@ import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class ScorchedGenerator {
 
-	public static void generateTerminus(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
+	public static void generateTerminus(long worldSeed, ChunkRegion region, StructureManager accessor) {
 		if (!YConfig.WorldGen.scorched) return;
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
-			Chunk chunk = region.getChunk(region.getCenterPos().x, region.getCenterPos().z);
+			Chunk chunk = region.getChunk(region.getCenterPos().field_38224, region.getCenterPos().z);
 			ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(worldSeed));
 			OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
 			OctaveSimplexNoiseSampler terminusBNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 3, 6));
@@ -96,7 +96,7 @@ public class ScorchedGenerator {
 				}
 			}
 			rand.setPopulationSeed(31*worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
-			if (accessor.shouldGenerateStructures()) {
+			if (accessor.shouldGenerate()) {
 				if (rand.nextInt(40) == 0) {
 					generateTerminusHouse(region, bp, chunk, rand);
 				}
@@ -243,7 +243,7 @@ public class ScorchedGenerator {
 				BlockEntity be = region.getBlockEntity(bp);
 				if (be instanceof DispenserBlockEntity) {
 					ItemStack potion = new ItemStack(Items.SPLASH_POTION);
-					potion.setCustomName(new TranslatableText("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
+					potion.setCustomName(new TranslatableComponent("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
 					PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
 					potion.getNbt().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
 					((DispenserBlockEntity)be).setStack(4, potion);
@@ -348,7 +348,7 @@ public class ScorchedGenerator {
 	}
 
 	public static void retrogen(long seed, ServerWorld world, ChunkPos pos) {
-		Chunk c = world.getChunk(pos.x, pos.z);
+		Chunk c = world.getChunk(pos.field_38224, pos.z);
 		boolean fullRetrogen = true;
 		boolean terminusRetrogen = true;
 		// getStartPos always returns 0 for Y
@@ -366,7 +366,7 @@ public class ScorchedGenerator {
 		}
 		int r = terminusRetrogen ? 2 : 0;
 		List<Chunk> chunks = new ArrayList<>();
-		for (int x = pos.x-r; x <= pos.x+r; x++) {
+		for (int x = pos.field_38224-r; x <= pos.field_38224+r; x++) {
 			for (int z = pos.z-r; z <= pos.z+r; z++) {
 				chunks.add(world.getChunk(x, z, ChunkStatus.EMPTY));
 			}

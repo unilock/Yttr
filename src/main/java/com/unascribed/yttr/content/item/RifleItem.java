@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
@@ -25,13 +26,12 @@ import com.unascribed.yttr.util.SlotReference;
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicates;
-
+import com.mojang.blaze3d.texture.NativeImage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.color.item.ItemColorProvider;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -46,7 +46,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -140,9 +140,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				if (ammo <= 0) {
 					user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
 					if (need > 1) {
-						user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(new TranslatableComponent("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
 					} else {
-						user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(new TranslatableComponent("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
 					}
 					return TypedActionResult.fail(stack);
 				}
@@ -535,7 +535,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 			if (!wasSelected) {
 				if (entity instanceof PlayerEntity && !world.isClient) {
 					RifleMode mode = getMode(stack);
-					((PlayerEntity)entity).sendMessage(new TranslatableText("tip.yttr.rifle_mode", new TranslatableText("yttr.rifle_mode."+mode.name().toLowerCase(Locale.ROOT)).formatted(Formatting.BOLD, mode.chatColor)), true);
+					((PlayerEntity)entity).sendMessage(new TranslatableComponent("tip.yttr.rifle_mode", new TranslatableComponent("yttr.rifle_mode."+mode.name().toLowerCase(Locale.ROOT)).formatted(Formatting.BOLD, mode.chatColor)), true);
 				}
 			} else {
 				world.playSoundFromEntity(null, entity, YSounds.RIFLE_CHARGE_CANCEL, entity.getSoundCategory(), 1, 1);

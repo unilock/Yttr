@@ -10,13 +10,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.world.ScorchedGenerator;
-
+import net.minecraft.structure.StructureManager;
 import net.minecraft.util.HolderSet;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 
@@ -31,7 +30,7 @@ public abstract class MixinNoiseChunkGenerator extends ChunkGenerator {
 	private long seed;
 	
 	@Inject(at=@At("TAIL"), method="buildSurface")
-	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk, CallbackInfo ci) {
+	public void buildSurface(ChunkRegion region, StructureManager structures, Chunk chunk, CallbackInfo ci) {
 		ScorchedGenerator.generateSummit(region, chunk);
 	}
 	

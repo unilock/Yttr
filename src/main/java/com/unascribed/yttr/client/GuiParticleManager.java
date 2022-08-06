@@ -6,6 +6,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.mixin.accessor.client.AccessorParticle;
 import com.unascribed.yttr.mixin.accessor.client.AccessorParticleManager;
@@ -14,12 +17,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -62,12 +62,12 @@ public class GuiParticleManager extends ParticleManager {
 		RenderSystem.enableDepthTest();
 		
 		Tessellator tess = Tessellator.getInstance();
-		BufferBuilder bldr = tess.getBuffer();
+		BufferBuilder bldr = tess.getBufferBuilder();
 		VertexConsumer vc = new DelegatingVertexConsumer(bldr) {
 			@Override
 			public VertexConsumer vertex(double x, double y, double z) {
 				Vector4f vec = new Vector4f((float)x, (float)y, (float)z, 1);
-				vec.transform(matrices.peek().getModel());
+				vec.transform(matrices.peek().getPosition());
 				return super.vertex(vec.getX(), vec.getY(), vec.getZ());
 			}
 		};

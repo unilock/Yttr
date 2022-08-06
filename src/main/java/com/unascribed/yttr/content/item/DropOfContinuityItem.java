@@ -133,7 +133,7 @@ public class DropOfContinuityItem extends Item {
 		possibilities.remove(null);
 		possibilities.remove(Items.AIR);
 		// the gifts tag used to include all the fabric tool tags but those are gone now
-		Registry.ITEM.getEntries().stream()
+		Registry.ITEM.getKeys().stream()
 			.map(Map.Entry::getValue)
 			.filter(i -> i instanceof ToolItem)
 			.forEach(possibilities::add);
