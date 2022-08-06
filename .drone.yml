@@ -12,6 +12,7 @@ steps:
   pull: true
   settings:
     restore: true
+    path-style: true
     bucket:
       from_secret: s3bucket
     region:
@@ -57,6 +58,7 @@ steps:
   pull: true
   settings:
     rebuild: true
+    path-style: true
     bucket:
       from_secret: s3bucket
     region:
