@@ -21,10 +21,14 @@ steps:
       from_secret: s3url
     mount:
       - '.gradle'
+      - '.gradle-user'
 - name: build
   image: gradle:7.4-jdk17
+  environment:
+    TERM: dumb
+    GRADLE_USER_HOME: ./.gradle-user
   commands:
-  - gradle clean build
+  - gradle --no-daemon clean build
 - name: retag
   image: alpine/git:latest
   environment:
@@ -66,6 +70,7 @@ steps:
       from_secret: s3url
     mount:
       - '.gradle'
+      - '.gradle-user'
 
 trigger:
     branch:
