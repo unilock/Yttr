@@ -51,12 +51,12 @@ public class EmiCentrifugingRecipe implements EmiRecipe {
 	}
 	
 	@Override
-	public int getDisplayHeight() {
+	public int getDisplayWidth() {
 		return 94;
 	}
 	
 	@Override
-	public int getDisplayWidth() {
+	public int getDisplayHeight() {
 		return 95;
 	}
 	
