@@ -149,6 +149,8 @@ public class YConfig {
 		}
 	}
 	
+	static void touch() {}
+	
 	public static final class General {
 		@Key("general.trust-players")
 		public static boolean trustPlayers    = false;
@@ -156,6 +158,8 @@ public class YConfig {
 		public static boolean fixupDebugWorld = true;
 		@Key("general.shenanigans")
 		public static boolean shenanigans     = true;
+		
+		static { touch(); }
 		
 		private General() {}
 	}
@@ -168,6 +172,8 @@ public class YConfig {
 		@Key("client.config-color")
 		public static LampColor configColor = LampColor.TEAL;
 		
+		static { touch(); }
+		
 		private Client() {}
 	}
 	
@@ -178,6 +184,8 @@ public class YConfig {
 		public static TrileanSoft allowExplode = TrileanSoft.ON;
 		@Key("rifle.allow-fire")
 		public static boolean     allowFire    = true;
+		
+		static { touch(); }
 		
 		private Rifle() {}
 	}
@@ -204,10 +212,14 @@ public class YConfig {
 		@Key("worldgen.scorched-retrogen")
 		public static boolean scorchedRetrogen = true;
 		
+		static { touch(); }
+		
 		private WorldGen() {}
 	}
 	
 	public static final class Debug {
+		
+		static { touch(); }
 		
 		private Debug() {}
 	}
