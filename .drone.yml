@@ -12,7 +12,7 @@ steps:
   pull: true
   settings:
     restore: true
-    path-style: true
+    path_style: true
     bucket:
       from_secret: s3bucket
     region:
@@ -21,7 +21,6 @@ steps:
       from_secret: s3url
     mount:
       - '.gradle'
-      - '/root/.gradle'
 - name: build
   image: gradle:7.4-jdk17
   commands:
@@ -58,7 +57,7 @@ steps:
   pull: true
   settings:
     rebuild: true
-    path-style: true
+    path_style: true
     bucket:
       from_secret: s3bucket
     region:
@@ -67,7 +66,6 @@ steps:
       from_secret: s3url
     mount:
       - '.gradle'
-      - '/root/.gradle'
 
 trigger:
     branch:
