@@ -76,8 +76,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.LiteralComponent;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Arm;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
@@ -326,17 +324,17 @@ public class YItems {
 		@Override
 		public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 			super.appendTooltip(stack, world, tooltip, context);
-			tooltip.add(new TranslatableComponent("potion.withDuration",
-					new TranslatableComponent("potion.withAmplifier",
-							new TranslatableComponent("effect.yttr.delicaceness"),
-							new TranslatableComponent("potion.potency.3")),
+			tooltip.add(Text.translatable("potion.withDuration",
+					Text.translatable("potion.withAmplifier",
+							Text.translatable("effect.yttr.delicaceness"),
+							Text.translatable("potion.potency.3")),
 					"0:30").formatted(Formatting.BLUE));
-			tooltip.add(new LiteralComponent(""));
-			tooltip.add(new TranslatableComponent("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
-			tooltip.add(new TranslatableComponent("tip.yttr.delicace_bonus_1").formatted(Formatting.BLUE));
-			tooltip.add(new TranslatableComponent("tip.yttr.delicace_bonus_2").formatted(Formatting.BLUE));
-			tooltip.add(new TranslatableComponent("tip.yttr.delicace_bonus_3").formatted(Formatting.BLUE));
-			tooltip.add(new TranslatableComponent("tip.yttr.delicace_bonus_4").formatted(Formatting.BLUE));
+			tooltip.add(Text.literal(""));
+			tooltip.add(Text.translatable("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
+			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_1").formatted(Formatting.BLUE));
+			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_2").formatted(Formatting.BLUE));
+			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_3").formatted(Formatting.BLUE));
+			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_4").formatted(Formatting.BLUE));
 		}
 	};
 	
@@ -360,7 +358,7 @@ public class YItems {
 			.maxCount(1));
 	
 	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings());
-	public static final MusicDiscItem NEODYMIUM_DISC = new MusicDiscItem(15, YSounds.BUZZ, new Item.Settings()) {
+	public static final MusicDiscItem NEODYMIUM_DISC = new MusicDiscItem(15, YSounds.BUZZ, new Item.Settings(), 11) {
 		@Override
 		@Environment(EnvType.CLIENT)
 		public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -566,8 +564,8 @@ public class YItems {
 	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
 			.maxCount(1));
 	
-	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
-	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 219) {};
+	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 615) {};
 	
 	public static final Item RUBBLE = new Item(new Item.Settings()) {};
 	

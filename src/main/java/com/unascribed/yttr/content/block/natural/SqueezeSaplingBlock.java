@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.natural;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,6 +14,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -34,7 +33,7 @@ public class SqueezeSaplingBlock extends SaplingBlock implements Waterloggable {
 	}
 	
 	@Override
-	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean canGrow(World world, RandomGenerator random, BlockPos pos, BlockState state) {
 		return state.get(WATERLOGGED) && super.canGrow(world, random, pos, state);
 	}
 	

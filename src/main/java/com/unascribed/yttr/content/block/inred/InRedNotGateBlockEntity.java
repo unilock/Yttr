@@ -92,7 +92,7 @@ public class InRedNotGateBlockEntity extends AbstractInRedDeviceBlockEntity {
 
 	@Override
 	public Text getProbeMessage() {
-		return new TranslatableComponent("tip.yttr.inred.multimeter.out", getValue(signal));
+		return Text.translatable("tip.yttr.inred.multimeter.out", getValue(signal));
 	}
 
 	@Override

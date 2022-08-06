@@ -30,7 +30,7 @@ public class MixinItemStack {
 		if (Registry.ITEM.getId(self.getItem()).getNamespace().equals("yttr")) {
 			int i = 1;
 			while (I18n.hasTranslation(self.getTranslationKey()+".tip."+i)) {
-				tooltip.add(new TranslatableComponent(self.getTranslationKey()+".tip."+i));
+				tooltip.add(Text.translatable(self.getTranslationKey()+".tip."+i));
 				i++;
 			}
 		}

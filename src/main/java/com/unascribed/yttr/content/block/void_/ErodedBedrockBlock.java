@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 
 public class ErodedBedrockBlock extends Block {
 
@@ -21,7 +22,7 @@ public class ErodedBedrockBlock extends Block {
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		YFluids.PURE_VOID.onRandomTick(world, pos, YFluids.PURE_VOID.getDefaultState(), random);
 	}
 

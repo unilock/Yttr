@@ -25,7 +25,7 @@ public abstract class MixinBlockRenderManager {
 	
 	private boolean yttr$reentering;
 	
-	@Inject(at=@At("HEAD"), method="renderDamage(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/BlockRenderView;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;)V",
+	@Inject(at=@At("HEAD"), method="renderDamage(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/BlockRenderView;Lnet/minecraft/client/util/math/MatrixStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V",
 			cancellable=true)
 	public void renderDamage(BlockState bs, BlockPos pos, BlockRenderView world, MatrixStack matrix, VertexConsumer vertexConsumer, CallbackInfo ci) {
 		if (yttr$reentering) return;

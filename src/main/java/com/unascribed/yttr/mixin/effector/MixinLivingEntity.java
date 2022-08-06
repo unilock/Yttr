@@ -66,7 +66,7 @@ public abstract class MixinLivingEntity extends Entity {
 					public Text getDeathMessage(LivingEntity entity) {
 						// no .item support
 						String string = "death.attack." + this.name;
-						return new TranslatableComponent(string, entity.getDisplayName(), this.source.getDisplayName());
+						return Text.translatable(string, entity.getDisplayName(), this.source.getDisplayName());
 					}
 				};
 			}

@@ -38,7 +38,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.LiteralComponent;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +54,7 @@ public class ReplicatorRenderer extends IHasAClient {
 	public static final Set<ReplicatorBlockEntity> removing = Sets.newLinkedHashSet();
 	private static final List<ReplicatorBlockEntity> renderList = Lists.newArrayList();
 	
-	private static final Screen dummyScreen = new Screen(new LiteralComponent("")) {};
+	private static final Screen dummyScreen = new Screen(Text.literal("")) {};
 	private static final Random rand = new Random();
 	
 	public static boolean renderOutline(WorldRenderContext wrc, BlockOutlineContext boc) {

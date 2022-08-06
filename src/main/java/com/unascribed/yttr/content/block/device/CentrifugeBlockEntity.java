@@ -161,7 +161,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	
 	@Override
 	public Text getName() {
-		return new TranslatableComponent("block.yttr.centrifuge");
+		return Text.translatable("block.yttr.centrifuge");
 	}
 	
 	@Override

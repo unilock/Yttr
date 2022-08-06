@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.fluid;
 
-import java.util.Random;
-
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
@@ -18,6 +16,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -100,7 +99,7 @@ public abstract class VoidFluid extends FlowableFluid {
 	}
 	
 	@Override
-	protected void randomDisplayTick(World world, BlockPos pos, FluidState state, Random random) {
+	protected void randomDisplayTick(World world, BlockPos pos, FluidState state, RandomGenerator random) {
 		if (world.isAir(pos.up())) {
 			for (int i = 0; i < 4; i++) {
 				world.addParticle(BLACK_DUST, pos.getX()+random.nextDouble(), pos.getY()+0.5, pos.getZ()+random.nextDouble(),

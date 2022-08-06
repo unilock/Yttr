@@ -15,7 +15,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SmithingScreenHandler;
 import net.minecraft.text.Style;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 
 @Mixin(SmithingScreenHandler.class)
 public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
@@ -29,7 +29,7 @@ public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
 		if (!output.isEmpty() && input.getStack(1).getItem() == YItems.ULTRAPURE_NETHERITE) {
 			ItemStack out = output.getStack(0);
 			if (!out.hasCustomName()) {
-				out.setCustomName(new TranslatableComponent("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
+				out.setCustomName(Text.translatable("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
 			}
 			if (!out.hasNbt()) {
 				out.setNbt(new NbtCompound());

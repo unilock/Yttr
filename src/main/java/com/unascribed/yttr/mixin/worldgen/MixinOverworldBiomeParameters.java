@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.YConfig;
-import com.unascribed.yttr.init.YBiomes;
-
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
@@ -58,11 +58,12 @@ public abstract class MixinOverworldBiomeParameters {
 			int temperatureIndex, MultiNoiseUtil.ParameterRange temperature,
 			int humidityIndex, MultiNoiseUtil.ParameterRange humidity) {
 		if (!YConfig.WorldGen.wasteland) return;
+		var key = RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland"));
 		if (temperatureIndex == 4 && humidityIndex == 0) {
 			addSurfaceBiomeTo(
 					parameters, temperature, humidity,
 					NEAR_INLAND_CONTINENTALNESS, EROSIONS[2], weirdness, 0.f,
-					YBiomes.WASTELAND_HOLDER.getKey().get()
+					key
 				);
 			addSurfaceBiomeTo(
 					parameters, temperature, humidity,
@@ -70,7 +71,7 @@ public abstract class MixinOverworldBiomeParameters {
 					EROSIONS[3],
 					weirdness,
 					0.f,
-					YBiomes.WASTELAND_HOLDER.getKey().get()
+					key
 				);
 
 			if (weirdness.max() < 0L) {
@@ -80,7 +81,7 @@ public abstract class MixinOverworldBiomeParameters {
 						EROSIONS[4],
 						weirdness,
 						0.f,
-						YBiomes.WASTELAND_HOLDER.getKey().get()
+						key
 					);
 			} else {
 				addSurfaceBiomeTo(
@@ -89,12 +90,12 @@ public abstract class MixinOverworldBiomeParameters {
 						EROSIONS[4],
 						weirdness,
 						0.f,
-						YBiomes.WASTELAND_HOLDER.getKey().get()
+						key
 					);
 				addSurfaceBiomeTo(
 						parameters, temperature, humidity,
 						COAST_CONTINENTALNESS, EROSIONS[6], weirdness, 0.f,
-						YBiomes.WASTELAND_HOLDER.getKey().get()
+						key
 					);
 			}
 		}
@@ -113,6 +114,7 @@ public abstract class MixinOverworldBiomeParameters {
 			int temperatureIndex, MultiNoiseUtil.ParameterRange temperature,
 			int humidityIndex, MultiNoiseUtil.ParameterRange humidity) {
 		if (!YConfig.WorldGen.wasteland) return;
+		var key = RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland"));
 		if (temperatureIndex == 4 && humidityIndex == 0) {
 			addSurfaceBiomeTo(
 					parameters, temperature, humidity,
@@ -120,7 +122,7 @@ public abstract class MixinOverworldBiomeParameters {
 					MultiNoiseUtil.ParameterRange.combine(EROSIONS[2], EROSIONS[3]),
 					weirdness,
 					0.f,
-					YBiomes.WASTELAND_HOLDER.getKey().get()
+					key
 				);
 			addSurfaceBiomeTo(
 					parameters, temperature, humidity,
@@ -128,7 +130,7 @@ public abstract class MixinOverworldBiomeParameters {
 					EROSIONS[4],
 					weirdness,
 					0.f,
-					YBiomes.WASTELAND_HOLDER.getKey().get()
+					key
 				);
 			addSurfaceBiomeTo(
 					parameters, temperature, humidity,
@@ -136,7 +138,7 @@ public abstract class MixinOverworldBiomeParameters {
 					EROSIONS[5],
 					weirdness,
 					0.f,
-					YBiomes.WASTELAND_HOLDER.getKey().get()
+					key
 				);
 		}
 	}

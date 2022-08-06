@@ -33,17 +33,17 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		if (!stack.hasNbt()) return new TranslatableComponent("item.yttr.ammo_can.prefixed", new TranslatableComponent("multiplayer.status.unknown"));
+		if (!stack.hasNbt()) return Text.translatable("item.yttr.ammo_can.prefixed", Text.translatable("multiplayer.status.unknown"));
 		RifleMode mode = Enums.getIfPresent(RifleMode.class, stack.getNbt().getString("Mode")).orNull();
-		if (mode == null) return new TranslatableComponent("item.yttr.ammo_can.prefixed", new TranslatableComponent("multiplayer.status.unknown"));
-		return new TranslatableComponent("item.yttr.ammo_can.prefixed", new TranslatableComponent("yttr.rifle_mode."+Ascii.toLowerCase(mode.name())));
+		if (mode == null) return Text.translatable("item.yttr.ammo_can.prefixed", Text.translatable("multiplayer.status.unknown"));
+		return Text.translatable("item.yttr.ammo_can.prefixed", Text.translatable("yttr.rifle_mode."+Ascii.toLowerCase(mode.name())));
 	}
 	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		int shots = stack.hasNbt() ? stack.getNbt().getInt("Shots") : 0;
-		tooltip.add(new TranslatableComponent("item.yttr.ammo_can.shots", shots, CAPACITY).formatted(Formatting.GRAY));
+		tooltip.add(Text.translatable("item.yttr.ammo_can.shots", shots, CAPACITY).formatted(Formatting.GRAY));
 	}
 
 	@Override

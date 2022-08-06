@@ -54,7 +54,8 @@ import com.google.common.collect.Sets;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -117,8 +118,6 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.LiteralComponent;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -182,11 +181,11 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				LampRenderer.clearCache();
 			}));
 			rm.registerReloader(reloader("yttr:detect", (manager) -> {
-				Yttr.lessCreepyAwareHopper = manager.containsResource(Yttr.id("lcah-marker"));
-				Yttr.vectorSuit = manager.containsResource(Yttr.id("vector-marker"));
+				Yttr.lessCreepyAwareHopper = manager.getResource(Yttr.id("lcah-marker")).isPresent();
+				Yttr.vectorSuit = manager.getResource(Yttr.id("vector-marker")).isPresent();
 			}));
-			Yttr.lessCreepyAwareHopper = rm.containsResource(Yttr.id("lcah-marker"));
-			Yttr.vectorSuit = rm.containsResource(Yttr.id("vector-marker"));
+			Yttr.lessCreepyAwareHopper = rm.getResource(Yttr.id("lcah-marker")).isPresent();
+			Yttr.vectorSuit = rm.getResource(Yttr.id("vector-marker")).isPresent();
 		});
 		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -240,8 +239,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					int day = c.get(Calendar.DAY_OF_MONTH);
 					if (YConfig.General.shenanigans) {
 						if (month == 1 && (day >= 9 && day <= 15)) {
-							mc.player.sendMessage(new TranslatableComponent("chat.type.text", new LiteralComponent(">:]").formatted(Formatting.AQUA),
-									new TranslatableComponent("msg.yttr.well_wishes")), false);
+							mc.player.sendMessage(Text.translatable("chat.type.text", Text.literal(">:]").formatted(Formatting.AQUA),
+									Text.translatable("msg.yttr.well_wishes")), false);
 						}
 					}
 				}
@@ -251,7 +250,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
 					hasCheckedRegistry = true;
-					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getKeys()) {
+					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
@@ -270,12 +269,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							}
 						}
 					}
-					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getKeys()) {
+					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
-					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getKeys()) {
+					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
@@ -307,25 +306,27 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			ShifterUI.render(matrixStack, tickDelta);
 		});
 		
-		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("yttr:profiler")
-				.executes(ctx -> {
-					ProfilerRenderer.enabled = !ProfilerRenderer.enabled;
-					return 0;
-				}));
-		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("yttr:wireframe")
-				.executes(ctx -> {
-					if (ctx.getSource().getPlayer().isSpectator() || ctx.getSource().getPlayer().isCreative()) {
-						wireframeMode = !wireframeMode;
-						if (wireframeMode) {
-							ctx.getSource().sendFeedback(new TranslatableText("msg.yttr.wireframe.enabled"));
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+			dispatcher.register(ClientCommandManager.literal("yttr:profiler")
+					.executes(ctx -> {
+						ProfilerRenderer.enabled = !ProfilerRenderer.enabled;
+						return 0;
+					}));
+			dispatcher.register(ClientCommandManager.literal("yttr:wireframe")
+					.executes(ctx -> {
+						if (ctx.getSource().getPlayer().isSpectator() || ctx.getSource().getPlayer().isCreative()) {
+							wireframeMode = !wireframeMode;
+							if (wireframeMode) {
+								ctx.getSource().sendFeedback(Text.translatable("msg.yttr.wireframe.enabled"));
+							} else {
+								ctx.getSource().sendFeedback(Text.translatable("msg.yttr.wireframe.disabled"));
+							}
 						} else {
-							ctx.getSource().sendFeedback(new TranslatableText("msg.yttr.wireframe.disabled"));
+							ctx.getSource().sendError(Text.translatable("msg.yttr.wireframe.illegal"));
 						}
-					} else {
-						ctx.getSource().sendError(new TranslatableText("msg.yttr.wireframe.illegal"));
-					}
-					return 0;
-				}));
+						return 0;
+					}));
+		});
 		
 		WorldRenderEvents.START.register((wrc) -> {
 			if (mc.player != null && (mc.player.isSpectator() || mc.player.isCreative())) {
@@ -373,10 +374,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			@Override
 			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("yttr:lcah", new LiteralComponent("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralComponent("Makes the Aware Hopper less creepy."), 8),
+				consumer.accept(factory.create("yttr:lcah", Text.literal("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(Text.literal("Makes the Aware Hopper less creepy."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 				f = () -> new EmbeddedResourcePack("vector");
-				consumer.accept(factory.create("yttr:vector", new LiteralComponent("Vector Suit"), false, f, new PackResourceMetadata(new LiteralComponent("Gives the suit HUD a more true vector aesthetic."), 8),
+				consumer.accept(factory.create("yttr:vector", Text.literal("Vector Suit"), false, f, new PackResourceMetadata(Text.literal("Gives the suit HUD a more true vector aesthetic."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 			}
 		};

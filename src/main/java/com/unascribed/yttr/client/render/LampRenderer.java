@@ -169,9 +169,9 @@ public class LampRenderer extends IHasAClient {
 						}
 					scratch.pop();
 				}
-				vc.end();
 				VertexBuffer vb = buffers.computeIfAbsent(csp, blah -> new VertexBuffer());
-				vb.upload(vc);
+				vb.bind();
+				vb.upload(vc.end());
 				buffers.put(csp, vb);
 				boundingBoxes.put(csp, bounds);
 			}

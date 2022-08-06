@@ -6,6 +6,7 @@ import com.unascribed.yttr.init.YHandledScreens;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.BlockPos;
 
@@ -40,5 +41,10 @@ public class InRedOscillatorScreenHandler extends ScreenHandler {
 
 	public InRedOscillatorBlockEntity getOscillator() {
 		return be;
+	}
+
+	@Override
+	public ItemStack transferSlot(PlayerEntity player, int index) {
+		return ItemStack.EMPTY;
 	}
 }

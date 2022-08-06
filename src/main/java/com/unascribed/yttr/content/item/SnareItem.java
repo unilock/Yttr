@@ -17,6 +17,7 @@ import com.unascribed.yttr.mechanics.TicksAlwaysItem;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
 import com.unascribed.yttr.util.YLog;
+import com.unascribed.yttr.util.YRandom;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Enums;
@@ -63,7 +64,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -303,11 +303,11 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type != null) {
 			if (type == EntityType.ITEM) {
-				return new TranslatableComponent("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
+				return Text.translatable("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
 			} else if (type == EntityType.FALLING_BLOCK) {
-				return new TranslatableComponent("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
+				return Text.translatable("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
 			}
-			return new TranslatableComponent("item.yttr.snare.filled", type.getName());
+			return Text.translatable("item.yttr.snare.filled", type.getName());
 		}
 		return super.getName(stack);
 	}
@@ -327,16 +327,16 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			int ticksLeft = ((stack.getMaxDamage()-stack.getDamage())/dmg)*(EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)+1);
 			ticksLeft -= getCheatedTicks(world, stack);
 			if (ticksLeft < 0) {
-				return new TranslatableComponent("tip.yttr.snare.failed").formatted(Formatting.RED);
+				return Text.translatable("tip.yttr.snare.failed").formatted(Formatting.RED);
 			} else {
 				int seconds = ticksLeft/20;
 				int minutes = seconds/60;
 				seconds = seconds%60;
-				return new TranslatableComponent("tip.yttr.snare.unstable", minutes, Integer.toString(seconds+100).substring(1))
+				return Text.translatable("tip.yttr.snare.unstable", minutes, Integer.toString(seconds+100).substring(1))
 						.formatted(minutes <= 1 ? minutes == 0 && seconds <= 30 ? Formatting.RED : Formatting.YELLOW : Formatting.GRAY);
 			}
 		} else if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
-			return new TranslatableComponent("tip.yttr.snare.stable").formatted(Formatting.GRAY);
+			return Text.translatable("tip.yttr.snare.stable").formatted(Formatting.GRAY);
 		} else {
 			return null;
 		}
@@ -357,7 +357,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		handleAmbientSound(stack, world, entity.getPos(), selected);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), ThreadLocalRandom.current(), null)) {
+			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), YRandom.get(), null)) {
 				stack.decrement(1);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.75f);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.95f);
@@ -382,7 +382,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		handleAmbientSound(stack, world, Vec3d.ofCenter(pos), false);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), ThreadLocalRandom.current(), null)) {
+			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), YRandom.get(), null)) {
 				stack.decrement(1);
 				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.75f);
 				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.95f);
@@ -491,7 +491,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);
 		if (group == YItemGroups.SNARE) {
-			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getKeys()) {
+			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 				EntityType<?> e = en.getValue();
 				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
 				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {

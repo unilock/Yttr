@@ -19,9 +19,17 @@
 		"yttr:wasteland": {
 			"trigger": "minecraft:location",
 			"conditions": {
-				"location": {
-					"biome": "yttr:scorched_summit"
-				}
+				"player": [
+					{
+						"condition": "minecraft:entity_properties",
+						"entity": "this",
+						"predicate": {
+							"location": {
+								"biome": "yttr:scorched_summit"
+							}
+						}
+					}
+				]
 			}
 		}
 	}

@@ -5,8 +5,6 @@ import static net.minecraft.util.math.Direction.UP;
 
 import java.awt.geom.Path2D;
 import java.util.Map;
-import java.util.Random;
-
 import com.unascribed.yttr.content.block.natural.SqueezeLogBlock;
 import com.unascribed.yttr.init.YBlocks;
 
@@ -24,6 +22,7 @@ import net.minecraft.util.Holder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -31,17 +30,17 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 public class SqueezeSaplingGenerator extends SaplingGenerator {
 
 	@Override
-	protected Holder<? extends ConfiguredFeature<?, ?>> getTreeFeature(Random random, boolean bl) {
+	protected Holder<? extends ConfiguredFeature<?, ?>> getTreeFeature(RandomGenerator random, boolean bl) {
 		// no thanks i'll do it myself
 		return null;
 	}
 	
 	@Override
-	public boolean generate(ServerWorld world, ChunkGenerator chunkGenerator, BlockPos pos, BlockState _unused_nullable, Random random) {
+	public boolean generate(ServerWorld world, ChunkGenerator chunkGenerator, BlockPos pos, BlockState _unused_nullable, RandomGenerator random) {
 		return generate(world, pos, random);
 	}
 		
-	public boolean generate(WorldAccess world, BlockPos pos, Random random) {
+	public boolean generate(WorldAccess world, BlockPos pos, RandomGenerator random) {
 		// make sure we're on valid soil
 		if (!YBlocks.SQUEEZE_SAPLING.canPlaceAt(YBlocks.SQUEEZE_SAPLING.getDefaultState(), world, pos)) return false;
 		Map<BlockPos, BlockState> plan = Maps.newLinkedHashMap();

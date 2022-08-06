@@ -57,6 +57,11 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 		public boolean canUse(PlayerEntity player) {
 			return false;
 		}
+
+		@Override
+		public ItemStack transferSlot(PlayerEntity player, int index) {
+			return null;
+		}
 	}, 3, 3);
 	private SimpleInventory remainder = new SimpleInventory(9);
 	private SimpleInventory eject = new SimpleInventory(9);

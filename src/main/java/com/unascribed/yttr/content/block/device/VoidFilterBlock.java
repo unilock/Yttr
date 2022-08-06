@@ -60,7 +60,7 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 				
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableComponent("block.yttr.void_filter");
+					return Text.translatable("block.yttr.void_filter");
 				}
 			});
 		}

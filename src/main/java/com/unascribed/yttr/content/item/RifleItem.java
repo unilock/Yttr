@@ -1,7 +1,6 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.Locale;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
@@ -46,7 +45,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -140,9 +139,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				if (ammo <= 0) {
 					user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
 					if (need > 1) {
-						user.sendMessage(new TranslatableComponent("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
 					} else {
-						user.sendMessage(new TranslatableComponent("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
 					}
 					return TypedActionResult.fail(stack);
 				}
@@ -535,7 +534,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 			if (!wasSelected) {
 				if (entity instanceof PlayerEntity && !world.isClient) {
 					RifleMode mode = getMode(stack);
-					((PlayerEntity)entity).sendMessage(new TranslatableComponent("tip.yttr.rifle_mode", new TranslatableComponent("yttr.rifle_mode."+mode.name().toLowerCase(Locale.ROOT)).formatted(Formatting.BOLD, mode.chatColor)), true);
+					((PlayerEntity)entity).sendMessage(Text.translatable("tip.yttr.rifle_mode", Text.translatable("yttr.rifle_mode."+mode.name().toLowerCase(Locale.ROOT)).formatted(Formatting.BOLD, mode.chatColor)), true);
 				}
 			} else {
 				world.playSoundFromEntity(null, entity, YSounds.RIFLE_CHARGE_CANCEL, entity.getSoundCategory(), 1, 1);

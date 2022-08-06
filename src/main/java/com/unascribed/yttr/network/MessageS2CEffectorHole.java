@@ -7,6 +7,7 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.network.concrete.NetworkContext;
 import com.unascribed.yttr.network.concrete.S2CMessage;
 import com.unascribed.yttr.network.concrete.annotation.field.MarshalledAs;
+import com.unascribed.yttr.util.YRandom;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -39,15 +40,15 @@ public class MessageS2CEffectorHole extends S2CMessage {
 	@Environment(EnvType.CLIENT)
 	protected void handle(MinecraftClient mc, ClientPlayerEntity player) {
 		BlockPos endPos = pos.offset(dir, dist);
-		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, pos));
-		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, pos), 130);
+		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, YRandom.get(), pos));
+		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, YRandom.get(), pos), 130);
 		for (int i = 0; i < dist; i += 4) {
 			BlockPos midPos = pos.offset(dir, i);
-			mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, midPos));
-			mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, midPos), 130);
+			mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, YRandom.get(), midPos));
+			mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, YRandom.get(), midPos), 130);
 		}
-		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, endPos));
-		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, endPos), 130);
+		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, YRandom.get(), endPos));
+		mc.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, YRandom.get(), endPos), 130);
 		EffectorRenderer.addHole(pos, dir, dist);
 		EffectorItem.effect(mc.world, pos, dir, null, null, dist, false);
 	}

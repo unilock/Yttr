@@ -1,7 +1,5 @@
 package com.unascribed.yttr.init;
 
-import java.util.Random;
-
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ClamberBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
@@ -109,6 +107,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -182,7 +181,7 @@ public class YBlocks {
 		.noCollision()
 		.strength(100)
 		.dropsNothing()
-		.luminance(15)
+		.luminance(bs -> 15)
 	) {
 		@Override
 		public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
@@ -352,7 +351,7 @@ public class YBlocks {
 			.dropsNothing()
 			.ticksRandomly()
 			.strength(0, 10000)
-			.luminance(15)
+			.luminance(bs -> 15)
 		);
 	
 	@RenderLayer("cutout")
@@ -391,7 +390,7 @@ public class YBlocks {
 			.ticksRandomly()
 		) {
 		@Override
-		public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 			if (random.nextInt(4) == 0) {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}
@@ -500,12 +499,12 @@ public class YBlocks {
 	@RenderLayer("cutout")
 	public static final Block RUINED_TORCH = new TorchBlock(RUINED_TORCH_SETTINGS, null) {
 		@Override
-		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
+		public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
 	};
 	@RenderLayer("cutout")
 	public static final Block RUINED_WALL_TORCH = new WallTorchBlock(RUINED_TORCH_SETTINGS, null) {
 		@Override
-		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
+		public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
 	};
 	public static final Block RUINED_LEVER = new LeverBlock(RUINED_UNCL_SETTINGS) {
 		@Override
@@ -516,7 +515,7 @@ public class YBlocks {
 			return ActionResult.SUCCESS;
 		}
 		@Override
-		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
+		public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
 		@Override
 		public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }
 		@Override

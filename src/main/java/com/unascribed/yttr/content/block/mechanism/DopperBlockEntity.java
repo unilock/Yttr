@@ -61,7 +61,7 @@ public class DopperBlockEntity extends HopperBlockEntity implements YTickable {
 	
 	@Override
 	protected Text getContainerName() {
-		return new TranslatableComponent("block.yttr.dopper");
+		return Text.translatable("block.yttr.dopper");
 	}
 	
 }

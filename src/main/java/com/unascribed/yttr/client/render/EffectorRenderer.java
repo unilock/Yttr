@@ -3,8 +3,6 @@ package com.unascribed.yttr.client.render;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
-
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -38,7 +36,7 @@ import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
@@ -198,7 +196,7 @@ public class EffectorRenderer extends IHasAClient {
 		RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		bb.begin(DrawMode.QUADS, RenderLayer.getCutout().getVertexFormat());
 		mc.gameRenderer.getLightmapTextureManager().enable();
-		Random r = new Random();
+		RandomGenerator r = RandomGenerator.createLegacy();
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
 				mut.set(pos);

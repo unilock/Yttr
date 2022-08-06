@@ -20,7 +20,7 @@ public class MercurialSplashPotionItem extends SplashPotionItem implements ItemC
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		return new TranslatableComponent("item.yttr.mercurial_potion.prefix", Items.SPLASH_POTION.getName(stack));
+		return Text.translatable("item.yttr.mercurial_potion.prefix", Items.SPLASH_POTION.getName(stack));
 	}
 	
 	@Override

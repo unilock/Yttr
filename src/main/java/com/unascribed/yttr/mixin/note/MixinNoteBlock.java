@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.note;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,6 +14,7 @@ import com.unascribed.yttr.content.block.note.AltNoteBlock;
 import com.unascribed.yttr.mixinsupport.Bogged;
 
 import net.minecraft.block.NoteBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -33,17 +35,17 @@ public class MixinNoteBlock {
 	private boolean yttr$dontBog = false;
 	
 	@Shadow
-	private void playNote(World world, BlockPos pos) {}
+	private void playNote(@Nullable Entity entity, World world, BlockPos pos) {}
 	
 	@Inject(at=@At("HEAD"), method="playNote", cancellable=true)
-	private void playNote(World world, BlockPos pos, CallbackInfo ci) {
+	private void playNote(@Nullable Entity entity, World world, BlockPos pos, CallbackInfo ci) {
 		if (yttr$dontBog) return;
 		Object self = this;
 		if (self instanceof Bogged && world.getServer() != null) {
 			Yttr.delayedServerTasks.add(new DelayedTask(1, () -> {
 				try {
 					yttr$dontBog = true;
-					playNote(world, pos);
+					playNote(entity, world, pos);
 				} finally {
 					yttr$dontBog = false;
 				}

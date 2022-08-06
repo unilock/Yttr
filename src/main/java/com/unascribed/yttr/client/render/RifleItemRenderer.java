@@ -12,6 +12,7 @@ import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.client.util.UVObserver;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.util.YRandom;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -59,7 +60,7 @@ public class RifleItemRenderer extends IHasAClient {
 			if (inUse) {
 				RenderLayer layer = RenderLayer.getEntityCutoutNoCull(CHAMBER_TEXTURE);
 				uvo.reset();
-				for (BakedQuad quad : chamber.getQuads(null, null, ThreadLocalRandom.current())) {
+				for (BakedQuad quad : chamber.getQuads(null, null, YRandom.get())) {
 					uvo.bakedQuad(matrices.peek(), quad, 1, 1, 1, 1, 1);
 				}
 				float minU = uvo.getMinU();

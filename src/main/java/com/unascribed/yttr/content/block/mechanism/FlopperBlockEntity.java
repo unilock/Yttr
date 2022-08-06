@@ -45,7 +45,7 @@ public class FlopperBlockEntity extends HopperBlockEntity implements YTickable {
 	
 	@Override
 	protected Text getContainerName() {
-		return new TranslatableComponent("block.yttr.flopper");
+		return Text.translatable("block.yttr.flopper");
 	}
 	
 	@Override

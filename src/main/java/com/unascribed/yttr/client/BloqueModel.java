@@ -3,7 +3,6 @@ package com.unascribed.yttr.client;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -40,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockRenderView;
 
 import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
@@ -52,7 +52,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 	}
 
 	@Override
-	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
 		if (attachment instanceof RenderData data) {
 			DyeColor[] colors = data.colors();
@@ -355,12 +355,12 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 	}
 
 	@Override
-	public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
+	public void emitItemQuads(ItemStack stack, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
 
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction face, Random random) {
+	public List<BakedQuad> getQuads(BlockState state, Direction face, RandomGenerator random) {
 		return Collections.emptyList();
 	}
 

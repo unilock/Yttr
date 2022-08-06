@@ -73,7 +73,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		private final int hoverVOffset = 16;
 
 		public OscillatorButtonWidget(int x, int y, String name, PressAction onPress) {
-			super(x, y, 16, 16, new LiteralComponent(""), onPress);
+			super(x, y, 16, 16, Text.literal(""), onPress);
 			tex = new Identifier("yttr:textures/gui/inred_button_"+name+".png");
 			this.visible = true;
 		}
@@ -81,7 +81,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		//TODO: button narration! important!!
 //		@Override
 //		protected MutableText getNarrationMessage() {
-//			return new TranslatableText("tip.yttr.inred.oscillator.narrator");
+//			return Text.translatable("tip.yttr.inred.oscillator.narrator");
 //		}
 
 		@Override

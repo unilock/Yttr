@@ -1,7 +1,6 @@
 package com.unascribed.yttr.content.block.big;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +27,7 @@ import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
@@ -114,7 +114,7 @@ public abstract class BigBlock extends Block {
 	}
 	
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		super.scheduledTick(state, world, pos, random);
 		for (Direction dir : Direction.values()) {
 			BlockState expected = getExpectedNeighbor(state, dir);

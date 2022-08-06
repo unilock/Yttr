@@ -14,7 +14,6 @@ import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -26,13 +25,13 @@ public abstract class MixinChunkGenerator {
 	public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureManager structureAccessor, CallbackInfo ci) {
 		if (!YConfig.WorldGen.squeezeTrees) return;
 		ChunkRandom chunkRandom = new ChunkRandom(new Xoroshiro128PlusPlusRandom(world.getSeed()));
-		chunkRandom.setPopulationSeed(world.getSeed(), chunk.getPos().field_38224, chunk.getPos().z);
+		chunkRandom.setPopulationSeed(world.getSeed(), chunk.getPos().x, chunk.getPos().z);
 		if (chunkRandom.nextInt(40) == 0) {
 			int x = chunkRandom.nextInt(16);
 			int z = chunkRandom.nextInt(16);
 			chunkRandom.setPopulationSeed(world.getSeed(), x, z);
 			Holder<Biome> b = world.getBiome(new BlockPos(chunk.getPos().getStartX()+x, 0, chunk.getPos().getStartZ()+z));
-			if (Biome.getCategory(b) == Category.OCEAN && b.getKey().get().getValue().getPath().contains("deep")) {
+			if (b.getKey().get().getValue().getPath().contains("deep_ocean")) {
 				int y = chunk.sampleHeightmap(Type.OCEAN_FLOOR_WG, x, z);
 				int waterSurface = chunk.sampleHeightmap(Type.WORLD_SURFACE_WG, x, z);
 				if (waterSurface - y > 20) {

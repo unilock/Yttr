@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.decor;
 
-import java.util.Random;
-
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mechanics.SimpleLootBlock;
@@ -35,6 +33,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
@@ -132,7 +131,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	}
 
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		if (!world.isReceivingRedstonePower(pos) ^ state.get(INVERTED)) {
 			world.setBlockState(pos, state.cycle(LIT), 2);
 		}

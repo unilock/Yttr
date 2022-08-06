@@ -25,7 +25,7 @@ public class LootTableFromPaperStructureProcessor extends StructureProcessor {
 			if (items.size() == 1) {
 				ItemStack item = ItemStack.fromNbt(items.getCompound(0));
 				if (item.getItem() == Items.PAPER && item.hasCustomName()) {
-					Identifier id = new Identifier(item.getName().asString());
+					Identifier id = new Identifier(item.getName().getString());
 					Identifier finId = new Identifier(id.getNamespace(), "chests/"+id.getPath());
 					NbtCompound newTag = block.nbt.copy();
 					newTag.remove("Items");

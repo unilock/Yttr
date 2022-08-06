@@ -9,7 +9,6 @@ import java.lang.invoke.MethodType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -84,11 +83,9 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 
 public class YttrEmiPlugin implements EmiPlugin {
 
@@ -122,7 +119,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		Yttr.autoRegister((id, c) -> {
 			c.id = id;
 			Identifier iconId = Yttr.id("textures/gui/emi_simple/"+id.getPath()+".png");
-			if (MinecraftClient.getInstance().getResourceManager().containsResource(iconId)) {
+			if (MinecraftClient.getInstance().getResourceManager().getResource(iconId).isPresent()) {
 				c.simplified = new EmiTexture(iconId, 0, 0, 16, 16, 16, 16, 16, 16);
 			}
 			registry.addCategory(c);
@@ -147,7 +144,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
 		
 		List<EmiStack> pickaxes = new ArrayList<>();
-		for (var en : Registry.ITEM.getKeys()) {
+		for (var en : Registry.ITEM.getEntries()) {
 			if (YEnchantments.SHATTERING_CURSE.isAcceptableItem(new ItemStack(en.getValue()))) {
 				pickaxes.add(createShatteringPickaxe(en.getValue()));
 			}
@@ -156,7 +153,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			@Override
 			public List<TooltipComponent> getTooltip() {
 				List<TooltipComponent> tooltip = Lists.newArrayList();
-				tooltip.add(TooltipComponent.of(new TranslatableComponent("emi.tooltip.yttr.any_tool").asOrderedText()));
+				tooltip.add(TooltipComponent.of(Text.translatable("emi.tooltip.yttr.any_tool").asOrderedText()));
 				tooltip.add(TooltipComponent.of(YEnchantments.SHATTERING_CURSE.getName(1).asOrderedText()));
 				tooltip.add(new IngredientTooltipComponent(pickaxes));
 				return tooltip;
@@ -219,7 +216,8 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.forEach(registry::addRecipe);
 		
 		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
-		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
+		for (var en : rm.findResources("textures/gui/ruined_recipe", id -> id.getPath().endsWith(".png")).entrySet()) {
+			Identifier id = en.getKey();
 			String name = id.getPath();
 			name = name.substring(27, name.length()-4);
 			if (id.getNamespace().equals("yttr") && (name.equals("border") || name.equals("overlay"))) continue;
@@ -228,7 +226,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			if (result != null) {
 				RuinedRecipeResourceMetadata meta = null;
 				try {
-					meta = rm.getResource(id).getMetadata(RuinedRecipeResourceMetadata.READER);
+					meta = en.getValue().getMetadata().readMetadata(RuinedRecipeResourceMetadata.READER).orElse(null);
 				} catch (IOException e) {
 				}
 				Set<Integer> emptySlots = Collections.emptySet();
@@ -286,6 +284,11 @@ public class YttrEmiPlugin implements EmiPlugin {
 				@Override
 				public boolean canUse(PlayerEntity player) {
 					return false;
+				}
+
+				@Override
+				public ItemStack transferSlot(PlayerEntity player, int index) {
+					return null;
 				}
 			}, w, h);
 			for (int i = 0; i < ingredients.size(); i++) {
@@ -361,7 +364,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 					List<Text> tip = Lists.newArrayList();
 					if (result.getItem() == YItems.SUIT_HELMET) {
 						LampColor color = LampBlockItem.getColor(result);
-						tip.add(new TranslatableComponent("emi.yttr.suit_helmet_hud", new TranslatableComponent("color.yttr."+color.asString())
+						tip.add(Text.translatable("emi.yttr.suit_helmet_hud", Text.translatable("color.yttr."+color.asString())
 								.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
 					}
 					EmiCraftingRecipe ecr = new EmiCraftingRecipe(

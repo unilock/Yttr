@@ -16,6 +16,7 @@ import com.unascribed.yttr.init.YRecipeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.argument.BlockArgumentParser;
+import net.minecraft.command.argument.BlockArgumentParser.BlockResult;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -148,13 +149,12 @@ public class SoakingRecipe implements Recipe<Inventory> {
 			if (resultJson.has("item")) {
 				result = Either.left(ShapedRecipe.outputFromJson(resultJson));
 			} else {
-				BlockArgumentParser bap = new BlockArgumentParser(new StringReader(resultJson.get("block").getAsString()), false);
 				try {
-					bap.parse(false);
+					BlockResult bap = BlockArgumentParser.parseForBlock(Registry.BLOCK, new StringReader(resultJson.get("block").getAsString()), false);
+					result = Either.right(bap.blockState());
 				} catch (CommandSyntaxException e) {
 					throw new RuntimeException(e);
 				}
-				result = Either.right(bap.getBlockState());
 			}
 			int time = JsonHelper.getInt(obj, "time", 0);
 			int multiDelay = JsonHelper.getInt(obj, "multiDelay", 1);

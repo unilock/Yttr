@@ -35,7 +35,7 @@ public class ItemSubGroup extends ItemGroup {
 			isg.index = igp.yttr$getChildren().size();
 			isg.id = id.getNamespace()+"."+id.getPath();
 			isg.parent = parent;
-			isg.translationKey = new TranslatableComponent("itemGroup."+isg.id);
+			isg.translationKey = Text.translatable("itemGroup."+isg.id);
 			isg.additionalStacks = Lists.newArrayList();
 			igp.yttr$getChildren().add(isg);
 			if (igp.yttr$getSelectedChild() == null) {

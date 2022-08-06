@@ -375,7 +375,7 @@ public class Yttr implements ModInitializer {
 				Field holderField = holder.getDeclaredField(f.getName()+"_HOLDER");
 				if (holderField.getType() == LatchHolder.class
 						&& Modifier.isStatic(holderField.getModifiers()) && !Modifier.isTransient(holderField.getModifiers())) {
-					((LatchHolder)holderField.get(null)).set(registry.getOrCreateHolder(RegistryKey.of(registry.getKey(), id)));
+					((LatchHolder)holderField.get(null)).set(registry.getOrCreateHolder(RegistryKey.of(registry.getKey(), id)).getOrThrow(false, s -> {}));
 				}
 			} catch (Exception e) {}
 		});

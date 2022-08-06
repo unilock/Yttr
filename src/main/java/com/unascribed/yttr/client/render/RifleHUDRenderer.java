@@ -95,8 +95,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						bufferBuilder.vertex(mat, x2, y2, 0).uv(maxU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y1, 0).uv(maxU, minV).next();
 						bufferBuilder.vertex(mat, x1, y1-0.2f, 0).uv(minU, minV).next();
-						bufferBuilder.end();
-						BufferRenderer.draw(bufferBuilder);
+						BufferRenderer.draw(bufferBuilder.end());
 					}
 					RenderSystem.setShaderTexture(0, SCOPEAMMO);
 					matrices.push(); {
@@ -124,8 +123,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						bufferBuilder.vertex(mat, x2, y2, 0).uv(maxU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y1, 0).uv(maxU, minV).next();
 						bufferBuilder.vertex(mat, x1, y1, 0).uv(minU, minV).next();
-						bufferBuilder.end();
-						BufferRenderer.draw(bufferBuilder);
+						BufferRenderer.draw(bufferBuilder.end());
 					}
 					matrices.pop();
 				}

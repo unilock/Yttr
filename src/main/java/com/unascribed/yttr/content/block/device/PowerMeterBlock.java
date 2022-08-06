@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.device;
 
-import java.util.Random;
-
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 
@@ -19,6 +17,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -73,7 +72,7 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 	
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		world.updateNeighborsAlways(pos, this);
 		if (getWeakRedstonePower(state, world, pos, null) > 0) {
 			world.scheduleBlockTick(pos, this, 20);

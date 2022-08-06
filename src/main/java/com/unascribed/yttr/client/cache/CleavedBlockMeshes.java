@@ -1,7 +1,5 @@
 package com.unascribed.yttr.client.cache;
 
-import java.util.Random;
-
 import com.google.gson.internal.UnsafeAllocator;
 import com.unascribed.yttr.client.util.UVObserver;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
@@ -26,6 +24,8 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.random.RandomGenerator;
+import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 
 public class CleavedBlockMeshes {
 
@@ -87,7 +87,7 @@ public class CleavedBlockMeshes {
 		RenderMaterial mat = r.materialFinder().blendMode(0, bm).find();
 		MeshBuilder bldr = r.meshBuilder();
 		QuadEmitter qe = bldr.getEmitter();
-		Random rand = new Random(7);
+		RandomGenerator rand = new Xoroshiro128PlusPlusRandom(7);
 		BakedQuad firstNullQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), null, rand), null);
 		Sprite particle = donor.getParticleSprite();
 		for (Polygon p : entity.getPolygons()) {

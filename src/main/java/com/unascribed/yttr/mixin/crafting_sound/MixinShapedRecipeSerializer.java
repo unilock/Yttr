@@ -10,14 +10,13 @@ import com.unascribed.yttr.Yttr;
 
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-@Mixin({ShapedRecipe.Serializer.class, ShapelessRecipe.Serializer.class})
-public class MixinCraftingRecipeSerializers {
+@Mixin(ShapedRecipe.Serializer.class)
+public class MixinShapedRecipeSerializer {
 
-	@Inject(at=@At("RETURN"), method="read(Lnet/minecraft/util/Identifier;Lcom/google/gson/JsonObject;)Lnet/minecraft/recipe/Recipe;")
+	@Inject(at=@At("RETURN"), method="read(Lnet/minecraft/util/Identifier;Lcom/google/gson/JsonObject;)Lnet/minecraft/recipe/ShapedRecipe;")
 	public void read(Identifier identifier, JsonObject jsonObject, CallbackInfoReturnable<Recipe<?>> ci) {
 		if (jsonObject.has("yttr:sound")) {
 			Yttr.craftingSounds.put(identifier, Registry.SOUND_EVENT.get(new Identifier(jsonObject.get("yttr:sound").getAsString())));

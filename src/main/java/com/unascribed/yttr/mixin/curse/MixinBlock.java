@@ -45,6 +45,11 @@ public class MixinBlock {
 		public boolean canUse(PlayerEntity player) {
 			return false;
 		}
+
+		@Override
+		public ItemStack transferSlot(PlayerEntity player, int index) {
+			return null;
+		}
 	}, 1, 1);
 	private static boolean yttr$shattering;
 	private static int yttr$shatteringDepth;

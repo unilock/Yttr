@@ -3,8 +3,8 @@ package com.unascribed.yttr.compat.emi.recipe;
 import java.util.List;
 import java.util.Set;
 
-import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
+import com.mojang.blaze3d.platform.GlStateManager.class_4534;
+import com.mojang.blaze3d.platform.GlStateManager.class_4535;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.compat.emi.widget.RuinedInputWidget;
@@ -73,7 +73,7 @@ public class EmiForgottenRecipe implements EmiRecipe {
 			matrices.translate(x-(w/2f), y, 0);
 			DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, w, h, w, h);
 			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(SrcFactor.ZERO, DstFactor.SRC_COLOR); // multiply
+			RenderSystem.blendFunc(class_4535.ZERO, class_4534.SRC_COLOR); // multiply
 			RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/ruined_recipe/overlay.png"));
 			DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, w, h, w, h);
 			

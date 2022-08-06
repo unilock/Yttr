@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.void_;
 
-import java.util.Random;
-
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mechanics.SolventDamageSource;
 
@@ -24,10 +22,6 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 	
 	public PureVoidFluidBlock(FlowableFluid fluid, Settings settings) {
 		super(fluid, settings);
-	}
-
-	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 	}
 	
 	@Override

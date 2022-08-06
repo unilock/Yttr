@@ -53,9 +53,9 @@ public class ReplicatorBlockItem extends BlockItem {
 		if (held.isEmpty()) return;
 		List<Text> inner = held.getTooltip(MinecraftClient.getInstance().player, context);
 		for (int i = 0; i < inner.size(); i++) {
-			tooltip.add(new LiteralComponent("  ").append(inner.get(i)));
+			tooltip.add(Text.literal("  ").append(inner.get(i)));
 		}
-		tooltip.add(new LiteralComponent(""));
+		tooltip.add(Text.literal(""));
 	}
 	
 	@Override

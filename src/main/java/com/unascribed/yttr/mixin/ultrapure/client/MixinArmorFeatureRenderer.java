@@ -95,7 +95,7 @@ public abstract class MixinArmorFeatureRenderer extends FeatureRenderer {
 		this.model = null;
 	}
 	
-	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/client/render/item/ItemRenderer.getArmorGlintConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/render/RenderLayer;ZZ)Lnet/minecraft/client/render/VertexConsumer;"),
+	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/client/render/item/ItemRenderer.getArmorGlintConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/render/RenderLayer;ZZ)Lcom/mojang/blaze3d/vertex/VertexConsumer;"),
 			method="renderArmorParts", index=1)
 	public RenderLayer modifyRenderLayer(RenderLayer orig) {
 		if (storedEntity == null || storedSlot == null) return orig;
@@ -112,7 +112,7 @@ public abstract class MixinArmorFeatureRenderer extends FeatureRenderer {
 		return orig;
 	}
 
-	@Inject(method = "getArmorTexture", at = @At(value = "INVOKE", target = "Ljava/util/Map;computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object;"),
+	@Inject(method="getArmorTexture", at=@At(value="INVOKE", target="java/util/Map.computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object;"),
 			cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
 	private void getArmorTexture(ArmorItem armorItem, boolean secondLayer, /* @Nullable */ String suffix, CallbackInfoReturnable<Identifier> cir, String vanillaIdentifier) {
 		String texture = YttrClient.getArmorTexture(storedEntity, storedEntity.getEquippedStack(storedSlot), storedSlot, secondLayer, suffix, new Identifier(vanillaIdentifier)).toString();

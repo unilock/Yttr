@@ -13,7 +13,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
@@ -28,7 +28,7 @@ public class MixinInGameHud {
 		if (currentStack != null && currentStack.getItem() == YItems.REPLICATOR) {
 			ItemStack held = ReplicatorBlockItem.getHeldItem(currentStack);
 			if (!held.isEmpty()) {
-				return new TranslatableComponent("block.yttr.replicator.holding",
+				return Text.translatable("block.yttr.replicator.holding",
 						held.getName().copyContentOnly().formatted(held.getRarity().formatting),
 						currentStack.getName().copyContentOnly().formatted(currentStack.getRarity().formatting));
 			}

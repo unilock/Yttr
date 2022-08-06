@@ -11,7 +11,7 @@ import com.unascribed.yttr.init.YTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 
 @Mixin(Entity.class)
 public class MixinEntity {
@@ -19,7 +19,7 @@ public class MixinEntity {
 	@Shadow
 	protected boolean firstUpdate;
 	@Shadow
-	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
+	protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
 	
 	@Inject(at=@At("HEAD"), method="isInsideWaterOrBubbleColumn()Z", cancellable=true)
 	public void isInsideWaterOrBubbleColumn(CallbackInfoReturnable<Boolean> ci) {

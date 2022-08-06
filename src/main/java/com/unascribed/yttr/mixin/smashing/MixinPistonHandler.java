@@ -21,7 +21,7 @@ import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.component.LiteralComponent;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -57,7 +57,7 @@ public class MixinPistonHandler {
 							cloud.setColor(r.getCloudColor());
 							cloud.setRadius(r.getCloudSize()/4f);
 							cloud.setDuration(100);
-							cloud.setCustomName(new LiteralComponent(SmashCloudLogic.MAGIC+r.getId()));
+							cloud.setCustomName(Text.literal(SmashCloudLogic.MAGIC+r.getId()));
 							for (StatusEffectInstance sei : r.getCloudEffects()) {
 								cloud.addEffect(sei);
 							}

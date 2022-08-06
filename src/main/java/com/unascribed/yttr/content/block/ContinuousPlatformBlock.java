@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block;
 
-import java.util.Random;
-
 import com.unascribed.yttr.init.YFluids;
 
 import com.google.common.base.Ascii;
@@ -26,6 +24,7 @@ import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -110,7 +109,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	}
 	
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		if (state.get(AGE) == Age.IMMORTAL) return;
 		if (state.get(AGE) == Age._3) {
 			world.setBlockState(pos, state.get(LOGGED).fluid.getDefaultState().getBlockState());
@@ -132,7 +131,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 	}
 	
 	@Override
@@ -141,7 +140,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	}
 	
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
 		BlockPos down = pos.down();
 		if (!world.getBlockState(down).isSolidBlock(world, down)) {
 			if (random.nextInt((Math.max(0, state.get(AGE).ordinal()-1)*4)+2) == 0) {

@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.natural;
 
-import java.util.Random;
-
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 
@@ -19,6 +17,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -45,7 +44,7 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!player.getStackInHand(hand).isEmpty()) return ActionResult.PASS;
 		if (state.get(SQUEEZING)) return ActionResult.FAIL;
-		if (world.getDimension().isUltrawarm()) return ActionResult.FAIL;
+		if (world.getDimension().ultraWarm()) return ActionResult.FAIL;
 		if (!world.isClient) {
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof SqueezedLeavesBlockEntity) {
@@ -63,7 +62,7 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	}
 	
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		if (state.get(SQUEEZING)) {
 			world.setBlockState(pos, state.with(SQUEEZING, false));
 		} else {
@@ -72,7 +71,7 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof SqueezedLeavesBlockEntity) {
 			SqueezedLeavesBlockEntity slbe = (SqueezedLeavesBlockEntity)be;

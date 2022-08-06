@@ -69,7 +69,7 @@ public class EmbeddedResourcePack implements ResourcePack {
 	}
 
 	@Override
-	public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, int maxDepth, Predicate<String> pathFilter) {
+	public Collection<Identifier> findResources(ResourceType type, String namespace, String startingPath, Predicate<Identifier> pathFilter) {
 		// SORRY NO BONUS
 		return Collections.emptySet();
 	}

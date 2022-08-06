@@ -169,7 +169,7 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 	
 	@Override
 	public Text getName() {
-		return new TranslatableComponent("block.yttr.can_filler");
+		return Text.translatable("block.yttr.can_filler");
 	}
 	
 	@Override

@@ -3,8 +3,8 @@ package com.unascribed.yttr.client.suit;
 import java.util.Map;
 import java.util.Random;
 
-import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
+import com.mojang.blaze3d.platform.GlStateManager.class_4534;
+import com.mojang.blaze3d.platform.GlStateManager.class_4535;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.mechanics.LampColor;
@@ -70,7 +70,7 @@ public class SuitRenderer {
 	
 	public void setUp() {
 		RenderSystem.enableBlend();
-		RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ONE, class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA);
 		RenderSystem.setShaderTexture(0, SuitRenderer.SUIT_TEX);
 	}
 	

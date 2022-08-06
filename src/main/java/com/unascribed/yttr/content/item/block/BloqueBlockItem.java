@@ -42,7 +42,7 @@ public class BloqueBlockItem extends DyedBlockItem {
 		super.appendTooltip(stack, world, tooltip, context);
 		int i = 1;
 		while (I18n.hasTranslation("block.yttr.bloque.tip."+i)) {
-			tooltip.add(new TranslatableComponent("block.yttr.bloque.tip."+i));
+			tooltip.add(Text.translatable("block.yttr.bloque.tip."+i));
 			i++;
 		}
 	}

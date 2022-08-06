@@ -19,7 +19,7 @@ import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 
@@ -117,7 +117,7 @@ public class EmiPistonSmashingRecipe implements EmiRecipe {
 			x += 12;
 			widgets.addSlot(cloudOutput, x, 0)
 				.recipeContext(this)
-				.appendTooltip(new TranslatableComponent("emi.category.yttr.piston_smashing.cloud_output_hint"));
+				.appendTooltip(Text.translatable("emi.category.yttr.piston_smashing.cloud_output_hint"));
 			x += 20;
 		}
 	}

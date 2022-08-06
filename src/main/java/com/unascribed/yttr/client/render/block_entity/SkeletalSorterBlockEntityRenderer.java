@@ -60,7 +60,7 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 		skeletonModel.child = false;
 		
 		skeletonModel.body.visible = true;
-		skeletonModel.body.DEFAULT_SCALE = -3;
+		skeletonModel.body.pivotX = -3;
 		skeletonModel.body.pivotY = 13.9f;
 		skeletonModel.body.pivotZ = -6;
 		skeletonModel.body.pitch = (float)Math.PI/2;
@@ -71,14 +71,14 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 		
 		skeletonModel.rightArm.visible = true;
 		skeletonModel.rightArm.pivotY = -1;
-		skeletonModel.rightArm.DEFAULT_SCALE = -6;
+		skeletonModel.rightArm.pivotX = -6;
 		skeletonModel.rightArm.pivotZ = -6;
 		skeletonModel.rightArm.pitch = -(float)Math.PI/2;
 		skeletonModel.rightArm.yaw = 0;
 		
 		skeletonModel.leftArm.visible = true;
 		skeletonModel.leftArm.pivotY = -1;
-		skeletonModel.leftArm.DEFAULT_SCALE = 6;
+		skeletonModel.leftArm.pivotX = 6;
 		skeletonModel.leftArm.pivotZ = -6;
 		skeletonModel.leftArm.pitch = -(float)Math.PI/2;
 		skeletonModel.leftArm.yaw = 0;
@@ -116,7 +116,7 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 			}
 			hand.yaw -= a*yawDist*yawMul;
 			hand.pitch -= MathHelper.sin(a*((float)Math.PI))*pitchDist;
-			hand.DEFAULT_SCALE += a*2*yawMul;
+			hand.pivotX += a*2*yawMul;
 			skeletonModel.head.yaw = -a*0.5f*yawMul;
 		}
 		

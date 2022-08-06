@@ -14,7 +14,6 @@ import com.unascribed.yttr.init.YSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -32,12 +31,12 @@ import net.minecraft.world.dimension.DimensionType;
 @Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World {
 
-	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, Holder<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
-		super(properties, registryRef, registryEntry, profiler, isClient, debugWorld, seed);
+	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryKey, Holder<DimensionType> dimension, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
+		super(properties, registryKey, dimension, profiler, isClient, debugWorld, seed, maxChainedNeighborUpdates);
 	}
 
-	@Inject(at=@At("HEAD"), method="playSoundFromEntity", cancellable=true)
-	public void playSoundFromEntity(@Nullable PlayerEntity player, Entity entity, SoundEvent sound, SoundCategory category, float volume, float pitch, CallbackInfo ci) {
+	@Inject(at=@At("HEAD"), method="method_8449", cancellable=true)
+	public void playSoundFromEntity(@Nullable PlayerEntity player, Entity entity, SoundEvent sound, SoundCategory category, float volume, float pitch, long seed, CallbackInfo ci) {
 		if (player != MinecraftClient.getInstance().player) return;
 		if (sound == YSounds.RIFLE_CHARGE_CANCEL) {
 			SoundInstance si = YttrClient.rifleChargeSounds.remove(entity);
@@ -54,11 +53,6 @@ public abstract class MixinClientWorld extends World {
 					MinecraftClient.getInstance().getSoundManager().stop(si);
 				});
 			}
-			ci.cancel();
-		}
-		// vanilla playSoundFromEntity ignores pitch, so we do it ourselves
-		if (sound.getId().getNamespace().equals("yttr")) {
-			MinecraftClient.getInstance().getSoundManager().play(new EntityTrackingSoundInstance(sound, category, volume, pitch, entity));
 			ci.cancel();
 		}
 	}

@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client;
 
-import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
+import com.mojang.blaze3d.platform.GlStateManager.class_4534;
+import com.mojang.blaze3d.platform.GlStateManager.class_4535;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
 import com.mojang.blaze3d.vertex.VertexFormats;
@@ -16,7 +16,7 @@ public class YRenderLayers extends RenderPhase {
 
 	private static final RenderPhase.Transparency ADDITIVE_WITH_ALPHA_TRANSPARENCY = new RenderPhase.Transparency("yttr_additive_transparency_with_alpha", () -> {
 			RenderSystem.enableBlend();
-			RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
+			RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ONE, class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA);
 		}, () -> {
 			RenderSystem.disableBlend();
 			RenderSystem.defaultBlendFunc();

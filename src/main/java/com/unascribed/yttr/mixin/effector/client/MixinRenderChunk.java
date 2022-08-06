@@ -18,25 +18,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
 
 @Environment(EnvType.CLIENT)
-@Mixin(targets="net/minecraft/client/render/chunk/RenderedChunk")
-public abstract class MixinRenderedChunk {
+@Mixin(targets="net/minecraft/client/render/chunk/RenderChunk")
+public abstract class MixinRenderChunk {
 
 	@Shadow @Final
-	private WorldChunk chunk;
+	private WorldChunk worldChunk;
 	
-	@Inject(at=@At("HEAD"), method="getBlockEntity", cancellable=true)
+	@Inject(at=@At("HEAD"), method="getBlockEntityAtPos", cancellable=true)
 	public void getBlockEntity(BlockPos pos, CallbackInfoReturnable<BlockEntity> ci) {
-		if (chunk != null && chunk.getWorld() instanceof YttrWorld yw) {
-			if (yw.yttr$isPhased(chunk.getPos(), pos)) {
+		if (worldChunk != null && worldChunk.getWorld() instanceof YttrWorld yw) {
+			if (yw.yttr$isPhased(worldChunk.getPos(), pos)) {
 				ci.setReturnValue(null);
 			}
 		}
 	}
 	
-	@Inject(at=@At("HEAD"), method="getBlockState", cancellable=true)
+	@Inject(at=@At("HEAD"), method="getBlockStateAtPos", cancellable=true)
 	public void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> ci) {
-		if (chunk != null && chunk.getWorld() instanceof YttrWorld yw) {
-			if (yw.yttr$isPhased(chunk.getPos(), pos)) {
+		if (worldChunk != null && worldChunk.getWorld() instanceof YttrWorld yw) {
+			if (yw.yttr$isPhased(worldChunk.getPos(), pos)) {
 				ci.setReturnValue(Blocks.VOID_AIR.getDefaultState());
 			}
 		}

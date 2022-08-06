@@ -3,13 +3,10 @@ package com.unascribed.yttr.world;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.util.YLog;
-
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockState;
@@ -31,7 +28,7 @@ import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Style;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -44,16 +41,16 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.ChunkRandom;
 
 public class ScorchedGenerator {
 
 	public static void generateTerminus(long worldSeed, ChunkRegion region, StructureManager accessor) {
 		if (!YConfig.WorldGen.scorched) return;
-		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
+		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
-			Chunk chunk = region.getChunk(region.getCenterPos().field_38224, region.getCenterPos().z);
+			Chunk chunk = region.getChunk(region.getCenterPos().x, region.getCenterPos().z);
 			ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(worldSeed));
 			OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
 			OctaveSimplexNoiseSampler terminusBNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 3, 6));
@@ -243,7 +240,7 @@ public class ScorchedGenerator {
 				BlockEntity be = region.getBlockEntity(bp);
 				if (be instanceof DispenserBlockEntity) {
 					ItemStack potion = new ItemStack(Items.SPLASH_POTION);
-					potion.setCustomName(new TranslatableComponent("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
+					potion.setCustomName(Text.translatable("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
 					PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
 					potion.getNbt().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
 					((DispenserBlockEntity)be).setStack(4, potion);
@@ -253,7 +250,7 @@ public class ScorchedGenerator {
 	}
 
 	public static void generateSummit(ChunkRegion region, Chunk chunk) {
-		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
+		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
 			boolean scorch = replaceBedrocks(bp, region, chunk, false);
 			bp.set(0, 127, 0);
@@ -344,11 +341,11 @@ public class ScorchedGenerator {
 	}
 
 	public static boolean isEligibleForRetrogen(ServerWorld world, WorldChunk chunk) {
-		return YConfig.WorldGen.scorchedRetrogen && world.getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID) && chunk.getBlockState(new BlockPos(0, 127, 0)).isOf(Blocks.BEDROCK);
+		return YConfig.WorldGen.scorchedRetrogen && world.getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID) && chunk.getBlockState(new BlockPos(0, 127, 0)).isOf(Blocks.BEDROCK);
 	}
 
 	public static void retrogen(long seed, ServerWorld world, ChunkPos pos) {
-		Chunk c = world.getChunk(pos.field_38224, pos.z);
+		Chunk c = world.getChunk(pos.x, pos.z);
 		boolean fullRetrogen = true;
 		boolean terminusRetrogen = true;
 		// getStartPos always returns 0 for Y
@@ -366,22 +363,19 @@ public class ScorchedGenerator {
 		}
 		int r = terminusRetrogen ? 2 : 0;
 		List<Chunk> chunks = new ArrayList<>();
-		for (int x = pos.field_38224-r; x <= pos.field_38224+r; x++) {
+		for (int x = pos.x-r; x <= pos.x+r; x++) {
 			for (int z = pos.z-r; z <= pos.z+r; z++) {
 				chunks.add(world.getChunk(x, z, ChunkStatus.EMPTY));
 			}
 		}
 		ChunkRegion region = new ChunkRegion(world, chunks, ChunkStatus.FULL, 1);
 		if (fullRetrogen) {
-			YLog.info("Retrogen at "+pos);
 			generateSummit(region, c);
 		} else {
-			YLog.info("Partial retrogen at "+pos);
 			replaceBedrocks(new BlockPos.Mutable(), region, c, true);
 		}
 		if (terminusRetrogen) {
-			YLog.info("Terminus retrogen at "+pos);
-			generateTerminus(seed, region, world.getStructureAccessor());
+			generateTerminus(seed, region, world.method_27056());
 		}
 		// this causes chunks to never load on the client
 //		for (int x = 0; x < BiomeCoords.SIZE; x++) {

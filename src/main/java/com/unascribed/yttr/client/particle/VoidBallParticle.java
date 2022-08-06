@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.particle;
 
-import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
+import com.mojang.blaze3d.platform.GlStateManager.class_4534;
+import com.mojang.blaze3d.platform.GlStateManager.class_4535;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
@@ -38,7 +38,7 @@ public class VoidBallParticle extends BillboardParticle {
 	@Override
 	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
 		RenderSystem.enableBlend();
-		RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA, SrcFactor.ONE, DstFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA, class_4535.ONE, class_4534.ONE_MINUS_SRC_ALPHA);
 		if (!MinecraftClient.isFancyGraphicsOrBetter()) {
 			if (buf1 != null) {
 				buf1.close();
@@ -86,8 +86,8 @@ public class VoidBallParticle extends BillboardParticle {
 				z = nsign * MathHelper.cos(drho);
 				bb.vertex(x * radius, y * radius, z * radius).next();
 			}
-			bb.end();
-			buf1.upload(bb);
+			buf1.bind();
+			buf1.upload(bb.end());
 			
 			imin = 1;
 			imax = stacks - 1;
@@ -122,8 +122,8 @@ public class VoidBallParticle extends BillboardParticle {
 					}
 				}
 			}
-			bb.end();
-			buf2.upload(bb);
+			buf2.bind();
+			buf2.upload(bb.end());
 			
 			// draw -Z end as a triangle fan
 			bb.begin(DrawMode.TRIANGLE_FAN, VertexFormats.POSITION);
@@ -136,8 +136,8 @@ public class VoidBallParticle extends BillboardParticle {
 				z = nsign * MathHelper.cos(rho);
 				bb.vertex(x * radius, y * radius, z * radius).next();
 			}
-			bb.end();
-			buf3.upload(bb);
+			buf3.bind();
+			buf3.upload(bb.end());
 		}
 		
 		Vec3d cam = camera.getPos();

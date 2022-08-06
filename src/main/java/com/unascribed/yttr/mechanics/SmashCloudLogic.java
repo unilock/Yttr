@@ -18,10 +18,10 @@ public class SmashCloudLogic {
 	
 	public static PistonSmashingRecipe consumeGasCloud(World world, Box box) {
 		List<AreaEffectCloudEntity> clouds = world.getEntitiesByClass(AreaEffectCloudEntity.class, box, (cloud) ->
-				cloud != null && cloud.isAlive() && cloud.getName().asString().startsWith(MAGIC) && cloud.getRadius() > 0);
+				cloud != null && cloud.isAlive() && cloud.getName().getString().startsWith(MAGIC) && cloud.getRadius() > 0);
 		if (!clouds.isEmpty()) {
 			AreaEffectCloudEntity cloud = clouds.get(0);
-			Identifier id = Identifier.tryParse(cloud.getName().asString().substring(MAGIC.length()));
+			Identifier id = Identifier.tryParse(cloud.getName().getString().substring(MAGIC.length()));
 			if (id != null) {
 				PistonSmashingRecipe r = (PistonSmashingRecipe) world.getRecipeManager().get(id).filter(o -> o instanceof PistonSmashingRecipe).orElse(null);
 				if (r != null && !r.getCloudOutput().isEmpty()) {

@@ -20,7 +20,7 @@ public class MercurialPotionItem extends PotionItem implements ItemColorProvider
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		return new TranslatableComponent("item.yttr.mercurial_potion.prefix", Items.POTION.getName(stack));
+		return Text.translatable("item.yttr.mercurial_potion.prefix", Items.POTION.getName(stack));
 	}
 	
 	@Override

@@ -8,8 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BackgroundRenderer;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.DimensionTypes;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BackgroundRenderer.class)
@@ -19,7 +18,7 @@ public class MixinBackgroundRenderer {
 	private static boolean adjustUseThickFog(boolean orig) {
 		if (orig) {
 			MinecraftClient mc = MinecraftClient.getInstance();
-			if (mc.world != null && mc.world.getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
+			if (mc.world != null && mc.world.getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID)) {
 				var id = mc.world.getBiome(mc.player.getBlockPos()).getKey().map(e -> e.getValue()).orElse(null);
 				if (id != null && id.getNamespace().equals("yttr") && id.getPath().startsWith("scorched_")) {
 					return false;

@@ -28,8 +28,8 @@ public class MixinMultiNoiseBiomeSourcePreset {
 		if (self == Preset.NETHER) {
 			var registry = instance.biomeRegistry();
 			((ScorchedEnablement)ci.getReturnValue()).yttr$setScorchedBiomes(
-					registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("scorched_summit"))),
-					registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("scorched_terminus")))
+					registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("scorched_summit"))).getOrThrow(false, s -> {}),
+					registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("scorched_terminus"))).getOrThrow(false, s -> {})
 				);
 		}
 	}

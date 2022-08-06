@@ -29,7 +29,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
@@ -84,7 +84,7 @@ public class EffectorItem extends Item {
 		ItemStack stack = context.getStack();
 		int fuel = context.getPlayer().getAbilities().creativeMode ? MAX_FUEL : getFuel(stack);
 		if (fuel <= 0) {
-			context.getPlayer().sendMessage(new TranslatableComponent("tip.yttr.effector.no_fuel"), true);
+			context.getPlayer().sendMessage(Text.translatable("tip.yttr.effector.no_fuel"), true);
 			return ActionResult.FAIL;
 		}
 		int amt = effect(world, pos, dir, stack, context.getPlayer().getUuid(), Math.min(fuel, 32), true);

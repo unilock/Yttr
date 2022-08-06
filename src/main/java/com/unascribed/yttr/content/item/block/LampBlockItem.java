@@ -31,10 +31,10 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	public Text getName(ItemStack stack) {
 		LampColor c = LampBlockItem.getColor(stack);
 		if (c == LampColor.COLORLESS) {
-			return new TranslatableComponent(getBlock().getTranslationKey()+(LampBlockItem.isInverted(stack) ? ".inverted" : ""));
+			return Text.translatable(getBlock().getTranslationKey()+(LampBlockItem.isInverted(stack) ? ".inverted" : ""));
 		}
-		return new TranslatableComponent(getBlock().getTranslationKey()+"."+(LampBlockItem.isInverted(stack) ? "colored.inverted" : "colored"),
-				new TranslatableComponent("color.yttr."+c.asString()));
+		return Text.translatable(getBlock().getTranslationKey()+"."+(LampBlockItem.isInverted(stack) ? "colored.inverted" : "colored"),
+				Text.translatable("color.yttr."+c.asString()));
 	}
 
 	public static LampColor getColor(ItemStack stack) {

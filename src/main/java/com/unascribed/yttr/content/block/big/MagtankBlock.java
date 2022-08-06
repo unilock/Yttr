@@ -77,7 +77,7 @@ public class MagtankBlock extends BigBlock {
 			
 			@Override
 			public Text getDisplayName() {
-				return new TranslatableComponent("block.yttr.magtank");
+				return Text.translatable("block.yttr.magtank");
 			}
 		});
 		return ActionResult.SUCCESS;

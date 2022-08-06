@@ -51,7 +51,7 @@ public class SuitStationBlock extends Block implements BlockEntityProvider {
 				
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableComponent("block.yttr.suit_station");
+					return Text.translatable("block.yttr.suit_station");
 				}
 			});
 		}

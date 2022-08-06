@@ -11,7 +11,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class EmiVoidFilteringRecipe implements EmiRecipe {
@@ -62,7 +62,7 @@ public class EmiVoidFilteringRecipe implements EmiRecipe {
 	public void addWidgets(WidgetHolder widgets) {
 		widgets.addSlot(output, 0, 0)
 			.recipeContext(this);
-		widgets.addText(new TranslatableComponent("emi.category.yttr.void_filtering.chance", DECIMAL_FORMAT.format(chance)).asOrderedText(),
+		widgets.addText(Text.translatable("emi.category.yttr.void_filtering.chance", DECIMAL_FORMAT.format(chance)).asOrderedText(),
 				22, 5, 0xFF404040, false);
 	}
 

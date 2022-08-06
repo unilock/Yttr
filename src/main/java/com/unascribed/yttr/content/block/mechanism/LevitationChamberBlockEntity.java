@@ -99,7 +99,7 @@ public class LevitationChamberBlockEntity extends BlockEntity implements YTickab
 
 	@Override
 	public Text getDisplayName() {
-		return new TranslatableComponent("block.yttr.levitation_chamber");
+		return Text.translatable("block.yttr.levitation_chamber");
 	}
 	
 }

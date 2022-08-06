@@ -43,7 +43,7 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 			player.openHandledScreen(new NamedScreenHandlerFactory() {
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableComponent(InRedOscillatorBlock.this.getTranslationKey());
+					return Text.translatable(InRedOscillatorBlock.this.getTranslationKey());
 				}
 
 				@Nullable

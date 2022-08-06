@@ -50,7 +50,7 @@ public class ProjectTableBlockEntity extends LockableContainerBlockEntity implem
 
 	@Override
 	protected Text getContainerName() {
-		return new TranslatableComponent("block.yttr.project_table");
+		return Text.translatable("block.yttr.project_table");
 	}
 
 	@Override

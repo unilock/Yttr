@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.big;
 
-import java.util.Random;
-
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.inventory.DSUScreenHandler;
@@ -28,13 +26,13 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class DSUBlock extends BigBlock implements BlockEntityProvider {
@@ -109,7 +107,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 	}
 
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		super.scheduledTick(state, world, pos, random);
 		if (!isReceivingRedstonePower(world, pos, state)) {
 			BlockEntity be = world.getBlockEntity(pos);
@@ -140,7 +138,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 					
 					@Override
 					public Text getDisplayName() {
-						return new TranslatableComponent("block.yttr.dsu");
+						return Text.translatable("block.yttr.dsu");
 					}
 				});
 			}

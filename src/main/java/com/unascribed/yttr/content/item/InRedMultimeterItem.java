@@ -35,15 +35,15 @@ public class InRedMultimeterItem extends Item {
 		} else if (block == YBlocks.INRED_CABLE || block == YBlocks.INRED_SCAFFOLD) {
 			// One of our wires. Take a search in all directions and return the signal being passed through.
 			value = getWireValue(world, pos);
-			message = new TranslatableComponent("tip.yttr.inred.multimeter.cable", value);
+			message = Text.translatable("tip.yttr.inred.multimeter.cable", value);
 //        } else if (block == ModBlocks.DEVICE_LIQUID_CRYSTAL) {
 			// Liquid Crystal is not currently implemented, hopefully it'll be fixed sometime!
 //            value = getValue(world, pos, facing);
-//            message = new TranslatableText("tip.yttr.inred.multimeter.direction", ctx.getPlayerFacing().getName(), value);
+//            message = Text.translatable("tip.yttr.inred.multimeter.direction", ctx.getPlayerFacing().getName(), value);
 		} else if (InRedLogic.checkCandidacy(world, pos, ctx.getPlayerFacing())) {
 			// Someone else's InRed-compat block, but it doesn't have a provider. Check using a general getValue.
 			value = getValue(world, pos, ctx.getPlayerFacing());
-			message = new TranslatableComponent("tip.yttr.inred.multimeter.direction", ctx.getPlayerFacing().getName(), value);
+			message = Text.translatable("tip.yttr.inred.multimeter.direction", ctx.getPlayerFacing().getName(), value);
 		} else {
 			// Not something the Multimeter can detect. Nothing to send.
 			return ActionResult.PASS;
