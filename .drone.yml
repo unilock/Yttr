@@ -23,7 +23,7 @@ steps:
     base_url: https://git.sleeping.town
     files:
       - build/libs/yttr-*.jar
-    title: "Dev Build"
+    title: "[1.18.2] Dev Build"
     prerelease: true
     tag: dev-1.18
     note: CHANGELOG.md
@@ -67,5 +67,6 @@ trigger:
     - tag
     ref:
       exclude:
+      - refs/tags/dev-1.19
       - refs/tags/dev-1.18
       - refs/tags/dev-1.16
