@@ -4,3 +4,4 @@
 * Delrene now takes Void to make instead of water to avoid weirdness
 * Some EMI integration cleanup
 * Added soaking recipes for concrete
+* Added Scorched Crying Obsidian

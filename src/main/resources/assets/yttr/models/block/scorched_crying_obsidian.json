@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "yttr:block/scorched_crying_obsidian"
+  }
+}

@@ -10,10 +10,10 @@ import java.util.stream.StreamSupport;
 
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
-import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.content.block.big.BigBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;

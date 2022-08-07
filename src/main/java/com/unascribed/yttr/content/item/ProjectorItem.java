@@ -4,9 +4,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
-import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
-import com.unascribed.yttr.content.block.ContinuousPlatformBlock.LogFluid;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.Age;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.LogFluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;

@@ -1,4 +1,4 @@
-package com.unascribed.yttr.content.block;
+package com.unascribed.yttr.content.block.decor;
 
 import java.util.Random;
 
