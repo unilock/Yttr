@@ -175,7 +175,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		projectId = 'yttr'
 		versionNumber = project.version
 		versionName = 'v'+project.version
-		versionType = 'release'
+		versionType = 'beta'
 		uploadFile = remapJar
 		gameVersions = ['1.19', '1.19.1', '1.19.2']
 		loaders = ['fabric', 'quilt']
@@ -196,7 +196,7 @@ if (System.getenv("CURSE_TOKEN")) {
 		apiKey = System.getenv("CURSE_TOKEN")
 		project {
 			id = '467267'
-			releaseType = 'release'
+			releaseType = 'beta'
 			changelogType = 'markdown'
 			changelog = file('CHANGELOG.md')
 
