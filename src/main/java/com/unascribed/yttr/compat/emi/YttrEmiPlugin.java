@@ -368,10 +368,10 @@ public class YttrEmiPlugin implements EmiPlugin {
 								.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
 					}
 					EmiCraftingRecipe ecr = new EmiCraftingRecipe(
-							fin.stream()
-								.map(s -> EmiIngredient.of(s.stream()
-										.map(EmiStack::of)
-										.toList()))
+							fin.stream() // make EMI autodetect which tag this ingredient matches
+								.map(Set::stream)
+								.map(Ingredient::ofStacks)
+								.map(EmiIngredient::of)
 								.toList(),
 							result.isOf(YItems.SUIT_HELMET) ? new SuitHelmetEmiStack(result) : EmiStack.of(result),
 							Yttr.id(r.getId().getPath()+names[k]+permutation),

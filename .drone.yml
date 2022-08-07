@@ -2,10 +2,33 @@ kind: pipeline
 name: autobuild
 
 steps:
+- name: restore-cache
+  image: meltwater/drone-cache
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: s3id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: s3key
+  pull: true
+  settings:
+    restore: true
+    path_style: true
+    bucket:
+      from_secret: s3bucket
+    region:
+      from_secret: s3region
+    endpoint:
+      from_secret: s3url
+    mount:
+      - '.gradle'
+      - '.gradle-user'
 - name: build
   image: gradle:7.4-jdk17
+  environment:
+    TERM: dumb
+    GRADLE_USER_HOME: ./.gradle-user
   commands:
-  - gradle clean build
+  - gradle --no-daemon clean build
 - name: retag
   image: alpine/git:latest
   environment:
@@ -28,6 +51,26 @@ steps:
     tag: dev-1.19
     note: CHANGELOG.md
     allow_edit: true
+- name: rebuild-cache
+  image: meltwater/drone-cache
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: s3id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: s3key
+  pull: true
+  settings:
+    rebuild: true
+    path_style: true
+    bucket:
+      from_secret: s3bucket
+    region:
+      from_secret: s3region
+    endpoint:
+      from_secret: s3url
+    mount:
+      - '.gradle'
+      - '.gradle-user'
 
 trigger:
     branch:

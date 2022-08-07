@@ -2,16 +2,18 @@
 
 # Yttr
 *A mod about the Void, what has gone before, and where you'll go from here.
-A vanilla overhaul crossed with a "tech mod".*
+A vanilla overhaul crossed with a content mod.*
 
 **[Fabric API][fapi] or [QSL][qsl] is required.** [EMI][emi] is strongly recommended.
+
+Check out the official trailer on [YouTube](https://www.youtube.com/watch?v=54XXPIewsPA) or [PeerTube](https://tube.sleeping.town/w/h67BoBWWy3F81wJTk1tSGp)!
 
 Yttr is an expansive mod for Fabric & Quilt 1.18.2, sort of existing as a love
 letter to 1.4-1.6 modded. It contains fresh takes on a lot of common features,
 interesting worldgen, custom music, and all-new mechanics.
 
 Starting as a loose collection of useful tidbits, Yttr has grown into a more
-cohesive mixture between a "tech mod" and a vanilla overhaul. Presented as three
+cohesive mixture between a content mod and a vanilla overhaul. Presented as three
 "content branches", extending those provided by vanilla; Void for the Overworld,
 Scorched for the Nether, and Continuity for the End.
 

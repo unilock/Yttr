@@ -2,8 +2,10 @@ package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ClamberBlock;
-import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
+import com.unascribed.yttr.content.block.CustomFallingBlock;
+import com.unascribed.yttr.content.block.CustomShapeBlock;
 import com.unascribed.yttr.content.block.NeodymiumBlock;
+import com.unascribed.yttr.content.block.TemporaryAirBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
@@ -13,7 +15,9 @@ import com.unascribed.yttr.content.block.big.GiantsBlock;
 import com.unascribed.yttr.content.block.big.MagtankBlock;
 import com.unascribed.yttr.content.block.decor.BloqueBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.decor.LampBlock;
+import com.unascribed.yttr.content.block.decor.ScorchedCryingObsidianBlock;
 import com.unascribed.yttr.content.block.decor.TableBlock;
 import com.unascribed.yttr.content.block.decor.WallLampBlock;
 import com.unascribed.yttr.content.block.device.CanFillerBlock;
@@ -48,6 +52,7 @@ import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.block.mechanism.VoidCauldronBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumButtonBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumPressurePlateBlock;
+import com.unascribed.yttr.content.block.natural.CoreLavaFluidBlock;
 import com.unascribed.yttr.content.block.natural.DelicaceBlock;
 import com.unascribed.yttr.content.block.natural.RootOfContinuityBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeLeavesBlock;
@@ -60,11 +65,18 @@ import com.unascribed.yttr.content.block.note.BoggedNoteBlock;
 import com.unascribed.yttr.content.block.note.HighNoteBlock;
 import com.unascribed.yttr.content.block.note.LowNoteBlock;
 import com.unascribed.yttr.content.block.ruined.RCStyleMultiblock;
+import com.unascribed.yttr.content.block.ruined.RuinedFrameBlock;
+import com.unascribed.yttr.content.block.ruined.RuinedLeverBlock;
 import com.unascribed.yttr.content.block.ruined.RuinedPipeBlock;
+import com.unascribed.yttr.content.block.ruined.RuinedTorchBlock;
+import com.unascribed.yttr.content.block.ruined.RuinedWallTorchBlock;
+import com.unascribed.yttr.content.block.ruined.WastelandGrassBlock;
 import com.unascribed.yttr.content.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.block.void_.ErodedBedrockBlock;
+import com.unascribed.yttr.content.block.void_.GlassyVoidBlock;
+import com.unascribed.yttr.content.block.void_.GlassyVoidPaneBlock;
 import com.unascribed.yttr.content.block.void_.MagtubeBlock;
 import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
@@ -78,41 +90,19 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.minecraft.block.AbstractBlock.TypedContextPredicate;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ExperienceDroppingBlock;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.block.LeverBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.PaneBlock;
 import net.minecraft.block.PillarBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.TorchBlock;
-import net.minecraft.block.WallTorchBlock;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 
 public class YBlocks {
 
@@ -144,7 +134,7 @@ public class YBlocks {
 	
 	
 	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MapColor.WATER_BLUE)
+			new FabricMaterialBuilder(MapColor.BLACK)
 				.allowsMovement()
 				.lightPassesThrough()
 				.notSolid()
@@ -159,7 +149,7 @@ public class YBlocks {
 	);
 	@RenderLayer("translucent")
 	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MapColor.WATER_BLUE)
+			new FabricMaterialBuilder(MapColor.CLEAR)
 				.allowsMovement()
 				.lightPassesThrough()
 				.notSolid()
@@ -170,7 +160,7 @@ public class YBlocks {
 		.strength(100)
 		.dropsNothing()
 	);
-	public static final FluidBlock CORE_LAVA = new FluidBlock(YFluids.CORE_LAVA, FabricBlockSettings.of(
+	public static final FluidBlock CORE_LAVA = new CoreLavaFluidBlock(YFluids.CORE_LAVA, FabricBlockSettings.of(
 			new FabricMaterialBuilder(MapColor.BRIGHT_RED)
 				.allowsMovement()
 				.lightPassesThrough()
@@ -181,21 +171,7 @@ public class YBlocks {
 		.noCollision()
 		.strength(100)
 		.dropsNothing()
-		.luminance(bs -> 15)
-	) {
-		@Override
-		public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-			// no-op to prevent deadlock, and as core lava doesn't flow
-		}
-		@Override
-		public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
-			return new ItemStack(Items.LAVA_BUCKET);
-		}
-		@Override
-		public PistonBehavior getPistonBehavior(BlockState state) {
-			return PistonBehavior.BLOCK;
-		}
-	};
+		.luminance(bs -> 15));
 	
 	
 	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(METALLIC_SETTINGS);
@@ -225,15 +201,9 @@ public class YBlocks {
 			.nonOpaque()
 		);
 	@RenderLayer("translucent")
-	public static final Block GLASSY_VOID = new Block(FabricBlockSettings.of(Material.STONE)
+	public static final Block GLASSY_VOID = new GlassyVoidBlock(FabricBlockSettings.of(Material.STONE)
 			.strength(7)
-			.nonOpaque()
-		) {
-		@Override
-		public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
-			return world.getMaxLightLevel();
-		}
-	};
+			.nonOpaque());
 	public static final Block SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
 			.strength(2)
@@ -287,15 +257,10 @@ public class YBlocks {
 	
 	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
 	@RenderLayer("translucent")
-	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
+	public static final Block GLASSY_VOID_PANE = new GlassyVoidPaneBlock(FabricBlockSettings.of(Material.STONE)
 			.strength(7)
-			.nonOpaque()
-		) {
-		@Override
-		public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
-			return world.getMaxLightLevel();
-		}
-	};
+			.nonOpaque());
+	
 	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.of(Material.PISTON)
 			.dynamicBounds()
 			.nonOpaque());
@@ -382,27 +347,19 @@ public class YBlocks {
 			.sounds(BlockSoundGroup.NETHERITE)
 		);
 	
-	public static final AirBlock TEMPORARY_LIGHT_AIR = new AirBlock(FabricBlockSettings.of(Material.AIR)
+	public static final AirBlock TEMPORARY_LIGHT_AIR = new TemporaryAirBlock(FabricBlockSettings.of(Material.AIR)
 			.noCollision()
 			.air()
 			.nonOpaque()
 			.luminance(9)
-			.ticksRandomly()
-		) {
-		@Override
-		public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
-			if (random.nextInt(4) == 0) {
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			}
-		}
-	};
+			.ticksRandomly());
 	
 	public static final AirBlock PERMANENT_LIGHT_AIR = new AirBlock(FabricBlockSettings.of(Material.AIR)
 			.noCollision()
 			.air()
 			.nonOpaque()
 			.luminance(15)
-		) {};
+		);
 		
 	public static final Block NETHERTUFF = new Block(FabricBlockSettings.copyOf(Blocks.NETHERRACK)
 			.strength(1.4f, 0.2f)
@@ -417,16 +374,7 @@ public class YBlocks {
 		);
 	
 	@RenderLayer("cutout")
-	public static final FernBlock WASTELAND_GRASS = new FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)) {
-		@Override
-		protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-			return floor.isOf(YBlocks.WASTELAND_DIRT);
-		}
-		@Override
-		public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
-			return false;
-		}
-	};
+	public static final FernBlock WASTELAND_GRASS = new WastelandGrassBlock(FabricBlockSettings.copyOf(Blocks.GRASS));
 	
 	public static final PillarBlock WASTELAND_LOG = new PillarBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG)
 			.strength(1.0f)
@@ -438,16 +386,20 @@ public class YBlocks {
 	
 	private static final Block.Settings RUINED_SETTINGS = FabricBlockSettings.copyOf(Blocks.DIRT)
 			.sounds(BlockSoundGroup.BASALT)
-			.drops(Yttr.id("blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined")
+		);
 	private static final Block.Settings RUINED_UNCL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.noCollision()
-			.drops(Yttr.id("blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined")
+		);
 	private static final Block.Settings RUINED_PARTIAL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.nonOpaque()
-			.drops(Yttr.id("blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined")
+		);
 	private static final Block.Settings RUINED_TORCH_SETTINGS = FabricBlockSettings.copyOf(RUINED_UNCL_SETTINGS)
 			.luminance(2)
-			.drops(Yttr.id("blocks/ruined"));
+			.drops(Yttr.id("blocks/ruined")
+		);
 	
 	private static <T extends Block> T ruinedDevice(T block) {
 		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_device");
@@ -465,11 +417,7 @@ public class YBlocks {
 	public static final Block RUINED_CONTAINER = new Block(FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.drops(Yttr.id("blocks/ruined_container")));
 	@RenderLayer("cutout")
-	public static final Block RUINED_TANK = new Block(RUINED_SETTINGS) {
-		private VoxelShape SHAPE = createCuboidShape(2, 0, 2, 14, 16, 14);
-		@Override
-		public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) { return SHAPE; }
-	};
+	public static final Block RUINED_TANK = new CustomShapeBlock(RUINED_SETTINGS, Block.createCuboidShape(2, 0, 2, 14, 16, 14));
 	
 	public static final Block RUINED_DEVICE_BC_1 = ruinedDevice(new BasicHorizontalFacingBlock(RUINED_SETTINGS));
 	public static final Block RUINED_DEVICE_BC_2 = new BasicFacingBlock(RUINED_PARTIAL_SETTINGS);
@@ -487,40 +435,15 @@ public class YBlocks {
 	@RenderLayer("cutout")
 	public static final Block RUINED_PIPE = new RuinedPipeBlock(RUINED_SETTINGS);
 	@RenderLayer("cutout")
-	public static final Block RUINED_FRAME = new RuinedPipeBlock(RUINED_SETTINGS) {
-		@Override
-		public boolean connectsTo(BlockState bs, Direction face) {
-			return bs.isOf(this);
-		}
-	};
+	public static final Block RUINED_FRAME = new RuinedFrameBlock(RUINED_SETTINGS);
 	@RenderLayer("cutout")
 	public static final Block RUINED_TUBE = new RuinedPipeBlock(RUINED_SETTINGS);
 	
 	@RenderLayer("cutout")
-	public static final Block RUINED_TORCH = new TorchBlock(RUINED_TORCH_SETTINGS, null) {
-		@Override
-		public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
-	};
+	public static final Block RUINED_TORCH = new RuinedTorchBlock(RUINED_TORCH_SETTINGS, null);
 	@RenderLayer("cutout")
-	public static final Block RUINED_WALL_TORCH = new WallTorchBlock(RUINED_TORCH_SETTINGS, null) {
-		@Override
-		public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
-	};
-	public static final Block RUINED_LEVER = new LeverBlock(RUINED_UNCL_SETTINGS) {
-		@Override
-		public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-			if (player.isCreative()) return super.onUse(state, world, pos, player, hand, hit);
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, 0.6f);
-			world.breakBlock(pos, false);
-			return ActionResult.SUCCESS;
-		}
-		@Override
-		public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
-		@Override
-		public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }
-		@Override
-		public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }
-	};
+	public static final Block RUINED_WALL_TORCH = new RuinedWallTorchBlock(RUINED_TORCH_SETTINGS, null);
+	public static final Block RUINED_LEVER = new RuinedLeverBlock(RUINED_UNCL_SETTINGS);
 	
 	public static final Block SPECIALTY_BEDROCK = new Block(FabricBlockSettings.copyOf(Blocks.BEDROCK).dropsNothing());
 	@RenderLayer("translucent")
@@ -584,12 +507,7 @@ public class YBlocks {
 	
 	public static final CanFillerBlock CAN_FILLER = new CanFillerBlock(METALLIC_SETTINGS);
 	
-	public static final FallingBlock DUST = new FallingBlock(FabricBlockSettings.copyOf(Blocks.SAND)) {
-		@Override
-		public int getColor(BlockState state, BlockView world, BlockPos pos) {
-			return 0xFFD7D3C5;
-		}
-	};
+	public static final FallingBlock DUST = new CustomFallingBlock(FabricBlockSettings.copyOf(Blocks.SAND), 0xFFD7D3C5);
 	
 	public static final NeodymiumBlock NEODYMIUM_SLAB = new NeodymiumBlock(METALLIC_SETTINGS);
 	
@@ -606,13 +524,8 @@ public class YBlocks {
 		return !(world instanceof World w && w.getBiome(pos).isRegistryKeyId(Yttr.id("scorched_terminus")));
 	};
 	
-	public static final FallingBlock ASH = new FallingBlock(FabricBlockSettings.copyOf(Blocks.SAND)
-			.allowsSpawning(NOT_IN_TERMINUS)) {
-		@Override
-		public int getColor(BlockState state, BlockView world, BlockPos pos) {
-			return 0xFF181018;
-		}
-	};
+	public static final FallingBlock ASH = new CustomFallingBlock(FabricBlockSettings.copyOf(Blocks.SAND)
+			.allowsSpawning(NOT_IN_TERMINUS), 0xFF181018);
 	
 	public static final BloqueBlock BLOQUE = new BloqueBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE)
 			.sounds(BlockSoundGroup.CALCITE));
@@ -640,6 +553,11 @@ public class YBlocks {
 	
 	public static final Block POLISHED_OBSIDIAN = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN));
 	public static final Block POLISHED_OBSIDIAN_CAPSTONE = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN));
+	
+	public static final Block SCORCHED_CRYING_OBSIDIAN = new ScorchedCryingObsidianBlock(FabricBlockSettings.copyOf(Blocks.CRYING_OBSIDIAN)
+			.mapColor(MapColor.DULL_RED)
+			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
+			.allowsSpawning(NOT_IN_TERMINUS));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

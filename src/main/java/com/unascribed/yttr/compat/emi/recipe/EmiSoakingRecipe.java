@@ -62,12 +62,12 @@ public class EmiSoakingRecipe implements EmiRecipe {
 	
 	@Override
 	public int getDisplayHeight() {
-		return 36;
+		return 36+Math.max(0, (((inputs.size()-1)/3)-1)*18);
 	}
 	
 	@Override
 	public int getDisplayWidth() {
-		return 118;
+		return 64+(Math.min(3, inputs.size())*18);
 	}
 	
 	@Override
@@ -87,13 +87,13 @@ public class EmiSoakingRecipe implements EmiRecipe {
 
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
-		int x = (widgets.getWidth()/2);
+		int x = widgets.getWidth()-59;
 		widgets.addTexture(Yttr.id("textures/gui/curved_arrow_down.png"), x, 2, 16, 16, 0, 0, 16, 16, 16, 16);
 		widgets.addTexture(Yttr.id("textures/gui/curved_arrow.png"), x+20, 2, 16, 16, 0, 0, 16, 16, 16, 16);
 		
-		widgets.addSlot(catalyst, x, 20)
+		widgets.addSlot(catalyst, x, 18)
 			.drawBack(false);
-		widgets.addSlot(catalyst, x+16, 20)
+		widgets.addSlot(catalyst, x+16, 18)
 			.drawBack(false);
 		
 

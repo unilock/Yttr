@@ -1,0 +1,7 @@
+{
+	"type": "yttr:soaking",
+	"ingredients": [ { "item": "minecraft:black_concrete_powder" } ],
+	"catalyst": { "fluid": "minecraft:water" },
+	"result": { "item": "minecraft:black_concrete" },
+	"time": 5
+}

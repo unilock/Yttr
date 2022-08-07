@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.spongepowered.asm.mixin.Final;
@@ -18,13 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.client.RenderBridge;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Sets;
-import com.google.common.hash.Hashing;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.SplashTextResourceSupplier;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.profiler.Profiler;
@@ -43,22 +37,6 @@ public class MixinSplashTextResourceSupplier {
 					"Now on OpenGL 3.2 §mcore§r §ocompatibility§r profile!")) {
 				splashTexts.add("Core profile? More like snore profile!");
 			}
-		}
-		Set<String> necessarySplashes = Sets.newHashSet(
-			"4876b3073f7da15ac4a688e9a9f9fcb5f1e29f1e701376f32faa49510115f1a8",
-			"3ebbe99b5d2e5b00e44698ff6d37c91ece29e830f1005dda050c78d73a18f61e",
-			"eb508b317d829b020f5a7b8f56b3e8bb48c04f4f1cd15fbefbb6fb949ba1d5e9",
-			"c85138d38af4434552bc8cad3c48d279b0b0c35874beb4c5dcfbecabe6f74d8b",
-			"2bfddfdb398a3fda965c7ba3b0b75f7e6d608366fdaad043712ef2730457ddee",
-			"afd468a6303057d4e3d6d3c7d0f3c2301f77b60fc3a3dcfa0706380ad7c33df5",
-			"36358601e4faea4b7dc1e634126f186fb7472701641a5120148fd4a7a6ca8b95",
-			"65834796f8efd80d4b2ad433f693c67f4c9b2d2ae5703651952aa0838090dd77"
-		);
-		for (String s : splashTexts) {
-			necessarySplashes.remove(Hashing.sha256().hashString(s+"2ab4850e297d889e", Charsets.UTF_8).toString());
-		}
-		if (!necessarySplashes.isEmpty()) {
-			MinecraftClient.getInstance().particleManager = null;
 		}
 		if (YConfig.General.shenanigans) {
 			splashTexts.remove("The true meaning of covfefe");
