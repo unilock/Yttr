@@ -2,9 +2,9 @@ package com.unascribed.yttr.init;
 
 import java.util.List;
 
+import com.unascribed.lib39.core.api.util.LatchHolder;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.util.LatchHolder;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -109,8 +109,8 @@ public class YWorldGen {
 	public static final LatchHolder<PlacedFeature> WASTELAND_GRASS_PLACED_HOLDER = LatchHolder.unset();
 	
 	public static void init() {
-		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
-		Yttr.autoRegister(BuiltinRegistries.PLACED_FEATURE, YWorldGen.class, PlacedFeature.class);
+		Yttr.autoreg.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
+		Yttr.autoreg.autoRegister(BuiltinRegistries.PLACED_FEATURE, YWorldGen.class, PlacedFeature.class);
 		if (YConfig.WorldGen.gadolinite) {
 			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld_main"));
 			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld_deep"));

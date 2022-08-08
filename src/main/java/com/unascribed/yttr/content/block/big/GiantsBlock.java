@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.big;
 
+import com.unascribed.lib39.weld.api.BigBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateManager.Builder;

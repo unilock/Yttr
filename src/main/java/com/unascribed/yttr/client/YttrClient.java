@@ -4,6 +4,8 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.time.Month;
+import java.time.MonthDay;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,13 +15,12 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
-
+import com.unascribed.lib39.core.api.SplashTextRegistry;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
-import com.unascribed.yttr.client.render.LampRenderer;
 import com.unascribed.yttr.client.render.ProfilerRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
@@ -28,7 +29,6 @@ import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompatClient;
-import com.unascribed.yttr.content.block.big.BigBlock;
 import com.unascribed.yttr.content.block.decor.BloqueBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
@@ -71,7 +71,6 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
@@ -146,18 +145,46 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	public static boolean onlyRenderOpaqueParticles = false;
 	public static boolean onlyRenderNonOpaqueParticles = false;
 	
-	public static boolean retrievingHalo = false;
 	public static boolean renderingGui = false;
 	
 	@Override
 	public void onInitializeClient() {
-		Yttr.INST.onPostInitialize();
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			additionalSprites.forEach(registry::register);
 			registry.register(Yttr.id("block/bloque_welded"));
 			registry.register(Yttr.id("block/bloque_welded_side"));
 			registry.register(Yttr.id("block/bloque_welded_top"));
 		});
+		if (RenderBridge.canUseCompatFunctions()) {
+			SplashTextRegistry.replace("Now on OpenGL 3.2 core profile!",
+					"Now on OpenGL 3.2 §mcore§r §ocompatibility§r profile!");
+			SplashTextRegistry.registerStatic("Core profile? More like snore profile!");
+		}
+		if (YConfig.General.shenanigans) {
+			SplashTextRegistry.remove("The true meaning of covfefe");
+			SplashTextRegistry.replace("Don't bother with the clones!",
+					"Try the clones!");
+			SplashTextRegistry.replace("Closed source!",
+					"Effectively visible source!");
+			SplashTextRegistry.replace("Lennart lennart = new Lennart()",
+					"§7Lennart §flennart §6= §1new §7Lennart§6();");
+			SplashTextRegistry.registerStatic(
+					"Also try Minetest!",
+					"Also try Terasology!",
+					"Also try Vintage Story!",
+					"Also try ZZT!",
+					"Also try MegaZeux!",
+					"Also try Xonotic!",
+					"Now with everybody's favorite Bloque® Brand Plastic Construction Building Bricks!",
+					"Vertical!",
+					"§9var §flen §6= §9new §7Lennart§6(, §2// DRY",
+					"", // the scariest splash is no splash at all
+					"Now with Void!"
+				);
+			
+			SplashTextRegistry.registerTemporal("Happy birthday, Kat!", MonthDay.of(Month.JANUARY, 28));
+			SplashTextRegistry.registerTemporal("Happy birthday, Una!", MonthDay.of(Month.OCTOBER, 29));
+		}
 		doReflectionMagic();
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
@@ -178,7 +205,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
 			rm.registerReloader(reloader("yttr:clear_caches", (manager) -> {
 				TextureColorThief.clearCache();
-				LampRenderer.clearCache();
 			}));
 			rm.registerReloader(reloader("yttr:detect", (manager) -> {
 				Yttr.lessCreepyAwareHopper = manager.getResource(Yttr.id("lcah-marker")).isPresent();
@@ -197,9 +223,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		ModelPredicateProviderRegistry.register(YItems.SNARE, Yttr.id("filled"), (stack, world, entity, seed) -> {
 			return stack.hasNbt() && stack.getNbt().contains("Contents") ? 1 : 0;
-		});
-		ModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), Yttr.id("halo"), (stack, world, entity, seed) -> {
-			return retrievingHalo ? 1 : 0;
 		});
 		ModelPredicateProviderRegistry.register(Yttr.id("durability_bonus"), (stack, world, entity, seed) -> {
 			return stack.hasNbt() ? stack.getNbt().getInt("yttr:DurabilityBonus") : 0;
@@ -288,8 +311,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.tick();
 			prof.swap("replicator");
 			ReplicatorRenderer.tick();
-			prof.swap("lamp");
-			LampRenderer.tick();
 			prof.swap("rifle");
 			RifleHUDRenderer.tick();
 			prof.swap("shifter");
@@ -346,28 +367,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ShifterUI::renderOutline);
-		WorldRenderEvents.BLOCK_OUTLINE.register((wrc, boc) -> {
-			if (boc.blockState().getBlock() instanceof BigBlock) {
-				BlockState bs = boc.blockState();
-				BigBlock b = (BigBlock)boc.blockState().getBlock();
-				double minX = boc.blockPos().getX()-bs.get(b.xProp);
-				double minY = boc.blockPos().getY()-bs.get(b.yProp);
-				double minZ = boc.blockPos().getZ()-bs.get(b.zProp);
-				minX -= wrc.camera().getPos().x;
-				minY -= wrc.camera().getPos().y;
-				minZ -= wrc.camera().getPos().z;
-				double maxX = minX+b.xSize;
-				double maxY = minY+b.ySize;
-				double maxZ = minZ+b.zSize;
-				VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
-				WorldRenderer.drawBox(wrc.matrixStack(), vc, minX, minY, minZ, maxX, maxY, maxZ, 0, 0, 0, 0.4f);
-				return false;
-			}
-			return true;
-		});
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
-		WorldRenderEvents.AFTER_ENTITIES.register(LampRenderer::render);
 		DynamicBlockModelProvider.init();
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {
@@ -421,14 +422,14 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		renderLayers.put("cutout_mipped", RenderLayer.getCutoutMipped());
 		renderLayers.put("translucent", RenderLayer.getTranslucent());
 		renderLayers.put("tripwire", RenderLayer.getTripwire());
-		Yttr.eachRegisterableField(YBlocks.class, Block.class, com.unascribed.yttr.util.annotate.RenderLayer.class, (f, b, ann) -> {
+		Yttr.autoreg.eachRegisterableField(YBlocks.class, Block.class, com.unascribed.yttr.util.annotate.RenderLayer.class, (f, b, ann) -> {
 			if (b instanceof BlockColorProvider) ColorProviderRegistry.BLOCK.register((BlockColorProvider)b, b);
 			if (ann != null) {
 				if (!renderLayers.containsKey(ann.value())) throw new RuntimeException("YBlocks."+f.getName()+" has an unknown @RenderLayer: "+ann.value());
 				BlockRenderLayerMap.INSTANCE.putBlocks(renderLayers.get(ann.value()), b);
 			}
 		});
-		Yttr.eachRegisterableField(YItems.class, Item.class, null, (f, i, ann) -> {
+		Yttr.autoreg.eachRegisterableField(YItems.class, Item.class, null, (f, i, ann) -> {
 			if (i instanceof ItemColorProvider) ColorProviderRegistry.ITEM.register((ItemColorProvider)i, i);
 			ConstantColor colAnn = f.getAnnotation(ConstantColor.class);
 			if (colAnn != null) ColorProviderRegistry.ITEM.register((stack, tintIndex) -> colAnn.value(), i);
@@ -473,7 +474,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 		});
-		Yttr.eachRegisterableField(YBlockEntities.class, BlockEntityType.class, YBlockEntities.Renderer.class, (f, type, ann) -> {
+		Yttr.autoreg.eachRegisterableField(YBlockEntities.class, BlockEntityType.class, YBlockEntities.Renderer.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render.block_entity."+ann.value()), MethodType.methodType(void.class));
@@ -491,7 +492,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 		});
-		Yttr.eachRegisterableField(YEntities.class, EntityType.class, YEntities.Renderer.class, (f, type, ann) -> {
+		Yttr.autoreg.eachRegisterableField(YEntities.class, EntityType.class, YEntities.Renderer.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render."+ann.value()), MethodType.methodType(void.class, EntityRenderDispatcher.class));
@@ -512,7 +513,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Map<Fluid, Class<?>> fluids = Maps.newHashMap();
 		Map<Class<?>, Identifier[]> fluidSprites = Maps.newHashMap();
 		Map<Class<?>, int[]> fluidColors = Maps.newHashMap();
-		Yttr.eachRegisterableField(YFluids.class, Fluid.class, null, (f, fl, ann) -> {
+		Yttr.autoreg.eachRegisterableField(YFluids.class, Fluid.class, null, (f, fl, ann) -> {
 			fluids.put(fl, f.getType());
 			com.unascribed.yttr.util.annotate.RenderLayer rlAnn = f.getAnnotation(com.unascribed.yttr.util.annotate.RenderLayer.class);
 			if (rlAnn != null) {
@@ -556,7 +557,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			};
 			FluidRenderHandlerRegistry.INSTANCE.register(en.getKey(), frh);
 		}
-		Yttr.eachRegisterableField(YHandledScreens.class, ScreenHandlerType.class, YHandledScreens.Screen.class, (f, type, ann) -> {
+		Yttr.autoreg.eachRegisterableField(YHandledScreens.class, ScreenHandlerType.class, YHandledScreens.Screen.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
 					Constructor<?> actualConstructor = null;
@@ -569,7 +570,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					MethodHandle handle = MethodHandles.publicLookup().unreflectConstructor(actualConstructor);
 					// must be an anonymous class due to type unsafety; we need the rawtype
 					HandledScreens.register(type, new HandledScreens.Provider() {
-
+		
 						@Override
 						public Screen create(ScreenHandler handler, PlayerInventory inventory, Text title) {
 							try {

@@ -2,9 +2,9 @@ package com.unascribed.yttr.content.block;
 
 import java.util.List;
 
+import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.mechanics.SimpleLootBlock;
 import com.unascribed.yttr.mixin.accessor.AccessorVoxelShape;
 
 import it.unimi.dsi.fastutil.doubles.DoubleList;

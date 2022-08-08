@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.sandman.api.TicksAlwaysItem;
 import com.unascribed.yttr.client.cache.SnareEntityTextureCache;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YCriteria;
@@ -13,7 +14,6 @@ import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.mechanics.TicksAlwaysItem;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
 import com.unascribed.yttr.util.YLog;

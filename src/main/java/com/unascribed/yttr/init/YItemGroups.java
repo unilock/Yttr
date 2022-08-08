@@ -1,6 +1,6 @@
 package com.unascribed.yttr.init;
 
-import com.unascribed.yttr.ItemSubGroup;
+import com.unascribed.lib39.fractal.api.ItemSubGroup;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.BloqueBlockItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;

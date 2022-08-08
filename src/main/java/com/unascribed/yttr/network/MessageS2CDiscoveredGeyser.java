@@ -4,8 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.init.YNetwork;
-import com.unascribed.yttr.network.concrete.NetworkContext;
-import com.unascribed.yttr.network.concrete.S2CMessage;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.lib39.tunnel.api.S2CMessage;
 import com.unascribed.yttr.world.Geyser;
 
 import net.fabricmc.api.EnvType;

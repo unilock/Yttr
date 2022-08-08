@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.item;
 
-import com.unascribed.yttr.Yttr;
+import com.unascribed.lib39.gesundheit.api.GuiParticleAccess;
 import com.unascribed.yttr.content.fluid.VoidFluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
@@ -53,8 +53,8 @@ public class VoidBucketItem extends BucketItem {
 				otherStack.decrement(1);
 			}
 		}
-		Yttr.spawnGuiParticles(VoidFluid.BLACK_DUST,
-				slot.x+8, slot.y+3, 0,
+		GuiParticleAccess.spawnGuiParticles(VoidFluid.BLACK_DUST,
+				0, 0, 0,
 				5,
 				2, 1, 0,
 				1);

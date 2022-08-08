@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "yttr:discovered_via": "yttr:brookite_block",
+  "lib39:discovered_via": "yttr:brookite_block",
   "ingredients": [
     {
       "item": "yttr:brookite_block"

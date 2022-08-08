@@ -19,18 +19,29 @@
 	"entrypoints": {
 		"main": [ "com.unascribed.yttr.Yttr" ],
 		"client": [ "com.unascribed.yttr.client.YttrClient" ],
-		"server": [ "com.unascribed.yttr.YttrServer" ],
+		"lib39:postinit": [ "com.unascribed.yttr.YttrPostInit" ],
+		"lib39:surface_rule_modifier": [ "com.unascribed.yttr.world.YttrSurfaceRuleModifier" ],
 		"emi": [ "com.unascribed.yttr.compat.emi.YttrEmiPlugin" ],
 		"modmenu": [ "com.unascribed.yttr.compat.modmenu.YttrModMenu" ]
 	},
-	"mixins": [
-		"yttr.mixins.json"
-	],
+	"mixins": [ "yttr.mixins.json" ],
 	"accessWidener": "yttr.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.7.4",
 		"fabric": "*",
-		"minecraft": ">=1.19"
+		"minecraft": ">=1.19",
+		"lib39-core": "*",
+		"lib39-lockpick": "*",
+		"lib39-gesundheit": "*",
+		"lib39-fractal": "*",
+		"lib39-tunnel": "*",
+		"lib39-phantom": "*",
+		"lib39-waypoint": "*",
+		"lib39-weld": "*",
+		"lib39-sandman": "*",
+		"lib39-crowbar": "*",
+		"lib39-keygen": "*",
+		"lib39-dessicant": "*"
 	},
 	"conflicts": { "roughlyenoughitems": "*", "jei": "*" },
 	"suggests": { "trinkets": "*" },

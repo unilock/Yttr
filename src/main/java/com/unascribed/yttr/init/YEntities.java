@@ -21,7 +21,7 @@ public class YEntities {
 			.build("yttr:rifle_dummy");
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.ENTITY_TYPE, YEntities.class, EntityType.class);
+		Yttr.autoreg.autoRegister(Registry.ENTITY_TYPE, YEntities.class, EntityType.class);
 	}
 
 	@Retention(RUNTIME)

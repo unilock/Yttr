@@ -560,7 +560,7 @@ public class YBlocks {
 			.allowsSpawning(NOT_IN_TERMINUS));
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
+		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
 	}
 
 }

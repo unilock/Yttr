@@ -37,7 +37,7 @@ public class YCriteria {
 	public static final BasicCriterion WELD_BLOQUE = new BasicCriterion("yttr:weld_bloque");
 	
 	public static void init() {
-		Yttr.autoRegister(Criteria::register, YCriteria.class, Criterion.class);
+		Yttr.autoreg.autoRegister(Criteria::register, YCriteria.class, Criterion.class);
 	}
 	
 }

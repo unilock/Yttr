@@ -1,6 +1,6 @@
 {
 	"type": "minecraft:blasting",
-	"yttr:discovered_via": "yttr:raw_gadolinite",
+	"lib39:discovered_via": "yttr:raw_gadolinite",
 	"ingredient": {
 		"item": "yttr:raw_gadolinite"
 	},

@@ -2,7 +2,7 @@ package com.unascribed.yttr.world;
 
 import java.util.UUID;
 
-import com.unascribed.yttr.network.concrete.ImmutableMarshallable;
+import com.unascribed.lib39.tunnel.api.ImmutableMarshallable;
 import com.unascribed.yttr.util.math.Vec2i;
 
 import net.minecraft.nbt.NbtCompound;

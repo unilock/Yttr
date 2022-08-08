@@ -1,25 +1,22 @@
 package com.unascribed.yttr;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.core.api.AutoRegistry;
+import com.unascribed.lib39.core.api.util.SlotReference;
+import com.unascribed.lib39.crowbar.api.WorldGenerationEvents;
+import com.unascribed.lib39.dessicant.api.DessicantControl;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBiomes;
@@ -35,7 +32,6 @@ import com.unascribed.yttr.init.YFuels;
 import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YLatches;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
@@ -49,15 +45,10 @@ import com.unascribed.yttr.init.conditional.YTrinkets;
 import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
-import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
-import com.unascribed.yttr.mixinsupport.Blameable;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
-import com.unascribed.yttr.mixinsupport.ParticleScreen;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
-import com.unascribed.yttr.util.LatchHolder;
-import com.unascribed.yttr.util.SlotReference;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.RegisteredAs;
 import com.unascribed.yttr.world.FilterNetworks;
@@ -68,27 +59,17 @@ import com.unascribed.yttr.world.WastelandPopulator;
 
 import com.google.common.base.Ascii;
 import com.google.common.collect.EnumMultiset;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -101,37 +82,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.gen.chunk.DebugChunkGenerator;
 
 public class Yttr implements ModInitializer {
 	
-	public static Yttr INST;
-	
-	public Yttr() {
-		if (INST != null) throw new AssertionError("Double initialized!");
-		INST = this;
-	}
-	
 	public static final int DIVING_BLOCKS_PER_TICK = 2;
 	
-	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
-	public static final Multimap<Identifier, Identifier> discoveries = HashMultimap.create();
-
 	public static boolean lessCreepyAwareHopper;
 	public static boolean vectorSuit;
 	
 	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
+	
+	public static final AutoRegistry autoreg = AutoRegistry.of("yttr");
 	
 	public interface TrinketsAccess {
 		Optional<SlotReference> getWorn(PlayerEntity pe, Predicate<Item> predicate);
@@ -219,14 +186,22 @@ public class Yttr implements ModInitializer {
 		
 		YItemGroups.init();
 		
+		DessicantControl.optIn("yttr");
+		
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
 			if (player instanceof ServerPlayerEntity) {
 				YCriteria.BROKE_BLOCK.trigger((ServerPlayerEntity)player, pos, state, player.getStackInHand(Hand.MAIN_HAND));
 			}
 		});
 		
+		WorldGenerationEvents.AFTER_BUILD_SURFACE.register((ctx) -> {
+			ScorchedGenerator.generateSummit(ctx.region(), ctx.chunk());
+		});
+		WorldGenerationEvents.AFTER_GENERATE_FEATURES.register((ctx) -> {
+			ScorchedGenerator.generateTerminus(ctx.region().getSeed(), ctx.region(), ctx.structureManager());
+		});
+		
 		ServerTickEvents.START_WORLD_TICK.register((world) -> {
-			TickAlwaysItemHandler.startServerWorldTick(world);
 			SoakingHandler.startServerWorldTick(world);
 			FilterNetworks.get(world).tick();
 		});
@@ -248,9 +223,6 @@ public class Yttr implements ModInitializer {
 		
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Substitutes.RELOADER);
 		
-		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
-			discoveries.clear();
-		});
 		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (WastelandPopulator.isEligible(world, chunk)) {
 				world.getServer().send(new ServerTask(world.getServer().getTicks(), () -> {
@@ -265,30 +237,6 @@ public class Yttr implements ModInitializer {
 		});
 	}
 	
-	public void onPostInitialize() {
-		if (YConfig.General.fixupDebugWorld) {
-			List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
-			Set<BlockState> known = Sets.newHashSet(states);
-			List<BlockState> newStates = Registry.BLOCK.stream()
-				.flatMap(b -> b.getStateManager().getStates().stream())
-				.filter(bs -> !known.contains(bs))
-				.collect(Collectors.toList());
-			if (newStates.isEmpty()) {
-				YLog.info("Looks like someone else already fixed the debug world.", newStates.size());
-			} else {
-				YLog.info("Adding {} missing blockstates to the debug world.", newStates.size());
-				states.addAll(newStates);
-				int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
-				int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
-				DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
-				DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
-				YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
-			}
-		}
-		
-		YLatches.latchAll();
-	}
-
 	public static Identifier id(String path) {
 		return new Identifier("yttr", path);
 	}
@@ -314,102 +262,6 @@ public class Yttr implements ModInitializer {
 			resourcesNeeded.add(sr, sr.getConsumptionPerBlock(900)*distanceI);
 		}
 		return resourcesNeeded;
-	}
-
-	/**
-	 * Invoke the given callback for every field of the given type in the given class. If an
-	 * annotation type is supplied, the annotation on the field (if any) will be passed as the
-	 * third argument to the callback.
-	 * <p>
-	 * This is the same method used by {@link #autoRegister}, so it can be used to scan fields in
-	 * holder classes for additional information in later passes.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T, A extends Annotation> void eachRegisterableField(Class<?> holder, Class<T> type, Class<A> anno, TriConsumer<Field, T, A> cb) {
-		for (Field f : holder.getDeclaredFields()) {
-			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
-				try {
-					f.setAccessible(true);
-					cb.accept(f, (T)f.get(null), anno == null ? null : f.getAnnotation(anno));
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-	}
-
-	private static final boolean debugRegistration = Boolean.getBoolean("yttr.debugRegistration");
-	
-	/**
-	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
-	 * in the yttr namespace with a path equal to the field's name as lower case in the given
-	 * registry.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
-		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
-			Identifier id = deriveId(f, ann);
-			try {
-				Registry.register(registry, id, (T)v);
-				if (debugRegistration) {
-					YLog.info("Registered {} in {} from {} - assigned id is {}", id, registry.getKey().getValue(), f.getName(), registry.getRawId((T)v));
-				}
-			} catch (RuntimeException e) {
-				T val = registry.get(id);
-				int rid = registry.getRawId(val);
-				val = registry.get(rid);
-				YLog.error("Could not register {} in {} from {} - current registration: {} {} {} - we wanted to register {}", id, registry.getKey().getValue(), f.getName(), rid,
-						registry.getId(val), describe(val), describe(v), e);
-				if (val instanceof Blameable b) {
-					if (b.yttr$getConstructionBlame() != null) {
-						YLog.error("The interloper's registration stack trace is:", b.yttr$getConstructionBlame());
-					} else {
-						YLog.error("Add -Dyttr.debugRegistration=true to your JVM arguments for more information.");
-					}
-				} else {
-					YLog.error("Blame data is not available for this registry, regardless of the value of -Dyttr.debugRegistration - sorry.");
-				}
-				YLog.error("Dazed and confused, but trying to continue...");
-			}
-			try {
-				Field holderField = holder.getDeclaredField(f.getName()+"_HOLDER");
-				if (holderField.getType() == LatchHolder.class
-						&& Modifier.isStatic(holderField.getModifiers()) && !Modifier.isTransient(holderField.getModifiers())) {
-					((LatchHolder)holderField.get(null)).set(registry.getOrCreateHolder(RegistryKey.of(registry.getKey(), id)).getOrThrow(false, s -> {}));
-				}
-			} catch (Exception e) {}
-		});
-	}
-
-	private static String describe(Object val) {
-		String identity = Integer.toHexString(System.identityHashCode(val));
-		if (val instanceof SoundEvent se) {
-			return "SoundEvent["+se.getId()+"]@"+identity;
-		}
-		String str = String.valueOf(val);
-		if (str.contains(identity)) return str;
-		return str+"@"+identity;
-	}
-
-	/**
-	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
-	 * in the given ad-hoc registry.
-	 */
-	public static <T> void autoRegister(Consumer<T> adhocRegistry, Class<?> holder, Class<T> type) {
-		eachRegisterableField(holder, type, null, (f, v, na) -> {
-			adhocRegistry.accept(v);
-		});
-	}
-
-	/**
-	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
-	 * in the yttr namespace with a path equal to the field's name as lower case in the given
-	 * registry.
-	 */
-	public static <T> void autoRegister(BiConsumer<Identifier, T> registry, Class<?> holder, Class<T> type) {
-		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
-			registry.accept(deriveId(f, ann), v);
-		});
 	}
 
 	private static Identifier deriveId(Field f, RegisteredAs ann) {
@@ -471,34 +323,6 @@ public class Yttr implements ModInitializer {
 		if (!be.hasWorld()) return;
 		if (be.getWorld().isClient) return;
 		be.getWorld().updateListeners(be.getPos(), Blocks.AIR.getDefaultState(), be.getCachedState(), 3);
-	}
-	
-	public static void spawnGuiParticles(ParticleEffect particle, double x, double y, double z, int count, double deltaX, double deltaY, double deltaZ, double speed) {
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-			var r = ThreadLocalRandom.current();
-			for (int i = 0; i < count; ++i) {
-				double xo = r.nextGaussian() * deltaX;
-				double yo = r.nextGaussian() * deltaY;
-				double zo = r.nextGaussian() * deltaZ;
-				double vx = r.nextGaussian() * speed;
-				double vy = r.nextGaussian() * speed;
-				double vz = r.nextGaussian() * speed;
-				spawnGuiParticle(particle, x + xo, y + yo, z + zo, vx, vy, vz);
-			}
-		}
-	}
-	
-	public static void spawnGuiParticle(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-			spawnGuiParticleClient(parameters, x, y, z, velocityX, velocityY, velocityZ);
-		}
-	}
-	
-	@Environment(EnvType.CLIENT)
-	public static void spawnGuiParticleClient(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-		if (MinecraftClient.getInstance().currentScreen instanceof ParticleScreen ps) {
-			ps.yttr$getParticleWorld().addParticle(parameters, x, y, z, velocityX, velocityY, velocityZ);
-		}
 	}
 
 	/**

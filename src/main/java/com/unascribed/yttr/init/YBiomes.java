@@ -2,8 +2,8 @@ package com.unascribed.yttr.init;
 
 import java.util.function.Consumer;
 
+import com.unascribed.lib39.core.api.util.LatchHolder;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.util.LatchHolder;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
@@ -88,7 +88,7 @@ public class YBiomes {
 	public static final LatchHolder<Biome> SCORCHED_TERMINUS_HOLDER = LatchHolder.unset();
 	
 	public static void init() {
-		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
+		Yttr.autoreg.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
 	}
 
 	@SafeVarargs

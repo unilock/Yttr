@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "yttr:block/project_table",
-	"yttr:inherit_elements": true,
+	"lib39:inherit_elements": true,
 	"textures": {
 		"side_overlay": "yttr:block/project_table_side_dyed",
 		"top_overlay": "yttr:block/project_table_top_dyed"

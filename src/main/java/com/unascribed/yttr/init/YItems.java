@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.core.api.util.LatchReference;
+import com.unascribed.lib39.weld.api.BigBlockItem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.AmmoCanItem;
 import com.unascribed.yttr.content.item.BlueCubeItem;
@@ -30,7 +32,6 @@ import com.unascribed.yttr.content.item.SpectralAxeItem;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.SwallowableItem;
 import com.unascribed.yttr.content.item.VoidBucketItem;
-import com.unascribed.yttr.content.item.block.BigBlockItem;
 import com.unascribed.yttr.content.item.block.BloqueBlockItem;
 import com.unascribed.yttr.content.item.block.DyedBlockItem;
 import com.unascribed.yttr.content.item.block.InRedCableBlockItem;
@@ -40,7 +41,6 @@ import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.content.item.block.SkeletalSorterBlockItem;
 import com.unascribed.yttr.content.item.potion.MercurialPotionItem;
 import com.unascribed.yttr.content.item.potion.MercurialSplashPotionItem;
-import com.unascribed.yttr.util.LatchReference;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -599,7 +599,7 @@ public class YItems {
 	public static final Item HAEMOPAL = new Item(new Item.Settings());
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
+		Yttr.autoreg.autoRegister(Registry.ITEM, YItems.class, Item.class);
 	}
 	
 	@Retention(RUNTIME)

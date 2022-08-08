@@ -1,6 +1,6 @@
 {
 	"type": "yttr:lamp_crafting",
-	"yttr:discovered_via": "yttr:glowing_gas",
+	"lib39:discovered_via": "yttr:glowing_gas",
 	"pattern": [
 		"YGY",
 		"GBG",

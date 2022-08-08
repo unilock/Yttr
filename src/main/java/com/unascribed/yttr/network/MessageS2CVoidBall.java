@@ -2,9 +2,9 @@ package com.unascribed.yttr.network;
 
 import com.unascribed.yttr.client.particle.VoidBallParticle;
 import com.unascribed.yttr.init.YNetwork;
-import com.unascribed.yttr.network.concrete.NetworkContext;
-import com.unascribed.yttr.network.concrete.S2CMessage;
-import com.unascribed.yttr.network.concrete.annotation.field.MarshalledAs;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.lib39.tunnel.api.S2CMessage;
+import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

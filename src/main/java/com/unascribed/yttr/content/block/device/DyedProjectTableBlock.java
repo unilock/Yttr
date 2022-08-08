@@ -2,9 +2,9 @@ package com.unascribed.yttr.content.block.device;
 
 import java.util.Locale;
 
+import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.DyedBlockItem;
-import com.unascribed.yttr.mechanics.SimpleLootBlock;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

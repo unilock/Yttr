@@ -18,7 +18,7 @@
 	],
 	"overrides": [
 		{
-			"predicate": { "yttr:halo": 1 },
+			"predicate": { "lib39:halo": 1 },
 			"model": "yttr:block/lazor_beam_halo"
 		}
 	]

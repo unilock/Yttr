@@ -2,7 +2,7 @@ package com.unascribed.yttr.content.block.lazor;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.content.block.decor.AbstractHaloBlockEntity;
+import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import net.minecraft.block.BlockState;

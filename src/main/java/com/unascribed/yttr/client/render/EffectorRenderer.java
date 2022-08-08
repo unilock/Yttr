@@ -13,7 +13,6 @@ import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.content.item.EffectorItem;
-import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.util.math.Interp;
 
 import com.google.common.collect.Iterables;
@@ -47,8 +46,7 @@ public class EffectorRenderer extends IHasAClient {
 	public static void render(WorldRenderContext wrc) {
 		if (effectorHoles.isEmpty()) return;
 		ClientWorld w = wrc.world();
-		if (!(w instanceof YttrWorld)) return;
-		((YttrWorld)w).yttr$setUnmask(true);
+		w.unmaskPhasedBlocks();
 		try {
 			Vec3d cam = wrc.camera().getPos();
 			MatrixStack ms = new MatrixStack();
@@ -132,7 +130,7 @@ public class EffectorRenderer extends IHasAClient {
 				RenderSystem.disablePolygonOffset();
 			}
 		} finally {
-			((YttrWorld)w).yttr$setUnmask(false);
+			w.remaskPhasedBlocks();
 		}
 	}
 	
@@ -238,8 +236,7 @@ public class EffectorRenderer extends IHasAClient {
 	}
 	
 	private static void drawVoidFace(World w, MatrixStack ms, VertexConsumer vc, BlockPos pos, Direction face) {
-		YttrWorld ew = (YttrWorld)w;
-		if (ew.yttr$isPhased(pos)) return;
+		if (w.isPhased(pos)) return;
 		if (w.isAir(pos.offset(face))) return;
 		BakedModel model = mc.getBlockRenderManager().getModel(mc.world.getBlockState(pos));
 		if (model == null) return;

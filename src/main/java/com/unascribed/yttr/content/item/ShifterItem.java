@@ -8,9 +8,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.unascribed.lib39.weld.api.BigBlock;
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.content.block.big.BigBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.Age;

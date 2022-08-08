@@ -1,7 +1,7 @@
 package com.unascribed.yttr.content.block.inred;
 
+import com.unascribed.lib39.core.api.util.RelativeFace;
 import com.unascribed.yttr.inred.InactiveSelection;
-import com.unascribed.yttr.util.RelativeFace;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

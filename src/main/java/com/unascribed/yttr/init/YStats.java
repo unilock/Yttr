@@ -55,8 +55,8 @@ public class YStats {
 	private static final Map<Identifier, StatFormatter> formatters = Maps.newHashMap();
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.CUSTOM_STAT, YStats.class, Identifier.class);
-		Yttr.eachRegisterableField(YStats.class, Identifier.class, FormattedAs.class, (f, id, ann) -> {
+		Yttr.autoreg.autoRegister(Registry.CUSTOM_STAT, YStats.class, Identifier.class);
+		Yttr.autoreg.eachRegisterableField(YStats.class, Identifier.class, FormattedAs.class, (f, id, ann) -> {
 			if (ann != null) {
 				formatters.put(id, formattersByName.get(ann.value()));
 			}

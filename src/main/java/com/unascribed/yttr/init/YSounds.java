@@ -128,7 +128,7 @@ public class YSounds {
 	
 
 	public static void init() {
-		Yttr.autoRegister(Registry.SOUND_EVENT, YSounds.class, SoundEvent.class);
+		Yttr.autoreg.autoRegister(Registry.SOUND_EVENT, YSounds.class, SoundEvent.class);
 	}
 
 	private static SoundEvent create(String path) {

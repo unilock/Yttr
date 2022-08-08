@@ -33,12 +33,6 @@ accessible class net/minecraft/world/biome/source/MultiNoiseBiomeSource$Instance
 
 accessible method net/minecraft/world/gen/feature/VegetationConfiguredFeatures createRandomPatchFeatureConfig (Lnet/minecraft/world/gen/stateprovider/BlockStateProvider;I)Lnet/minecraft/world/gen/feature/RandomPatchFeatureConfig;
 
-accessible class net/minecraft/world/gen/surfacebuilder/SurfaceRules$SequenceMaterialRule
-
-extendable method net/minecraft/client/particle/ParticleManager registerDefaultFactories ()V
-mutable field net/minecraft/client/particle/ParticleManager particleAtlasTexture Lnet/minecraft/client/texture/SpriteAtlasTexture;
-accessible field net/minecraft/client/particle/ParticleManager particleAtlasTexture Lnet/minecraft/client/texture/SpriteAtlasTexture;
-
 mutable field net/minecraft/world/World random Lnet/minecraft/util/random/RandomGenerator;
 
 accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$DrawMode;ILnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;

@@ -1,11 +1,10 @@
 package com.unascribed.yttr.content.block.decor;
 
+import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
+import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
-import com.unascribed.yttr.mechanics.SimpleLootBlock;
 import com.unascribed.yttr.util.Resolvable;
-import com.unascribed.yttr.util.YTickable;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
@@ -80,10 +79,10 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 		}
 		return ActionResult.FAIL;
 	}
-	
+
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return world.isClient ? YTickable::tick : null;
+		return world.isClient ? AbstractHaloBlockEntity::tick : null;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.unascribed.yttr.init;
 
+import com.unascribed.lib39.core.api.util.LatchReference;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.enchant.AnnihilationCurseEnchantment;
 import com.unascribed.yttr.content.enchant.DisjunctionEnchantment;
@@ -7,7 +8,6 @@ import com.unascribed.yttr.content.enchant.ShatteringCurseEnchantment;
 import com.unascribed.yttr.content.enchant.SpringingEnchantment;
 import com.unascribed.yttr.content.enchant.StabilizationEnchantment;
 import com.unascribed.yttr.content.enchant.VorpalEnchantment;
-import com.unascribed.yttr.util.LatchReference;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.registry.Registry;
@@ -23,7 +23,7 @@ public class YEnchantments {
 	public static final LatchReference<StabilizationEnchantment> STABILIZATION = YLatches.create();
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.ENCHANTMENT, YEnchantments.class, Enchantment.class);
+		Yttr.autoreg.autoRegister(Registry.ENCHANTMENT, YEnchantments.class, Enchantment.class);
 	}
 	
 }

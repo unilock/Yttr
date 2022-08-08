@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "yttr:discovered_via": "yttr:delrene",
+  "lib39:discovered_via": "yttr:delrene",
   "group": "yttr:bloques",
   "ingredients": [
     {

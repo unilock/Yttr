@@ -20,7 +20,7 @@ public class YRecipeTypes {
 	public static final RecipeType<ShatteringRecipe> SHATTERING = create("shattering");
 
 	public static void init() {
-		Yttr.autoRegister(Registry.RECIPE_TYPE, YRecipeTypes.class, RecipeType.class);
+		Yttr.autoreg.autoRegister(Registry.RECIPE_TYPE, YRecipeTypes.class, RecipeType.class);
 	}
 	
 	private static <T extends Recipe<?>> RecipeType<T> create(String id) {

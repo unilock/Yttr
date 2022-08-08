@@ -80,12 +80,6 @@ repositories {
 			includeGroup 'org.quiltmc'
 		}
 	}
-	flatDir {
-		dirs 'fuck'
-		content {
-			includeGroup 'fuck'
-		}
-	}
 }
 
 dependencies {
@@ -106,6 +100,10 @@ dependencies {
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.0-beta.1"
 	
 	include "me.luligabi:NoIndium:1.1.0+1.19"
+	
+	['core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld', 'sandman', 'crowbar', 'keygen', 'dessicant'].each { module ->
+		modApi include("com.unascribed:lib39-${module}:1.0.0")
+	}
 
 	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {
 		transitive = false

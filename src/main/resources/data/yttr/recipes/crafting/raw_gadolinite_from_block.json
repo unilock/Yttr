@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "yttr:discovered_via": "yttr:raw_gadolinite",
+  "lib39:discovered_via": "yttr:raw_gadolinite",
   "group": "raw_gadolinite",
   "ingredients": [
     {

@@ -14,7 +14,7 @@ public class YStatusEffects {
 	public static final StatusEffect POTION_SICKNESS = new StatusEffect(StatusEffectType.HARMFUL, 0xC8C6E2) {};
 
 	public static void init() {
-		Yttr.autoRegister(Registry.STATUS_EFFECT, YStatusEffects.class, StatusEffect.class);
+		Yttr.autoreg.autoRegister(Registry.STATUS_EFFECT, YStatusEffects.class, StatusEffect.class);
 	}
 
 }

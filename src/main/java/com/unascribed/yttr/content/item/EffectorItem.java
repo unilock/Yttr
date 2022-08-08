@@ -2,15 +2,12 @@ package com.unascribed.yttr.content.item;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
 
 import com.google.common.collect.Iterables;
@@ -18,6 +15,9 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
@@ -87,7 +87,7 @@ public class EffectorItem extends Item {
 			context.getPlayer().sendMessage(Text.translatable("tip.yttr.effector.no_fuel"), true);
 			return ActionResult.FAIL;
 		}
-		int amt = effect(world, pos, dir, stack, context.getPlayer().getUuid(), Math.min(fuel, 32), true);
+		int amt = effect(world, pos, dir, stack, context.getPlayer(), Math.min(fuel, 32), true);
 		YStats.add(context.getPlayer(), YStats.BLOCKS_EFFECTED, amt*100);
 		if (context.getPlayer() instanceof ServerPlayerEntity) {
 			YCriteria.EFFECT_BLOCK.trigger((ServerPlayerEntity)context.getPlayer(), pos, stack);
@@ -121,9 +121,7 @@ public class EffectorItem extends Item {
 		void scheduleRenderUpdate(int x, int y, int z);
 	}
 	
-	public static int effect(World world, BlockPos pos, Direction dir, @Nullable ItemStack stack, @Nullable UUID owner, int distance, boolean server) {
-		if (!(world instanceof YttrWorld)) return 0;
-		YttrWorld ew = (YttrWorld)world;
+	public static int effect(World world, BlockPos pos, Direction dir, @Nullable ItemStack stack, @Nullable PlayerEntity owner, int distance, boolean server) {
 		BlockPos.Mutable cursor = pos.mutableCopy();
 		BlockPos.Mutable outerCursor = new BlockPos.Mutable();
 		Axis axisZ = dir.getAxis();
@@ -142,7 +140,7 @@ public class EffectorItem extends Item {
 					BlockState bs = world.getBlockState(outerCursor);
 					if (bs.getHardness(world, outerCursor) < 0) continue;
 					if (!bs.isAir()) everythingWasUnpassable = false;
-					ew.yttr$addPhaseBlock(outerCursor, 150, 0, owner);
+					world.phaseBlock(outerCursor, 150, 0, owner == null ? null : new EffectorDamageSource(owner));
 				}
 			}
 			if (z >= 0 && server && everythingWasUnpassable) {
@@ -162,5 +160,18 @@ public class EffectorItem extends Item {
 		}
 	}
 	
+	public static class EffectorDamageSource extends EntityDamageSource {
+		
+		public EffectorDamageSource(Entity attacker) {
+			super("yttr.effector_fall", attacker);
+		}
+		
+		@Override
+		public Text getDeathMessage(LivingEntity entity) {
+			// no .item support
+			String string = "death.attack." + this.name;
+			return Text.translatable(string, entity.getDisplayName(), this.source.getDisplayName());
+		}
+	}
 
 }

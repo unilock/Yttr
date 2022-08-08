@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.lazor;
 
+import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
 import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.api.EnvType;
@@ -60,7 +61,7 @@ public class LazorBeamBlock extends AbstractLazorBlock implements BlockEntityPro
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return world.isClient ? YTickable::tick : null;
+		return world.isClient ? AbstractHaloBlockEntity::tick : null;
 	}
 	
 	@Override

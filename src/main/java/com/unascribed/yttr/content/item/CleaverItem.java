@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.core.api.util.NBTUtils;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
@@ -15,7 +16,6 @@ import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.Attackable;
-import com.unascribed.yttr.util.NBTUtils;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;

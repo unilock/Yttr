@@ -1,7 +1,6 @@
 package com.unascribed.yttr.mixin.accessor.client;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import net.fabricmc.api.EnvType;
@@ -16,10 +15,5 @@ public interface AccessorHandledScreen {
 
 	@Invoker("drawSlot")
 	void yttr$drawSlot(MatrixStack matrices, Slot slot);
-	
-	@Accessor("x")
-	int yttr$getX();
-	@Accessor("y")
-	int yttr$getY();
 	
 }

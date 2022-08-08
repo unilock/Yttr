@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "yttr:discovered_via": "yttr:project_table",
+  "lib39:discovered_via": "yttr:project_table",
   "group": "yttr:project_table_dyeing",
   "ingredients": [
     {

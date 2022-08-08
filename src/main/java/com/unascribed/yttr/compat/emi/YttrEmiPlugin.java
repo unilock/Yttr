@@ -37,9 +37,6 @@ import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.mechanics.LampColor;
-import com.unascribed.yttr.mixinsupport.ItemGroupParent;
-import com.unascribed.yttr.mixinsupport.SubTabLocation;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -58,19 +55,16 @@ import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.ListEmiIngredient;
-import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.screen.tooltip.IngredientTooltipComponent;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
@@ -116,7 +110,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 	
 	@Override
 	public void register(EmiRegistry registry) {
-		Yttr.autoRegister((id, c) -> {
+		Yttr.autoreg.autoRegister((id, c) -> {
 			c.id = id;
 			Identifier iconId = Yttr.id("textures/gui/emi_simple/"+id.getPath()+".png");
 			if (MinecraftClient.getInstance().getResourceManager().getResource(iconId).isPresent()) {
@@ -124,7 +118,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			}
 			registry.addCategory(c);
 		}, YttrEmiPlugin.class, EmiRecipeCategory.class);
-		Yttr.eachRegisterableField(YttrEmiPlugin.class, EmiRecipeCategory.class, Simple.class, (f, t, a) -> {
+		Yttr.autoreg.eachRegisterableField(YttrEmiPlugin.class, EmiRecipeCategory.class, Simple.class, (f, t, a) -> {
 			if (a == null) return;
 			try {
 				RecipeType rt = Registry.RECIPE_TYPE.get(t.id);
@@ -191,14 +185,6 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.setDefaultComparison(YItems.FIXTURE, compareNbt);
 		registry.setDefaultComparison(YItems.CAGE_LAMP, compareNbt);
 		registry.setDefaultComparison(YItems.PANEL, compareNbt);
-		
-		registry.addExclusionArea(CreativeInventoryScreen.class, (screen, out) -> {
-			ItemGroup selected = ItemGroup.GROUPS[screen.getSelectedTab()];
-			ItemGroupParent parent = (ItemGroupParent)selected;
-			if (screen instanceof SubTabLocation stl && parent.yttr$getChildren() != null && !parent.yttr$getChildren().isEmpty()) {
-				out.accept(new Bounds(stl.yttr$getX(), stl.yttr$getY(), stl.yttr$getW(), stl.yttr$getH()));
-			}
-		});
 		
 		registry.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING).stream()
 			.filter(r -> !r.isHidden())

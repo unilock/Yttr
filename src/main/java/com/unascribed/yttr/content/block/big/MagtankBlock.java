@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.big;
 
+import com.unascribed.lib39.weld.api.BigBlock;
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
 import com.unascribed.yttr.world.FilterNetwork.NodeType;
 import com.unascribed.yttr.world.FilterNetworks;
@@ -17,7 +18,6 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;

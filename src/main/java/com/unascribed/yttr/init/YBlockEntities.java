@@ -93,7 +93,7 @@ public class YBlockEntities {
 	}
 
 	public static void init() {
-		Yttr.autoRegister(Registry.BLOCK_ENTITY_TYPE, YBlockEntities.class, BlockEntityType.class);
+		Yttr.autoreg.autoRegister(Registry.BLOCK_ENTITY_TYPE, YBlockEntities.class, BlockEntityType.class);
 	}
 
 	@Retention(RUNTIME)

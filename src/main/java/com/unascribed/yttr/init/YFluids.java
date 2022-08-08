@@ -37,7 +37,7 @@ public class YFluids {
 	public static final CoreLavaFluid CORE_LAVA = new CoreLavaFluid();
 
 	public static void init() {
-		Yttr.autoRegister(Registry.FLUID, YFluids.class, Fluid.class);
+		Yttr.autoreg.autoRegister(Registry.FLUID, YFluids.class, Fluid.class);
 	}
 	
 	@Retention(RUNTIME)

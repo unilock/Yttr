@@ -23,8 +23,8 @@ public class YTrinkets {
 	private static final StabilizationEnchantment STABILIZATION = new StabilizationEnchantment();
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.ITEM, YTrinkets.class, Item.class);
-		Yttr.autoRegister(Registry.ENCHANTMENT, YTrinkets.class, Enchantment.class);
+		Yttr.autoreg.autoRegister(Registry.ITEM, YTrinkets.class, Item.class);
+		Yttr.autoreg.autoRegister(Registry.ENCHANTMENT, YTrinkets.class, Enchantment.class);
 		
 		YItems.CUPROSTEEL_COIL.set(CUPROSTEEL_COIL);
 		YItems.AMMO_PACK.set(AMMO_PACK);

@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "yttr:item/skeletal_sorter",
-	"yttr:inherit_elements": true,
+	"lib39:inherit_elements": true,
 	"elements": [
 		{
 			"from": [1, 16, -5.76745],

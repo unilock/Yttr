@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.core.api.util.SlotReference;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
@@ -20,7 +21,6 @@ import com.unascribed.yttr.network.MessageC2STrustedRifleFire;
 import com.unascribed.yttr.network.MessageS2CBeam;
 import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.InventoryProviderItem;
-import com.unascribed.yttr.util.SlotReference;
 
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;

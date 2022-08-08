@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.big;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.weld.api.BigBlock;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.big.DSUBlock.OpenState;
 import com.unascribed.yttr.init.YBlockEntities;

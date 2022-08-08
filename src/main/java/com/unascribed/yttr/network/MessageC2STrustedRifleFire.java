@@ -3,9 +3,9 @@ package com.unascribed.yttr.network;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YNetwork;
-import com.unascribed.yttr.network.concrete.C2SMessage;
-import com.unascribed.yttr.network.concrete.NetworkContext;
-import com.unascribed.yttr.network.concrete.annotation.field.MarshalledAs;
+import com.unascribed.lib39.tunnel.api.C2SMessage;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

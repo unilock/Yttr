@@ -2,7 +2,7 @@ package com.unascribed.yttr.init;
 
 import java.util.List;
 
-import com.unascribed.yttr.util.LatchReference;
+import com.unascribed.lib39.core.api.util.LatchReference;
 
 import com.google.common.collect.Lists;
 

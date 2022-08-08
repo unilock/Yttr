@@ -1,5 +1,6 @@
 package com.unascribed.yttr.init;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.network.MessageC2SAttack;
 import com.unascribed.yttr.network.MessageC2SDivePos;
 import com.unascribed.yttr.network.MessageC2SDiveTo;
@@ -17,11 +18,11 @@ import com.unascribed.yttr.network.MessageS2CDivePos;
 import com.unascribed.yttr.network.MessageS2CDivePressure;
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
-import com.unascribed.yttr.network.concrete.NetworkContext;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
 
 public class YNetwork {
 
-	public static final NetworkContext CONTEXT = NetworkContext.forChannel("yttr:main");
+	public static final NetworkContext CONTEXT = NetworkContext.forChannel(Yttr.id("main"));
 	
 	public static void init() {
 		CONTEXT.register(MessageC2SAttack.class);

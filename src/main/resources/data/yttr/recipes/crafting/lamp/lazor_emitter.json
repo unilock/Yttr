@@ -1,6 +1,6 @@
 {
 	"type": "yttr:lamp_crafting",
-	"yttr:discovered_via": "yttr:lamp",
+	"lib39:discovered_via": "yttr:lamp",
 	"pattern": [
 		"YBY",
 		"YLY",

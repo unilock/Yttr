@@ -454,19 +454,19 @@
 		"sounds": [ "yttr:rifle_scope" ]
 	},
 	"papillons": {
-		"sounds": [ { "name": "yttr:papillons.yttr_xm.bz2", "stream": true } ]
+		"sounds": [ { "name": "yttr:papillons.xm.bz2", "stream": true } ]
 	},
 	"void_music": {
-		"sounds": [ { "name": "yttr:void.yttr_xm.bz2", "stream": true } ]
+		"sounds": [ { "name": "yttr:void.xm.bz2", "stream": true } ]
 	},
 	"desert_heat": {
-		"sounds": [ { "name": "yttr:desert_heat.yttr_xm.bz2", "stream": true } ]
+		"sounds": [ { "name": "yttr:desert_heat.xm.bz2", "stream": true } ]
 	},
 	"memorandum": {
 		"sounds": [ { "name": "yttr:memorandum", "stream": true } ]
 	},
 	"torus": {
-		"sounds": [ { "name": "yttr:torus.yttr_xm.bz2", "stream": true } ]
+		"sounds": [ { "name": "yttr:torus.xm.bz2", "stream": true } ]
 	},
 	"vorpalhit1": {
 		"sounds": [

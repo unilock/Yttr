@@ -1,6 +1,6 @@
 {
 	"type": "yttr:centrifuging",
-	"yttr:discovered_via": "yttr:gadolinite",
+	"lib39:discovered_via": "yttr:gadolinite",
 	"ingredient": {
 		"item": "yttr:gadolinite"
 	},

@@ -1,21 +1,19 @@
 package com.unascribed.yttr.compat.trinkets;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
+import com.unascribed.lib39.core.api.util.SlotReference;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.Yttr.TrinketsAccess;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.util.SlotReference;
 
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Pair;
 
 public class YttrTrinketsCompat {
 	

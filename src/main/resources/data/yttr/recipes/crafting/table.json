@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "yttr:discovered_via": "minecraft:crafting_table",
+  "lib39:discovered_via": "minecraft:crafting_table",
   "pattern": [
     "###",
     "/ /",

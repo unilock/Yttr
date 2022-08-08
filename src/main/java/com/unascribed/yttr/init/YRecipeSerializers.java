@@ -23,7 +23,7 @@ public class YRecipeSerializers {
 	public static final SecretShapedRecipe.Serializer SECRET_CRAFTING_SHAPED = new SecretShapedRecipe.Serializer();
 
 	public static void init() {
-		Yttr.autoRegister(Registry.RECIPE_SERIALIZER, YRecipeSerializers.class, RecipeSerializer.class);
+		Yttr.autoreg.autoRegister(Registry.RECIPE_SERIALIZER, YRecipeSerializers.class, RecipeSerializer.class);
 	}
 	
 }
