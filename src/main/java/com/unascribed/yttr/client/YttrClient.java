@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 import com.unascribed.lib39.core.api.SplashTextRegistry;
+import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
@@ -70,7 +71,6 @@ import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
@@ -81,7 +81,6 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -129,7 +128,7 @@ import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
-import static com.unascribed.yttr.client.RenderBridge.*;
+import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
 	

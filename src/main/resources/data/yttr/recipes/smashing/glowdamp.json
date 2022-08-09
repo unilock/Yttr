@@ -1,5 +1,5 @@
 {
-	"type": "yttr:piston_smashing",
+	"type": "lib39:piston_smashing",
 	"input": { "block": "minecraft:shroomlight" },
 	"catalysts": { "block": "yttr:yttrium_block" },
 	"cloud": {

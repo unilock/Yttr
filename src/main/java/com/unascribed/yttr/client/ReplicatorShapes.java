@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client;
 
-import static com.unascribed.yttr.client.RenderBridge.*;
+import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.VertexConsumer;

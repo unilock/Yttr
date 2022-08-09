@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.yttr.client.RenderBridge.*;
+import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 import java.util.Set;
 

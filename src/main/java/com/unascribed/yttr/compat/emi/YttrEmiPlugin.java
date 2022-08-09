@@ -19,19 +19,15 @@ import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.compat.emi.recipe.EmiCentrifugingRecipe;
 import com.unascribed.yttr.compat.emi.recipe.EmiForgottenRecipe;
 import com.unascribed.yttr.compat.emi.recipe.EmiGiftRecipe;
-import com.unascribed.yttr.compat.emi.recipe.EmiPistonSmashingRecipe;
 import com.unascribed.yttr.compat.emi.recipe.EmiShatteringRecipe;
-import com.unascribed.yttr.compat.emi.recipe.EmiSoakingRecipe;
 import com.unascribed.yttr.compat.emi.recipe.EmiVoidFilteringRecipe;
 import com.unascribed.yttr.compat.emi.stack.SuitHelmetEmiStack;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
-import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.crafting.ShatteringRecipe;
-import com.unascribed.yttr.crafting.SoakingRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YItems;
@@ -90,12 +86,8 @@ public class YttrEmiPlugin implements EmiPlugin {
 	}
 	
 	// actual crafting methods
-	@Simple(from=PistonSmashingRecipe.class, to=EmiPistonSmashingRecipe.class)
-	public static final EmiRecipeCategory PISTON_SMASHING = category(EmiStack.of(Items.PISTON));
 	@Simple(from=CentrifugingRecipe.class, to=EmiCentrifugingRecipe.class)
 	public static final EmiRecipeCategory CENTRIFUGING = category(EmiStack.of(YItems.CENTRIFUGE));
-	@Simple(from=SoakingRecipe.class, to=EmiSoakingRecipe.class)
-	public static final EmiRecipeCategory SOAKING = category(EmiStack.of(YItems.VOID_BUCKET));
 	public static final EmiRecipeCategory VOID_FILTERING = category(EmiStack.of(YItems.VOID_FILTER));
 	
 	// miscellaneous
@@ -131,8 +123,6 @@ public class YttrEmiPlugin implements EmiPlugin {
 			}
 		});
 
-		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.PISTON));
-		registry.addWorkstation(PISTON_SMASHING, EmiStack.of(Items.STICKY_PISTON));
 		registry.addWorkstation(VOID_FILTERING, EmiStack.of(YItems.VOID_FILTER));
 		registry.addWorkstation(CENTRIFUGING, EmiStack.of(YItems.CENTRIFUGE));
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));

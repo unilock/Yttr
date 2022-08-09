@@ -691,9 +691,7 @@
 	"tag.yttr.substituted_yttrium": "Yttrium",
 	
 	"emi.category.yttr.void_filtering": "Void Filtering",
-	"emi.category.yttr.piston_smashing": "Piston Smashing",
 	"emi.category.yttr.centrifuging": "Centrifuging",
-	"emi.category.yttr.soaking": "Soaking",
 	"emi.category.yttr.continuity_gifts": "Gifts",
 	"emi.category.yttr.forgotten_crafting": "Forgotten Crafting",
 	"emi.category.yttr.lamp_crafting": "Misc. Lamp Crafting",
@@ -704,12 +702,8 @@
 	"emi.category.yttr.void_filtering.chance": "Chance: %s%%",
 	"emi.category.yttr.void_filtering.chance.short": "%s%%",
 	
-	"emi.category.yttr.soaking.consumes_catalyst": "Consumes fluid",
-	
 	"emi.category.yttr.continuity_gifts.chance": "%s%%",
 	"emi.category.yttr.continuity_gifts.chance.tooltip": "Chance of any one specific item",
-	
-	"emi.category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
 	
 	"tooltip.yttr.suit_helmet_hud": "HUD Color: %s",
 	

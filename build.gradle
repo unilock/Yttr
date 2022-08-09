@@ -80,6 +80,7 @@ repositories {
 			includeGroup 'org.quiltmc'
 		}
 	}
+	mavenLocal()
 }
 
 dependencies {
@@ -101,8 +102,11 @@ dependencies {
 	
 	include "me.luligabi:NoIndium:1.1.0+1.19"
 	
-	['core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld', 'sandman', 'crowbar', 'keygen', 'dessicant'].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.0.0")
+	[
+		'core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
+		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination'
+	].each { module ->
+		modApi include("com.unascribed:lib39-${module}:1.0.1")
 	}
 
 	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {

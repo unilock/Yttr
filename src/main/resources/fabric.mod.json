@@ -21,6 +21,7 @@
 		"client": [ "com.unascribed.yttr.client.YttrClient" ],
 		"lib39:postinit": [ "com.unascribed.yttr.YttrPostInit" ],
 		"lib39:surface_rule_modifier": [ "com.unascribed.yttr.world.YttrSurfaceRuleModifier" ],
+		"lib39:gl_compat_voter": [ "com.unascribed.yttr.client.YttrGLCompatVoter" ],
 		"emi": [ "com.unascribed.yttr.compat.emi.YttrEmiPlugin" ],
 		"modmenu": [ "com.unascribed.yttr.compat.modmenu.YttrModMenu" ]
 	},

@@ -43,7 +43,6 @@ import com.unascribed.yttr.init.YTrades;
 import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.init.conditional.YTrinkets;
 import com.unascribed.yttr.inred.InRedLogic;
-import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
@@ -202,10 +201,8 @@ public class Yttr implements ModInitializer {
 		});
 		
 		ServerTickEvents.START_WORLD_TICK.register((world) -> {
-			SoakingHandler.startServerWorldTick(world);
 			FilterNetworks.get(world).tick();
 		});
-		ServerTickEvents.END_WORLD_TICK.register(SoakingHandler::endServerWorldTick);
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			InRedLogic.onServerTick();
 			Iterator<DelayedTask> iter = delayedServerTasks.iterator();

@@ -1,5 +1,5 @@
 {
-	"type": "yttr:soaking",
+	"type": "lib39:soaking",
 	"ingredients": [ { "item": "minecraft:magenta_concrete_powder" } ],
 	"catalyst": { "fluid": "minecraft:water" },
 	"result": { "item": "minecraft:magenta_concrete" },

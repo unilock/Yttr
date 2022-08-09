@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import static com.unascribed.yttr.client.RenderBridge.*;
+import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;

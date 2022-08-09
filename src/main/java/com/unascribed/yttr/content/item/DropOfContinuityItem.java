@@ -127,16 +127,16 @@ public class DropOfContinuityItem extends Item {
 		Registry.BLOCK.getTag(YTags.Block.GIFTS).get().stream()
 			.map(re -> re.value().asItem())
 			.forEach(possibilities::add);
-		Registry.ITEM.getTag(YTags.Item.NOT_GIFTS).get().stream()
-			.map(re -> re.value())
-			.forEach(possibilities::remove);
-		possibilities.remove(null);
-		possibilities.remove(Items.AIR);
 		// the gifts tag used to include all the fabric tool tags but those are gone now
 		Registry.ITEM.getEntries().stream()
 			.map(Map.Entry::getValue)
 			.filter(i -> i instanceof ToolItem)
 			.forEach(possibilities::add);
+		Registry.ITEM.getTag(YTags.Item.NOT_GIFTS).get().stream()
+			.map(re -> re.value())
+			.forEach(possibilities::remove);
+		possibilities.remove(null);
+		possibilities.remove(Items.AIR);
 		return possibilities;
 	}
 	
