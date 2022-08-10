@@ -13,6 +13,20 @@
 	"itemGroup.yttr.inred": "Circuitry",
 	"itemGroup.yttr.misc": "Miscellaneous",
 	
+	"block.yttr.void_filter.tip.1": "§cWIP",
+	"block.yttr.encased_void_filter.tip.1": "§cWIP",
+	"block.yttr.inred_cable.tip.1": "§cWIP",
+	"block.yttr.inred_and_gate.tip.1": "§cWIP",
+	"block.yttr.inred_not_gate.tip.1": "§cWIP",
+	"block.yttr.inred_xor_gate.tip.1": "§cWIP",
+	"block.yttr.inred_diode.tip.1": "§cWIP",
+	"block.yttr.inred_shifter.tip.1": "§cWIP",
+	"block.yttr.inred_transistor.tip.1": "§cWIP",
+	"block.yttr.inred_encoder.tip.1": "§cWIP",
+	"block.yttr.inred_oscillator.tip.1": "§cWIP",
+	"block.yttr.magtank.tip.1": "§cNYI",
+	"block.yttr.magtube.tip.1": "§cNYI",
+	
 	"item.yttr.rifle": "Yttric Rifle",
 	"item.yttr.rifle_reinforced": "Bedrock-Reinforced Rifle",
 	"item.yttr.rifle_overclocked": "Void-Enhanced Rifle",
@@ -119,6 +133,8 @@
 	"item.yttr.lootbox_of_continuity.tip.1": "§7Can't be used for crafting.",
 	
 	"item.yttr.haemopal.tip.1": "§5§oIt seems to beat with you.",
+	
+	"item.yttr.rubble.tip.1": "§5§oSmashed fragments of a forgotten dream",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
