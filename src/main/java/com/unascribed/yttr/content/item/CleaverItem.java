@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.lib39.core.api.util.NBTUtils;
+import com.unascribed.lib39.util.api.NBTUtils;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;

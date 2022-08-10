@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.unascribed.lib39.core.api.util.NBTUtils;
+import com.unascribed.lib39.util.api.NBTUtils;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.util.YLog;

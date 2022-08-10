@@ -15,8 +15,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
-import com.unascribed.lib39.core.api.SplashTextRegistry;
 import com.unascribed.lib39.deferral.api.RenderBridge;
+import com.unascribed.lib39.ripple.api.SplashTextRegistry;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;

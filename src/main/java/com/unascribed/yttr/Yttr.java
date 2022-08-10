@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.lib39.core.api.AutoRegistry;
-import com.unascribed.lib39.core.api.util.SlotReference;
 import com.unascribed.lib39.crowbar.api.WorldGenerationEvents;
 import com.unascribed.lib39.dessicant.api.DessicantControl;
+import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBiomes;

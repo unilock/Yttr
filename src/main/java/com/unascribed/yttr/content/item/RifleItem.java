@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.lib39.core.api.util.SlotReference;
+import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;

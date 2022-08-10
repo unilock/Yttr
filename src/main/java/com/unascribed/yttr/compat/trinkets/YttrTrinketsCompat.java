@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-import com.unascribed.lib39.core.api.util.SlotReference;
+import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.Yttr.TrinketsAccess;
 import com.unascribed.yttr.init.YTags;
