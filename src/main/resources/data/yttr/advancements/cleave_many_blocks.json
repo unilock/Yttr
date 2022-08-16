@@ -20,7 +20,8 @@
 			"trigger": "yttr:cleave_block",
 			"conditions": {
 				"player": {
-					"player": {
+					"type_specific": {
+						"type": "player",
 						"stats": [
 							{
 								"type": "minecraft:custom",

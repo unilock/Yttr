@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.recoil.api.DirectClickItem;
 import com.unascribed.lib39.util.api.NBTUtils;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
@@ -15,7 +16,6 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
-import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
@@ -49,7 +49,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.World;
 
-public class CleaverItem extends Item implements Attackable {
+public class CleaverItem extends Item implements DirectClickItem {
 
 	public static final int SUBDIVISIONS = 4;
 	
@@ -156,10 +156,11 @@ public class CleaverItem extends Item implements Attackable {
 	}
 
 	@Override
-	public void attack(PlayerEntity user) {
+	public ActionResult onDirectAttack(PlayerEntity user, Hand hand) {
+		if (user.world.isClient) return ActionResult.CONSUME;
 		ItemStack stack = user.getMainHandStack();
 		if (getCleaveBlock(stack) == null) {
-			if (requiresSneaking() && !user.isSneaking()) return;
+			if (requiresSneaking() && !user.isSneaking()) return ActionResult.CONSUME;
 			Plane p = getLastCut(stack);
 			if (p != null) {
 				BlockHitResult bhr = raycast(user.world, user, FluidHandling.NONE);
@@ -175,6 +176,12 @@ public class CleaverItem extends Item implements Attackable {
 			setCleaveBlock(stack, null);
 			setCleaveStart(stack, null);
 		}
+		return ActionResult.SUCCESS;
+	}
+	
+	@Override
+	public ActionResult onDirectUse(PlayerEntity player, Hand hand) {
+		return ActionResult.PASS;
 	}
 	
 	public boolean performWorldCleave(World world, BlockPos pos, ItemStack stack, PlayerEntity player, Plane plane) {

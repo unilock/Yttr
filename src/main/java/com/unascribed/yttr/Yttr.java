@@ -54,6 +54,7 @@ import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 import com.unascribed.yttr.world.ScorchedGenerator;
+import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 import com.unascribed.yttr.world.WastelandPopulator;
 
 import com.google.common.base.Ascii;
@@ -198,6 +199,7 @@ public class Yttr implements ModInitializer {
 		});
 		WorldGenerationEvents.AFTER_GENERATE_FEATURES.register((ctx) -> {
 			ScorchedGenerator.generateTerminus(ctx.region().getSeed(), ctx.region(), ctx.structureManager());
+			SqueezeSaplingGenerator.generateNaturalTrees(ctx.region().getSeed(), ctx.region(), ctx.chunk());
 		});
 		
 		ServerTickEvents.START_WORLD_TICK.register((world) -> {

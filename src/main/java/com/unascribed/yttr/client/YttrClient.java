@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 import com.unascribed.lib39.deferral.api.RenderBridge;
+import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
@@ -369,6 +370,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
 		DynamicBlockModelProvider.init();
+		
+		RecoilEvents.UPDATE_FOV.register((fov, tickDelta) -> {
+			fov.set(MathHelper.lerp(RifleHUDRenderer.scopeA, fov.get(), 5));
+		});
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {
 			@Override

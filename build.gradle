@@ -104,9 +104,10 @@ dependencies {
 	
 	[
 		'core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
-		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple'
+		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
+		'recoil'
 	].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.1.0")
+		modApi include("com.unascribed:lib39-${module}:1.1.10")
 	}
 
 	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {

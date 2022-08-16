@@ -5,6 +5,8 @@ import static net.minecraft.util.math.Direction.UP;
 
 import java.awt.geom.Path2D;
 import java.util.Map;
+
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.content.block.natural.SqueezeLogBlock;
 import com.unascribed.yttr.init.YBlocks;
 
@@ -23,7 +25,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.random.RandomGenerator;
+import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.Heightmap.Type;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 
@@ -231,6 +239,32 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 				|| (!leaves && (bs.isOf(YBlocks.SQUEEZE_LOG) || bs.isOf(YBlocks.STRIPPED_SQUEEZE_LOG))))
 			return true;
 		return bs.isAir() || bs.getMaterial().isReplaceable() || bs.isOf(Blocks.KELP_PLANT);
+	}
+
+	public static void generateNaturalTrees(long seed, ChunkRegion world, Chunk chunk) {
+		if (!YConfig.WorldGen.squeezeTrees) return;
+		ChunkRandom chunkRandom = new ChunkRandom(new Xoroshiro128PlusPlusRandom(world.getSeed()));
+		chunkRandom.setPopulationSeed(seed, chunk.getPos().x, chunk.getPos().z);
+		if (chunkRandom.nextInt(40) == 0) {
+			int x = chunkRandom.nextInt(16);
+			int z = chunkRandom.nextInt(16);
+			chunkRandom.setPopulationSeed(world.getSeed(), x, z);
+			Holder<Biome> b = world.getBiome(new BlockPos(chunk.getPos().getStartX()+x, 0, chunk.getPos().getStartZ()+z));
+			if (b.getKey().get().getValue().getPath().contains("deep_ocean")) {
+				int y = chunk.sampleHeightmap(Type.OCEAN_FLOOR_WG, x, z);
+				int waterSurface = chunk.sampleHeightmap(Type.WORLD_SURFACE_WG, x, z);
+				if (waterSurface - y > 20) {
+					// for some reason, in 1.18 the ocean floor heightmap doesn't include surface blocks like gravel
+					// so try to generate it at the ocean floor, and a few blocks up, until we succeed
+					for (int i = 0; i < 4; i++) {
+						if (new SqueezeSaplingGenerator().generate(world, chunk.getPos().getStartPos().add(x, y, z), chunkRandom)) {
+							break;
+						}
+						y++;
+					}
+				}
+			}
+		}
 	}
 
 }

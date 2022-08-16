@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.lib39.recoil.api.DirectClickItem;
 import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
@@ -19,7 +20,6 @@ import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
 import com.unascribed.yttr.network.MessageC2STrustedRifleFire;
 import com.unascribed.yttr.network.MessageS2CBeam;
-import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.InventoryProviderItem;
 
 import com.google.common.base.Enums;
@@ -46,6 +46,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -64,7 +65,7 @@ import net.minecraft.world.RaycastContext.ShapeType;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class RifleItem extends Item implements ItemColorProvider, Attackable {
+public class RifleItem extends Item implements ItemColorProvider, DirectClickItem {
 
 	private final float speedMod;
 	private final int ammoMod;
@@ -166,7 +167,8 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	@Override
-	public void attack(PlayerEntity user) {
+	public ActionResult onDirectAttack(PlayerEntity user, Hand hand) {
+		if (user.world.isClient) return ActionResult.CONSUME;
 		ItemStack held = user.getStackInHand(Hand.MAIN_HAND);
 		if (!held.hasNbt()) held.setNbt(new NbtCompound());
 		boolean scoped = held.getNbt().getBoolean("Scoped");
@@ -175,6 +177,12 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 			YCriteria.RIFLE_SCOPE.trigger((ServerPlayerEntity)user);
 		}
 		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_SCOPE, SoundCategory.PLAYERS, 1, scoped ? 0.8f : 1.2f);
+		return ActionResult.SUCCESS;
+	}
+	
+	@Override
+	public ActionResult onDirectUse(PlayerEntity player, Hand hand) {
+		return ActionResult.PASS;
 	}
 	
 	public int getPotentialAmmoCount(PlayerEntity user, RifleMode mode) {

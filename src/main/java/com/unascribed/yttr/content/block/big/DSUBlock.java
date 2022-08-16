@@ -159,9 +159,9 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 			if (state.get(X) == 0 && state.get(Y) == 0 && state.get(Z) == 0) {
 				BlockEntity be = world.getBlockEntity(pos);
 				if (be instanceof DSUBlockEntity) {
-					double x = pos.getX()+(xSize/2D);
-					double y = pos.getY()+(ySize/2D);
-					double z = pos.getZ()+(zSize/2D);
+					double x = pos.getX()+(getXSize()/2D);
+					double y = pos.getY()+(getYSize()/2D);
+					double z = pos.getZ()+(getZSize()/2D);
 					for (ItemStack is : Yttr.asList((DSUBlockEntity)be)) {
 						double xO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
 						double yO = (world.random.nextDouble()-world.random.nextDouble())*0.5;

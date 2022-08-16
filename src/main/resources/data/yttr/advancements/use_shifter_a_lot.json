@@ -21,7 +21,8 @@
 			"trigger": "yttr:shift_block",
 			"conditions": {
 				"player": {
-					"player": {
+					"type_specific": {
+						"type": "player",
 						"stats": [
 							{
 								"type": "minecraft:custom",

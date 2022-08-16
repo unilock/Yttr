@@ -69,16 +69,16 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 		int maxBlockLight = 0;
 		int maxSkyLight = 0;
 		if (dir.getAxis() == Axis.X) {
-			for (int y = 0; y < dsu.ySize; y++) {
-				for (int z = 0; z < dsu.zSize; z++) {
+			for (int y = 0; y < dsu.getYSize(); y++) {
+				for (int z = 0; z < dsu.getZSize(); z++) {
 					frontScan.move(0, y, z);
 					maxBlockLight = Math.max(maxBlockLight, entity.getWorld().getLightLevel(LightType.BLOCK, frontScan));
 					maxSkyLight = Math.max(maxSkyLight, entity.getWorld().getLightLevel(LightType.SKY, frontScan));
 				}
 			}
 		} else if (dir.getAxis() == Axis.Z) {
-			for (int y = 0; y < dsu.ySize; y++) {
-				for (int x = 0; x < dsu.xSize; x++) {
+			for (int y = 0; y < dsu.getYSize(); y++) {
+				for (int x = 0; x < dsu.getXSize(); x++) {
 					frontScan.move(x, y, 0);
 					maxBlockLight = Math.max(maxBlockLight, entity.getWorld().getLightLevel(LightType.BLOCK, frontScan));
 					maxSkyLight = Math.max(maxSkyLight, entity.getWorld().getLightLevel(LightType.SKY, frontScan));
@@ -87,7 +87,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 		}
 		light = LightmapTextureManager.pack(maxBlockLight, maxSkyLight);
 		matrices.push();
-			matrices.translate(dsu.xSize/2D, dsu.ySize/2D, dsu.zSize/2D);
+			matrices.translate(dsu.getXSize()/2D, dsu.getYSize()/2D, dsu.getZSize()/2D);
 			float ang = 0;
 			switch (entity.getCachedState().get(DSUBlock.FACING)) {
 				case NORTH:
@@ -107,7 +107,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 					break;
 			}
 			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
-			matrices.translate(-dsu.xSize/2D, -dsu.ySize/2D, -dsu.zSize/2D);
+			matrices.translate(-dsu.getXSize()/2D, -dsu.getYSize()/2D, -dsu.getZSize()/2D);
 			matrices.translate(2, 2, 0);
 			matrices.scale(-1/16f, -1/16f, 1/16f);
 			Matrix4f mat = matrices.peek().getPosition();

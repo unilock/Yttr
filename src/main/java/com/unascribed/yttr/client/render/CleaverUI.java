@@ -45,6 +45,7 @@ public class CleaverUI extends IHasAClient {
 						glDisable(GL_TEXTURE_2D);
 						glDefaultBlendFunc();
 						glEnable(GL_BLEND);
+						glDisable(GL_DEPTH_TEST);
 						glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 						glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 						glEnable(GL_POINT_SMOOTH);
@@ -137,6 +138,7 @@ public class CleaverUI extends IHasAClient {
 							}
 							glEnable(GL_CULL_FACE);
 						}
+						glEnable(GL_DEPTH_TEST);
 						glDisable(GL_BLEND);
 						glPopMCMatrix();
 						glEnable(GL_TEXTURE_2D);
