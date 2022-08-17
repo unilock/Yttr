@@ -23,7 +23,6 @@ import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
-import com.unascribed.yttr.client.render.ProfilerRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.ShifterUI;
@@ -56,8 +55,6 @@ import com.google.common.collect.Sets;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -129,7 +126,6 @@ import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
-import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
@@ -140,10 +136,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	private boolean hasCheckedRegistry = false;
 	private boolean firstWorldTick = true;
-	private boolean wireframeMode = false;
-	
-	public static boolean onlyRenderOpaqueParticles = false;
-	public static boolean onlyRenderNonOpaqueParticles = false;
 	
 	public static boolean renderingGui = false;
 	
@@ -325,43 +317,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.render(matrixStack, tickDelta);
 			RifleHUDRenderer.render(matrixStack, tickDelta);
 			ShifterUI.render(matrixStack, tickDelta);
-		});
-		
-		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-			dispatcher.register(ClientCommandManager.literal("yttr:profiler")
-					.executes(ctx -> {
-						ProfilerRenderer.enabled = !ProfilerRenderer.enabled;
-						return 0;
-					}));
-			dispatcher.register(ClientCommandManager.literal("yttr:wireframe")
-					.executes(ctx -> {
-						if (ctx.getSource().getPlayer().isSpectator() || ctx.getSource().getPlayer().isCreative()) {
-							wireframeMode = !wireframeMode;
-							if (wireframeMode) {
-								ctx.getSource().sendFeedback(Text.translatable("msg.yttr.wireframe.enabled"));
-							} else {
-								ctx.getSource().sendFeedback(Text.translatable("msg.yttr.wireframe.disabled"));
-							}
-						} else {
-							ctx.getSource().sendError(Text.translatable("msg.yttr.wireframe.illegal"));
-						}
-						return 0;
-					}));
-		});
-		
-		WorldRenderEvents.START.register((wrc) -> {
-			if (mc.player != null && (mc.player.isSpectator() || mc.player.isCreative())) {
-				if (wireframeMode) {
-					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				}
-			} else {
-				wireframeMode = false;
-			}
-		});
-		WorldRenderEvents.END.register((wrc) -> {
-			if (wireframeMode) {
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
 		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);

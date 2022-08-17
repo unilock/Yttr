@@ -109,6 +109,8 @@ dependencies {
 	].each { module ->
 		modApi include("com.unascribed:lib39-${module}:1.1.10")
 	}
+	
+	include "com.unascribed:lucium:1.1"
 
 	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {
 		transitive = false
@@ -190,6 +192,8 @@ if (System.getenv("MODRINTH_TOKEN")) {
 			optional.project 'emi'
 			optional.project 'trinkets'
 			embedded.project 'no-indium'
+			embedded.project 'lib39'
+			embedded.project 'lucium'
 		}
 	}
 }

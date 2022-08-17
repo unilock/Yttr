@@ -13,12 +13,6 @@
 	trust-players: var(general.trust-players);
 	
 	/*
-	 * If set to "on", Yttr will add all modded blockstates to the debug world after mods have
-	 * initialized.
-	 */
-	fixup-debug-world: var(general.fixup-debug-world);
-	
-	/*
 	 * If set to "on", enables inside-jokes and various chaos. Nothing destructive.
 	 */
 	shenanigans: var(general.shenanigans);

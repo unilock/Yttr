@@ -154,8 +154,6 @@ public class YConfig {
 	public static final class General {
 		@Key("general.trust-players")
 		public static boolean trustPlayers    = false;
-		@Key("general.fixup-debug-world")
-		public static boolean fixupDebugWorld = true;
 		@Key("general.shenanigans")
 		public static boolean shenanigans     = true;
 		
