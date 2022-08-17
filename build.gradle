@@ -221,6 +221,8 @@ if (System.getenv("CURSE_TOKEN")) {
 				optionalDependency 'emi'
 				optionalDependency 'trinkets'
 				embeddedLibrary 'no-indium'
+				embeddedLibrary 'lib39'
+				embeddedLibrary 'lucium'
 			}
 		}
 		options {
