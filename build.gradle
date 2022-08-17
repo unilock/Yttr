@@ -182,7 +182,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		versionName = 'v'+project.version
 		versionType = 'beta'
 		uploadFile = remapJar
-		gameVersions = ['1.19.1', '1.19.2']
+		gameVersions = ['1.19', '1.19.1', '1.19.2']
 		loaders = ['fabric', 'quilt']
 		detectLoaders = false
 		changelog = file('CHANGELOG.md').text
@@ -207,6 +207,7 @@ if (System.getenv("CURSE_TOKEN")) {
 			changelogType = 'markdown'
 			changelog = file('CHANGELOG.md')
 
+			addGameVersion '1.19'
 			addGameVersion '1.19.1'
 			addGameVersion '1.19.2'
 			addGameVersion 'Fabric'
