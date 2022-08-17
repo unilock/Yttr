@@ -216,8 +216,10 @@ if (System.getenv("CURSE_TOKEN")) {
 				displayName = 'Yttr v'+project.version
 			}
 			relations {
-				requiredDependency 'fabric-api'
-				requiredDependency 'qsl'
+				// The Curse launcher fails to notice FAPI is Fabric-only and QSL is Quilt-only, so
+				// it will attempt to install both. Sigh.
+				//requiredDependency 'fabric-api'
+				//requiredDependency 'qsl'
 				optionalDependency 'emi'
 				optionalDependency 'trinkets'
 				embeddedLibrary 'no-indium'
