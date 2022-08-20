@@ -5,8 +5,6 @@ import java.util.Optional;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YHandledScreens;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -172,9 +170,9 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 			@Override
 			protected void fillInputSlot(Slot slot, ItemStack stack) {
 				// scan storage, but not grid
-				for (int i = 9; i < inv.size(); ++i) {
+				for (int i = 9; i < inv.size(); i++) {
 					ItemStack is = inv.getStack(i);
-					if (!is.isEmpty() && ItemStack.areItemsEqual(stack, is) && !(is.isDamaged() && !is.hasEnchantments() && !is.hasCustomName())) {
+					if (!is.isEmpty() && ItemStack.areItemsEqual(stack, is) && !is.isDamaged() && !is.hasEnchantments() && !is.hasCustomName()) {
 						is = is.copy();
 						if (is.getCount() > 1) {
 							inv.removeStack(i, 1);
@@ -194,31 +192,39 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 				// handle player inventory
 				super.fillInputSlot(slot, stack);
 			}
-
-			private ItemStack tryTransfer(Slot from, ItemStack is, Inventory inv, int start) {
-				for (int i = start; i < inv.size(); i++) {
-					if (is.isEmpty()) return is;
-					ItemStack there = inv.getStack(i);
-					if (there.isEmpty() || ItemStack.canCombine(is, there) && inv.isValid(i, is)) {
-						int canTransfer = there.getMaxCount()-there.getCount();
-						if (canTransfer > 0) {
-							if (there.isEmpty()) {
-								inv.setStack(i, is.copy());
-								from.setStack(ItemStack.EMPTY);
-								return ItemStack.EMPTY;
-							} else {
-								int transfer = Math.min(canTransfer, is.getCount());
-								there.increment(transfer);
-								inv.setStack(i, there);
-								is.decrement(transfer);
-								from.setStack(is);
+			
+			@Override
+			protected void returnInputs(boolean bl) {
+				for(int i = 0; i < handler.getCraftingSlotCount(); i++) {
+					if (handler.canInsertIntoSlot(i)) {
+						ItemStack is = handler.getSlot(i).getStack().copy();
+						System.out.println(i+" = "+is);
+						System.out.println(is);
+						for (int j = 9; j < inv.size(); j++) {
+							if (is.isEmpty()) break;
+							ItemStack cur = inv.getStack(j);
+							if (cur.isEmpty()) {
+								System.out.println("place @ "+j);
+								inv.setStack(j, is);
+								is = ItemStack.EMPTY;
+							} else if (ItemStack.canCombine(is, cur)) {
+								int amt = Math.min(cur.getMaxCount()-cur.getCount(), is.getCount());
+								System.out.println("merge "+amt+" @ "+j);
+								is.decrement(amt);
+								cur.increment(amt);
 							}
 						}
+						if (!is.isEmpty()) {
+							inventory.offer(is, false);
+						}
+						handler.getSlot(i).setStack(is);
 					}
 				}
-				return is;
+
+				handler.clearCraftingSlots();
 			}
 		}.fillInputSlots(player, (Recipe<CraftingInventory>)recipe, craftAll);
+
 	}
 
 	@Override
@@ -303,13 +309,11 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
 	public int getCraftingSlotCount() {
-		return 9;
+		return 10;
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
 	public RecipeBookCategory getCategory() {
 		return RecipeBookCategory.CRAFTING;
 	}

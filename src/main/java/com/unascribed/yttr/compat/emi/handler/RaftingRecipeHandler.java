@@ -1,0 +1,40 @@
+package com.unascribed.yttr.compat.emi.handler;
+
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.unascribed.yttr.inventory.RafterScreenHandler;
+import dev.emi.emi.api.EmiRecipeHandler;
+import dev.emi.emi.api.recipe.EmiRecipe;
+import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
+import net.minecraft.screen.slot.Slot;
+
+public class RaftingRecipeHandler implements EmiRecipeHandler<RafterScreenHandler> {
+
+	private static final int RESULT_SLOT = 0;
+	
+	private static final int GRID_END = (6*6)+1;
+	private static final int PLAYER_INV_END = GRID_END+(9*4);
+	
+	@Override
+	public List<Slot> getInputSources(RafterScreenHandler handler) {
+		return handler.slots.subList(0, PLAYER_INV_END);
+	}
+	
+	@Override
+	public List<Slot> getCraftingSlots(RafterScreenHandler handler) {
+		return handler.slots.subList(1, GRID_END);
+	}
+
+	@Override
+	public @Nullable Slot getOutputSlot(RafterScreenHandler handler) {
+		return handler.getSlot(RESULT_SLOT);
+	}
+
+	@Override
+	public boolean supportsRecipe(EmiRecipe recipe) {
+		return recipe.getCategory() == VanillaEmiRecipeCategories.CRAFTING && recipe.supportsRecipeTree();
+	}
+
+}

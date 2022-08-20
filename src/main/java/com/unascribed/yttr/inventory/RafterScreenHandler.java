@@ -5,8 +5,6 @@ import java.util.Optional;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YHandledScreens;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -202,13 +200,11 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
 	public int getCraftingSlotCount() {
-		return 10;
+		return 37;
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
 	public RecipeBookCategory getCategory() {
 		return RecipeBookCategory.CRAFTING;
 	}

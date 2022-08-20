@@ -16,6 +16,8 @@ import java.util.function.Function;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
+import com.unascribed.yttr.compat.emi.handler.ProjectTableRecipeHandler;
+import com.unascribed.yttr.compat.emi.handler.RaftingRecipeHandler;
 import com.unascribed.yttr.compat.emi.recipe.EmiCentrifugingRecipe;
 import com.unascribed.yttr.compat.emi.recipe.EmiForgottenRecipe;
 import com.unascribed.yttr.compat.emi.recipe.EmiGiftRecipe;
@@ -30,6 +32,7 @@ import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.crafting.ShatteringRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEnchantments;
+import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.mechanics.LampColor;
@@ -122,10 +125,13 @@ public class YttrEmiPlugin implements EmiPlugin {
 				e.printStackTrace();
 			}
 		});
-
+		
 		registry.addWorkstation(VOID_FILTERING, EmiStack.of(YItems.VOID_FILTER));
 		registry.addWorkstation(CENTRIFUGING, EmiStack.of(YItems.CENTRIFUGE));
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
+
+		registry.addRecipeHandler(YHandledScreens.RAFTING, new RaftingRecipeHandler());
+		registry.addRecipeHandler(YHandledScreens.PROJECT_TABLE, new ProjectTableRecipeHandler());
 		
 		List<EmiStack> pickaxes = new ArrayList<>();
 		for (var en : Registry.ITEM.getEntries()) {
