@@ -1,1 +1,1 @@
-*No changes yet*
+* Fixed Squeeze Leaves loot table
