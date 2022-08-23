@@ -75,6 +75,7 @@ public class YttrConfigScreen extends Screen {
 			.put("general.trust-players", "makes things more reliable despite lag, but makes cheating on servers easier")
 			.put("general.fixup-debug-world", "adds missing modded blockstates to the vanilla debug world")
 			.put("general.shenanigans", "inside-jokes and various chaos - nothing destructive")
+			.put("general.convert-void-holes", "automatically convert non-yttr overworld void holes into geysers")
 			
 			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")

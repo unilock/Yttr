@@ -153,9 +153,11 @@ public class YConfig {
 	
 	public static final class General {
 		@Key("general.trust-players")
-		public static boolean trustPlayers    = false;
+		public static boolean trustPlayers     = false;
 		@Key("general.shenanigans")
-		public static boolean shenanigans     = true;
+		public static boolean shenanigans      = true;
+		@Key("general.convert-void-holes")
+		public static boolean convertVoidHoles = true;
 		
 		static { touch(); }
 		

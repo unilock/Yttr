@@ -16,6 +16,13 @@
 	 * If set to "on", enables inside-jokes and various chaos. Nothing destructive.
 	 */
 	shenanigans: var(general.shenanigans);
+	
+	/*
+	 * If set to "on", Overworld void holes created through other means than a Bedrock Breaker (e.g.
+	 * creative breaking) will still create Void Geysers. Turn this off if you have other mods that
+	 * need void holes for their own reasons.
+	 */
+	convert-void-holes: var(general.convert-void-holes);
 }
 
 #client {

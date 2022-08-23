@@ -2,6 +2,7 @@
 #general {
 	trust-players: off;
 	shenanigans: on;
+	convert-void-holes: on;
 }
 
 #client {
