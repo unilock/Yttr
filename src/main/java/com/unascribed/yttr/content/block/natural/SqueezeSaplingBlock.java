@@ -9,6 +9,7 @@ import net.minecraft.block.sapling.SaplingGenerator;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -54,6 +55,14 @@ public class SqueezeSaplingBlock extends SaplingBlock implements Waterloggable {
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+
+	// super checks light level, we don't care about light level
+	@Override
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+		if (random.nextInt(7) == 0) {
+			generate(world, pos, state, random);
+		}
 	}
 
 }

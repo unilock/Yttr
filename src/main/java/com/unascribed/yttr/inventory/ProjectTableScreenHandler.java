@@ -198,18 +198,14 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 				for(int i = 0; i < handler.getCraftingSlotCount(); i++) {
 					if (handler.canInsertIntoSlot(i)) {
 						ItemStack is = handler.getSlot(i).getStack().copy();
-						System.out.println(i+" = "+is);
-						System.out.println(is);
 						for (int j = 9; j < inv.size(); j++) {
 							if (is.isEmpty()) break;
 							ItemStack cur = inv.getStack(j);
 							if (cur.isEmpty()) {
-								System.out.println("place @ "+j);
 								inv.setStack(j, is);
 								is = ItemStack.EMPTY;
 							} else if (ItemStack.canCombine(is, cur)) {
 								int amt = Math.min(cur.getMaxCount()-cur.getCount(), is.getCount());
-								System.out.println("merge "+amt+" @ "+j);
 								is.decrement(amt);
 								cur.increment(amt);
 							}
