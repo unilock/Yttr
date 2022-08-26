@@ -159,7 +159,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SplashTextRegistry.replace("Closed source!",
 					"Effectively visible source!");
 			SplashTextRegistry.replace("Lennart lennart = new Lennart()",
-					"§7Lennart §flennart §6= §1new §7Lennart§6();");
+					"§7Lennart §flennart §6= §9new §7Lennart§6();");
 			SplashTextRegistry.registerStatic(
 					"Also try Minetest!",
 					"Also try Terasology!",
@@ -169,7 +169,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					"Also try Xonotic!",
 					"Now with everybody's favorite Bloque® Brand Plastic Construction Building Bricks!",
 					"Vertical!",
-					"§9var §flen §6= §9new §7Lennart§6(, §2// DRY",
+					"§9var §flen §6= §9new §7Lennart§6(); §2// DRY",
 					"", // the scariest splash is no splash at all
 					"Now with Void!"
 				);

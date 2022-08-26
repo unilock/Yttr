@@ -193,7 +193,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					if (bs.getHardness(world, hr.getBlockPos()) >= 0) {
 						toDelete = hr.getBlockPos();
 						boolean waterlogged = bs.getBlock() instanceof Waterloggable && bs.get(Properties.WATERLOGGED);
-						deleteState = waterlogged ? Blocks.MANGROVE_PROPAGULE.getDefaultState() : Blocks.AIR.getDefaultState();
+						deleteState = waterlogged ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState();
 						if (waterlogged) bs = bs.with(Properties.WATERLOGGED, false);
 						FallingBlockEntity fbe = new FallingBlockEntity(world, hr.getBlockPos().getX()+0.5, hr.getBlockPos().getY(), hr.getBlockPos().getZ()+0.5, bs);
 						fbe.dropItem = true;
