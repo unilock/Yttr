@@ -327,7 +327,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		DynamicBlockModelProvider.init();
 		
 		RecoilEvents.UPDATE_FOV.register((fov, tickDelta) -> {
-			fov.set(MathHelper.lerp(RifleHUDRenderer.scopeA, fov.get(), 5));
+			fov.set(MathHelper.lerp(RifleHUDRenderer.scopeA, fov.get(), 10));
 		});
 		RecoilEvents.UPDATE_ENTITY_RENDER_DISTANCE.register((erd) -> {
 			if (RifleHUDRenderer.scopeA > 0) {

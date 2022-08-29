@@ -191,6 +191,8 @@
 	"block.yttr.brookite_block": "Block of Brookite",
 	"block.yttr.temporary_light_air": "Temporary Light Air",
 	"block.yttr.permanent_light_air": "Permanent Light Air",
+	"block.yttr.temporary_light_water": "Temporary Light Water",
+	"block.yttr.permanent_light_water": "Permanent Light Water",
 	"block.yttr.core_lava": "Core Lava",
 	"block.yttr.nethertuff": "Nethertuff",
 	"block.yttr.evaporator": "Magvaporator",

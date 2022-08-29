@@ -164,6 +164,8 @@ public class EffectorItem extends Item {
 		
 		public EffectorDamageSource(Entity attacker) {
 			super("yttr.effector_fall", attacker);
+			setFromFalling();
+			setBypassesArmor();
 		}
 		
 		@Override

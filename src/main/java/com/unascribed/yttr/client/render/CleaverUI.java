@@ -1,15 +1,20 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.lib39.deferral.api.RenderBridge.*;
-
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.mojang.blaze3d.vertex.VertexFormats;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
@@ -17,17 +22,22 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 
 public class CleaverUI extends IHasAClient {
 
+	private static final Identifier TEX = Yttr.id("textures/gui/cleaver_ui.png");
+	
 	public static boolean render(WorldRenderContext wrc, BlockOutlineContext boc) {
 		ItemStack held = mc.player.getStackInHand(Hand.MAIN_HAND);
 		if (held.getItem() instanceof CleaverItem) {
@@ -39,17 +49,12 @@ public class CleaverUI extends IHasAClient {
 					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
 					BlockState bs = wrc.world().getBlockState(pos);
 					if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
-						if (!canUseCompatFunctions()) return true;
-						glPushMCMatrix(wrc.matrixStack());
-						glTranslated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-						glDisable(GL_TEXTURE_2D);
-						glDefaultBlendFunc();
-						glEnable(GL_BLEND);
-						glDisable(GL_DEPTH_TEST);
-						glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-						glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-						glEnable(GL_POINT_SMOOTH);
-						glEnable(GL_LINE_SMOOTH);
+						var ms = wrc.matrixStack();
+						ms.push();
+						var dX = pos.getX()-boc.cameraX();
+						var dY = pos.getY()-boc.cameraY();
+						var dZ = pos.getZ()-boc.cameraZ();
+						ms.translate(dX, dY, dZ);
 						float scale = (float)mc.getWindow().getScaleFactor();
 						int sd = CleaverItem.SUBDIVISIONS;
 						Vec3d cleaveStart = ci.getCleaveStart(held);
@@ -58,90 +63,127 @@ public class CleaverUI extends IHasAClient {
 						float selectedX = 0;
 						float selectedY = 0;
 						float selectedZ = 0;
-						for (int x = 0; x <= sd; x++) {
-							for (int y = 0; y <= sd; y++) {
-								for (int z = 0; z <= sd; z++) {
-									if ((x > 0 && x < sd) &&
-											(y > 0 && y < sd) &&
-											(z > 0 && z < sd)) {
-										continue;
+						var tess = Tessellator.getInstance();
+						var vc = tess.getBufferBuilder();
+						RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+						RenderSystem.setShaderTexture(0, TEX);
+						RenderSystem.setShaderColor(1, 1, 1, 1);
+						RenderSystem.disableCull();
+						RenderSystem.disableDepthTest();
+						for (int p = 0; p < 3; p++) {
+							vc.begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+							for (int x = 0; x <= sd; x++) {
+								for (int y = 0; y <= sd; y++) {
+									for (int z = 0; z <= sd; z++) {
+										if ((x > 0 && x < sd) &&
+												(y > 0 && y < sd) &&
+												(z > 0 && z < sd)) {
+											continue;
+										}
+										
+										float wX = x/(float)sd;
+										float wY = y/(float)sd;
+										float wZ = z/(float)sd;
+										boolean highlight = (cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05) || (cleaveCorner != null && cleaveCorner.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05);
+										boolean selected = false;
+										
+										int wantedPass = 2;
+										if (highlight) wantedPass = 1;
+										if (selected) wantedPass = 0;
+
+										if (p != wantedPass) continue;
+										
+										float a;
+										if (!highlight) {
+											double dist = tgt.getPos().squaredDistanceTo(pos.getX()+wX, pos.getY()+wY, pos.getZ()+wZ);
+											final double maxDist = 0.75;
+											if (dist > maxDist*maxDist) continue;
+											selected = dist < 0.1*0.1;
+											double distSq = Math.sqrt(dist);
+											a = (float)((maxDist-distSq)/maxDist);
+										} else {
+											a = 1;
+										}
+										float r = 1;
+										float g = 1;
+										float b = 1;
+										float size = a*10;
+										if (highlight) {
+											size = 10;
+											g = 0;
+											b = 0;
+										} else if (selected) {
+											size = 10;
+											b = 0;
+											anySelected = true;
+											selectedX = wX;
+											selectedY = wY;
+											selectedZ = wZ;
+										}
+										int which = 0;
+										if (selected) {
+											which = 1;
+										} else if (highlight) {
+											which = 2;
+										}
+										float minU = which/3f;
+										float minV = 0;
+										float maxU = (which+1)/3f;
+										float maxV = 1;
+										size *= scale;
+										size /= 300;
+										ms.push();
+											ms.translate(wX, wY, wZ);
+											ms.scale(size, size, size);
+											ms.multiply(wrc.camera().getRotation());
+											var mat = ms.peek().getPosition();
+											vc.vertex(mat, -1, -1, 0).uv(minU, minV).color(r, g, b, a).next();
+											vc.vertex(mat,  1, -1, 0).uv(maxU, minV).color(r, g, b, a).next();
+											vc.vertex(mat,  1,  1, 0).uv(maxU, maxV).color(r, g, b, a).next();
+											vc.vertex(mat, -1,  1, 0).uv(minU, maxV).color(r, g, b, a).next();
+										ms.pop();
 									}
-									
-									float wX = x/(float)sd;
-									float wY = y/(float)sd;
-									float wZ = z/(float)sd;
-									boolean highlight = (cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05) || (cleaveCorner != null && cleaveCorner.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05);
-									boolean selected = false;
-									float a;
-									if (!highlight) {
-										double dist = tgt.getPos().squaredDistanceTo(pos.getX()+wX, pos.getY()+wY, pos.getZ()+wZ);
-										final double maxDist = 0.75;
-										if (dist > maxDist*maxDist) continue;
-										selected = dist < 0.1*0.1;
-										double distSq = Math.sqrt(dist);
-										a = (float)((maxDist-distSq)/maxDist);
-									} else {
-										a = 1;
-									}
-									float r = 1;
-									float g = 1;
-									float b = 1;
-									float size = a*10;
-									if (highlight) {
-										size = 8;
-										g = 0;
-										b = 0;
-									} else if (selected) {
-										size = 15;
-										b = 0;
-										anySelected = true;
-										selectedX = wX;
-										selectedY = wY;
-										selectedZ = wZ;
-									}
-									glPointSize(size*scale);
-									glColor4f(r, g, b, a);
-									glBegin(GL_POINTS);
-									glVertex3f(wX, wY, wZ);
-									glEnd();
 								}
 							}
+							tess.draw();
 						}
+						RenderSystem.enableDepthTest();
+						RenderSystem.enableCull();
 						if (anySelected && cleaveStart != null && cleaveCorner != null) {
 							final float TAU = (float)(Math.PI*2);
 							float t = (wrc.world().getTime()+wrc.tickDelta())/5;
-							float a = (MathHelper.sin(t%TAU)+1)/2;
-							glColor4f(1, 0.25f, 0, 0.1f+(a*0.3f));
-							glDisable(GL_CULL_FACE);
-							glEnable(GL_DEPTH_TEST);
-							glEnable(GL_POLYGON_OFFSET_FILL);
-							glPolygonOffset(-3, -3);
+							float d = (MathHelper.sin(t%TAU)+1)/2;
+							float r = 1;
+							float g = 0.25f;
+							float b = 0;
+							float a = 0.1f+(d*0.3f);
+							RenderSystem.enableBlend();
+							RenderSystem.defaultBlendFunc();
+							RenderSystem.enablePolygonOffset();
+							RenderSystem.disableCull();
+							RenderSystem.polygonOffset(-3, -3);
 							List<Polygon> shape = CleaverItem.getShape(wrc.world(), pos);
 							Plane plane = new Plane(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ));
 							List<Polygon> cleave = CleaverItem.performCleave(plane, shape, true);
-							for (Polygon polygon : cleave) {
-								glBegin(GL_POLYGON);
-								polygon.forEachDEdge((de) -> {
-									glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
-								});
-								glEnd();
+							RenderSystem.setShader(GameRenderer::getPositionColorShader);
+							vc.begin(DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
+							var mat = ms.peek().getPosition();
+							for (Polygon p : cleave) {
+								drawPolygon(mat, vc, p, r, g, b, a);
 							}
-							glDisable(GL_POLYGON_OFFSET_FILL);
-							glColor4f(1, 0.25f, 0, 0.05f+(a*0.1f));
-							glDisable(GL_DEPTH_TEST);
-							for (Polygon polygon : cleave) {
-								glBegin(GL_POLYGON);
-								polygon.forEachDEdge((de) -> {
-									glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
-								});
-								glEnd();
+							tess.draw();
+							RenderSystem.disablePolygonOffset();
+							a = 0.05f+(d*0.1f);
+							RenderSystem.disableDepthTest();
+							vc.begin(DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
+							for (Polygon p : cleave) {
+								drawPolygon(mat, vc, p, r, g, b, a);
 							}
-							glEnable(GL_CULL_FACE);
+							tess.draw();
+							RenderSystem.enableCull();
+							RenderSystem.enableDepthTest();
 						}
-						glEnable(GL_DEPTH_TEST);
-						glDisable(GL_BLEND);
-						glPopMCMatrix();
-						glEnable(GL_TEXTURE_2D);
+						ms.pop();
 					}
 				}
 			}
@@ -172,6 +214,17 @@ public class CleaverUI extends IHasAClient {
 			}
 		}
 		return true;
+	}
+
+	private static void drawPolygon(Matrix4f mat, BufferBuilder vc, Polygon p, float r, float g, float b, float a) {
+		Vec3d origin = p.first().srcPoint();
+		for (DEdge de : p) {
+			// naive triangulation
+			if (de == p.first()) continue;
+			vc.vertex(mat, (float)origin.x, (float)origin.y, (float)origin.z).color(r, g, b, a).next();
+			vc.vertex(mat, (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(r, g, b, a).next();
+			vc.vertex(mat, (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(r, g, b, a).next();
+		}
 	}
 
 }

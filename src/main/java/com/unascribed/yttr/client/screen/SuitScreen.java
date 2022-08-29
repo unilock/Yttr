@@ -156,10 +156,10 @@ public class SuitScreen extends Screen {
 			float movementX = 0;
 			float movementZ = 0;
 			if (holdingForward) {
-				movementZ++;
+				movementZ--;
 			}
 			if (holdingBack) {
-				movementZ--;
+				movementZ++;
 			}
 			if (holdingLeft) {
 				movementX++;
@@ -336,7 +336,7 @@ public class SuitScreen extends Screen {
 		mouseOver = null;
 		for (Geyser g : geysers) {
 			float dX = posX-g.pos.getX();
-			float dZ = posZ-g.pos.getZ();
+			float dZ = -(posZ-g.pos.getZ());
 			int x = (int)(cX+(dX/scale))-6;
 			int y = (int)(cY+(dZ/scale))-6;
 			if (x < cX-100 || x > cX+90 || y < cY-95 || y > cY+90) continue;

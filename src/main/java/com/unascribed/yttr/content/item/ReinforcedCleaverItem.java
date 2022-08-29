@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YStatusEffects;
+import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.util.EquipmentSlots;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -44,21 +45,23 @@ public class ReinforcedCleaverItem extends CleaverItem {
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-		StatusEffectInstance cur = target.getStatusEffect(YStatusEffects.BLEEDING);
 		int armorAmount = 0;
 		for (ItemStack armor : target.getArmorItems()) {
 			if (!armor.isEmpty()) armorAmount++;
 		}
-		int duration = 5*20;
-		if (cur != null) {
-			duration += cur.getDuration();
-		}
-		if (duration > 20*20) duration = 20*20;
-		if (cur == null || attacker.world.random.nextInt(8)-2 > armorAmount) {
-			int level = cur == null ? 0 : Math.min(5, cur.getAmplifier()+1);
-			target.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, duration, level, false, false, true));
-		} else if (attacker.world.random.nextInt(3) == 0) {
-			target.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, duration, cur.getAmplifier(), false, false, true));
+		if (!target.getType().isIn(YTags.Entity.BLOODLESS)) {
+			StatusEffectInstance cur = target.getStatusEffect(YStatusEffects.BLEEDING);
+			int duration = 5*20;
+			if (cur != null) {
+				duration += cur.getDuration();
+			}
+			if (duration > 20*20) duration = 20*20;
+			if (cur == null || attacker.world.random.nextInt(8)-2 > armorAmount) {
+				int level = cur == null ? 0 : Math.min(5, cur.getAmplifier()+1);
+				target.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, duration, level, false, false, true));
+			} else if (attacker.world.random.nextInt(3) == 0) {
+				target.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, duration, cur.getAmplifier(), false, false, true));
+			}
 		}
 		for (EquipmentSlot es : EquipmentSlots.ARMOR) {
 			if (attacker.world.random.nextInt(3) == 0) {

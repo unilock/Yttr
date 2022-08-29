@@ -15,6 +15,7 @@ import com.unascribed.yttr.mechanics.VoidLogic;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -32,6 +33,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
@@ -172,9 +174,7 @@ public enum RifleMode {
 				double y = start.y+(diffY*t);
 				double z = start.z+(diffZ*t);
 				mut.set(x, y, z);
-				if (user.world.getBlockState(mut).isAir()) {
-					user.world.setBlockState(mut, (power > 1.1f ? YBlocks.PERMANENT_LIGHT_AIR : YBlocks.TEMPORARY_LIGHT_AIR).getDefaultState());
-				}
+				illuminate(user.world, mut, power > 1.1f);
 			}
 			if (hit instanceof EntityHitResult) {
 				Entity e = ((EntityHitResult)hit).getEntity();
@@ -184,11 +184,7 @@ public enum RifleMode {
 			} else if (hit instanceof BlockHitResult && power > 0.8f) {
 				BlockHitResult bhr = (BlockHitResult)hit;
 				BlockPos end = bhr.getBlockPos().offset(bhr.getSide());
-				if (user.world.getBlockState(bhr.getBlockPos()).isAir()) {
-					user.world.setBlockState(bhr.getBlockPos(), YBlocks.PERMANENT_LIGHT_AIR.getDefaultState());
-				} else if (user.world.getBlockState(end).isAir()) {
-					user.world.setBlockState(end, YBlocks.PERMANENT_LIGHT_AIR.getDefaultState());
-				}
+				illuminate(user.world, end, true);
 			}
 		}
 		
@@ -196,9 +192,18 @@ public enum RifleMode {
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			user.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 300));
 			for (BlockPos bp : BlockPos.iterate(user.getBlockPos().add(-2, -2, -2), user.getBlockPos().add(2, 2, 2))) {
-				if (user.world.getBlockState(bp).isAir()) {
-					user.world.setBlockState(bp, YBlocks.TEMPORARY_LIGHT_AIR.getDefaultState());
-				}
+				illuminate(user.world, bp, false);
+			}
+		}
+
+		private void illuminate(World world, BlockPos bp, boolean permanent) {
+			var bs = world.getBlockState(bp);
+			if (bs.isAir()) {
+				world.setBlockState(bp, (permanent ? YBlocks.PERMANENT_LIGHT_AIR : YBlocks.TEMPORARY_LIGHT_AIR).getDefaultState());
+			} else if (bs.isOf(Blocks.WATER) || bs.isOf(YBlocks.TEMPORARY_LIGHT_WATER)) {
+				var nbs = (permanent ? YBlocks.PERMANENT_LIGHT_WATER : YBlocks.TEMPORARY_LIGHT_WATER).getDefaultState();
+				nbs = nbs.with(FluidBlock.LEVEL, bs.get(FluidBlock.LEVEL));
+				world.setBlockState(bp, nbs);
 			}
 		}
 	}

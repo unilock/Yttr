@@ -6,6 +6,7 @@ import com.unascribed.yttr.content.block.CustomFallingBlock;
 import com.unascribed.yttr.content.block.CustomShapeBlock;
 import com.unascribed.yttr.content.block.NeodymiumBlock;
 import com.unascribed.yttr.content.block.TemporaryAirBlock;
+import com.unascribed.yttr.content.block.TemporaryFluidBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
@@ -99,6 +100,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
@@ -359,6 +361,21 @@ public class YBlocks {
 			.air()
 			.nonOpaque()
 			.luminance(15)
+		);
+	
+	public static final FluidBlock TEMPORARY_LIGHT_WATER = new TemporaryFluidBlock(Fluids.WATER, FabricBlockSettings.of(Material.WATER)
+			.noCollision()
+			.luminance(9)
+			.strength(100)
+			.dropsNothing()
+			.ticksRandomly());
+	
+	public static final FluidBlock PERMANENT_LIGHT_WATER = new FluidBlock(Fluids.WATER, FabricBlockSettings.of(Material.WATER)
+			.noCollision()
+			.luminance(15)
+			.strength(100)
+			.dropsNothing()
+			.nonOpaque()
 		);
 		
 	public static final Block NETHERTUFF = new Block(FabricBlockSettings.copyOf(Blocks.NETHERRACK)

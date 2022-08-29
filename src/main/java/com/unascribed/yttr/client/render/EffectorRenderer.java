@@ -1,5 +1,7 @@
 package com.unascribed.yttr.client.render;
 
+import static org.lwjgl.opengl.GL11.GL_LEQUAL;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -48,6 +50,8 @@ public class EffectorRenderer extends IHasAClient {
 		ClientWorld w = wrc.world();
 		w.unmaskPhasedBlocks();
 		try {
+			RenderSystem.enableDepthTest();
+			RenderSystem.depthFunc(GL_LEQUAL);
 			Vec3d cam = wrc.camera().getPos();
 			MatrixStack ms = new MatrixStack();
 			ms.translate(-cam.x, -cam.y, -cam.z);
