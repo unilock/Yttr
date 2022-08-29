@@ -1,4 +1,3 @@
-* Fixed QMoL remapping error causing mangrove propagules to be placed instead of water in many cases
 * Rewrote cleaver UI render to use modern GL
 * Made rifle scope less intense
 * Fixed Effector fall damage not being tagged as such
