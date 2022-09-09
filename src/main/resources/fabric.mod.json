@@ -42,7 +42,13 @@
 		"lib39-sandman": "*",
 		"lib39-crowbar": "*",
 		"lib39-keygen": "*",
-		"lib39-dessicant": "*"
+		"lib39-dessicant": "*",
+		"lib39-deferral": "*",
+		"lib39-machination": "*",
+		"lib39-util": "*",
+		"lib39-ripple": "*",
+		"lib39-recoil": "*",
+		"lib39-mesh": "*"
 	},
 	"conflicts": { "roughlyenoughitems": "*", "jei": "*" },
 	"suggests": { "trinkets": "*" },

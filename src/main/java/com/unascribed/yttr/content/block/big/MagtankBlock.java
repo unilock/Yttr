@@ -1,10 +1,10 @@
 package com.unascribed.yttr.content.block.big;
 
+import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.lib39.weld.api.BigBlock;
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
-import com.unascribed.yttr.world.FilterNetwork.NodeType;
-import com.unascribed.yttr.world.FilterNetworks;
-
+import com.unascribed.yttr.world.network.FilterNetwork;
+import com.unascribed.yttr.world.network.FilterNodeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,8 +50,8 @@ public class MagtankBlock extends BigBlock {
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
 		if (!state.isOf(oldState.getBlock())) {
-			if (world instanceof ServerWorld) {
-				FilterNetworks.get((ServerWorld)world).introduce(pos, NodeType.TANK);
+			if (world instanceof ServerWorld sw) {
+				BlockNetworkManager.get(sw).introduce(FilterNetwork.TYPE, pos, FilterNodeTypes.TANK);
 			}
 		}
 	}
@@ -60,8 +60,8 @@ public class MagtankBlock extends BigBlock {
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		super.onStateReplaced(state, world, pos, newState, moved);
 		if (!newState.isOf(state.getBlock())) {
-			if (world instanceof ServerWorld) {
-				FilterNetworks.get((ServerWorld)world).destroy(pos);
+			if (world instanceof ServerWorld sw) {
+				BlockNetworkManager.get(sw).destroy(FilterNetwork.TYPE, pos);
 			}
 		}
 	}

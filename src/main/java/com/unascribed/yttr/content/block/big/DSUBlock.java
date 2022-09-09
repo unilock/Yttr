@@ -1,11 +1,12 @@
 package com.unascribed.yttr.content.block.big;
 
+import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.lib39.weld.api.BigBlock;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.inventory.DSUScreenHandler;
-import com.unascribed.yttr.world.FilterNetwork.NodeType;
-import com.unascribed.yttr.world.FilterNetworks;
+import com.unascribed.yttr.world.network.FilterNetwork;
+import com.unascribed.yttr.world.network.FilterNodeTypes;
 
 import com.google.common.base.Ascii;
 
@@ -170,8 +171,8 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 					}
 				}
 			}
-			if (world instanceof ServerWorld) {
-				FilterNetworks.get((ServerWorld)world).destroy(pos);
+			if (world instanceof ServerWorld sw) {
+				BlockNetworkManager.get(sw).destroy(FilterNetwork.TYPE, pos);
 			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
@@ -181,8 +182,8 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
 		if (!state.isOf(oldState.getBlock())) {
-			if (world instanceof ServerWorld) {
-				FilterNetworks.get((ServerWorld)world).introduce(pos, NodeType.DSU);
+			if (world instanceof ServerWorld sw) {
+				BlockNetworkManager.get(sw).introduce(FilterNetwork.TYPE, pos, FilterNodeTypes.DSU);
 			}
 		}
 	}

@@ -105,12 +105,14 @@ dependencies {
 	[
 		'core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
-		'recoil'
+		'recoil', 'mesh'
 	].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.1.12")
+		modApi include("com.unascribed:lib39-${module}:1.2.2")
 	}
 	
-	include "com.unascribed:lucium:1.1"
+	modRuntimeOnly(include("com.unascribed:lucium:1.1")) {
+		transitive = false
+	}
 
 	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {
 		transitive = false

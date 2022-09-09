@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import com.unascribed.lib39.core.api.AutoRegistry;
 import com.unascribed.lib39.crowbar.api.WorldGenerationEvents;
 import com.unascribed.lib39.dessicant.api.DessicantControl;
+import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
@@ -50,12 +51,12 @@ import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.RegisteredAs;
-import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 import com.unascribed.yttr.world.ScorchedGenerator;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 import com.unascribed.yttr.world.WastelandPopulator;
+import com.unascribed.yttr.world.network.FilterNetwork;
 
 import com.google.common.base.Ascii;
 import com.google.common.collect.EnumMultiset;
@@ -172,6 +173,8 @@ public class Yttr implements ModInitializer {
 		YNetwork.init();
 		YFuels.init();
 		
+		BlockNetworkManager.registerNetworkType(id("filter"), FilterNetwork.TYPE);
+		
 		// conditional content
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			try {
@@ -202,9 +205,6 @@ public class Yttr implements ModInitializer {
 			SqueezeSaplingGenerator.generateNaturalTrees(ctx.region().getSeed(), ctx.region(), ctx.chunk());
 		});
 		
-		ServerTickEvents.START_WORLD_TICK.register((world) -> {
-			FilterNetworks.get(world).tick();
-		});
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			InRedLogic.onServerTick();
 			Iterator<DelayedTask> iter = delayedServerTasks.iterator();

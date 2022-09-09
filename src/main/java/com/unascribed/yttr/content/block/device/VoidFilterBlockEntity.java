@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.device;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 import com.unascribed.yttr.init.YBlockEntities;
@@ -11,9 +12,7 @@ import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
 import com.unascribed.yttr.util.YTickable;
-import com.unascribed.yttr.world.FilterNetwork;
-import com.unascribed.yttr.world.FilterNetworks;
-
+import com.unascribed.yttr.world.network.FilterNetwork;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
@@ -87,8 +86,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements YTickable, Del
 	@Override
 	public void tick() {
 		if (world.isClient) return;
-		if (world instanceof ServerWorld) {
-			pressure = FilterNetworks.get((ServerWorld)world).getNetworkAt(pos).map(FilterNetwork::getPressure).orElse(0);
+		if (world instanceof ServerWorld sw) {
+			pressure = BlockNetworkManager.get(sw).getNetworkAt(FilterNetwork.TYPE, pos).map(n -> ((FilterNetwork)n).getPressure()).orElse(0);
 		}
 		if (!getCachedState().get(VoidFilterBlock.INDEPENDENT)) {
 			opTocks = 0;

@@ -35,6 +35,8 @@ public class CleavedBlockMeshes {
 	
 	private static class DummySprite extends Sprite {
 
+		private static final UnsafeAllocator UA = UnsafeAllocator.create();
+		
 		private float minU, minV, maxU, maxV;
 		
 		protected DummySprite() {
@@ -44,7 +46,7 @@ public class CleavedBlockMeshes {
 		
 		public static DummySprite create(float minU, float minV, float maxU, float maxV) {
 			try {
-				DummySprite ds = UnsafeAllocator.create().newInstance(DummySprite.class);
+				DummySprite ds = UA.newInstance(DummySprite.class);
 				ds.minU = minU;
 				ds.minV = minV;
 				ds.maxU = maxU;

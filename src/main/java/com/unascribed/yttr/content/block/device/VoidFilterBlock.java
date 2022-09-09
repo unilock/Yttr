@@ -1,10 +1,10 @@
 package com.unascribed.yttr.content.block.device;
 
+import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
-import com.unascribed.yttr.world.FilterNetwork.NodeType;
-import com.unascribed.yttr.world.FilterNetworks;
-
+import com.unascribed.yttr.world.network.FilterNetwork;
+import com.unascribed.yttr.world.network.FilterNodeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -17,7 +17,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -69,9 +68,9 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (world instanceof ServerWorld) {
+		if (world instanceof ServerWorld sw) {
 			boolean valid = world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) || world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER);
-			FilterNetworks.get((ServerWorld)world).introduce(pos, valid ? NodeType.FILTER : NodeType.DEAD_FILTER);
+			BlockNetworkManager.get(sw).introduce(FilterNetwork.TYPE, pos, valid ? FilterNodeTypes.FILTER : FilterNodeTypes.DEAD_FILTER);
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
@@ -83,8 +82,8 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 			if (be instanceof VoidFilterBlockEntity) {
 				ItemScatterer.spawn(world, pos, (VoidFilterBlockEntity)be);
 			}
-			if (world instanceof ServerWorld) {
-				FilterNetworks.get((ServerWorld)world).destroy(pos);
+			if (world instanceof ServerWorld sw) {
+				BlockNetworkManager.get(sw).destroy(FilterNetwork.TYPE, pos);
 			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
@@ -94,9 +93,9 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
 		if (!state.isOf(oldState.getBlock())) {
-			if (world instanceof ServerWorld) {
+			if (world instanceof ServerWorld sw) {
 				boolean valid = world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) || world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER);
-				FilterNetworks.get((ServerWorld)world).introduce(pos, valid ? NodeType.FILTER : NodeType.DEAD_FILTER);
+				BlockNetworkManager.get(sw).introduce(FilterNetwork.TYPE, pos, valid ? FilterNodeTypes.FILTER : FilterNodeTypes.DEAD_FILTER);
 			}
 		}
 	}
