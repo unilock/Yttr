@@ -55,7 +55,7 @@ public class CleaverUI extends IHasAClient {
 						var dY = pos.getY()-boc.cameraY();
 						var dZ = pos.getZ()-boc.cameraZ();
 						ms.translate(dX, dY, dZ);
-						float scale = (float)mc.getWindow().getScaleFactor();
+						float scale = 1;
 						int sd = CleaverItem.SUBDIVISIONS;
 						Vec3d cleaveStart = ci.getCleaveStart(held);
 						Vec3d cleaveCorner = ci.getCleaveCorner(held);

@@ -171,6 +171,8 @@ public class YConfig {
 		public static Trilean forceOpenGLCore = Trilean.AUTO;
 		@Key("client.config-color")
 		public static LampColor configColor = LampColor.TEAL;
+		@Key("client.rifle-timing-assist")
+		public static boolean rifleTimingAssist = true;
 		
 		static { touch(); }
 		

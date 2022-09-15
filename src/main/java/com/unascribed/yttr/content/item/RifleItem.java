@@ -338,21 +338,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		} else {
 			playFireSoundAndSetCooldown(user, power);
 			if (world instanceof ServerWorld) {
-				Vec3d preStart = user.getCameraPosVec(0);
-				Vec3d preEnd = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(64));
-				Vec3d start = getMuzzlePos(user, false);
-				Vec3d max = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(256));
-				Vec3d end = max;
-				BlockHitResult preBlock = world.raycast(new RaycastContext(preStart, preEnd, ShapeType.COLLIDER, FluidHandling.NONE, user));
-				EntityHitResult preEnt = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, preStart, preBlock.getPos(), new Box(preStart, preEnd).expand(0.3), Predicates.alwaysTrue()), preStart, preEnd);
-				HitResult pre = MoreObjects.firstNonNull(preEnt, preBlock);
-				if (pre.getType() != Type.MISS && start.squaredDistanceTo(pre.getPos()) > 3*3) {
-					// add a bit of extension to ensure the block/entity gets hit instead of just barely not being reached
-					end = pre.getPos().add(preBlock.getPos().subtract(start).normalize());
-				}
-				BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
-				EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
-				HitResult hr = MoreObjects.firstNonNull(ehr, bhr);
+				HitResult hr = raycast(world, user);
 				int color = mode.color;
 				if (power > 1.2) {
 					color = 0xFFFFFFFF;
@@ -360,14 +346,15 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 					color |= (int)Math.min(255, power*255)<<24;
 				}
 				new MessageS2CBeam(user.getId(), color, (float)hr.getPos().x, (float)hr.getPos().y, (float)hr.getPos().z).sendToAllWatching(user);
-				if (ehr == null) {
+				if (hr instanceof BlockHitResult bhr) {
 					BlockState bs = world.getBlockState(bhr.getBlockPos());
 					if (bs.getBlock() instanceof Shootable) {
 						if (((Shootable)bs.getBlock()).onShotByRifle(world, bs, user, mode, power, bhr.getBlockPos(), bhr)) {
 							return;
 						}
 					}
-				} else if (user instanceof ServerPlayerEntity && stack.hasNbt() && stack.getNbt().getBoolean("Scoped") && ehr.getEntity().squaredDistanceTo(user) > 100*100) {
+				} else if (hr instanceof EntityHitResult ehr && user instanceof ServerPlayerEntity &&
+						stack.hasNbt() && stack.getNbt().getBoolean("Scoped") && ehr.getEntity().squaredDistanceTo(user) > 100*100) {
 					YCriteria.SHOOT_SOMETHING_FAR_AWAY.trigger((ServerPlayerEntity)user);
 				}
 				YStats.add(user, YStats.RIFLE_SHOTS_FIRED, 1);
@@ -377,6 +364,24 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 				mode.handleFire(user, stack, power, hr);
 			}
 		}
+	}
+
+	public static HitResult raycast(World world, PlayerEntity user) {
+		Vec3d preStart = user.getCameraPosVec(0);
+		Vec3d preEnd = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(64));
+		Vec3d start = getMuzzlePos(user, false);
+		Vec3d max = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(256));
+		Vec3d end = max;
+		BlockHitResult preBlock = world.raycast(new RaycastContext(preStart, preEnd, ShapeType.COLLIDER, FluidHandling.NONE, user));
+		EntityHitResult preEnt = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, preStart, preBlock.getPos(), new Box(preStart, preEnd).expand(0.3), Predicates.alwaysTrue()), preStart, preEnd);
+		HitResult pre = MoreObjects.firstNonNull(preEnt, preBlock);
+		if (pre.getType() != Type.MISS && start.squaredDistanceTo(pre.getPos()) > 3*3) {
+			// add a bit of extension to ensure the block/entity gets hit instead of just barely not being reached
+			end = pre.getPos().add(preBlock.getPos().subtract(start).normalize());
+		}
+		BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
+		EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
+		return MoreObjects.firstNonNull(ehr, bhr);
 	}
 	
 	protected void playFireSoundAndSetCooldown(PlayerEntity user, float power) {
@@ -404,7 +409,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		}
 	}
 
-	private EntityHitResult correctEntityHit(EntityHitResult ehr, Vec3d start, Vec3d end) {
+	private static EntityHitResult correctEntityHit(EntityHitResult ehr, Vec3d start, Vec3d end) {
 		if (ehr == null) return null;
 		return new EntityHitResult(ehr.getEntity(), ehr.getEntity().getBoundingBox().expand(0.3).raycast(start, end).get());
 	}
@@ -449,7 +454,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		return getMode(stack).shotsPerItem/ammoMod;
 	}
 	
-	private float calculatePower(int i) {
+	public float calculatePower(int i) {
 		float power = 0;
 		if (simpleCurve) {
 			if (i > 30) {
@@ -516,6 +521,29 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
 		YStats.add(user, YStats.RIFLE_CHARGING_TIME, 1);
 		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
+		if (world.isClient && YConfig.Client.rifleTimingAssist) {
+			if (!simpleCurve) {
+				if (useTicks == 70) {
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 0.8f);
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 0.5f);
+				} else if (useTicks == 110 || useTicks == 120) {
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.6f, 1f);
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 1.2f);
+				} else if (useTicks == 130) {
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.6f, 2f);
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 1.5f);
+				}
+			} else {
+				if (useTicks == 70) {
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 0.8f);
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 0.5f);
+				} else if (useTicks == 122) {
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.6f, 2f);
+					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 1.5f);
+				}
+			}
+		}
+		
 		if (useTicks >= 140 && YConfig.General.trustPlayers) {
 			if (world.isClient) {
 				user.clearActiveItem();

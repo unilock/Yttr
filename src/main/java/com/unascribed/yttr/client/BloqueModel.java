@@ -56,12 +56,13 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
 		if (attachment instanceof RenderData data) {
 			DyeColor[] colors = data.colors();
-			Sprite top = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_top"));
-			Sprite side = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_side"));
-			Sprite bottom = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_bottom"));
-			Sprite welded = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_welded"));
-			Sprite weldedSide = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_welded_side"));
-			Sprite weldedTop = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(Yttr.id("block/bloque_welded_top"));
+			Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+			Sprite top = atlas.apply(Yttr.id("block/bloque_top"));
+			Sprite side = atlas.apply(Yttr.id("block/bloque_side"));
+			Sprite bottom = atlas.apply(Yttr.id("block/bloque_bottom"));
+			Sprite welded = atlas.apply(Yttr.id("block/bloque_welded"));
+			Sprite weldedSide = atlas.apply(Yttr.id("block/bloque_welded_side"));
+			Sprite weldedTop = atlas.apply(Yttr.id("block/bloque_welded_top"));
 			QuadEmitter qe = context.getEmitter();
 			RenderMaterial mat = RendererAccess.INSTANCE.getRenderer().materialFinder().blendMode(0, BlendMode.SOLID).find();
 			for (int y = 0; y < YSIZE; y++) {
@@ -233,7 +234,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											qNW = new Vec2i(1, 0);
 										} else if (!adjacentN && adjacentW) {
 											qNW = new Vec2i(0, 1);
-										} else { // !adjacentUp && !adjacentLeft
+										} else { // !adjacentN && !adjacentW
 											qNW = new Vec2i(0, 0);
 										}
 										if (adjacentN && adjacentE) {
@@ -242,7 +243,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											qNE = new Vec2i(1, 0);
 										} else if (!adjacentN && adjacentE) {
 											qNE = new Vec2i(0, 1);
-										} else { // !adjacentUp && !adjacentRight
+										} else { // !adjacentN && !adjacentE
 											qNE = new Vec2i(0, 0);
 										}
 										if (adjacentS && adjacentW) {
@@ -251,7 +252,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											qSW = new Vec2i(1, 0);
 										} else if (!adjacentS && adjacentW) {
 											qSW = new Vec2i(0, 1);
-										} else { // !adjacentDown && !adjacentLeft
+										} else { // !adjacentS && !adjacentW
 											qSW = new Vec2i(0, 0);
 										}
 										if (adjacentS && adjacentE) {
@@ -260,7 +261,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											qSE = new Vec2i(1, 0);
 										} else if (!adjacentS && adjacentE) {
 											qSE = new Vec2i(0, 1);
-										} else { // !adjacentDown && !adjacentRight
+										} else { // !adjacentS && !adjacentE
 											qSE = new Vec2i(0, 0);
 										}
 										Vec2i[] quadrantUVs;
@@ -308,16 +309,6 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 												minV = maxV;
 												maxV = swap;
 												swap = minU;
-												minU = maxU;
-												maxU = swap;
-											}
-											if (uvs == null) {
-												float swap = minV;
-												minV = maxV;
-												maxV = swap;
-											}
-											if (uvs == null) {
-												float swap = minU;
 												minU = maxU;
 												maxU = swap;
 											}

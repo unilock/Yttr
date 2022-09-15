@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
@@ -35,6 +37,7 @@ import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
+import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEntities;
@@ -52,6 +55,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
+import com.mojang.blaze3d.platform.GlStateManager.class_4534;
+import com.mojang.blaze3d.platform.GlStateManager.class_4535;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -73,6 +80,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
@@ -117,6 +125,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix3f;
@@ -138,6 +147,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	private boolean firstWorldTick = true;
 	
 	public static boolean renderingGui = false;
+	
+	private HitResult rifleHitResult;
+	private long lastRifleHitUpdate;
 	
 	@Override
 	public void onInitializeClient() {
@@ -333,6 +345,48 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (RifleHUDRenderer.scopeA > 0) {
 				erd.scale(1+(RifleHUDRenderer.scopeA*5));
 			}
+		});
+		RecoilEvents.RENDER_CROSSHAIRS.register(matrices -> {
+			var stack = mc.player.getMainHandStack();
+			if (mc.player != null && stack.getItem() instanceof RifleItem ri) {
+				RenderSystem.blendFuncSeparate(class_4535.ONE_MINUS_DST_COLOR, class_4534.ONE_MINUS_SRC_COLOR, class_4535.ONE, class_4534.ZERO);
+				RenderSystem.setShaderColor(1, 1, 1, 1);
+				RenderSystem.setShaderTexture(0, Yttr.id("textures/gui/rifle_crosshairs.png"));
+				int windowWidth = mc.getWindow().getScaledWidth();
+				int windowHeight = mc.getWindow().getScaledHeight();
+				int w = 15;
+				int h = 15;
+				long now = System.currentTimeMillis();
+				if (rifleHitResult == null || now-lastRifleHitUpdate > 100) {
+					rifleHitResult = RifleItem.raycast(mc.world, mc.player);
+					lastRifleHitUpdate = now;
+				}
+				int u = switch (rifleHitResult.getType()) {
+					case MISS -> 0;
+					case BLOCK -> 15;
+					case ENTITY -> 30;
+					default -> 0;
+				};
+				DrawableHelper.drawTexture(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u, 0, w, h, 45, 30);
+				if (mc.player.isUsingItem() && mc.player.getActiveHand() == Hand.MAIN_HAND) {
+					int useTicks = ri.calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft());
+					float power = ri.calculatePower(useTicks);
+					IntConsumer draw = (u2) -> DrawableHelper.drawTexture(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);;
+					if (power >= 1.2f) {
+						draw.accept(15);
+						draw.accept(30);
+					} else if (power >= 1) {
+						draw.accept(15);
+					} else if (power >= 0.7f) {
+						draw.accept(0);
+					}
+				}
+				return true;
+			} else {
+				rifleHitResult = null;
+				lastRifleHitUpdate = 0;
+			}
+			return false;
 		});
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {

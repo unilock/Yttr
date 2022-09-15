@@ -45,6 +45,13 @@
 	 * The color of the ingame configuration menu.
 	 */
 	config-color: var(client.config-color);
+	
+	/*
+	 * If on, ding noises will play as the rifle charges informing you of important timing points.
+	 * The first ding is for a normal 500kJ shot, and there are then three dings leading up to the
+	 * 650kJ shot.
+	 */
+	rifle-timing-assist: var(client.rifle-timing-assist);
 }
 
 #rifle {
