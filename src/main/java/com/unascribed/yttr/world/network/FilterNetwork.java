@@ -57,13 +57,13 @@ public class FilterNetwork extends BlockNetwork<BlockNetworkNode, FilterNodeType
 		}
 		totalFluidCapacity = (getMembersByType().get(FilterNodeTypes.PIPE).size()*100) + (getMembersByType().get(FilterNodeTypes.TANK).size()*64000);
 		fluidProductionPerTick = getMembersByType().get(FilterNodeTypes.FILTER).size()*2;
-		System.out.println("total capacity: "+totalFluidCapacity);
-		System.out.println("production per tick: "+fluidProductionPerTick);
-		if (fluidProductionPerTick > 0) {
-			System.out.println("time to destruction: "+((totalFluidCapacity/fluidProductionPerTick)/1200)+"m");
-		} else {
-			System.out.println("time to destruction: ∞");
-		}
+//		System.out.println("total capacity: "+totalFluidCapacity);
+//		System.out.println("production per tick: "+fluidProductionPerTick);
+//		if (fluidProductionPerTick > 0) {
+//			System.out.println("time to destruction: "+((totalFluidCapacity/fluidProductionPerTick)/1200)+"m");
+//		} else {
+//			System.out.println("time to destruction: ∞");
+//		}
 	}
 	
 	public boolean isComplete() {
