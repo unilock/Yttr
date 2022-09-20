@@ -1,7 +1,2 @@
-* Refactored filter system to make use of the new Lib39 Mesh module
-* Fix Bogged Baritone Note Block being a Soprano in disguise
-* Minor Cleaved Block model generator optimization
-* Removed filter network debug prints (mostly visible with the DSU)
-* New "Rifle Timing Assist" option to play timing dings (on by default)
-* Custom crosshairs telling you if the shot is a miss, block hit, or entity hit
-* Fixed Cleaver UI wrongly scaling with GUI scale (it's no longer a screen-space thing)
+* Fixed crash when shooting ghast fireballs with the rifle
+* Fixed durability bars not rendering properly on ultrapure tools (thanks, Noobulus)
