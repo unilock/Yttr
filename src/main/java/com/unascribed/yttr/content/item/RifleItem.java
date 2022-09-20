@@ -411,7 +411,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 
 	private static EntityHitResult correctEntityHit(EntityHitResult ehr, Vec3d start, Vec3d end) {
 		if (ehr == null) return null;
-		return new EntityHitResult(ehr.getEntity(), ehr.getEntity().getBoundingBox().expand(0.3).raycast(start, end).get());
+		return new EntityHitResult(ehr.getEntity(), ehr.getEntity().getBoundingBox().expand(0.3).raycast(start, end).orElse(end));
 	}
 
 	public int calcAdjustedUseTime(ItemStack stack, int remainingUseTicks) {
