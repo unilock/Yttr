@@ -63,7 +63,7 @@ public class YHandledScreens {
 	public static final ScreenHandlerType<SSDScreenHandler> SSD = new ScreenHandlerType<>(SSDScreenHandler::new);
 	
 	public static void init() {
-		Yttr.autoRegister(Registry.SCREEN_HANDLER, YHandledScreens.class, ScreenHandlerType.class);
+		Yttr.autoreg.autoRegister(Registry.SCREEN_HANDLER, YHandledScreens.class, ScreenHandlerType.class);
 	}
 	
 	@Retention(RUNTIME)

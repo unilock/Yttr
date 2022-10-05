@@ -157,10 +157,10 @@ public class CleaverItem extends Item implements DirectClickItem {
 
 	@Override
 	public ActionResult onDirectAttack(PlayerEntity user, Hand hand) {
+		if (requiresSneaking() && !user.isSneaking()) return ActionResult.PASS;
 		if (user.world.isClient) return ActionResult.CONSUME;
 		ItemStack stack = user.getMainHandStack();
 		if (getCleaveBlock(stack) == null) {
-			if (requiresSneaking() && !user.isSneaking()) return ActionResult.CONSUME;
 			Plane p = getLastCut(stack);
 			if (p != null) {
 				BlockHitResult bhr = raycast(user.world, user, FluidHandling.NONE);

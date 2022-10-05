@@ -24,7 +24,6 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 @Environment(EnvType.CLIENT)
@@ -66,11 +65,11 @@ public abstract class MixinHandledScreen extends Screen {
 				variety = "bundle";
 			}
 			renderTooltip(matrices, List.of(
-					new TranslatableText("item.yttr.void_bucket"),
-					new TranslatableText("tip.yttr.void_bucket."+variety,
+					Text.translatable("item.yttr.void_bucket"),
+					Text.translatable("tip.yttr.void_bucket."+variety,
 							handler.getCursorStack().getCount(),
 							handler.getCursorStack().getName()).formatted(Formatting.GRAY),
-					new TranslatableText("tip.yttr.void_bucket."+variety+".flair").formatted(Formatting.DARK_RED)
+					Text.translatable("tip.yttr.void_bucket."+variety+".flair").formatted(Formatting.DARK_RED)
 				), mX, mY);
 		}
 	}

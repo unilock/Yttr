@@ -6,3 +6,5 @@
 * Added the Scalable Storage Drum or SSD, an inventory that can be adjusted from 1 to 8 slots big
 * Fix Canister Filler glass bottle dupe
 * Disable crafting repair for Snares to fix a dupe
+* Fix Reinforced Void Cleaver not working as a weapon
+* Update Lib39 to fix a world-corrupting crash with Snares
