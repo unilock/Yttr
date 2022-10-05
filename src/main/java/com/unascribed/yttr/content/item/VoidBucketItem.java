@@ -41,17 +41,16 @@ public class VoidBucketItem extends BucketItem {
 	
 	@Override
 	public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-		if (otherStack.isEmpty() || otherStack.isIn(YTags.Item.VOID_IMMUNE)) return false;
+		// a left-click probably means they intend to swap items, not destroy them
+		if (clickType == ClickType.LEFT) return false;
+		
+		if (!canDestroy(otherStack)) return false;
 		player.playSound(YSounds.DISSOLVE, 0.7f, 1);
 		if (otherStack.isOf(Items.BUNDLE)) {
 			player.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.7f, 1);
 			otherStack.removeSubNbt("Items");
 		} else {
-			if (clickType == ClickType.LEFT) {
-				otherStack.setCount(0);
-			} else {
-				otherStack.decrement(1);
-			}
+			otherStack.setCount(0);
 		}
 		GuiParticleAccess.spawnGuiParticles(VoidFluid.BLACK_DUST,
 				0, 0, 0,
@@ -59,6 +58,13 @@ public class VoidBucketItem extends BucketItem {
 				2, 1, 0,
 				1);
 		return true;
+	}
+
+	public static boolean canDestroy(ItemStack stack) {
+		if (stack.isOf(Items.BUNDLE)) {
+			return stack.hasNbt() && stack.getNbt().contains("Items");
+		}
+		return !stack.isEmpty() && !stack.isIn(YTags.Item.VOID_IMMUNE);
 	}
 
 }

@@ -23,14 +23,14 @@ public class MixinHopperBlockEntity {
 	private static void getInputInventory(World world, Hopper hopper, CallbackInfoReturnable<Inventory> ci) {
 		if (hopper instanceof FlopperBlockEntity) {
 			FlopperBlockEntity flopper = (FlopperBlockEntity)hopper;
-			ci.setReturnValue(HopperBlockEntity.getInventoryAt(flopper.getWorld(), flopper.getPos().offset(flopper.getRealState().get(FlopperBlock.FACING))));
+			ci.setReturnValue(HopperBlockEntity.getInventoryAt(flopper.getWorld(), flopper.getPos().offset(flopper.getCachedState().get(FlopperBlock.FACING))));
 		}
 	}
 	
 	@ModifyVariable(at=@At(value="FIELD", target="net/minecraft/util/math/Direction.DOWN:Lnet/minecraft/util/math/Direction;", shift=Shift.BY, by=3), method="extract")
 	private static Direction modifyExtractDirection(Direction in, World world, Hopper hopper) {
 		if (hopper instanceof FlopperBlockEntity) {
-			return ((FlopperBlockEntity)hopper).getRealState().get(FlopperBlock.FACING).getOpposite();
+			return ((FlopperBlockEntity)hopper).getCachedState().get(FlopperBlock.FACING).getOpposite();
 		}
 		return in;
 	}

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "yttr:block/ssd",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "yttr:block/ssd",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/ssd",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "yttr:block/ssd",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "yttr:block/ssd"
+    },
+    "facing=west": {
+      "model": "yttr:block/ssd",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

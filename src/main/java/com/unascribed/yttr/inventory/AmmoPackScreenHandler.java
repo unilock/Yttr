@@ -44,15 +44,7 @@ public class AmmoPackScreenHandler extends ScreenHandler {
 		addSlot(new APSlot(ammoPack, 4, 62, 54));
 		addSlot(new APSlot(ammoPack, 5, 98, 54));
 		
-		for (int y = 0; y < 3; ++y) {
-			for (int x = 0; x < 9; ++x) {
-				addSlot(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 81 + y * 18));
-			}
-		}
-
-		for (int i = 0; i < 9; ++i) {
-			addSlot(new Slot(playerInv, i, 8 + i * 18, 139));
-		}
+		YHandledScreens.addPlayerSlots(this::addSlot, playerInv, 8, 81);
 	}
 
 	@Override

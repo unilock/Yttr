@@ -1,7 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.init.YBlockEntities;
-import com.unascribed.yttr.mixin.accessor.AccessorBlockEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorHopperBlockEntity;
 import com.unascribed.yttr.util.YTickable;
 
@@ -29,16 +28,12 @@ public class DopperBlockEntity extends HopperBlockEntity implements YTickable {
 			acc.yttr$setLastTickTime(world.getTime());
 			if (!acc.yttr$needsCooldown()) {
 				acc.yttr$setTransferCooldown(0);
-				BlockState realState = getCachedState();
-				try {
-					if (tock) {
-						((AccessorBlockEntity)this).yttr$setCachedState(realState.with(DopperBlock.FACING, realState.get(DopperBlock.FACING).getOpposite()));
-					}
-					if (AccessorHopperBlockEntity.yttr$insertAndExtract(getWorld(), pos, getCachedState(), this, () -> extract(getWorld(), this))) {
-						tock = !tock;
-					}
-				} finally {
-					((AccessorBlockEntity)this).yttr$setCachedState(realState);
+				BlockState state = getCachedState();
+				if (tock) {
+					state = state.with(DopperBlock.FACING, state.get(DopperBlock.FACING).getOpposite());
+				}
+				if (AccessorHopperBlockEntity.yttr$insertAndExtract(getWorld(), pos, state, this, () -> extract(getWorld(), this))) {
+					tock = !tock;
 				}
 			}
 		}

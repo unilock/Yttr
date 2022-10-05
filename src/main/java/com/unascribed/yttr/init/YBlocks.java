@@ -28,6 +28,7 @@ import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.ProjectTableBlock;
 import com.unascribed.yttr.content.block.device.RafterBlock;
+import com.unascribed.yttr.content.block.device.SSDBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.content.block.inred.InRedAndGateBlock;
@@ -119,14 +120,14 @@ public class YBlocks {
 			.materialColor(MapColor.CYAN);
 	
 	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
-//	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
+	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
 	
 	private static final FabricBlockSettings HOLLOWHUGE_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.sounds(HOLLOWHUGE_SOUNDS)
 			.strength(8)
 			.nonOpaque();
-//	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
-//			.sounds(HOLLOW_SOUNDS);
+	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
+			.sounds(HOLLOW_SOUNDS);
 	
 	public static final Block GADOLINITE = new Block(FabricBlockSettings.copyOf(Blocks.IRON_ORE));
 	public static final Block DEEPSLATE_GADOLINITE = new Block(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_IRON_ORE));
@@ -575,6 +576,9 @@ public class YBlocks {
 			.mapColor(MapColor.DULL_RED)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
+	
+	@RenderLayer("cutout_mipped")
+	public static final SSDBlock SSD = new SSDBlock(FabricBlockSettings.copyOf(HOLLOW_SETTINGS));
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

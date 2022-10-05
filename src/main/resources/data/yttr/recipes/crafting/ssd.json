@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"yttr:discovered_via": "minecraft:piston",
+	"pattern": [
+		" i ",
+		"ici",
+		" P "
+	],
+	"key": {
+		"i": {
+			"item": "minecraft:iron_ingot"
+		},
+		"P": {
+			"item": "minecraft:piston"
+		},
+		"c": {
+			"item": "minecraft:chest"
+		}
+	},
+	"result": {
+		"item": "yttr:ssd",
+		"count": 3
+	}
+}

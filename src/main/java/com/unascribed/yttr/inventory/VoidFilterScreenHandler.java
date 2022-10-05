@@ -55,16 +55,8 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 				addSlot(new OutputSlot(voidFilter, x+(y*3), 116+(x*18), 17+(y*18)));
 			}
 		}
-		
-		for (int y = 0; y < 3; ++y) {
-			for (int x = 0; x < 9; ++x) {
-				addSlot(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-			}
-		}
 
-		for (int i = 0; i < 9; ++i) {
-			addSlot(new Slot(playerInv, i, 8 + i * 18, 142));
-		}
+		YHandledScreens.addPlayerSlots(this::addSlot, playerInv, 8, 84);
 		
 		addProperties(properties);
 		

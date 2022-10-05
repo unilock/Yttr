@@ -68,15 +68,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 			}
 		}
 
-		for(int y = 0; y < 3; ++y) {
-			for(int x = 0; x < 9; ++x) {
-				addSlot(new Slot(playerInventory, x + y * 9 + 9, 33 + x * 18, 122 + y * 18));
-			}
-		}
-
-		for(int i = 0; i < 9; ++i) {
-			addSlot(new Slot(playerInventory, i, 33 + i * 18, 180));
-		}
+		YHandledScreens.addPlayerSlots(this::addSlot, playerInventory, 33, 122);
 
 	}
 

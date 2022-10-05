@@ -122,15 +122,7 @@ public class SuitStationScreenHandler extends ScreenHandler {
 			}
 		});
 		
-		for (int y = 0; y < 3; ++y) {
-			for (int x = 0; x < 9; ++x) {
-				addSlot(new Slot(playerInv, x + y * 9 + 9, 33 + x * 18, 99 + y * 18));
-			}
-		}
-
-		for (int i = 0; i < 9; ++i) {
-			addSlot(new Slot(playerInv, i, 33 + i * 18, 157));
-		}
+		YHandledScreens.addPlayerSlots(this::addSlot, playerInv, 33, 99);
 		
 		addSlot(new ArmorSlot(playerInv, 39, 8,  99, EquipmentSlot.HEAD, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE));
 		addSlot(new ArmorSlot(playerInv, 38, 8, 117, EquipmentSlot.CHEST, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE));

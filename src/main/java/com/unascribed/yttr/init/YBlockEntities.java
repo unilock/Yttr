@@ -17,6 +17,7 @@ import com.unascribed.yttr.content.block.device.CanFillerBlockEntity;
 import com.unascribed.yttr.content.block.device.CentrifugeBlockEntity;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.content.block.device.ProjectTableBlockEntity;
+import com.unascribed.yttr.content.block.device.SSDBlockEntity;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.content.block.device.VoidFilterBlockEntity;
 import com.unascribed.yttr.content.block.inred.InRedAndGateBlockEntity;
@@ -76,6 +77,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE, YBlocks.DYED_PROJECT_TABLE);
 	public static final BlockEntityType<LazorBeamBlockEntity> LAZOR_BEAM = create(LazorBeamBlockEntity::new, YBlocks.LAZOR_BEAM);
 	public static final BlockEntityType<BloqueBlockEntity> BLOQUE = create(BloqueBlockEntity::new, YBlocks.BLOQUE);
+	public static final BlockEntityType<SSDBlockEntity> SSD = create(SSDBlockEntity::new, YBlocks.SSD);
 	
 	
 	public static final BlockEntityType<InRedAndGateBlockEntity> INRED_AND_GATE = create(InRedAndGateBlockEntity::new, YBlocks.INRED_AND_GATE);
