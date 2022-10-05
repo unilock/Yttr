@@ -5,3 +5,4 @@
 * Fixed the Flopper, Dopper, and Levitation Chamber being in various states of not working
 * Added the Scalable Storage Drum or SSD, an inventory that can be adjusted from 1 to 8 slots big
 * Fix Canister Filler glass bottle dupe
+* Disable crafting repair for Snares to fix a dupe
