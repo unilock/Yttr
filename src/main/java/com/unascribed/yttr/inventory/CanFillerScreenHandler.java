@@ -73,14 +73,13 @@ public class CanFillerScreenHandler extends ScreenHandler {
 		if (slot != null && slot.hasStack()) {
 			ItemStack slotStack = slot.getStack();
 			out = slotStack.copy();
-			if (index >= 0 && index <= 3) {
+			if (index >= 0 && index < 5) {
 				// try to put outputs into the player's inventory
-				if (!insertItem(slotStack, 4, 40, true)) {
+				if (!insertItem(slotStack, 5, 41, true)) {
 					return ItemStack.EMPTY;
 				}
-
 				slot.onQuickTransfer(slotStack, out);
-			} else if (index > 5) {
+			} else if (index >= 5) {
 				if (CanFillerBlockEntity.isPropellant(slotStack)) {
 					if (!insertItem(slotStack, 1, 2, true)) {
 						return ItemStack.EMPTY;
@@ -94,7 +93,7 @@ public class CanFillerScreenHandler extends ScreenHandler {
 						return ItemStack.EMPTY;
 					}
 				}
-			} else if (!insertItem(slotStack, 4, 40, false)) {
+			} else if (!insertItem(slotStack, 5, 41, false)) {
 				// move anything else to player inventory
 				return ItemStack.EMPTY;
 			}
