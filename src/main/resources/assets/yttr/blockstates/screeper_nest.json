@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "yttr:block/screeper_nest"
+    },
+    "facing=east": {
+      "model": "yttr:block/screeper_nest",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/screeper_nest",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "yttr:block/screeper_nest",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "yttr:block/screeper_nest",
+      "x": 90,
+      "y": 270
+    },
+    "facing=down": {
+      "model": "yttr:block/screeper_nest",
+      "x": 180
+    }
+  }
+}

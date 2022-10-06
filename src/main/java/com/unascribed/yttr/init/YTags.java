@@ -43,6 +43,8 @@ public final class YTags {
 		public static final TagKey<net.minecraft.block.Block> CLAMBER_BLOCKS = TagKey.of(Registry.BLOCK_KEY, Yttr.id("clamber_blocks"));
 		public static final TagKey<net.minecraft.block.Block> MAGNETIC = TagKey.of(Registry.BLOCK_KEY, Yttr.id("magnetic"));
 		public static final TagKey<net.minecraft.block.Block> SCORCHED_RETROGEN_IGNORABLE = TagKey.of(Registry.BLOCK_KEY, Yttr.id("scorched_retrogen_ignorable"));
+		public static final TagKey<net.minecraft.block.Block> SCREEPER_NEST_LENIENT = TagKey.of(Registry.BLOCK_KEY, Yttr.id("screeper_nest_lenient"));
+		public static final TagKey<net.minecraft.block.Block> SCREEPER_NEST_ACCESSORY = TagKey.of(Registry.BLOCK_KEY, Yttr.id("screeper_nest_accessory"));
 		
 		private static void init() {}
 		
@@ -63,6 +65,7 @@ public final class YTags {
 		public static final TagKey<EntityType<?>> SNAREABLE_NONLIVING = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("snareable_nonliving"));
 		public static final TagKey<EntityType<?>> BOSSES = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("bosses"));
 		public static final TagKey<EntityType<?>> MAGNETIC = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("magnetic"));
+		public static final TagKey<EntityType<?>> SCREEPER_IMMUNE = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("screeper_immune"));
 		public static final TagKey<EntityType<?>> BLOODLESS = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("bloodless"));
 		
 		private static void init() {}

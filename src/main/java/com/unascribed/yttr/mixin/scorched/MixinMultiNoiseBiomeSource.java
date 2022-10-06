@@ -14,7 +14,8 @@ import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
-@Mixin(MultiNoiseBiomeSource.class)
+// lower priority for TerraBlender compat
+@Mixin(value=MultiNoiseBiomeSource.class, priority=100)
 public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 
 	private Holder<Biome> yttr$scorchedSummit = null;

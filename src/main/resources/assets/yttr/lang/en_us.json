@@ -248,6 +248,7 @@
 	"block.yttr.polished_obsidian": "Polished Obsidian",
 	"block.yttr.polished_obsidian_capstone": "Polished Obsidian Capstone",
 	"block.yttr.scorched_crying_obsidian": "Scorched Crying Obsidian",
+	"block.yttr.screeper_nest": "Screeper Nest",
 	"block.yttr.ssd": "Scalable Storage Drum",
 	
 	"block.yttr.ssd.tip.1": "§7Adjustable from 1 to 8 slots.",
@@ -421,6 +422,7 @@
 	"subtitles.yttr.shift": "Shifter rings",
 	"subtitles.yttr.project": "Projector rings",
 	"subtitles.yttr.magnet_step": "Something magnetizes",
+	"subtitles.yttr.small_explode": "Small explosion",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

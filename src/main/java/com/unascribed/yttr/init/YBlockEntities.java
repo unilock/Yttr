@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
+import com.unascribed.yttr.content.block.abomination.ScreeperNestBlockEntity;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.content.block.big.DSUBlockEntity;
 import com.unascribed.yttr.content.block.decor.BloqueBlockEntity;
@@ -77,6 +78,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE, YBlocks.DYED_PROJECT_TABLE);
 	public static final BlockEntityType<LazorBeamBlockEntity> LAZOR_BEAM = create(LazorBeamBlockEntity::new, YBlocks.LAZOR_BEAM);
 	public static final BlockEntityType<BloqueBlockEntity> BLOQUE = create(BloqueBlockEntity::new, YBlocks.BLOQUE);
+	public static final BlockEntityType<ScreeperNestBlockEntity> SCREEPER_NEST = create(ScreeperNestBlockEntity::new, YBlocks.SCREEPER_NEST);
 	public static final BlockEntityType<SSDBlockEntity> SSD = create(SSDBlockEntity::new, YBlocks.SSD);
 	
 	

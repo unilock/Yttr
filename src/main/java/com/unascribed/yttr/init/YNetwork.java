@@ -17,6 +17,7 @@ import com.unascribed.yttr.network.MessageS2CDiveError;
 import com.unascribed.yttr.network.MessageS2CDivePos;
 import com.unascribed.yttr.network.MessageS2CDivePressure;
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
+import com.unascribed.yttr.network.MessageS2CScreeperBreak;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 
@@ -42,6 +43,7 @@ public class YNetwork {
 		CONTEXT.register(MessageC2SShifterMode.class);
 		CONTEXT.register(MessageC2SOscillatorShift.class);
 		CONTEXT.register(MessageC2STrustedRifleFire.class);
+		CONTEXT.register(MessageS2CScreeperBreak.class);
 	}
 	
 }

@@ -22,6 +22,7 @@ public class YSounds {
 	public static final SoundEvent VOID = create("void");
 	public static final SoundEvent DISSOLVE = create("dissolve");
 	public static final SoundEvent CRAFT_AWARE_HOPPER = create("craft_aware_hopper");
+	public static final SoundEvent CRAFT_SCREEPER_NEST = create("craft_screeper_nest");
 	public static final SoundEvent AWARE_HOPPER_AMBIENT = create("aware_hopper_ambient");
 	public static final SoundEvent AWARE_HOPPER_BREAK = create("aware_hopper_break");
 	public static final SoundEvent AWARE_HOPPER_SCREAM = create("aware_hopper_scream");
@@ -90,6 +91,7 @@ public class YSounds {
 	public static final SoundEvent SHIFT = create("shift");
 	public static final SoundEvent MAGNET_STEP = create("magnet_step");
 	public static final SoundEvent TORUS = create("torus");
+	public static final SoundEvent SMALL_EXPLODE = create("small_explode");
 	
 	public static final SoundEvent HIGH_NOTE_BANJO = create("high_note.banjo");
 	public static final SoundEvent HIGH_NOTE_BASEDRUM = create("high_note.basedrum");

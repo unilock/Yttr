@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"yttr:discovered_via": "minecraft:bee_nest",
+	"pattern": [
+		" C ",
+		"S/S",
+		" N "
+	],
+	"key": {
+		"C": { "yttr:entity": "minecraft:creeper" },
+		"S": { "yttr:entity": "minecraft:silverfish" },
+		"/": { "item": "yttr:shears" },
+		"N": { "item": "minecraft:bee_nest" }
+	},
+	"yttr:sound": "yttr:craft_screeper_nest",
+	"result": { "item": "yttr:screeper_nest" }
+}

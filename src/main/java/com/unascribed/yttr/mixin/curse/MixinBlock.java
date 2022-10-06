@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YRecipeTypes;
+import com.unascribed.yttr.mechanics.ShatteringLogic;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,20 +40,6 @@ import net.minecraft.world.World;
 
 @Mixin(Block.class)
 public class MixinBlock {
-
-	private static CraftingInventory yttr$inv = new CraftingInventory(new ScreenHandler(null, -1) {
-		@Override
-		public boolean canUse(PlayerEntity player) {
-			return false;
-		}
-
-		@Override
-		public ItemStack transferSlot(PlayerEntity player, int index) {
-			return null;
-		}
-	}, 1, 1);
-	private static boolean yttr$shattering;
-	private static int yttr$shatteringDepth;
 	
 	@Inject(at=@At("HEAD"), method="dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)V",
 			cancellable=true)
@@ -61,35 +48,35 @@ public class MixinBlock {
 			ci.cancel();
 			return;
 		}
-		yttr$shatteringDepth = 0;
-		yttr$shattering = EnchantmentHelper.getLevel(YEnchantments.SHATTERING_CURSE, stack) > 0;
+		ShatteringLogic.shatteringDepth = 0;
+		ShatteringLogic.isShattering = EnchantmentHelper.getLevel(YEnchantments.SHATTERING_CURSE, stack) > 0;
 	}
 
 	@Inject(at=@At("RETURN"), method="dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)V")
 	private static void dropStacksTail(BlockState state, World world, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack stack, CallbackInfo ci) {
-		yttr$shattering = false;
+		ShatteringLogic.isShattering = false;
 	}
 	
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/entity/ItemEntity.setToDefaultPickupDelay()V", shift=Shift.AFTER),
 			method="dropStack(Lnet/minecraft/world/World;Ljava/util/function/Supplier;Lnet/minecraft/item/ItemStack;)V", cancellable=true,
 			locals=LocalCapture.CAPTURE_FAILHARD)
 	private static void dropStack(World world, Supplier<ItemEntity> sup, ItemStack stack, CallbackInfo ci, ItemEntity entity) {
-		if (yttr$shattering) {
-			if (yttr$shatteringDepth > 0) {
+		if (ShatteringLogic.isShattering) {
+			if (ShatteringLogic.shatteringDepth > 0) {
 				entity.setVelocity(entity.getPos().subtract(Vec3d.ofCenter(entity.getBlockPos())).normalize().multiply(0.2));
-				if (ThreadLocalRandom.current().nextInt(10*yttr$shatteringDepth) != 0) {
+				if (ThreadLocalRandom.current().nextInt(10*ShatteringLogic.shatteringDepth) != 0) {
 					return;
 				}
 			}
 			for (int j = 0; j < stack.getCount(); j++) {
 				ItemStack copy1 = stack.copy();
 				copy1.setCount(1);
-				yttr$inv.setStack(0, copy1);
-				Optional<? extends Recipe<CraftingInventory>> recipe = world.getRecipeManager().getFirstMatch(YRecipeTypes.SHATTERING, yttr$inv, world);
+				ShatteringLogic.inv.setStack(0, copy1);
+				Optional<? extends Recipe<CraftingInventory>> recipe = world.getRecipeManager().getFirstMatch(YRecipeTypes.SHATTERING, ShatteringLogic.inv, world);
 				List<ItemStack> remainder = null;
 				if (!recipe.isPresent()) {
-					recipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, yttr$inv, world);
-					remainder = world.getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, yttr$inv, world);
+					recipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ShatteringLogic.inv, world);
+					remainder = world.getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, ShatteringLogic.inv, world);
 				}
 				if (!recipe.isPresent()) {
 					for (StonecuttingRecipe sr : world.getRecipeManager().listAllOfType(RecipeType.STONECUTTING)) {
@@ -103,9 +90,9 @@ public class MixinBlock {
 					}
 				}
 				if (!recipe.isPresent()) return;
-				ItemStack result = recipe.get().craft(yttr$inv);
+				ItemStack result = recipe.get().craft(ShatteringLogic.inv);
 				try {
-					yttr$shatteringDepth++;
+					ShatteringLogic.shatteringDepth++;
 					for (int i = 0; i < result.getCount(); i++) {
 						ItemStack copy = result.copy();
 						copy.setCount(1);
@@ -122,7 +109,7 @@ public class MixinBlock {
 					}
 					ci.cancel();
 				} finally {
-					yttr$shatteringDepth--;
+					ShatteringLogic.shatteringDepth--;
 				}
 			}
 		}

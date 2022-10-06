@@ -10,6 +10,7 @@
 		"minecraft:nether_quartz_ore",
 		"minecraft:redstone_ore",
 		"yttr:gadolinite",
-		"yttr:brookite_ore"
+		"yttr:brookite_ore",
+		"#c:ores"
 	]
 }

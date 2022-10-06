@@ -8,6 +8,7 @@ import com.unascribed.yttr.content.block.NeodymiumBlock;
 import com.unascribed.yttr.content.block.TemporaryAirBlock;
 import com.unascribed.yttr.content.block.TemporaryFluidBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
+import com.unascribed.yttr.content.block.abomination.ScreeperNestBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
 import com.unascribed.yttr.content.block.basic.BasicHorizontalFacingBlock;
@@ -576,6 +577,8 @@ public class YBlocks {
 			.mapColor(MapColor.DULL_RED)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
+
+	public static final ScreeperNestBlock SCREEPER_NEST = new ScreeperNestBlock(FabricBlockSettings.copyOf(Blocks.BEE_NEST));
 	
 	@RenderLayer("cutout_mipped")
 	public static final SSDBlock SSD = new SSDBlock(FabricBlockSettings.copyOf(HOLLOW_SETTINGS));

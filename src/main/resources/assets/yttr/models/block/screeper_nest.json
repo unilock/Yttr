@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+		"particle": "yttr:block/screeper_nest_side",
+		"north": "yttr:block/screeper_nest_side",
+		"south": "yttr:block/screeper_nest_side",
+		"east": "yttr:block/screeper_nest_side",
+		"west": "yttr:block/screeper_nest_side",
+		"up": "yttr:block/screeper_nest_top",
+		"down": "yttr:block/screeper_nest_bottom"
+	}
+}
