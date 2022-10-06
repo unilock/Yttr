@@ -69,14 +69,15 @@ public class SSDScreen extends HandledScreen<SSDScreenHandler> {
 		int w = slotsMissing*18;
 
 		RenderSystem.setShaderTexture(0, BG);
-		drawTexture(matrices, 151-w, 19, 126-w, 151, w, 18, 256, 256);
+		drawTexture(matrices, 151-w, 19, 126-w, 153, w, 18, 256, 256);
 		
 		w = calcPistonWidth();
-		drawTexture(matrices, 155-w, 19, 0, 133, w, 18, 256, 256);
+		drawTexture(matrices, 156-w, 19, 0, 133, w, 20, 256, 256);
+		drawTexture(matrices, 155, 19, 130, 133, 16, 20, 256, 256);
 	}
 	
 	private int calcPistonWidth() {
-		return Math.round((8-MathHelper.lerp(client.getTickDelta(), lastSizeLag, sizeLag))*18)+4;
+		return Math.round((8-MathHelper.lerp(client.getTickDelta(), lastSizeLag, sizeLag))*18)+5;
 	}
 
 	private boolean dragging;
@@ -87,8 +88,8 @@ public class SSDScreen extends HandledScreen<SSDScreenHandler> {
 			int x = (width-backgroundWidth)/2;
 			int y = (height-backgroundHeight)/2;
 			int w = calcPistonWidth();
-			if (mouseX >= x+(155-w) && mouseX < x+(155-w)+4
-					&& mouseY >= y+19 && mouseY < y+37) {
+			if (mouseX >= x+(156-w) && mouseX < x+(156-w)+6
+					&& mouseY >= y+19 && mouseY < y+39) {
 				dragging = true;
 				return true;
 			}

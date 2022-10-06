@@ -61,6 +61,27 @@ public class SSDBlock extends BasicFacingBlock implements BlockEntityProvider {
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return getDefaultState().with(FACING, ctx.getSide());
 	}
+
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof SSDBlockEntity ssd) {
+			double total = 0;
+			for (int i = 0; i < ssd.size(); i++) {
+				var s = ssd.getStack(i);
+				if (s.isEmpty()) continue;
+				total += s.getCount()/(double)Math.min(s.getMaxCount(), SSDBlockEntity.SLOT_MAXES[i]);
+			}
+			if (total == 0) return 0;
+			return (int)(1+((total/ssd.size())*14));
+		}
+		return 0;
+	}
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -102,6 +123,7 @@ public class SSDBlock extends BasicFacingBlock implements BlockEntityProvider {
 			if (be instanceof SSDBlockEntity ssd) {
 				ssd.setSlots(8);
 				ItemScatterer.spawn(world, pos, ssd);
+				world.updateComparators(pos, this);
 			}
 
 			super.onStateReplaced(state, world, pos, newState, moved);
