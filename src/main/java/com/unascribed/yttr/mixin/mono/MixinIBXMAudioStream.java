@@ -11,10 +11,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-@Mixin(IBXMAudioStream.class)
+@Mixin(value=IBXMAudioStream.class, remap=false)
 public class MixinIBXMAudioStream {
 
-	@ModifyVariable(at=@At("HEAD"), method="create")
+	@ModifyVariable(at=@At("HEAD"), method="create", remap=false)
 	private static boolean modifyStereo(boolean orig) {
 		if (YttrClient.forceIbxmMono) return false;
 		return orig;
