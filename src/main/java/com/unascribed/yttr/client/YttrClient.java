@@ -29,12 +29,14 @@ import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.ShifterUI;
 import com.unascribed.yttr.client.render.SuitHUDRenderer;
+import com.unascribed.yttr.client.render.VelresinUI;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompatClient;
 import com.unascribed.yttr.content.block.decor.BloqueBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
+import com.unascribed.yttr.content.block.mechanism.VelresinBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.item.RifleItem;
@@ -158,6 +160,11 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			registry.register(Yttr.id("block/bloque_welded"));
 			registry.register(Yttr.id("block/bloque_welded_side"));
 			registry.register(Yttr.id("block/bloque_welded_top"));
+		});
+		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+			for (var f : VelresinBlock.Facing.values()) {
+				out.accept(new ModelIdentifier("yttr:spread_"+f.asString()+"#inventory"));
+			}
 		});
 		if (RenderBridge.canUseCompatFunctions()) {
 			SplashTextRegistry.replace("Now on OpenGL 3.2 core profile!",
@@ -334,6 +341,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ShifterUI::renderOutline);
+		WorldRenderEvents.BLOCK_OUTLINE.register(VelresinUI::render);
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
 		DynamicBlockModelProvider.init();

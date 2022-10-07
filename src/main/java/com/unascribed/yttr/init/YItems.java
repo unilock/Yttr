@@ -144,6 +144,7 @@ public class YItems {
 	public static final BlockItem SCORCHED_CRYING_OBSIDIAN = createBlockItem(YBlocks.SCORCHED_CRYING_OBSIDIAN);
 	public static final BlockItem SCREEPER_NEST = createBlockItem(YBlocks.SCREEPER_NEST);
 	public static final BlockItem SSD = createBlockItem(YBlocks.SSD);
+	public static final BlockItem VELRESIN = createBlockItem(YBlocks.VELRESIN);
 
 	public static final BlockItem WHITE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.ORANGE);

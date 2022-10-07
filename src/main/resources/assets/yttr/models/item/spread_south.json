@@ -1,0 +1,16 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"tex": "yttr:block/spread"
+	},
+	"elements": [
+		{
+			"from": [4, -0.00125, 12],
+			"to": [12, 3.07375, 16],
+			"faces": {
+				"up": {"uv": [4, 12, 12, 16], "texture": "#tex"},
+				"down": {"uv": [4, 0, 12, 4], "texture": "#tex"}
+			}
+		}
+	]
+}

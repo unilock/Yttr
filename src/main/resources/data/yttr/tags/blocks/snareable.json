@@ -37,6 +37,7 @@
 		"#minecraft:beehives",
 		"yttr:power_meter",
 		"yttr:aware_hopper",
-		"yttr:cleaved_block"
+		"yttr:cleaved_block",
+		"yttr:ssd"
 	]
 }

@@ -1,0 +1,6 @@
+{
+	"parent": "yttr:block/velresin",
+	"textures": {
+		"tex": "yttr:block/velresin_up"
+	}
+}

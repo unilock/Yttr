@@ -52,6 +52,7 @@ import com.unascribed.yttr.content.block.mechanism.DopperBlock;
 import com.unascribed.yttr.content.block.mechanism.FlopperBlock;
 import com.unascribed.yttr.content.block.mechanism.LevitationChamberBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
+import com.unascribed.yttr.content.block.mechanism.VelresinBlock;
 import com.unascribed.yttr.content.block.mechanism.VoidCauldronBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumButtonBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumPressurePlateBlock;
@@ -582,6 +583,10 @@ public class YBlocks {
 	
 	@RenderLayer("cutout_mipped")
 	public static final SSDBlock SSD = new SSDBlock(FabricBlockSettings.copyOf(HOLLOW_SETTINGS));
+	
+	public static final VelresinBlock VELRESIN = new VelresinBlock(FabricBlockSettings.of(Material.ORGANIC_PRODUCT, MapColor.TERRACOTTA_YELLOW)
+			.sounds(BlockSoundGroup.HONEY)
+			.strength(0));
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=self": {
+      "model": "yttr:block/velresin"
+    },
+    "facing=east": {
+      "model": "yttr:block/velresin_east"
+    },
+    "facing=north": {
+      "model": "yttr:block/velresin_north"
+    },
+    "facing=south": {
+      "model": "yttr:block/velresin_south"
+    },
+    "facing=west": {
+      "model": "yttr:block/velresin_west"
+    }
+  }
+}

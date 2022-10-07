@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:delicace",
+  "ingredients": [
+    { "item": "yttr:delicace" },
+    { "item": "minecraft:glowstone_dust" },
+    { "item": "yttr:delicace" }
+  ],
+  "result": {
+    "item": "yttr:velresin",
+    "count": 4
+  }
+}

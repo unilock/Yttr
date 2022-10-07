@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"tex": "yttr:block/velresin",
+		"particle": "#side",
+		"side": "yttr:block/velresin"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 3], "texture": "#side"},
+				"east": {"uv": [13, 0, 16, 16], "rotation": 270, "texture": "#side"},
+				"south": {"uv": [0, 13, 16, 16], "texture": "#side"},
+				"west": {"uv": [0, 0, 3, 16], "rotation": 90, "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#tex"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#tex"}
+			}
+		}
+	]
+}
