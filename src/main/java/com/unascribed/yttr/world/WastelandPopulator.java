@@ -49,7 +49,7 @@ public class WastelandPopulator {
 	}
 	
 	public static void populate(long worldSeed, ServerWorld world, ChunkPos chunk) {
-		BlockPos chunkStart = chunk.getStartPos();
+		BlockPos chunkStart = chunk.getStartPos().withY(world.getBottomY());
 		if (world.getBiome(chunkStart).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
 			if (world.getBlockState(chunkStart).getBlock() == YBlocks.SPECIALTY_BEDROCK) return;
 			world.setBlockState(chunkStart, YBlocks.SPECIALTY_BEDROCK.getDefaultState(), 0, 0);
@@ -199,10 +199,16 @@ public class WastelandPopulator {
 				mut.setY(-1);
 				tryPlaceSchematic(rand, world, mut, "yttr:ruined/quarry", 0, false, true);
 			}
-			if (rand.nextInt(300) == 0) {
+			if (rand.nextInt(200) == 0) {
 				mut.set(chunkStart);
-				mut.setY(-1);
-				tryPlaceSchematic(rand, world, mut, "yttr:ruined/9x9", -1, true, true);
+				if (rand.nextInt(4) == 0) {
+					mut.setY(-1);
+					System.out.println(mut);
+					tryPlaceSchematic(rand, world, mut, "yttr:ruined/9x9_rare", -2, true, true);
+				} else {
+					mut.setY(-1);
+					tryPlaceSchematic(rand, world, mut, "yttr:ruined/9x9", -1, true, true);
+				}
 			}
 			if (rand.nextInt(300) == 0) {
 				mut.set(chunkStart);

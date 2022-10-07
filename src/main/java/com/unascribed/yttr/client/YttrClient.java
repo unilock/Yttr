@@ -149,6 +149,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	private boolean firstWorldTick = true;
 	
 	public static boolean renderingGui = false;
+	public static boolean forceIbxmMono;
 	
 	private HitResult rifleHitResult;
 	private long lastRifleHitUpdate;

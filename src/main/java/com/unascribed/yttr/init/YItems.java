@@ -562,6 +562,9 @@ public class YItems {
 	
 	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = createMusicDisc(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 219);
 	public static final MusicDiscItem MUSIC_DISC_VOID = createMusicDisc(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 615);
+	public static final MusicDiscItem MUSIC_DISC_DESERT_HEAT = createMusicDisc(14, YSounds.DESERT_HEAT_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 421);
+	public static final MusicDiscItem MUSIC_DISC_TORUS = createMusicDisc(14, YSounds.TORUS_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 396);
+	public static final MusicDiscItem MUSIC_DISC_MEMORANDUM = createMusicDisc(14, YSounds.MEMORANDUM_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 299);
 	
 	public static final Item RUBBLE = new Item(new Item.Settings()) {};
 	

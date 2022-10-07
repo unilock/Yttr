@@ -83,6 +83,9 @@
 	"item.yttr.disc_of_continuity": "Disc of Continuity",
 	"item.yttr.music_disc_papillons": "Music Disc",
 	"item.yttr.music_disc_void": "§8Music Disc",
+	"item.yttr.music_disc_desert_heat": "Music Disc",
+	"item.yttr.music_disc_torus": "Music Disc",
+	"item.yttr.music_disc_memorandum": "Music Disc",
 	"item.yttr.levitation_splash_potion": "Splash Potion of Levitation",
 	"item.yttr.rubble": "§7Rubble",
 	"item.yttr.shifter": "Continuous Shifter",
@@ -143,6 +146,9 @@
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
+	"item.yttr.music_disc_desert_heat.desc": "Aureate - desert heat",
+	"item.yttr.music_disc_torus.desc": "Aureate - torus",
+	"item.yttr.music_disc_memorandum.desc": "unascribed - memorandum",
 	"item.yttr.neodymium_disc.desc": "???",
 	
 	"item.yttr.ammo_can.prefixed": "%s Rifle Canister",

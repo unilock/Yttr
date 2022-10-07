@@ -92,6 +92,9 @@ public class YSounds {
 	public static final SoundEvent MAGNET_STEP = create("magnet_step");
 	public static final SoundEvent TORUS = create("torus");
 	public static final SoundEvent SMALL_EXPLODE = create("small_explode");
+	public static final SoundEvent DESERT_HEAT_MONO = create("desert_heat_mono");
+	public static final SoundEvent MEMORANDUM_MONO = create("memorandum_mono");
+	public static final SoundEvent TORUS_MONO = create("torus_mono");
 	
 	public static final SoundEvent HIGH_NOTE_BANJO = create("high_note.banjo");
 	public static final SoundEvent HIGH_NOTE_BASEDRUM = create("high_note.basedrum");
