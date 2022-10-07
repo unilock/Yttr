@@ -108,7 +108,6 @@ public class VelresinBlock extends Block {
 						if (otherState.isOf(this)) {
 							world.setBlockState(ofs, otherState.with(FACING, tgt));
 						}
-						s.decrement(1);
 					}
 					return ActionResult.SUCCESS;
 				}
