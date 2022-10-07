@@ -2,7 +2,7 @@
 	"type": "yttr:centrifuging",
 	"time": 200,
 	"ingredient": {
-		"item": "minecraft:red_tulip",
+		"item": "minecraft:white_tulip",
 		"count": 1
 	},
 	"results": [
