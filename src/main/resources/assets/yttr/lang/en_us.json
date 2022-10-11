@@ -784,10 +784,10 @@
 		"lamp_crafting": "Misc. Lamp Crafting",
 		"shattering": "Shattering",
 		
-		"void_filtering.chance": "Chance: {}%%",
-		"void_filtering.chance.short": "{}%%",
+		"void_filtering.chance": "Chance: {}%",
+		"void_filtering.chance.short": "{}%",
 		
-		"continuity_gifts.chance": "{}%%",
+		"continuity_gifts.chance": "{}%",
 		"continuity_gifts.chance.tooltip": "Chance of any one specific item"
 	},
 	
