@@ -237,3 +237,11 @@ if (System.getenv("CURSE_TOKEN")) {
 		}
 	}
 }
+
+if (System.getenv("MCMODCN_COOKIE")) {
+	task mcmodcn(type: Exec) {
+		dependsOn remapJar
+
+		commandLine './mcmodcn-upload.sh', '3949', '1.19', '2,11', 'beta', remapJar.archivePath.getPath()
+	}
+}
