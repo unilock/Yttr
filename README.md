@@ -1,6 +1,9 @@
 <img src="logo.png" align="right" width="180px"/>
 
 # Yttr
+
+[![Translation status](http://weblate.sleeping.town/widgets/unascribed-mods/-/yttr/multi-auto.svg)](http://weblate.sleeping.town/engage/unascribed-mods/)
+
 *A mod about the Void, what has gone before, and where you'll go from here.
 A vanilla overhaul crossed with a content mod.*
 
