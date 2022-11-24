@@ -1,0 +1,19 @@
+{
+	"display": "yttr:void_bucket",
+	"settings": {
+		"biome": "minecraft:the_void",
+		"features": true,
+		"lakes": false,
+		"layers": [
+			{
+				"block": "minecraft:barrier",
+				"height": 1
+			},
+			{
+				"block": "yttr:infinite_void",
+				"height": 5
+			}
+		],
+		"structure_overrides": []
+	}
+}

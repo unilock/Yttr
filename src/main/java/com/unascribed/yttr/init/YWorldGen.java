@@ -58,7 +58,7 @@ public class YWorldGen {
 			List.of(
 					CountPlacementModifier.create(5),
 					InSquarePlacementModifier.getInstance(),
-					HeightRangePlacementModifier.trapezoid(YOffset.aboveBottom(20), YOffset.fixed(10))
+					HeightRangePlacementModifier.trapezoid(YOffset.aboveBottom(5), YOffset.fixed(10))
 			));
 
 	public static final ConfiguredFeature<OreFeatureConfig, Feature<OreFeatureConfig>> BROOKITE_ORE_OVERWORLD = new ConfiguredFeature<>

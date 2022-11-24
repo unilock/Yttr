@@ -23,7 +23,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.LiteralComponent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
@@ -79,10 +78,23 @@ public class ReplicatorBlockItem extends BlockItem {
 					return true;
 				}
 			} else if (!cursorStackReference.get().isEmpty()) {
-				player.playSound(YSounds.REPLICATOR_UPDATE, 1, 1.25f);
-				setHeldItem(stack, otherStack.copy());
+				if (isLocked(stack)) {
+					player.playSound(YSounds.REPLICATOR_REFUSE, 1, 0.75f);
+					player.playSound(YSounds.REPLICATOR_REFUSE, 1, 0.6f);
+				} else {
+					player.playSound(YSounds.REPLICATOR_UPDATE, 1, 1.25f);
+					setHeldItem(stack, otherStack.copy());
+				}
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public static boolean isLocked(ItemStack stack) {
+		NbtCompound entityTag = stack.getSubNbt("BlockEntityTag");
+		if (entityTag != null) {
+			return entityTag.getBoolean("Locked");
 		}
 		return false;
 	}

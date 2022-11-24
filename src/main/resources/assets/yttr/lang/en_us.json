@@ -257,6 +257,7 @@
 	"block.yttr.screeper_nest": "Screeper Nest",
 	"block.yttr.ssd": "Scalable Storage Drum",
 	"block.yttr.velresin": "Hypervelic Resin",
+	"block.yttr.infinite_void": "Infinite Void",
 	
 	"block.yttr.ssd.tip.1": "§7Adjustable from 1 to 8 slots.",
 	
@@ -555,6 +556,8 @@
 	"stat.yttr.blocks_cleaved": "[Yttr] Blocks Cleaved",
 	"stat.yttr.blocks_shifted": "[Yttr] Blocks Shifted",
 	"stat.yttr.bloques_welded": "[Yttr] Bloques® Welded",
+	
+	"flat_world_preset.yttr.the_void_2": "The Void 2",
 	
 	"advancements.yttr.root.title": "Yttr  ",
 	"advancements.yttr.root.desc": "Voidtech and other goodies",

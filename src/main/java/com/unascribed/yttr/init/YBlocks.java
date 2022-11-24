@@ -81,6 +81,7 @@ import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.block.void_.ErodedBedrockBlock;
 import com.unascribed.yttr.content.block.void_.GlassyVoidBlock;
 import com.unascribed.yttr.content.block.void_.GlassyVoidPaneBlock;
+import com.unascribed.yttr.content.block.void_.InfiniteVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.MagtubeBlock;
 import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
@@ -587,6 +588,17 @@ public class YBlocks {
 	public static final VelresinBlock VELRESIN = new VelresinBlock(FabricBlockSettings.of(Material.ORGANIC_PRODUCT, MapColor.TERRACOTTA_YELLOW)
 			.sounds(BlockSoundGroup.HONEY)
 			.strength(0));
+	
+	public static final FluidBlock INFINITE_VOID = new InfiniteVoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
+			new FabricMaterialBuilder(MapColor.BLACK)
+				.allowsMovement()
+				.notSolid()
+				.liquid()
+				.build()
+			)
+		.noCollision()
+		.strength(-1)
+		.dropsNothing());
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
