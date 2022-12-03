@@ -1,8 +1,6 @@
 package com.unascribed.yttr.content.block.lazor;
 
 import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
-import com.unascribed.yttr.util.YTickable;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -88,7 +86,7 @@ public class LazorBeamBlock extends AbstractLazorBlock implements BlockEntityPro
 				Particle prt = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FIREWORK,
 						p.x+random.nextGaussian()*0.1, p.y+random.nextGaussian()*0.1, p.z+random.nextGaussian()*0.1,
 						(random.nextGaussian()*0.025)+(facing.getOffsetX()*-0.05), (random.nextGaussian()*0.025)+0.05+(facing.getOffsetY()*-0.05), (random.nextGaussian()*0.025)+(facing.getOffsetZ()*-0.05));
-				prt.setColor(r, g, b);
+				if (prt != null) prt.setColor(r, g, b);
 			}
 		}
 	}
