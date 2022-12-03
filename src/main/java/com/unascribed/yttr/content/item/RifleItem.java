@@ -245,6 +245,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 	}
 
 	public void changeMode(PlayerEntity user, RifleMode mode) {
+		if (user.isUsingItem()) return;
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasNbt() && stack.getNbt().getBoolean("ModeLocked")) return;
 		RifleMode oldMode = getMode(stack);
