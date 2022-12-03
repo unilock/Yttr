@@ -20,6 +20,7 @@ import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
+import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 
@@ -62,7 +63,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
-public class ShifterItem extends Item {
+public class ShifterItem extends Item implements ControlHintable {
 
 	public ShifterItem(Settings settings) {
 		super(settings);
@@ -338,6 +339,11 @@ public class ShifterItem extends Item {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public String getState(PlayerEntity player, ItemStack stack, boolean fHeld) {
+		return fHeld ? "mode" : "normal";
 	}
 
 }

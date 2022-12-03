@@ -14,8 +14,11 @@ import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.network.MessageC2SRifleMode;
 import com.unascribed.yttr.util.math.Interp;
 
+import com.google.common.base.Ascii;
+
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -134,6 +137,12 @@ public class RifleHUDRenderer extends IHasAClient {
 			matrices.push();
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
 				float t = Interp.sCurve5(1-(Math.min(ticksSinceChange+delta, ANIM_TIME)/ANIM_TIMEf))*changeSignum;
+				if (mainA > 0.05f) {
+					int curTextCol = current.color;
+					curTextCol |= ((int)(mainA*255)&0xFF)<<24;
+					var curText = I18n.translate("yttr.rifle_mode."+Ascii.toLowerCase(current.name()));
+					mc.textRenderer.drawWithShadow(matrices, curText, -(mc.textRenderer.getWidth(curText)/2), 10, curTextCol);
+				}
 				for (int i = -3-(Math.abs(changeSignum)); i <= 3+(Math.abs(changeSignum)); i++) {
 					int j = (current.effectiveOrdinal()+i)%RifleMode.VALUES.size();
 					if (j < 0) j = RifleMode.VALUES.size()+j;

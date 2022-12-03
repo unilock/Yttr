@@ -173,6 +173,8 @@ public class YConfig {
 		public static LampColor configColor = LampColor.TEAL;
 		@Key("client.rifle-timing-assist")
 		public static boolean rifleTimingAssist = true;
+		@Key("client.control-hints")
+		public static boolean controlHints = true;
 		
 		static { touch(); }
 		

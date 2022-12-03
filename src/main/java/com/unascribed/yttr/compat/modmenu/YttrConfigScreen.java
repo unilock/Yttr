@@ -81,6 +81,7 @@ public class YttrConfigScreen extends Screen {
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
 			.put("client.config-color", "customize the color of this very setup utility")
 			.put("client.rifle-timing-assist", "if on, play a ding noise at 500kj and three dings leading up to 650kj while charging the rifle")
+			.put("client.control-hints", "if on, show on-screen hints for nonstandard controls")
 			
 			.put("rifle.allow-void", "off disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
 			.put("rifle.allow-explode", "off disables the yttric rifle explode mode to avoid griefing concerns - breaks progression - prefer soft to disable block damage")

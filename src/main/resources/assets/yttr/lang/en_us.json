@@ -154,6 +154,50 @@
 	"item.yttr.ammo_can.prefixed": "%s Rifle Canister",
 	"item.yttr.ammo_can.shots": "%s/%s shots",
 	
+	
+	"item.yttr.rifle.controlhint.normal.3": "{key.swapOffhand} (Hold)  Mode Select",
+	"item.yttr.rifle.controlhint.normal.2": "{key.attack}  Scope",
+	"item.yttr.rifle.controlhint.normal.1": "{key.use} (Hold)  Charge",
+	
+	"item.yttr.rifle.controlhint.charge.1": "{key.use} (Release)  Fire",
+	
+	"item.yttr.rifle.controlhint.mode.2": "{key.attack}  Cycle Left",
+	"item.yttr.rifle.controlhint.mode.1": "{key.use}  Cycle Right",
+	
+	
+	"item.yttr.ultrapure_lazurite.controlhint.normal.1": "{key.use} (Hold)  ???",
+	
+	
+	"item.yttr.drop_of_continuity.controlhint.normal.1": "{key.use} (Hold)  Burn",
+	"item.yttr.lootbox_of_continuity.controlhint.normal.1": "{key.use} (Hold)  Burn",
+	
+	
+	"item.yttr.projector.controlhint.normal.3": "{key.use}  Create Platform",
+	"item.yttr.projector.controlhint.normal.2": "{key.use} (Hold)  Create Bridge",
+	"item.yttr.projector.controlhint.normal.1": "{key.use} (On Block)  Immortalize/Destroy",
+	
+	
+	"item.yttr.shifter.controlhint.normal.3": "{key.use}  Exchange",
+	"item.yttr.shifter.controlhint.normal.2": "{key.pickItem}  Pick Offhand",
+	"item.yttr.shifter.controlhint.normal.1": "{key.swapOffhand} (Hold)  Mode Select",
+	
+	"item.yttr.shifter.controlhint.mode.3": "{key.attack}  Toggle Disconnected",
+	"item.yttr.shifter.controlhint.mode.2": "{key.pickItem}  Toggle Hidden",
+	"item.yttr.shifter.controlhint.mode.1": "{key.use}  Toggle Plane",
+	
+	
+	"item.yttr.cleaver.controlhint.normal.1": "{key.use}  Start Cleave",
+	
+	"item.yttr.cleaver.controlhint.repeatable.2": "{key.attack}  Repeat Last Cleave",
+	"item.yttr.cleaver.controlhint.repeatable.1": "{key.use}  Start Cleave",
+	
+	"item.yttr.cleaver.controlhint.step1.2": "{key.use}  Select Next Point",
+	"item.yttr.cleaver.controlhint.step1.1": "{key.attack}  Undo Last Selection",
+		
+	"item.yttr.cleaver.controlhint.step2.2": "{key.use}  Finish Cleave",
+	"item.yttr.cleaver.controlhint.step2.1": "{key.attack}  Undo Last Selection",
+	
+	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Block of Yttrium",
 	"block.yttr.power_meter": "Power Meter",

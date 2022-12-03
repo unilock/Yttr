@@ -1,6 +1,5 @@
 package com.unascribed.yttr.content.item;
 
-import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
@@ -20,6 +19,7 @@ import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
 import com.unascribed.yttr.network.MessageC2STrustedRifleFire;
 import com.unascribed.yttr.network.MessageS2CBeam;
+import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.InventoryProviderItem;
 
 import com.google.common.base.Enums;
@@ -48,7 +48,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -65,7 +64,7 @@ import net.minecraft.world.RaycastContext.ShapeType;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class RifleItem extends Item implements ItemColorProvider, DirectClickItem {
+public class RifleItem extends Item implements ItemColorProvider, DirectClickItem, ControlHintable {
 
 	private final float speedMod;
 	private final int ammoMod;
@@ -567,12 +566,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		if (selected != wasSelected) {
 			if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 			stack.getNbt().putBoolean("WasSelected", selected);
-			if (!wasSelected) {
-				if (entity instanceof PlayerEntity && !world.isClient) {
-					RifleMode mode = getMode(stack);
-					((PlayerEntity)entity).sendMessage(Text.translatable("tip.yttr.rifle_mode", Text.translatable("yttr.rifle_mode."+mode.name().toLowerCase(Locale.ROOT)).formatted(Formatting.BOLD, mode.chatColor)), true);
-				}
-			} else {
+			if (wasSelected) {
 				world.playSoundFromEntity(null, entity, YSounds.RIFLE_CHARGE_CANCEL, entity.getSoundCategory(), 1, 1);
 			}
 		}
@@ -635,6 +629,12 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		float g = gF+((gE-gF)*a);
 		float b = bF+((bE-bF)*a);
 		return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
+	}
+
+	@Override
+	public String getState(PlayerEntity player, ItemStack stack, boolean fHeld) {
+		if (player.isUsingItem() && player.getActiveHand() == Hand.MAIN_HAND) return "charge";
+		return fHeld ? "mode" : "normal";
 	}
 
 }

@@ -16,6 +16,7 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
+import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
@@ -27,7 +28,6 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
@@ -49,7 +48,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.World;
 
-public class CleaverItem extends Item implements DirectClickItem {
+public class CleaverItem extends Item implements DirectClickItem, ControlHintable {
 
 	public static final int SUBDIVISIONS = 4;
 	
@@ -108,7 +107,6 @@ public class CleaverItem extends Item implements DirectClickItem {
 					setCleaveBlock(stack, null);
 					setCleaveStart(stack, null);
 					setCleaveCorner(stack, null);
-					player.sendMessage(Text.translatable("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")), true);
 				}
 			}
 		}
@@ -120,21 +118,6 @@ public class CleaverItem extends Item implements DirectClickItem {
 		//if (state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
 		if (state.isIn(YTags.Block.UNCLEAVABLE)) return false;
 		return !(state.getBlock() instanceof BlockEntityProvider) && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
-	}
-	
-	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-		if (entity instanceof PlayerEntity && stack.hasNbt()) {
-			boolean wasSelected = stack.getNbt().getBoolean("Selected");
-			if (selected && !wasSelected) {
-				if (stack.getNbt().contains("LastCut")) {
-					((PlayerEntity)entity).sendMessage(Text.translatable("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")+".post"), true);
-				}
-				stack.getNbt().putBoolean("Selected", true);
-			} else if (!selected && wasSelected) {
-				stack.getNbt().putBoolean("Selected", false);
-			}
-		}
 	}
 
 	public static List<Polygon> getShape(World world, BlockPos pos) {
@@ -346,6 +329,20 @@ public class CleaverItem extends Item implements DirectClickItem {
 		} else {
 			stack.getNbt().put(key, NBTUtils.vecToList(pos));
 		}
+	}
+
+	@Override
+	public String getState(PlayerEntity player, ItemStack stack, boolean fHeld) {
+		if (stack.hasNbt()) {
+			if (stack.getNbt().contains("CleaveCorner")) {
+				return "step2";
+			} else if (stack.getNbt().contains("CleaveStart")) {
+				return "step1";
+			} else if (stack.getNbt().contains("LastCut")) {
+				return "repeatable";
+			}
+		}
+		return "normal";
 	}
 	
 }

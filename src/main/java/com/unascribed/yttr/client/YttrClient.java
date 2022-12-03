@@ -24,6 +24,7 @@ import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
+import com.unascribed.yttr.client.render.ControlHints;
 import com.unascribed.yttr.client.render.EffectorRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
@@ -337,6 +338,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.render(matrixStack, tickDelta);
 			RifleHUDRenderer.render(matrixStack, tickDelta);
 			ShifterUI.render(matrixStack, tickDelta);
+			ControlHints.render(matrixStack, tickDelta);
 		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
