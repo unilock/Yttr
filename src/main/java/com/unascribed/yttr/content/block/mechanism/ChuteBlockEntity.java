@@ -88,7 +88,7 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, YTi
 		BlockPos.Mutable mut = origin.mutableCopy();
 		while (true) {
 			mut.move(scanDir);
-			if (mut.getY() < 0 || mut.getY() > world.getHeight()) break;
+			if (mut.getY() < world.getBottomY() || mut.getY() > world.getTopY()) break;
 			BlockState there = world.getBlockState(mut);
 			if (there.getBlock() == YBlocks.CHUTE) {
 				Mode m = there.get(ChuteBlock.MODE);

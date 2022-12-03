@@ -1,2 +1,3 @@
 * Added contextual control hints
 * Prevented changing modes while charging the rifle
+* Fixed chutes not transferring past Y0
