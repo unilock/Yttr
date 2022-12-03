@@ -19,6 +19,7 @@ import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -107,6 +108,19 @@ public class LevitationChamberBlock extends Block implements BlockEntityProvider
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return YTickable::tick;
+	}
+
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (!state.isOf(newState.getBlock())) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof LevitationChamberBlockEntity lcbe) {
+				ItemScatterer.spawn(world, pos, lcbe);
+				world.updateComparators(pos, this);
+			}
+
+			super.onStateReplaced(state, world, pos, newState, moved);
+		}
 	}
 
 }
