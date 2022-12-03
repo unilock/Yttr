@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.void_;
 
 import java.util.Optional;
 
+import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
 import com.unascribed.yttr.content.block.Voidloggable;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YFluids;
@@ -25,7 +26,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
-public class DivingPlateBlock extends Block implements Voidloggable {
+public class DivingPlateBlock extends Block implements Voidloggable, SimpleLootBlock {
 
 	private static final VoxelShape SHAPE = createCuboidShape(0, 14, 0, 16, 16, 16);
 	
@@ -115,6 +116,11 @@ public class DivingPlateBlock extends Block implements Voidloggable {
 	@Override
 	public Optional<SoundEvent> getBucketFillSound() {
 		return Optional.empty();
+	}
+
+	@Override
+	public ItemStack getLoot(BlockState state) {
+		return ItemStack.EMPTY;
 	}
 
 }
