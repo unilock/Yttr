@@ -17,6 +17,7 @@ import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.mixin.accessor.AccessorServerPlayNetHandler;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.network.MessageS2CDiveEnd;
 import com.unascribed.yttr.util.math.Vec2i;
@@ -60,6 +61,9 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 		ServerPlayerEntity self = (ServerPlayerEntity)(Object)this;
 		if (!self.isAlive()) return;
 		if (yttr$isDiving) {
+			if (self.networkHandler instanceof AccessorServerPlayNetHandler acc) {
+				acc.yttr$setFloatingTicks(0);
+			}
 			YStats.add(self, YStats.TIME_IN_VOID, 1);
 			if (self.getPos().y > world.getBottomY()) {
 				yttr$isDiving = false;

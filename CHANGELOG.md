@@ -6,3 +6,4 @@
 * Fixed Levitation Chambers not dropping their contents when broken
 * Nerfed Vorpal
 * Added enchantment configuration
+* Fixed void diving kicking for flying
