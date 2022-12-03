@@ -50,7 +50,7 @@ public class YConfig {
 	public static QDCSS data;
 	
 	private static final List<Class<?>> sections = List.of(
-			General.class, Client.class, Rifle.class, WorldGen.class, Debug.class
+			General.class, Client.class, Rifle.class, Enchantments.class, WorldGen.class, Debug.class
 		);
 	private static final Map<String, Class<?>> keyTypes = new HashMap<>();
 	
@@ -171,8 +171,6 @@ public class YConfig {
 		public static Trilean forceOpenGLCore = Trilean.AUTO;
 		@Key("client.config-color")
 		public static LampColor configColor = LampColor.TEAL;
-		@Key("client.rifle-timing-assist")
-		public static boolean rifleTimingAssist = true;
 		@Key("client.control-hints")
 		public static boolean controlHints = true;
 		
@@ -183,15 +181,38 @@ public class YConfig {
 	
 	public static final class Rifle {
 		@Key("rifle.allow-void")
-		public static boolean     allowVoid    = true;
+		public static boolean allowVoid    = true;
 		@Key("rifle.allow-explode")
 		public static TrileanSoft allowExplode = TrileanSoft.ON;
 		@Key("rifle.allow-fire")
-		public static boolean     allowFire    = true;
+		public static boolean allowFire    = true;
+		@Key("rifle.timing-assist")
+		public static boolean timingAssist = true;
 		
 		static { touch(); }
 		
 		private Rifle() {}
+	}
+	
+	public static final class Enchantments {
+		@Key("enchantments.vorpal")
+		public static boolean vorpal = true;
+		@Key("enchantments.disjunction")
+		public static boolean disjunction = true;
+		@Key("enchantments.annihilation")
+		public static boolean annihilation = true;
+		@Key("enchantments.shattering")
+		public static boolean shattering = true;
+		@Key("enchantments.springing")
+		public static boolean springing = true;
+		@Key("enchantments.stabilization")
+		public static boolean stabilization = true;
+		@Key("enchantments.curses-in-table")
+		public static boolean cursesInTable = true;
+		
+		static { touch(); }
+		
+		private Enchantments() {}
 	}
 	
 	public static final class WorldGen {

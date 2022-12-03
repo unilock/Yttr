@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.enchant;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 
@@ -26,11 +27,13 @@ public class VorpalEnchantment extends Enchantment {
 	
 	@Override
 	public int getMinPower(int level) {
+		if (!YConfig.Enchantments.vorpal) return 30000;
 		return 20 + 10 * (level-1);
 	}
 	
 	@Override
 	public int getMaxPower(int level) {
+		if (!YConfig.Enchantments.vorpal) return -30000;
 		return getMinPower(level)+50;
 	}
 	
@@ -53,7 +56,7 @@ public class VorpalEnchantment extends Enchantment {
 		if (lastAttacker == user && user.getLastAttackTime() == lastAttackerAttackTime) return;
 		lastAttacker = user;
 		lastAttackerAttackTime = user.getLastAttackTime();
-		if (ThreadLocalRandom.current().nextInt(100) < level*level) {
+		if (ThreadLocalRandom.current().nextInt(150) < level*level) {
 			target.damage(new EntityDamageSource("yttr.vorpal", user), 100);
 			if (user instanceof ServerPlayerEntity) {
 				Box b = target.getBoundingBox();

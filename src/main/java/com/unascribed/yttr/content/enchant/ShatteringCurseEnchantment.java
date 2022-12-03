@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.enchant;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YEnchantments;
 
 import net.minecraft.enchantment.Enchantment;
@@ -14,11 +15,13 @@ public class ShatteringCurseEnchantment extends Enchantment {
 
 	@Override
 	public int getMinPower(int level) {
+		if (!YConfig.Enchantments.shattering) return 30000;
 		return 25;
 	}
 
 	@Override
 	public int getMaxPower(int level) {
+		if (!YConfig.Enchantments.shattering) return -30000;
 		return 40;
 	}
 
@@ -30,6 +33,11 @@ public class ShatteringCurseEnchantment extends Enchantment {
 	@Override
 	public boolean isCursed() {
 		return true;
+	}
+	
+	@Override
+	public boolean isTreasure() {
+		return !YConfig.Enchantments.cursesInTable;
 	}
 	
 	@Override

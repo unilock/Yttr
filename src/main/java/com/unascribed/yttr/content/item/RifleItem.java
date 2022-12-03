@@ -521,7 +521,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
 		YStats.add(user, YStats.RIFLE_CHARGING_TIME, 1);
 		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
-		if (world.isClient && YConfig.Client.rifleTimingAssist) {
+		if (world.isClient && YConfig.Rifle.timingAssist) {
 			if (!simpleCurve) {
 				if (useTicks == 70) {
 					user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3f, 0.8f);

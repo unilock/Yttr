@@ -47,11 +47,10 @@
 	config-color: var(client.config-color);
 	
 	/*
-	 * If on, ding noises will play as the rifle charges informing you of important timing points.
-	 * The first ding is for a normal 500kJ shot, and there are then three dings leading up to the
-	 * 650kJ shot.
+	 * If on, contextual control hints will appear when holding some items, providing information on
+	 * which keys/buttons do what, how, and when.
 	 */
-	rifle-timing-assist: var(client.rifle-timing-assist);
+	control-hints: var(client.control-hints);
 }
 
 #rifle {
@@ -81,6 +80,50 @@
 	 * destroy blocks in #yttr:fire_mode_instabreak instantly.
 	 */
 	allow-fire: var(rifle.allow-fire);
+	
+	/*
+	 * If on, ding noises will play as the rifle charges informing you of important timing points.
+	 * The first ding is for a normal 500kJ shot, and there are then three dings leading up to the
+	 * 650kJ shot.
+	 */
+	timing-assist: var(rifle.timing-assist);
+}
+
+#enchantments {
+	/*
+	 * If on, the Vorpal weapon enchantment can be obtained, which provides a level-dependent chance
+	 * to deal a very large of damage on strike.
+	 */
+	vorpal: var(enchantments.vorpal);
+	/*
+	 * If on, the Disjunction weapon enchantment can be obtained, which acts as an analogue to
+	 * Smite for Ender creatures.
+	 */
+	disjunction: var(enchantments.disjunction);
+	/*
+	 * If on, the Curse of Annihilation tool enchantment can be obtained, which completely destroys
+	 * any items that would have been dropped when breaking a block.
+	 */
+	annihilation: var(enchantments.annihilation);
+	/*
+	 * If on, the Curse of Shattering tool enchantment can be obtained, which "shatters" dropped
+	 * items via 1x1 crafting recipes, reverse-stonecutting, and more.
+	 */
+	shattering: var(enchantments.shattering);
+	/*
+	 * If on, the Springing coil enchantment can be obtained, increasing your jump height.
+	 */
+	springing: var(enchantments.springing);
+	/*
+	 * If on, the Stabilization coil enchantment can be obtained, removing the midair break speed
+	 * penalty.
+	 */
+	stabilization: var(enchantments.stabilization);
+	
+	/*
+	 * If on, Yttr's Curses can be obtained via regular enchanting.
+	 */
+	curses-in-table: var(enchantments.curses-in-table);
 }
 
 #worldgen {

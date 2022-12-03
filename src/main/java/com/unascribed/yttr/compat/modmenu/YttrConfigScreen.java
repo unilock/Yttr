@@ -39,6 +39,7 @@ public class YttrConfigScreen extends Screen {
 		GENERAL,
 		CLIENT,
 		RIFLE,
+		ENCHANTMENTS,
 		WORLDGEN
 	}
 	
@@ -80,12 +81,20 @@ public class YttrConfigScreen extends Screen {
 			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
 			.put("client.config-color", "customize the color of this very setup utility")
-			.put("client.rifle-timing-assist", "if on, play a ding noise at 500kj and three dings leading up to 650kj while charging the rifle")
 			.put("client.control-hints", "if on, show on-screen hints for nonstandard controls")
 			
 			.put("rifle.allow-void", "off disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
 			.put("rifle.allow-explode", "off disables the yttric rifle explode mode to avoid griefing concerns - breaks progression - prefer soft to disable block damage")
 			.put("rifle.allow-fire", "off disables the yttric rifle fire mode to avoid griefing concerns")
+			.put("rifle.timing-assist", "if on, play a ding noise at 500kj and three dings leading up to 650kj while charging the rifle")
+			
+			.put("enchantments.vorpal", "if on, the vorpal weapon enchantment can be obtained - a level-dependent chance to deal a very large amount of damage on strike")
+			.put("enchantments.disjunction", "if on, the disjunction weapon enchantment can be obtained - an analogue to smite for ender creatures")
+			.put("enchantments.annihilation", "if on, the curse of annihilation tool enchantment can be obtained - completely destroys any items that would have been dropped")
+			.put("enchantments.shattering", "if on, the curse of shattering tool enchantment can be obtained - \"shatters\" dropped items via various means")
+			.put("enchantments.springing", "if on, the springing coil enchantment can be obtained - increases jump height")
+			.put("enchantments.stabilization", "if on, the stabilization coil enchantment can be obtained - removes midair mining speed penalty")
+			.put("enchantments.curses-in-table", "if on, yttr curses can be obtained via regular enchanting")
 			
 			.put("worldgen.gadolinite", "generates gadolinite in the overworld, a source of yttrium and iron - required for progression")
 			.put("worldgen.brookite", "generates brookite ore in the overworld - required for some recipes, and future progression")
@@ -102,6 +111,7 @@ public class YttrConfigScreen extends Screen {
 			.put("client.force-opengl-core", Trilean.ON)
 			.put("rifle.allow-explode", TrileanSoft.OFF)
 			.put("worldgen.gadolinite", false)
+			.put("worldgen.continuity", false)
 			.build();
 	
 	private final Multiset<String> timesModified = HashMultiset.create();

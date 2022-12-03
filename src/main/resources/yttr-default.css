@@ -9,13 +9,24 @@
 	slope-smoothing: on;
 	force-opengl-core: auto;
 	config-color: teal;
-	rifle-timing-assist: on;
+	control-hints: on;
 }
 
 #rifle {
 	allow-void: on;
 	allow-explode: on;
 	allow-fire: on;
+	timing-assist: on;
+}
+
+#enchantments {
+	vorpal: on;
+	disjunction: on;
+	annihilation: on;
+	shattering: on;
+	springing: on;
+	stabilization: on;
+	curses-in-table: on;
 }
 
 #worldgen {

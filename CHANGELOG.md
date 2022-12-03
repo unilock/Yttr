@@ -4,3 +4,5 @@
 * Fixed lazors crashing if Particles is set to Decreased or Minimal
 * Fixed breaking diving plates dropping two
 * Fixed Levitation Chambers not dropping their contents when broken
+* Nerfed Vorpal
+* Added enchantment configuration
