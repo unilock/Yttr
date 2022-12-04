@@ -188,8 +188,8 @@
 	
 	"item.yttr.cleaver.controlhint.normal.1": "{key.use}  Start Cleave",
 	
-	"item.yttr.cleaver.controlhint.repeatable.2": "{key.attack}  Repeat Last Cleave",
-	"item.yttr.cleaver.controlhint.repeatable.1": "{key.use}  Start Cleave",
+	"item.yttr.cleaver.controlhint.repeatable.2": "{key.use}  Start Cleave",
+	"item.yttr.cleaver.controlhint.repeatable.1": "{key.attack}  Repeat Last Cleave",
 	
 	"item.yttr.cleaver.controlhint.step1.2": "{key.use}  Select Next Point",
 	"item.yttr.cleaver.controlhint.step1.1": "{key.attack}  Undo Last Selection",

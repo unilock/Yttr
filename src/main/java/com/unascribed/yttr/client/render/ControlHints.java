@@ -1,11 +1,16 @@
 package com.unascribed.yttr.client.render;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import com.mojang.blaze3d.platform.InputUtil.Type;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.YConfig;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.mixin.accessor.client.AccessorInGameHud;
+import com.unascribed.yttr.mixin.accessor.client.AccessorKeyBind;
 import com.unascribed.yttr.util.ControlHintable;
 
 import net.minecraft.client.MinecraftClient;
@@ -13,8 +18,11 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 
 public class ControlHints {
+	
+	private static final Identifier ICONS = Yttr.id("textures/gui/controlicons.png");
 	
 	private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{(.*?)\\}");
 
@@ -40,8 +48,8 @@ public class ControlHints {
 				if (fade < 0.03f) return;
 				
 				var win = mc.getWindow();
-				var w = win.getScaledWidth();
-				var h = win.getScaledHeight();
+				var winW = win.getScaledWidth();
+				var winH = win.getScaledHeight();
 				
 				var sc = (int)win.getScaleFactor();
 				
@@ -54,8 +62,8 @@ public class ControlHints {
 					float factor = (sc-1)/(float)sc;
 					matrices.scale(factor, factor, 1);
 					float rfactor = 1/factor;
-					w *= rfactor;
-					h *= rfactor;
+					winW *= rfactor;
+					winH *= rfactor;
 					ofs *= rfactor;
 				}
 				
@@ -88,23 +96,24 @@ public class ControlHints {
 				
 				String keyBase = stack.getTranslationKey()+".controlhint."+state;
 				
-				int y = h - ofs;
+				int y = winH - ofs;
 				
 				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
 				
-				int a = (int)(fade*255);
+				if (fade < 0.05) return;
 				
-				if (a <= 10) return;
-				
-				int col = 0x00FFFFFF | (a << 24);
+				int a = ((int)(fade*255))<<24;
+				float af = fade;
 				
 				int i = 1;
-				var buf = new StringBuilder();
+				List<Runnable> components = new ArrayList<>();
 				while (I18n.hasTranslation(keyBase+"."+i)) {
-					buf.setLength(0);
+					components.clear();
 					String str = I18n.translate(keyBase+"."+i);
+					int w = 0;
 					var m = PLACEHOLDER_PATTERN.matcher(str);
+					int last = 0;
 					while (m.find()) {
 						KeyBind key = null;
 						for (var k : mc.options.allKeys) {
@@ -113,16 +122,65 @@ public class ControlHints {
 								break;
 							}
 						}
-						String s = key == null ? "?" : key.getKeyName().getString();
-						if (s.length() == 1) s = s.toUpperCase(Locale.ROOT);
-						m.appendReplacement(buf, "§e§l"+s+"§r");
+						if (last-m.start() != 0) {
+							String s = str.substring(last, m.start());
+							int sw = mc.textRenderer.getWidth(s);
+							w += sw;
+							components.add(() -> {
+								mc.textRenderer.drawWithShadow(matrices, s, 0, 1, 0xFFFFFF|a);
+								matrices.translate(sw, 0, 0);
+							});
+						}
+						if (key != null) {
+							var bk = ((AccessorKeyBind)key).yttr$getBoundKey();
+							if (bk.getType() == Type.MOUSE && bk.getKeyCode() >= 0 && bk.getKeyCode() <= 2) {
+								w += 10;
+								components.add(() -> {
+									RenderSystem.setShaderTexture(0, ICONS);
+									RenderSystem.setShaderColor(1/2f, 1/2f, 1/6f, af);
+									DrawableHelper.drawTexture(matrices, 1, 1, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
+									RenderSystem.setShaderColor(1, 1, 1/3f, af);
+									DrawableHelper.drawTexture(matrices, 0, 0, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
+									matrices.translate(10, 0, 0);
+									RenderSystem.setShaderColor(1, 1, 1, 1);
+								});
+							} else {
+								boolean mouse = bk.getType() == Type.MOUSE;
+								String s = key == null ? "?" : key.getKeyName().getString();
+								if (s.length() == 1) s = s.toUpperCase(Locale.ROOT);
+								final String fs = "§l"+s;
+								int sw = mc.textRenderer.getWidth(fs);
+								w += sw+(mouse?0:2);
+								components.add(() -> {
+									if (!mouse) {
+										DrawableHelper.fill(matrices, 0, -1, sw+3, 10, 0x797928|a);
+										DrawableHelper.fill(matrices, 0, -1, sw+2, 8, 0xFFFF55|a);
+									}
+									mc.textRenderer.draw(matrices, fs, mouse?0:1, 0, 0x000000|a);
+									matrices.translate(sw+2, 0, 0);
+								});
+							}
+						}
+						last = m.end();
 					}
-					m.appendTail(buf);
-					String s = buf.toString();
-					var sw = mc.textRenderer.getWidth(s);
-					var x = (w-sw)/2;
-					DrawableHelper.fill(matrices, x-2, y-2, x+sw+2, y+10, mc.options.getTextBackgroundColor(0));
-					mc.textRenderer.drawWithShadow(matrices, s, x, y, col);
+					if (last < str.length()) {
+						String s = str.substring(last);
+						int sw = mc.textRenderer.getWidth(s);
+						w += sw;
+						components.add(() -> {
+							mc.textRenderer.drawWithShadow(matrices, s, 0, 1, 0xFFFFFF|a);
+							matrices.translate(sw, 0, 0);
+						});
+					}
+					var x = (winW-w)/2;
+					matrices.push();
+						matrices.translate(x, y, 0);
+						DrawableHelper.fill(matrices, -2, -1, w+2, 11, mc.options.getTextBackgroundColor(0));
+						for (var r : components) {
+							RenderSystem.enableBlend();
+							r.run();
+						}
+					matrices.pop();
 					matrices.translate(0, -(12*fade), 0);
 					i++;
 				}
