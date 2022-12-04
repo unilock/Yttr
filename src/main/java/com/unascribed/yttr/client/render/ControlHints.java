@@ -155,6 +155,7 @@ public class ControlHints {
 									if (!mouse) {
 										DrawableHelper.fill(matrices, 0, -1, sw+3, 10, 0x797928|a);
 										DrawableHelper.fill(matrices, 0, -1, sw+2, 8, 0xFFFF55|a);
+										RenderSystem.enableBlend();
 									}
 									mc.textRenderer.draw(matrices, fs, mouse?0:1, 0, 0x000000|a);
 									matrices.translate(sw+2, 0, 0);
@@ -176,8 +177,8 @@ public class ControlHints {
 					matrices.push();
 						matrices.translate(x, y, 0);
 						DrawableHelper.fill(matrices, -2, -1, w+2, 11, mc.options.getTextBackgroundColor(0));
+						RenderSystem.enableBlend();
 						for (var r : components) {
-							RenderSystem.enableBlend();
 							r.run();
 						}
 					matrices.pop();
