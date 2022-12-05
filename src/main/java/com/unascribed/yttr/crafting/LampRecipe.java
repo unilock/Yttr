@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
 import com.unascribed.yttr.util.Resolvable;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -119,6 +121,11 @@ public class LampRecipe extends ShapedRecipe {
 	
 	public void setImportant(boolean important) {
 		this.important = important;
+	}
+	
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return YRecipeSerializers.LAMP_CRAFTING;
 	}
 	
 	public static class Serializer extends ShapedRecipe.Serializer {
