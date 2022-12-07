@@ -72,6 +72,8 @@ public class YttrConfigScreen extends Screen {
 		}
 	};
 	
+	private int sectionTicks = 0;
+	
 	private static final Map<String, String> shortDescs = ImmutableMap.<String, String>builder()
 			.put("general.trust-players", "makes things more reliable despite lag, but makes cheating on servers easier")
 			.put("general.fixup-debug-world", "adds missing modded blockstates to the vanilla debug world")
@@ -217,16 +219,17 @@ public class YttrConfigScreen extends Screen {
 				drawHeading(matrices, "sections", 6, 6, delta);
 				int y = 26;
 				for (Section s : Section.values()) {
-					if (drawButton(matrices, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 80, delta)) {
+					if (sectionTicks >= y/8 && drawButton(matrices, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 80, delta)) {
 						currentSection = s;
+						sectionTicks = 0;
 						uniq = ThreadLocalRandom.current().nextInt();
 					}
 					y += 22;
 				}
 				y += 8;
-				drawHeading(matrices, "extras", 6, y, delta);
+				if (sectionTicks >= y/8) drawHeading(matrices, "extras", 6, y, delta);
 				y += 20;
-				if (drawButton(matrices, "texttest"+uniq, uniq, "text test", 6, y, 80, delta)) {
+				if (sectionTicks >= y/8 && drawButton(matrices, "texttest"+uniq, uniq, "text test", 6, y, 80, delta)) {
 					textTestMode = true;
 				}
 			} else {
@@ -234,6 +237,7 @@ public class YttrConfigScreen extends Screen {
 				drawHeading(matrices, currentSectionStr, 6, 6, delta);
 				int y = 24;
 				for (String k : YConfig.data.keySet()) {
+					if (sectionTicks < y/8) break;
 					int dot = k.indexOf('.');
 					String section = k.substring(0, dot);
 					if (section.equals(currentSectionStr)) {
@@ -288,6 +292,7 @@ public class YttrConfigScreen extends Screen {
 				drawDescription(matrices, 6, 2, 18, 18, "go back to the section list", delta);
 				if (drawButton(matrices, "back"+uniq, uniq, "<", 6, 2, 18, delta)) {
 					currentSection = null;
+					sectionTicks = 0;
 					uniq = ThreadLocalRandom.current().nextInt();
 				}
 			}
@@ -383,17 +388,18 @@ public class YttrConfigScreen extends Screen {
 	private boolean drawButton(MatrixStack matrices, String id, int uniq, String text, int x, int y, int w, float delta) {
 		matrices.push();
 		matrices.translate(x, 0, 0);
+		int uniq2 = (uniq == 0 ? 0 : this.uniq);
 		if (w > 50) {
 			matrices.scale(w/50f, 1, 1);
-			sr.drawElement(matrices, id+"top", 0, y, 0, 30, 50, 1, delta);
-			sr.drawElement(matrices, id+"bot", 0, y+16, 0, 30, 50, 1, delta);
+			sr.drawElement(matrices, id+"top"+uniq2, 0, y, 0, 30, 50, 1, delta);
+			sr.drawElement(matrices, id+"bot"+uniq2, 0, y+16, 0, 30, 50, 1, delta);
 		} else {
-			sr.drawElement(matrices, id+"top", 0, y, 0, 30, w, 1, delta);
-			sr.drawElement(matrices, id+"bot", 0, y+16, 0, 30, w, 1, delta);
+			sr.drawElement(matrices, id+"top"+uniq2, 0, y, 0, 30, w, 1, delta);
+			sr.drawElement(matrices, id+"bot"+uniq2, 0, y+16, 0, 30, w, 1, delta);
 		}
 		matrices.pop();
-		sr.drawElement(matrices, id+"left", x, y, 80, 4, 1, 16, delta);
-		sr.drawElement(matrices, id+"right", x+w-1, y, 80, 4, 1, 16, delta);
+		sr.drawElement(matrices, id+"left"+uniq2, x, y, 80, 4, 1, 16, delta);
+		sr.drawElement(matrices, id+"right"+uniq2, x+w-1, y, 80, 4, 1, 16, delta);
 		int tw = 6*text.length();
 		sr.drawText(matrices, id+uniq, text, x+(w-tw)/2, y+4, delta);
 		boolean rtrn = clicked && mouseX >= x && mouseX <= x+w &&
@@ -421,6 +427,7 @@ public class YttrConfigScreen extends Screen {
 			}
 		}
 		sr.tick();
+		sectionTicks++;
 	}
 	
 	@Override
@@ -433,6 +440,7 @@ public class YttrConfigScreen extends Screen {
 		}
 		if (button == 3 && currentSection != null) {
 			currentSection = null;
+			sectionTicks = 0;
 			uniq = ThreadLocalRandom.current().nextInt();
 			client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DIVE_THRUST, ThreadLocalRandom.current().nextFloat(1.4f, 1.8f), 1));
 		}
