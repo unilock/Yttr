@@ -7,3 +7,5 @@
 * Nerfed Vorpal
 * Added enchantment configuration
 * Fixed void diving kicking for flying
+* Fixed Potion Sickness not working
+* Fixed Delicaceness not working in some cases

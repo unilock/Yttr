@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.mixin.accessor.AccessorStatusEffectInstance;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -24,8 +25,8 @@ public abstract class MixinLivingEntity {
 	@Shadow
 	public abstract boolean addStatusEffect(StatusEffectInstance effect);
 	
-	@Inject(at=@At("HEAD"), method="addStatusEffect", cancellable=true)
-	public void addStatusEffect(StatusEffectInstance in, CallbackInfoReturnable<Boolean> ci) {
+	@Inject(at=@At("HEAD"), method="addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z", cancellable=true)
+	public void addStatusEffect(StatusEffectInstance in, Entity source, CallbackInfoReturnable<Boolean> ci) {
 		if (in == null) return;
 		if (!in.shouldShowIcon() && !in.shouldShowParticles()) {
 			// probably added by a command, or an origin power, or just something that we shouldn't mess with

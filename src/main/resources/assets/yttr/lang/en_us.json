@@ -177,7 +177,8 @@
 	"item.yttr.projector.controlhint.normal.1": "{key.use} (On Block)  Immortalize/Destroy",
 	
 	
-	"item.yttr.shifter.controlhint.normal.3": "{key.use}  Exchange",
+	"item.yttr.shifter.controlhint.normal.4": "{key.attack}  Exchange One",
+	"item.yttr.shifter.controlhint.normal.3": "{key.use}  Exchange All",
 	"item.yttr.shifter.controlhint.normal.2": "{key.pickItem}  Pick Offhand",
 	"item.yttr.shifter.controlhint.normal.1": "{key.swapOffhand} (Hold)  Mode Select",
 	
