@@ -13,16 +13,16 @@ while true; do
 		sleep 2
 		continue
 	fi
-	state=$(echo "$resp" | jq .state)
-	if [ "$state" == "101" ]; then
-		echo 'Session invalid. :('
-		exit 3
-	fi
-	if [ "$state" == "0" ]; then
-		echo 'Successfully uploaded!'
+	#state=$(echo "$resp" | jq .state)
+	#if [ "$state" == "101" ]; then
+	#	echo 'Session invalid. :('
+	#	exit 3
+	#fi
+	#if [ "$state" == "0" ]; then
+	#	echo 'Successfully uploaded!'
 		exit 0
-	else
-		echo Failure $resp - retrying
-		sleep 2
-	fi
+	#else
+	#	echo Failure $resp - retrying
+	#	sleep 2
+	#fi
 done
