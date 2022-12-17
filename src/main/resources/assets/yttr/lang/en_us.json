@@ -423,11 +423,17 @@
 	"effect.yttr.potion_sickness": "Potion Sickness",
 	
 	"enchantment.yttr.disjunction": "Disjunction",
+	"enchantment.yttr.disjunction.desc": "Increases damage against Ender creatures.",
 	"enchantment.yttr.vorpal": "Vorpal",
+	"enchantment.yttr.vorpal.desc": "Rare chance to deal a great amount of damage on-strike.",
 	"enchantment.yttr.springing": "Springing",
+	"enchantment.yttr.springing.desc": "Increases jump height.",
 	"enchantment.yttr.stabilization": "Stabilization",
+	"enchantment.yttr.stabilization.desc": "Removes midair mining speed penalty.",
 	"enchantment.yttr.shattering_curse": "Curse of Shattering",
+	"enchantment.yttr.shattering_curse.desc": "\"Shatters\" dropped items.",
 	"enchantment.yttr.annihilation_curse": "Curse of Annihilation",
+	"enchantment.yttr.annihilation_curse.desc": "Completely destroys dropped items.",
 	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_charge_rattle": "Yttric Rifle rattles",
