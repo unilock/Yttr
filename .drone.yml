@@ -46,7 +46,7 @@ steps:
     base_url: https://git.sleeping.town
     files:
       - build/libs/yttr-*.jar
-    title: "[1.19] Dev Build"
+    title: "[1.19.2] Dev Build"
     prerelease: true
     tag: dev-1.19
     note: CHANGELOG.md

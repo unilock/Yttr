@@ -10,5 +10,5 @@
 * Snare and shear recipe remainders are now recognized by other mods
 * Added Transferent Fungus, a block placement solution
 * Strength and Weakness potion effects now modify snare containment time
-* Updated Lib39
+* Updated Lib39, fixing compatibility with new Quilt Loader versions
 * Retextured Yttrium blocks, plating, and machines
