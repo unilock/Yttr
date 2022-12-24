@@ -12,7 +12,7 @@
 		},
 		"T": { "item": "yttr:table" }
 	},
-	"yttr:sound": "minecraft:entity.skeleton.death",
+	"lib39:sound": "minecraft:entity.skeleton.death",
 	"result": {
 		"item": "yttr:skeletal_sorter_right_handed"
 	}

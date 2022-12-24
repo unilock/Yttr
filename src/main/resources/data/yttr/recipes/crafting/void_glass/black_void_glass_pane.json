@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:black_void_glass",
+  "ingredients": [
+    {
+      "item": "yttr:black_void_glass"
+    }
+  ],
+  "result": {
+    "item": "yttr:black_void_glass_pane",
+    "count": 3
+  }
+}

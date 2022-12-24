@@ -12,6 +12,6 @@
 		"/": { "item": "yttr:shears" },
 		"N": { "item": "minecraft:bee_nest" }
 	},
-	"yttr:sound": "yttr:craft_screeper_nest",
+	"lib39:sound": "yttr:craft_screeper_nest",
 	"result": { "item": "yttr:screeper_nest" }
 }

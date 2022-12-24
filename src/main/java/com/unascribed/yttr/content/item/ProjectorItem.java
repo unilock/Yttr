@@ -47,7 +47,7 @@ public class ProjectorItem extends Item {
 				if (i > 64) break;
 				BlockPos pos = mut.toImmutable();
 				Yttr.delayedServerTasks.add(new DelayedTask(i*2, () -> {
-					createPlatform(w, pos);
+					createPlatform(w, pos, false);
 					w.playSound(null, pos, YSounds.PROJECT, SoundCategory.BLOCKS, 1.2f, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				}));
 				mut.move(face);
@@ -79,7 +79,7 @@ public class ProjectorItem extends Item {
 					world.breakBlock(pos, false);
 					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				} else {
-					world.setBlockState(pos, bs.with(ContinuousPlatformBlock.AGE, Age.IMMORTAL));
+					world.setBlockState(pos, bs.with(ContinuousPlatformBlock.AGE, Age.IMMORTAL).with(ContinuousPlatformBlock.SPEEDY, false));
 					if (world instanceof ServerWorld) {
 						((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 14, 0.5, 0.5, 0.5, 0.05);
 					}
@@ -91,7 +91,7 @@ public class ProjectorItem extends Item {
 		return ActionResult.PASS;
 	}
 	
-	protected void createPlatform(World world, BlockPos origin) {
+	protected void createPlatform(World world, BlockPos origin, boolean speedy) {
 		BlockPos.Mutable pos = origin.mutableCopy();
 		if (world instanceof ServerWorld) {
 			((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 1.5, 0.5, 1.5, 0.05);
@@ -102,7 +102,9 @@ public class ProjectorItem extends Item {
 				pos.set(origin).move(x, 0, z);
 				BlockState bs = world.getBlockState(pos);
 				if (canReplace(bs)) {
-					world.setBlockState(pos, YBlocks.CONTINUOUS_PLATFORM.getDefaultState().with(ContinuousPlatformBlock.LOGGED, LogFluid.by(world.getFluidState(pos).getFluid())));
+					world.setBlockState(pos, YBlocks.CONTINUOUS_PLATFORM.getDefaultState()
+							.with(ContinuousPlatformBlock.LOGGED, LogFluid.by(world.getFluidState(pos).getFluid()))
+							.with(ContinuousPlatformBlock.SPEEDY, speedy));
 				}
 			}
 		}
@@ -144,10 +146,10 @@ public class ProjectorItem extends Item {
 				double y = lastPos.getY()+(diffY*t);
 				double z = lastPos.getZ()+(diffZ*t);
 				mut.set(x, y, z);
-				createPlatform(world, mut);
+				createPlatform(world, mut, true);
 			}
 		} else {
-			createPlatform(world, pos);
+			createPlatform(world, pos, false);
 		}
 		stack.getNbt().put("LastBlock", NbtHelper.fromBlockPos(pos));
 		if (ticks == 0) {

@@ -26,7 +26,7 @@
 			"item": "minecraft:lapis_lazuli"
 		}
 	},
-	"yttr:sound": "yttr:craft_aware_hopper",
+	"lib39:sound": "yttr:craft_aware_hopper",
 	"result": {
 		"item": "yttr:aware_hopper"
 	}

@@ -13,6 +13,8 @@ public interface AccessorParticle {
 
 	@Accessor("collidesWithWorld")
 	void yttr$setCollidesWithWorld(boolean collidesWithWorld);
+	@Accessor("gravityStrength")
+	void yttr$setGravityStrength(float gravityStrength);
 	
 	@Accessor("x")
 	double yttr$getX();

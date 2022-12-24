@@ -12,6 +12,16 @@
 		"yttr:suit_boots",
 		"yttr:delrene_scrap",
 		"yttr:effector",
-		"yttr:delicace"
+		"yttr:delicace",
+		"minecraft:black_stained_glass",
+		"minecraft:gray_stained_glass",
+		"minecraft:light_gray_stained_glass",
+		"minecraft:white_stained_glass",
+		"minecraft:glass",
+		"yttr:black_void_glass",
+		"yttr:gray_void_glass",
+		"yttr:silver_void_glass",
+		"yttr:white_void_glass",
+		"yttr:clear_void_glass"
 	]
 }

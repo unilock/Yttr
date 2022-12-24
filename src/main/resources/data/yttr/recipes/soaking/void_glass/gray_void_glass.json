@@ -1,0 +1,6 @@
+{
+	"type": "lib39:soaking",
+	"ingredients": [ { "item": "minecraft:gray_stained_glass" } ],
+	"catalyst": { "fluid": "yttr:void" },
+	"result": { "item": "yttr:gray_void_glass" }
+}

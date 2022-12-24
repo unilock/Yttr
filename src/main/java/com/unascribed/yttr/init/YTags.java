@@ -45,6 +45,10 @@ public final class YTags {
 		public static final TagKey<net.minecraft.block.Block> SCORCHED_RETROGEN_IGNORABLE = TagKey.of(Registry.BLOCK_KEY, Yttr.id("scorched_retrogen_ignorable"));
 		public static final TagKey<net.minecraft.block.Block> SCREEPER_NEST_LENIENT = TagKey.of(Registry.BLOCK_KEY, Yttr.id("screeper_nest_lenient"));
 		public static final TagKey<net.minecraft.block.Block> SCREEPER_NEST_ACCESSORY = TagKey.of(Registry.BLOCK_KEY, Yttr.id("screeper_nest_accessory"));
+		public static final TagKey<net.minecraft.block.Block> VOID_GLASS = TagKey.of(Registry.BLOCK_KEY, Yttr.id("void_glass"));
+		public static final TagKey<net.minecraft.block.Block> VOID_GLASS_PANES = TagKey.of(Registry.BLOCK_KEY, Yttr.id("void_glass_panes"));
+		public static final TagKey<net.minecraft.block.Block> TRANSFUNGUS_SLIPPERY = TagKey.of(Registry.BLOCK_KEY, Yttr.id("transfungus_slippery"));
+		public static final TagKey<net.minecraft.block.Block> TRANSFUNGUS_STICKY = TagKey.of(Registry.BLOCK_KEY, Yttr.id("transfungus_sticky"));
 		
 		private static void init() {}
 		

@@ -10,6 +10,8 @@ import com.unascribed.yttr.content.block.TemporaryFluidBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.ScreeperNestBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
+import com.unascribed.yttr.content.block.abomination.TransfungusBlock;
+import com.unascribed.yttr.content.block.abomination.TransfungusSporesBlock;
 import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
 import com.unascribed.yttr.content.block.basic.BasicHorizontalFacingBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
@@ -120,7 +122,7 @@ public class YBlocks {
 	private static final FabricBlockSettings INRED_DEVICE_SETTINGS = FabricBlockSettings.of(Material.DECORATION)
 			.strength(0.5F, 8)
 			.breakInstantly()
-			.materialColor(MapColor.CYAN);
+			.mapColor(MapColor.CYAN);
 	
 	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
 	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
@@ -131,6 +133,9 @@ public class YBlocks {
 			.nonOpaque();
 	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.sounds(HOLLOW_SOUNDS);
+	private static final FabricBlockSettings GLASSY_VOID_SETTINGS = FabricBlockSettings.of(Material.STONE)
+			.strength(7)
+			.nonOpaque();
 	
 	public static final Block GADOLINITE = new Block(FabricBlockSettings.copyOf(Blocks.IRON_ORE));
 	public static final Block DEEPSLATE_GADOLINITE = new Block(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_IRON_ORE));
@@ -207,9 +212,7 @@ public class YBlocks {
 			.nonOpaque()
 		);
 	@RenderLayer("translucent")
-	public static final Block GLASSY_VOID = new GlassyVoidBlock(FabricBlockSettings.of(Material.STONE)
-			.strength(7)
-			.nonOpaque());
+	public static final Block GLASSY_VOID = new GlassyVoidBlock(3, GLASSY_VOID_SETTINGS);
 	public static final Block SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
 			.strength(2)
@@ -263,9 +266,7 @@ public class YBlocks {
 	
 	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
 	@RenderLayer("translucent")
-	public static final Block GLASSY_VOID_PANE = new GlassyVoidPaneBlock(FabricBlockSettings.of(Material.STONE)
-			.strength(7)
-			.nonOpaque());
+	public static final Block GLASSY_VOID_PANE = new GlassyVoidPaneBlock(3, GLASSY_VOID_SETTINGS);
 	
 	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.of(Material.PISTON)
 			.dynamicBounds()
@@ -488,16 +489,16 @@ public class YBlocks {
 			.nonOpaque()
 		);
 	public static final ClamberBlock SOUL_CLAMBER_BLOCK = new ClamberBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
-			.materialColor(MapColor.BROWN)
+			.mapColor(MapColor.BROWN)
 			.nonOpaque()
 		);
 	
 	public static final Block SOUL_PLANKS = new Block(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
-			.materialColor(MapColor.BROWN)
+			.mapColor(MapColor.BROWN)
 		);
 
 	public static final InRedBlock INRED_BLOCK = new InRedBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_BLOCK)
-			.materialColor(MapColor.MAGENTA)
+			.mapColor(MapColor.MAGENTA)
 	);
 	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(0F, 8F)
@@ -588,6 +589,31 @@ public class YBlocks {
 	public static final VelresinBlock VELRESIN = new VelresinBlock(FabricBlockSettings.of(Material.ORGANIC_PRODUCT, MapColor.TERRACOTTA_YELLOW)
 			.sounds(BlockSoundGroup.HONEY)
 			.strength(0));
+
+	@RenderLayer("translucent")
+	public static final Block BLACK_VOID_GLASS = new GlassyVoidBlock(0, GLASSY_VOID_SETTINGS);
+	@RenderLayer("translucent")
+	public static final Block BLACK_VOID_GLASS_PANE = new GlassyVoidPaneBlock(1, GLASSY_VOID_SETTINGS);
+	
+	@RenderLayer("translucent")
+	public static final Block GRAY_VOID_GLASS = new GlassyVoidBlock(2, GLASSY_VOID_SETTINGS);
+	@RenderLayer("translucent")
+	public static final Block GRAY_VOID_GLASS_PANE = new GlassyVoidPaneBlock(2, GLASSY_VOID_SETTINGS);
+	
+	@RenderLayer("translucent")
+	public static final Block SILVER_VOID_GLASS = new GlassyVoidBlock(4, GLASSY_VOID_SETTINGS);
+	@RenderLayer("translucent")
+	public static final Block SILVER_VOID_GLASS_PANE = new GlassyVoidPaneBlock(4, GLASSY_VOID_SETTINGS);
+	
+	@RenderLayer("translucent")
+	public static final Block WHITE_VOID_GLASS = new GlassyVoidBlock(8, GLASSY_VOID_SETTINGS);
+	@RenderLayer("translucent")
+	public static final Block WHITE_VOID_GLASS_PANE = new GlassyVoidPaneBlock(8, GLASSY_VOID_SETTINGS);
+	
+	@RenderLayer("translucent")
+	public static final Block CLEAR_VOID_GLASS = new GlassyVoidBlock(12, GLASSY_VOID_SETTINGS);
+	@RenderLayer("translucent")
+	public static final Block CLEAR_VOID_GLASS_PANE = new GlassyVoidPaneBlock(12, GLASSY_VOID_SETTINGS);
 	
 	public static final FluidBlock INFINITE_VOID = new InfiniteVoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
 			new FabricMaterialBuilder(MapColor.BLACK)
@@ -599,7 +625,23 @@ public class YBlocks {
 		.noCollision()
 		.strength(-1)
 		.dropsNothing());
+
+	@RenderLayer("cutout_mipped")
+	public static final Block TRANSFUNGUS = new TransfungusBlock(FabricBlockSettings.of(Material.PLANT)
+			.sounds(BlockSoundGroup.CAVE_VINES)
+			.noCollision()
+			.ticksRandomly()
+			.breakInstantly()
+			.nonOpaque()
+		);
+
 	
+	public static final TransfungusSporesBlock TRANSFUNGUS_SPORES = new TransfungusSporesBlock(FabricBlockSettings.of(Material.AIR)
+			.noCollision()
+			.air()
+			.nonOpaque()
+		);
+
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
 	}

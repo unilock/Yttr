@@ -145,6 +145,19 @@ public class YItems {
 	public static final BlockItem SCREEPER_NEST = createBlockItem(YBlocks.SCREEPER_NEST);
 	public static final BlockItem SSD = createBlockItem(YBlocks.SSD);
 	public static final BlockItem VELRESIN = createBlockItem(YBlocks.VELRESIN);
+	public static final BlockItem TRANSFUNGUS = createBlockItem(YBlocks.TRANSFUNGUS);
+	
+	public static final BlockItem BLACK_VOID_GLASS = createBlockItem(YBlocks.BLACK_VOID_GLASS);
+	public static final BlockItem GRAY_VOID_GLASS = createBlockItem(YBlocks.GRAY_VOID_GLASS);
+	public static final BlockItem SILVER_VOID_GLASS = createBlockItem(YBlocks.SILVER_VOID_GLASS);
+	public static final BlockItem WHITE_VOID_GLASS = createBlockItem(YBlocks.WHITE_VOID_GLASS);
+	public static final BlockItem CLEAR_VOID_GLASS = createBlockItem(YBlocks.CLEAR_VOID_GLASS);
+	
+	public static final BlockItem BLACK_VOID_GLASS_PANE = createBlockItem(YBlocks.BLACK_VOID_GLASS_PANE);
+	public static final BlockItem GRAY_VOID_GLASS_PANE = createBlockItem(YBlocks.GRAY_VOID_GLASS_PANE);
+	public static final BlockItem SILVER_VOID_GLASS_PANE = createBlockItem(YBlocks.SILVER_VOID_GLASS_PANE);
+	public static final BlockItem WHITE_VOID_GLASS_PANE = createBlockItem(YBlocks.WHITE_VOID_GLASS_PANE);
+	public static final BlockItem CLEAR_VOID_GLASS_PANE = createBlockItem(YBlocks.CLEAR_VOID_GLASS_PANE);
 
 	public static final BlockItem WHITE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.WHITE);
 	public static final BlockItem ORANGE_BLOQUE = createBloqueBlockItem(YBlocks.BLOQUE, DyeColor.ORANGE);
@@ -308,7 +321,7 @@ public class YItems {
 			.maxCount(1), 1.65f, 2, false, 0x111111);
 	
 	public static final SnareItem SNARE = new SnareItem(new Item.Settings()
-			.maxDamage(40960));
+			.maxCount(1));
 	
 	public static final ShearsItem SHEARS = new ShearsItem(new Item.Settings()
 			.maxDamage(512));

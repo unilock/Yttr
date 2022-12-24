@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"yttr:discovered_via": "minecraft:warped_fungus",
+	"pattern": [
+		"W W",
+		" S ",
+		"GGG"
+	],
+	"key": {
+		"S": { "yttr:entity": "minecraft:endermite" },
+		"W": { "item": "minecraft:warped_fungus" },
+		"G": { "item": "minecraft:grass" }
+	},
+	"lib39:sound": "minecraft:entity.endermite.death",
+	"result": { "item": "yttr:transfungus" }
+}

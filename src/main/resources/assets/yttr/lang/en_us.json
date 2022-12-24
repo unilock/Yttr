@@ -302,7 +302,19 @@
 	"block.yttr.screeper_nest": "Screeper Nest",
 	"block.yttr.ssd": "Scalable Storage Drum",
 	"block.yttr.velresin": "Hypervelic Resin",
-	"block.yttr.infinite_void": "Infinite Void",
+	"block.yttr.transfungus": "Transferent Fungus",
+	"block.yttr.transfungus_spores": "Transferent Fungus Spores",
+	
+	"block.yttr.black_void_glass": "Black Voidtouched Glass",
+	"block.yttr.gray_void_glass": "Dark Voidtouched Glass",
+	"block.yttr.silver_void_glass": "Light Voidtouched Glass",
+	"block.yttr.white_void_glass": "Bright Voidtouched Glass",
+	"block.yttr.clear_void_glass": "Voidtouched Glass",
+	"block.yttr.black_void_glass_pane": "Black Voidtouched Glass Pane",
+	"block.yttr.gray_void_glass_pane": "Dark Voidtouched Glass Pane",
+	"block.yttr.silver_void_glass_pane": "Light Voidtouched Glass Pane",
+	"block.yttr.white_void_glass_pane": "Bright Voidtouched Glass Pane",
+	"block.yttr.clear_void_glass_pane": "Voidtouched Glass Pane",
 	
 	"block.yttr.ssd.tip.1": "§7Adjustable from 1 to 8 slots.",
 	
@@ -407,6 +419,7 @@
 	"block.yttr.replicator.holding": "%s §7in %s",
 	
 	"entity.yttr.rifle_dummy": "Rifle Dummy",
+	"entity.yttr.slipping_transfungus": "Slipping Transfungus",
 	
 	"biome.yttr.scorched_summit": "Scorched Summit",
 	"biome.yttr.scorched_terminus": "Scorched Terminus",

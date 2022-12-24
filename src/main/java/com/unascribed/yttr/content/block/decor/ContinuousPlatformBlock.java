@@ -10,8 +10,12 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -19,12 +23,16 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.random.RandomGenerator;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -80,14 +88,20 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 		}
 	}
 	
+	private static final VoxelShape STEPLADDER = VoxelShapes.combine(
+				createCuboidShape(0, 0, 0, 16, 8, 16),
+				createCuboidShape(0.1, 8, 0.1, 15.9, 16, 15.9),
+			BooleanBiFunction.OR);
+	
 	public static final EnumProperty<Age> AGE = EnumProperty.of("age", Age.class);
 	public static final EnumProperty<LogFluid> LOGGED = EnumProperty.of("logged", LogFluid.class);
+	public static final BooleanProperty SPEEDY = BooleanProperty.of("speedy");
 	
 	public ContinuousPlatformBlock(Settings settings) {
 		super(FabricBlockSettings.copyOf(settings)
 				.dropsNothing()
 				.luminance(bs -> Math.max(8, bs.get(LOGGED).fluid.getDefaultState().getBlockState().getLuminance())));
-		setDefaultState(getDefaultState().with(AGE, Age._0).with(LOGGED, LogFluid.AIR));
+		setDefaultState(getDefaultState().with(AGE, Age._0).with(LOGGED, LogFluid.AIR).with(SPEEDY, false));
 	}
 	
 	@Override
@@ -97,7 +111,13 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(AGE, LOGGED);
+		builder.add(AGE, LOGGED, SPEEDY);
+	}
+	
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		if (state.get(SPEEDY)) return STEPLADDER;
+		return VoxelShapes.fullCube();
 	}
 	
 	@Override
@@ -127,6 +147,9 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
 		if (state.get(AGE) != Age.IMMORTAL) {
 			world.setBlockState(pos, world.getBlockState(pos).with(AGE, Age._0));
+		}
+		if (state.get(SPEEDY) && entity instanceof LivingEntity le) {
+			le.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 2, false, false));
 		}
 	}
 	

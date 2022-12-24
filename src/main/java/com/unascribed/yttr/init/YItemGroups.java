@@ -146,7 +146,8 @@ public class YItemGroups {
 				YItems.SOUL_CLAMBER_BLOCK,
 				YItems.SCREEPER_NEST,
 				YItems.VELRESIN,
-				YItems.SSD
+				YItems.SSD,
+				YItems.TRANSFUNGUS
 			);
 		assign(EQUIPMENT,
 				YItems.BROOKITE_SWORD,
@@ -190,7 +191,17 @@ public class YItemGroups {
 				YItems.POLISHED_OBSIDIAN_CAPSTONE,
 				YItems.CONTINUOUS_PLATFORM,
 				YItems.SCORCHED_CRYING_OBSIDIAN,
-				YItems.GIANT_COBBLESTONE
+				YItems.GIANT_COBBLESTONE,
+				YItems.BLACK_VOID_GLASS,
+				YItems.GRAY_VOID_GLASS,
+				YItems.SILVER_VOID_GLASS,
+				YItems.WHITE_VOID_GLASS,
+				YItems.CLEAR_VOID_GLASS,
+				YItems.BLACK_VOID_GLASS_PANE,
+				YItems.GRAY_VOID_GLASS_PANE,
+				YItems.SILVER_VOID_GLASS_PANE,
+				YItems.WHITE_VOID_GLASS_PANE,
+				YItems.CLEAR_VOID_GLASS_PANE
 			);
 	}
 

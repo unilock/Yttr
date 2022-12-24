@@ -9,16 +9,15 @@ import com.unascribed.yttr.init.YItems;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeManager;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import net.minecraft.util.random.RandomGenerator;
 
-@Mixin(RecipeManager.class)
-public class MixinRecipeManager {
+@Mixin(Recipe.class)
+public interface MixinRecipe {
 
-	@Inject(at=@At("RETURN"), method="getRemainingStacks")
-	public void getRemainingStacks(RecipeType<?> recipeType, Inventory inventory, World world, CallbackInfoReturnable<DefaultedList<ItemStack>> ci) {
+	@Inject(at=@At("RETURN"), method="getRemainder")
+	default void getRemainingStacks(Inventory inventory, CallbackInfoReturnable<DefaultedList<ItemStack>> ci) {
 		for (int i = 0; i < inventory.size(); i++) {
 			ItemStack is = inventory.getStack(i);
 			if (is.getItem() == YItems.SNARE) {
@@ -27,7 +26,7 @@ public class MixinRecipeManager {
 				ci.getReturnValue().set(i, copy);
 			} else if (is.getItem() == YItems.SHEARS) {
 				ItemStack copy = is.copy();
-				if (!copy.damage(4, world.random, null)) {
+				if (!copy.damage(4, RandomGenerator.createLegacy(), null)) {
 					ci.getReturnValue().set(i, copy);
 				}
 			}

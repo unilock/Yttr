@@ -203,7 +203,6 @@ public class WastelandPopulator {
 				mut.set(chunkStart);
 				if (rand.nextInt(4) == 0) {
 					mut.setY(-1);
-					System.out.println(mut);
 					tryPlaceSchematic(rand, world, mut, "yttr:ruined/9x9_rare", -2, true, true);
 				} else {
 					mut.setY(-1);

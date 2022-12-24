@@ -93,6 +93,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.FallingBlockEntityRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
@@ -348,6 +349,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
 		DynamicBlockModelProvider.init();
+
+		EntityRendererRegistry.register(YEntities.SLIPPING_TRANSFUNGUS, FallingBlockEntityRenderer::new);
 		
 		RecoilEvents.UPDATE_FOV.register((fov, tickDelta) -> {
 			fov.set(MathHelper.lerp(RifleHUDRenderer.scopeA, fov.get(), 10));

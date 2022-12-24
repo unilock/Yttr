@@ -11,6 +11,7 @@ import net.minecraft.block.SideShapeType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
@@ -99,6 +100,11 @@ public class LazorBeamBlock extends AbstractLazorBlock implements BlockEntityPro
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new LazorBeamBlockEntity(pos, state);
+	}
+	
+	@Override
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.DESTROY;
 	}
 	
 }

@@ -17,8 +17,6 @@ import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
 import com.unascribed.yttr.util.YLog;
-import com.unascribed.yttr.util.YRandom;
-
 import com.google.common.base.Charsets;
 import com.google.common.base.Enums;
 import com.google.common.hash.Hashing;
@@ -42,6 +40,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -86,6 +86,8 @@ import net.minecraft.world.World;
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
 public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysItem {
 
+	private static final int maxDamage = 40960;
+	
 	public SnareItem(Settings settings) {
 		super(settings);
 	}
@@ -219,7 +221,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (hit.saveSelfNbt(data)) {
 				boolean tryingToCheatSnareTimer = checkForCheating(data);
 				if (tryingToCheatSnareTimer) return TypedActionResult.fail(stack);
-				stack.damage(400, user, (e) -> user.sendToolBreakStatus(hand));
+				damage(stack, 400, () -> user.sendToolBreakStatus(hand));
 				if (stack.isEmpty()) return TypedActionResult.fail(ItemStack.EMPTY);
 				if (toDelete != null) {
 					world.removeBlockEntity(toDelete);
@@ -324,7 +326,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	private Text getContainmentMessage(World world, ItemStack stack) {
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			int ticksLeft = ((stack.getMaxDamage()-stack.getDamage())/dmg)*(EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)+1);
+			int ticksLeft = ((maxDamage-stack.getDamage())/dmg)*(EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)+1);
 			ticksLeft -= getCheatedTicks(world, stack);
 			if (ticksLeft < 0) {
 				return Text.translatable("tip.yttr.snare.failed").formatted(Formatting.RED);
@@ -357,7 +359,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		handleAmbientSound(stack, world, entity.getPos(), selected);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), YRandom.get(), null)) {
+			if (damage(stack, dmg*(getCheatedTicks(world, stack)+1), null)) {
 				stack.decrement(1);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.75f);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.95f);
@@ -382,7 +384,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		handleAmbientSound(stack, world, Vec3d.ofCenter(pos), false);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
-			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), YRandom.get(), null)) {
+			if (damage(stack, dmg*(getCheatedTicks(world, stack)+1), null)) {
 				stack.decrement(1);
 				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.75f);
 				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.95f);
@@ -396,6 +398,16 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		}
 	}
 	
+	private boolean damage(ItemStack stack, int amt, Runnable breakCallback) {
+		if (stack.hasNbt() && stack.getNbt().getBoolean("Unbreakable")) return false;
+		int unbreaking = EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+		amt = (amt+unbreaking)/(unbreaking+1);
+		stack.setDamage(stack.getDamage()+amt);
+		boolean broke = stack.getDamage() > maxDamage;
+		if (broke && breakCallback != null) breakCallback.run();
+		return broke;
+	}
+
 	private void handleAmbientSound(ItemStack stack, World world, Vec3d pos, boolean selected) {
 		if (stack.hasNbt() && stack.getNbt().contains("AmbientSound") && stack.getNbt().contains("Contents")) {
 			int ambientSoundTimer = stack.getNbt().getInt("AmbientSoundTimer");
@@ -440,12 +452,23 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (stack.getNbt().getBoolean("Baby")) {
 				dmg /= 2;
 			}
+			for (var nbt : data.getList("ActiveEffects", NbtElement.COMPOUND_TYPE)) {
+				var se = StatusEffectInstance.fromNbt((NbtCompound)nbt);
+				if (se.getEffectType() == StatusEffects.WEAKNESS) {
+					dmg /= (se.getAmplifier()+2);
+				} else if (se.getEffectType() == StatusEffects.STRENGTH) {
+					dmg *= (se.getAmplifier()+2);
+				} else if (se.getEffectType() == StatusEffects.INVISIBILITY) {
+					dmg *= 2;
+				}
+			}
 			return dmg;
 		}
 		return 0;
 	}
 
 	public EntityType<?> getEntityType(ItemStack stack) {
+		if (!stack.hasNbt()) return null;
 		NbtCompound data = stack.getNbt().getCompound("Contents");
 		Identifier id = Identifier.tryParse(data.getString("id"));
 		if (id == null) return null;
@@ -529,6 +552,22 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		} else {
 			return -1;
 		}
+	}
+
+	@Override
+	public boolean isItemBarVisible(ItemStack stack) {
+		return stack.getDamage() > 0;
+	}
+
+	@Override
+	public int getItemBarStep(ItemStack stack) {
+		return Math.round(13.0F - stack.getDamage() * 13.0F / maxDamage);
+	}
+
+	@Override
+	public int getItemBarColor(ItemStack stack) {
+		float f = Math.max(0.0F, ((float)maxDamage - (float)stack.getDamage()) / maxDamage);
+		return MathHelper.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
 	}
 	
 }

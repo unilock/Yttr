@@ -128,16 +128,15 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 							new Vec3d((x+0.1)/acc, (y+0.9)/acc, (z+0.9)/acc),
 							new Vec3d((x+0.9)/acc, (y+0.9)/acc, (z+0.9)/acc),
 					};
-					boolean inside = true;
+					int outsideCount = 0;
 					glass: for (Polygon p : polygons) {
 						for (Vec3d point : points) {
 							if (p.plane().whichSide(point) == Where.ABOVE) {
-								inside = false;
-								break glass;
+								outsideCount++;
 							}
 						}
 					}
-					if (inside) {
+					if (outsideCount < 4) {
 						voxels.set(x, y, z);
 					}
 				}

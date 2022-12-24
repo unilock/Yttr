@@ -83,7 +83,9 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-		return Lists.newArrayList(getDrop(state));
+		var li = Lists.newArrayList(getDrop(state));
+		if (state.get(ENGOGGLED)) li.add(new ItemStack(YItems.GOGGLES));
+		return li;
 	}
 	
 	@Override

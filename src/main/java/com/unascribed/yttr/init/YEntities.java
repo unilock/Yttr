@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.entity.RifleDummyEntity;
+import com.unascribed.yttr.content.entity.SlippingTransfungusEntity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -19,6 +20,12 @@ public class YEntities {
 			.disableSaving()
 			.disableSummon()
 			.build("yttr:rifle_dummy");
+
+	public static final EntityType<SlippingTransfungusEntity> SLIPPING_TRANSFUNGUS = EntityType.Builder.<SlippingTransfungusEntity>create(SlippingTransfungusEntity::new, SpawnGroup.MISC)
+			.setDimensions(0.98f, 0.98f)
+			.maxTrackingRange(10)
+			.trackingTickInterval(20)
+			.build("yttr:slipping_transfungus");
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.ENTITY_TYPE, YEntities.class, EntityType.class);
