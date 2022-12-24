@@ -11,3 +11,4 @@
 * Added Transferent Fungus, a block placement solution
 * Strength and Weakness potion effects now modify snare containment time
 * Updated Lib39
+* Retextured Yttrium blocks, plating, and machines
