@@ -107,7 +107,7 @@ dependencies {
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
 		'recoil', 'mesh'
 	].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.4.0")
+		modApi include("com.unascribed:lib39-${module}:1.4.1")
 	}
 	
 	modRuntimeOnly(include("com.unascribed:lucium:1.1")) {
