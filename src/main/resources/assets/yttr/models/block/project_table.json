@@ -1,5 +1,6 @@
 {
 	"parent": "minecraft:block/cube",
+	"lib39:inherit_elements": true,
 	"textures": {
 		"particle": "yttr:block/project_table_front",
 		"north": "yttr:block/project_table_front",
@@ -7,6 +8,21 @@
 		"down": "yttr:block/project_table_bottom",
 		"east": "yttr:block/project_table_side",
 		"west": "yttr:block/project_table_side",
-		"up": "yttr:block/project_table_top"
-	}
+		"up": "yttr:block/project_table_top",
+		"side_overlay": "yttr:block/project_table_side_default",
+		"top_overlay": "yttr:block/project_table_top_default"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top_overlay", "tintindex": 0}
+			}
+		}
+	]
 }

@@ -374,6 +374,18 @@
 		"yttr:stonecutting/polished_obsidian_capstone",
 		"yttr:stonecutting/polished_scorched_obsidian",
 		"yttr:crafting/scorched_crying_obsidian",
-		"yttr:crafting/screeper_nest"
+		"yttr:crafting/screeper_nest",
+		"yttr:soaking/void_glass/black_void_glass",
+		"yttr:soaking/void_glass/clear_void_glass",
+		"yttr:soaking/void_glass/silver_void_glass",
+		"yttr:soaking/void_glass/gray_void_glass",
+		"yttr:crafting/void_glass/silver_void_glass_pane",
+		"yttr:crafting/scorched_crying_obsidian",
+		"yttr:soaking/void_glass/white_void_glass",
+		"yttr:crafting/ir_lazor_emitter",
+		"yttr:crafting/void_glass/gray_void_glass_pane",
+		"yttr:crafting/void_glass/white_void_glass_pane",
+		"yttr:crafting/void_glass/black_void_glass_pane",
+		"yttr:crafting/void_glass/clear_void_glass_pane"
 	]
 }

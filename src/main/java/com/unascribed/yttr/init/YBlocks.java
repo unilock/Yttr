@@ -46,6 +46,8 @@ import com.unascribed.yttr.content.block.inred.InRedScaffoldBlock;
 import com.unascribed.yttr.content.block.inred.InRedShifterBlock;
 import com.unascribed.yttr.content.block.inred.InRedTransistorBlock;
 import com.unascribed.yttr.content.block.inred.InRedXorGateBlock;
+import com.unascribed.yttr.content.block.lazor.IRLazorBeamBlock;
+import com.unascribed.yttr.content.block.lazor.IRLazorEmitterBlock;
 import com.unascribed.yttr.content.block.lazor.LazorBeamBlock;
 import com.unascribed.yttr.content.block.lazor.LazorEmitterBlock;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock;
@@ -323,7 +325,7 @@ public class YBlocks {
 			.dropsNothing()
 			.ticksRandomly()
 			.strength(0, 10000)
-			.luminance(bs -> 15)
+			.luminance(bs -> 13)
 		);
 	
 	@RenderLayer("cutout")
@@ -534,6 +536,7 @@ public class YBlocks {
 	public static final NeodymiumBlock NEODYMIUM_SLAB = new NeodymiumBlock(METALLIC_SETTINGS);
 	
 	public static final RafterBlock RAFTER = new RafterBlock(METALLIC_SETTINGS);
+	@RenderLayer("cutout_mipped")
 	public static final ProjectTableBlock PROJECT_TABLE = new ProjectTableBlock(FabricBlockSettings.of(Material.STONE, MapColor.PINK)
 			.hardness(1.5f)
 			.sounds(BlockSoundGroup.WOOD));
@@ -641,6 +644,18 @@ public class YBlocks {
 			.air()
 			.nonOpaque()
 		);
+	
+	public static final IRLazorBeamBlock IR_LAZOR_BEAM = new IRLazorBeamBlock(FabricBlockSettings.of(Material.AIR)
+			.collidable(false)
+			.dropsNothing()
+			.ticksRandomly()
+			.strength(0, 10000)
+		);
+	
+	@RenderLayer("cutout")
+	public static final IRLazorEmitterBlock IR_LAZOR_EMITTER = new IRLazorEmitterBlock(METALLIC_SETTINGS);
+	
+	
 
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

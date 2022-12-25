@@ -304,6 +304,8 @@
 	"block.yttr.velresin": "Hypervelic Resin",
 	"block.yttr.transfungus": "Transferent Fungus",
 	"block.yttr.transfungus_spores": "Transferent Fungus Spores",
+	"block.yttr.ir_lazor_emitter": "Infrared Lazor Emitter",
+	"block.yttr.ir_lazor_beam": "Infrared Lazor Beam",
 	
 	"block.yttr.black_void_glass": "Black Voidtouched Glass",
 	"block.yttr.gray_void_glass": "Dark Voidtouched Glass",
@@ -420,6 +422,7 @@
 	
 	"entity.yttr.rifle_dummy": "Rifle Dummy",
 	"entity.yttr.slipping_transfungus": "Slipping Transfungus",
+	"entity.yttr.thrown_glowing_gas": "Thrown Glowdamp",
 	
 	"biome.yttr.scorched_summit": "Scorched Summit",
 	"biome.yttr.scorched_terminus": "Scorched Terminus",
@@ -786,6 +789,7 @@
 	"tag.yttr.fluxes": "Metallurgical Fluxes",
 	"tag.yttr.gates": "Gates",
 	"tag.yttr.bloques": "Bloque® Plastic Construction Building Bricks",
+	"tag.yttr.void_glass": "Void Glass",
 	"tag.trinkets.feet.sole": "Sole Trinkets",
 	"tag.trinkets.chest.back": "Back Trinkets",
 	"tag.yttr.substituted_coal": "Coal",

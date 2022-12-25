@@ -19,6 +19,7 @@ import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.content.item.CreaseItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
+import com.unascribed.yttr.content.item.GlowingGasItem;
 import com.unascribed.yttr.content.item.HornItem;
 import com.unascribed.yttr.content.item.InRedMultimeterItem;
 import com.unascribed.yttr.content.item.ProjectorItem;
@@ -264,6 +265,7 @@ public class YItems {
 	public static final BlockItem PANEL = new LampBlockItem(YBlocks.PANEL, new Item.Settings());
 	
 	public static final BlockItem LAZOR_EMITTER = new LampBlockItem(YBlocks.LAZOR_EMITTER, new Item.Settings());
+	public static final BlockItem IR_LAZOR_EMITTER = new LampBlockItem(YBlocks.IR_LAZOR_EMITTER, new Item.Settings());
 	
 	public static final BlockItem AWARE_HOPPER = new BlockItem(YBlocks.AWARE_HOPPER, new Item.Settings()
 			.maxCount(1));
@@ -353,8 +355,7 @@ public class YItems {
 		}
 	};
 	
-	public static final Item GLOWING_GAS = new Item(new Item.Settings()
-			.maxCount(16)
+	public static final Item GLOWING_GAS = new GlowingGasItem(new Item.Settings()
 			.recipeRemainder(Items.GLASS_BOTTLE));
 	
 	public static final Item LOGO = new Item(new Item.Settings()) {

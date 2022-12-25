@@ -1,36 +1,25 @@
 package com.unascribed.yttr.content.block.lazor;
 
-import com.unascribed.yttr.content.block.decor.LampBlock;
-import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.mechanics.LampColor;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Waterloggable;
-import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
-import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.World;
 
-@EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
-public abstract class AbstractLazorBlock extends Block implements Waterloggable, BlockColorProvider {
+public abstract class AbstractLazorBlock extends Block implements Waterloggable {
 
 	public static final DamageSource DAMAGE_SOURCE = new DamageSource("yttr.lazor") {{setFire();}};
 
 	public static final DirectionProperty FACING = Properties.FACING;
-	public static final EnumProperty<LampColor> COLOR = LampBlock.COLOR;
 
 	public AbstractLazorBlock(Settings settings) {
 		super(settings);
@@ -38,10 +27,21 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(FACING, COLOR);
+		builder.add(FACING);
 	}
 
 	protected abstract boolean isEmitter();
+	protected Block getBeam() {
+		return YBlocks.LAZOR_BEAM;
+	}
+	protected boolean areEquivalent(BlockState a, BlockState b) {
+		return a.getBlock() instanceof AbstractLazorBlock alba && b.getBlock() instanceof AbstractLazorBlock albb &&
+				alba.getBeam() == albb.getBeam() &&
+				a.get(FACING) == b.get(FACING);
+	}
+	protected BlockState copyProperties(BlockState from, BlockState to) {
+		return to.with(FACING, from.get(FACING));
+	}
 
 	@Override
 	public boolean hasRandomTicks(BlockState state) {
@@ -50,7 +50,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return getDefaultState().with(FACING, ctx.getPlayerLookDirection()).with(COLOR, LampBlockItem.getColor(ctx.getStack()));
+		return getDefaultState().with(FACING, ctx.getPlayerLookDirection());
 	}
 
 	@Override
@@ -59,11 +59,11 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 		BlockPos ahead = pos.offset(state.get(FACING));
 		BlockState behindState = world.getBlockState(behind);
 		BlockState aheadState = world.getBlockState(ahead);
-		if (!isEmitter() && (!(behindState.getBlock() instanceof AbstractLazorBlock) || behindState.get(COLOR) != state.get(COLOR) || behindState.get(FACING) != state.get(FACING))) {
+		if (!isEmitter() && !areEquivalent(behindState, state)) {
 			world.setBlockState(pos, state.getFluidState().getBlockState());
 		} else if (aheadState.isAir() || aheadState.getMaterial().isReplaceable()) {
 			if (isEmitter()) {
-				state = YBlocks.LAZOR_BEAM.getDefaultState().with(FACING, state.get(FACING)).with(COLOR, state.get(COLOR));
+				state = copyProperties(state, getBeam().getDefaultState());
 			}
 			if (state.getBlock() instanceof Waterloggable) {
 				state = state.with(Properties.WATERLOGGED, aheadState.getFluidState().isIn(FluidTags.WATER));
@@ -86,12 +86,6 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable,
 		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
 			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
-	}
-
-
-	@Override
-	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
-		return state.get(COLOR).baseLitColor;
 	}
 
 }

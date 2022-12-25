@@ -1,0 +1,11 @@
+{
+	"values": [
+		"minecraft:piston",
+		"minecraft:sticky_piston",
+		"minecraft:moving_piston",
+		"minecraft:hopper",
+		"yttr:dopper",
+		"yttr:flopper",
+		"yttr:levitation_chamber"
+	]
+}

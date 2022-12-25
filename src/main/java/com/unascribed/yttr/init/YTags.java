@@ -49,6 +49,7 @@ public final class YTags {
 		public static final TagKey<net.minecraft.block.Block> VOID_GLASS_PANES = TagKey.of(Registry.BLOCK_KEY, Yttr.id("void_glass_panes"));
 		public static final TagKey<net.minecraft.block.Block> TRANSFUNGUS_SLIPPERY = TagKey.of(Registry.BLOCK_KEY, Yttr.id("transfungus_slippery"));
 		public static final TagKey<net.minecraft.block.Block> TRANSFUNGUS_STICKY = TagKey.of(Registry.BLOCK_KEY, Yttr.id("transfungus_sticky"));
+		public static final TagKey<net.minecraft.block.Block> VELRESIN_STABLE = TagKey.of(Registry.BLOCK_KEY, Yttr.id("velresin_stable"));
 		
 		private static void init() {}
 		

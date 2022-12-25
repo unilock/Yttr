@@ -1,6 +1,5 @@
 {
 	"values": [
-		"yttr:glassy_void",
 		"yttr:cleaver",
 		"yttr:reinforced_cleaver",
 		"yttr:void_bucket",
@@ -18,10 +17,6 @@
 		"minecraft:light_gray_stained_glass",
 		"minecraft:white_stained_glass",
 		"minecraft:glass",
-		"yttr:black_void_glass",
-		"yttr:gray_void_glass",
-		"yttr:silver_void_glass",
-		"yttr:white_void_glass",
-		"yttr:clear_void_glass"
+		"#yttr:void_glass"
 	]
 }

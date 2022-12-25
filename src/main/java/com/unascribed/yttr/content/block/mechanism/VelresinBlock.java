@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.mechanism;
 import javax.annotation.Nullable;
 
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YTags;
 
 import com.google.common.base.Ascii;
 
@@ -24,6 +25,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
@@ -64,7 +66,6 @@ public class VelresinBlock extends Block {
 	}
 
 	private static final VoxelShape OUTLINE_SHAPE = createCuboidShape(0, 0, 0, 16, 3, 16);
-	private static final VoxelShape COLLISION_SHAPE = createCuboidShape(0, 0, 0, 16, 1, 16);
 	
 	public static final EnumProperty<Facing> FACING = EnumProperty.of("facing", Facing.class);
 
@@ -120,8 +121,8 @@ public class VelresinBlock extends Block {
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
 		var bp = pos.down();
 		var bs = world.getBlockState(bp);
-		return bs.isSideSolidFullSquare(world, bp, Direction.UP) &&
-				bs.getBlock().getSlipperiness() <= 0.6f;
+		return bs.isIn(YTags.Block.VELRESIN_STABLE) ||
+				(bs.isSideSolidFullSquare(world, bp, Direction.UP) && bs.getBlock().getSlipperiness() <= 0.6f);
 	}
 	
 	@Override
@@ -155,7 +156,7 @@ public class VelresinBlock extends Block {
 	
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return COLLISION_SHAPE;
+		return VoxelShapes.empty();
 	}
 	
 }

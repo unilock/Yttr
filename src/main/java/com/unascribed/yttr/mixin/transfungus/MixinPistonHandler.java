@@ -49,19 +49,15 @@ public class MixinPistonHandler {
 				ci.setReturnValue(true);
 				return;
 			}
-			if (dir != pistonFacing && before.isAir()) {
+			if (dir != pistonFacing) {
 				// pulling
-				world.setBlockState(beforePos, YBlocks.TRANSFUNGUS_SPORES.getDefaultState());
-				movedBlocks.add(beforePos);
 				return;
 			}
 			if (world.getBlockState(pistonPos).isOf(Blocks.STICKY_PISTON)) return;
 			if (after.isAir() && world.getBlockState(afterPos.down()).isIn(YTags.Block.TRANSFUNGUS_SLIPPERY)) {
 				var ste = new SlippingTransfungusEntity(
 					world,
-					pos.getX() + 0.5,
-					pos.getY(),
-					pos.getZ() + 0.5,
+					pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
 					state
 				);
 				world.setBlockState(pos, state.getFluidState().getBlockState(), 3);

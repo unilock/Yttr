@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:lazor_emitter",
+  "ingredients": [
+    {
+      "item": "yttr:lazor_emitter"
+    },
+    {
+      "tag": "yttr:void_glass"
+    }
+  ],
+  "result": {
+    "item": "yttr:ir_lazor_emitter",
+    "count": 1
+  }
+}

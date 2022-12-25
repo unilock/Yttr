@@ -16,7 +16,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-public class LazorEmitterBlock extends AbstractLazorBlock {
+public class LazorEmitterBlock extends AbstractColoredLazorBlock {
 
 	public LazorEmitterBlock(Settings settings) {
 		super(settings);

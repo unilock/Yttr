@@ -33,7 +33,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class LazorBeamBlock extends AbstractLazorBlock implements BlockEntityProvider {
+public class LazorBeamBlock extends AbstractColoredLazorBlock implements BlockEntityProvider {
 
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	

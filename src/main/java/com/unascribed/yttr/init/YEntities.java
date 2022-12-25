@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.entity.RifleDummyEntity;
 import com.unascribed.yttr.content.entity.SlippingTransfungusEntity;
+import com.unascribed.yttr.content.entity.ThrownGlowingGasEntity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -26,6 +27,12 @@ public class YEntities {
 			.maxTrackingRange(10)
 			.trackingTickInterval(20)
 			.build("yttr:slipping_transfungus");
+
+	public static final EntityType<ThrownGlowingGasEntity> THROWN_GLOWING_GAS = EntityType.Builder.<ThrownGlowingGasEntity>create(ThrownGlowingGasEntity::new, SpawnGroup.MISC)
+			.setDimensions(0.25F, 0.25F)
+			.maxTrackingRange(4)
+			.trackingTickInterval(10)
+			.build("yttr:thrown_glowing_gas");
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.ENTITY_TYPE, YEntities.class, EntityType.class);
