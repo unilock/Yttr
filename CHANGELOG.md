@@ -7,3 +7,4 @@
 * Added missing EMI recipe defaults
 * Slightly reduced lazor brightness for less lag; the full 15 isn't necessary with 1.18 spawn rules
 * Possible fix for dyed project tables not showing as dyed in some cases
+* Chutes can now be put below replicators to intelligently keep dropped items stocked

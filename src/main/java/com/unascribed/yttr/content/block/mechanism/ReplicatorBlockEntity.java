@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.init.YBlockEntities;
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.util.SideyInventory;
 import com.unascribed.yttr.util.YTickable;
 
@@ -12,13 +13,16 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 
 public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory, YTickable {
@@ -41,7 +45,21 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 	
 	@Override
 	public void tick() {
-		// not used
+		if (world != null && !world.isClient && world.getTime() % 20 == 0) {
+			var below = world.getBlockState(pos.down());
+			if (below.isOf(YBlocks.CHUTE) && below.get(ChuteBlock.MODE).isDroppy()) {
+				Box box = new Box(pos, pos).expand(0.5).stretch(0, -12, 0);
+				int count = 0;
+				for (var ie : world.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), box, ie -> ItemStack.canCombine(item, ie.getStack()))) {
+					count += ie.getStack().getCount();
+				}
+				if (count < item.getCount()) {
+					var copy = item.copy();
+					copy.setCount(item.getCount()-count);
+					ChuteBlockEntity.transfer(world, pos.down(), Direction.DOWN, copy, false);
+				}
+			}
+		}
 	}
 	
 	@Environment(EnvType.CLIENT)

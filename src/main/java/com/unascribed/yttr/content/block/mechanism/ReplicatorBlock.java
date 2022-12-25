@@ -40,7 +40,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return world.isClient ? YTickable::tick : null;
+		return YTickable::tick;
 	}
 	
 	@Override
