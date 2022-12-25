@@ -182,7 +182,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		projectId = 'yttr'
 		versionNumber = project.version
 		versionName = 'v'+project.version
-		versionType = 'beta'
+		versionType = 'release'
 		uploadFile = remapJar
 		gameVersions = ['1.19', '1.19.1', '1.19.2']
 		loaders = ['fabric', 'quilt']
@@ -205,7 +205,7 @@ if (System.getenv("CURSE_TOKEN")) {
 		apiKey = System.getenv("CURSE_TOKEN")
 		project {
 			id = '467267'
-			releaseType = 'beta'
+			releaseType = 'release'
 			changelogType = 'markdown'
 			changelog = file('CHANGELOG.md')
 
@@ -242,6 +242,6 @@ if (System.getenv("MCMODCN_COOKIE")) {
 	task mcmodcn(type: Exec) {
 		dependsOn remapJar
 
-		commandLine './mcmodcn-upload.sh', '3949', '1.19', '2,11', 'beta', remapJar.archivePath.getPath()
+		commandLine './mcmodcn-upload.sh', '3949', '1.19', '2,11', '', remapJar.archivePath.getPath()
 	}
 }
