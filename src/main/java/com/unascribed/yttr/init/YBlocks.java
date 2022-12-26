@@ -326,6 +326,7 @@ public class YBlocks {
 			.ticksRandomly()
 			.strength(0, 10000)
 			.luminance(bs -> 13)
+			.air()
 		);
 	
 	@RenderLayer("cutout")
@@ -650,6 +651,7 @@ public class YBlocks {
 			.dropsNothing()
 			.ticksRandomly()
 			.strength(0, 10000)
+			.air()
 		);
 	
 	@RenderLayer("cutout")
