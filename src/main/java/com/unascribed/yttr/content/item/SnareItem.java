@@ -81,6 +81,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.RaycastContext.FluidHandling;
+import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
@@ -355,8 +356,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+		handleEntityEffects(stack, world, entity.getPos(), selected);
 		if (world.isClient) return;
-		handleAmbientSound(stack, world, entity.getPos(), selected);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
 			if (damage(stack, dmg*(getCheatedTicks(world, stack)+1), null)) {
@@ -381,7 +382,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	
 	@Override
 	public void blockInventoryTick(ItemStack stack, World world, BlockPos pos, int slot) {
-		handleAmbientSound(stack, world, Vec3d.ofCenter(pos), false);
+		handleEntityEffects(stack, world, Vec3d.ofCenter(pos), false);
 		int dmg = calculateDamageRate(world, stack);
 		if (dmg > 0) {
 			if (damage(stack, dmg*(getCheatedTicks(world, stack)+1), null)) {
@@ -408,8 +409,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		return broke;
 	}
 
-	private void handleAmbientSound(ItemStack stack, World world, Vec3d pos, boolean selected) {
-		if (stack.hasNbt() && stack.getNbt().contains("AmbientSound") && stack.getNbt().contains("Contents")) {
+	private void handleEntityEffects(ItemStack stack, World world, Vec3d pos, boolean selected) {
+		if (!world.isClient && stack.hasNbt() && stack.getNbt().contains("AmbientSound") && stack.getNbt().contains("Contents")) {
 			int ambientSoundTimer = stack.getNbt().getInt("AmbientSoundTimer");
 			ambientSoundTimer += getCheatedTicks(world, stack)+1;
 			if (ThreadLocalRandom.current().nextInt(1000) < ambientSoundTimer) {
@@ -425,6 +426,31 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			}
 			stack.getNbt().putInt("AmbientSoundTimer", ambientSoundTimer);
 		}
+		EntityType<?> type = getEntityType(stack);
+		if (type == EntityType.FALLING_BLOCK) {
+			var data = stack.getNbt().getCompound("Contents");
+			var bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
+			if (bs.isOf(Blocks.SPAWNER) && data.contains("TileEntityData", NbtElement.COMPOUND_TYPE)) {
+				var bp = new BlockPos(pos);
+				var logic = new MobSpawnerLogic() {
+					@Override
+					public void sendStatus(World world, BlockPos pos, int i) {
+						// nah
+					}
+				};
+				var ted = data.getCompound("TileEntityData");
+				logic.readNbt(world, bp, ted);
+				if (world.isClient) {
+					logic.clientTick(world, bp);
+				} else if (world instanceof ServerWorld sw) {
+					int cheated = getCheatedTicks(world, stack);
+					for (int i = 0; i < cheated+1; i++) {
+						logic.serverTick(sw, bp);
+					}
+					logic.writeNbt(ted);
+				}
+			}
+		}
 	}
 
 	private int calculateDamageRate(World world, ItemStack stack) {
@@ -434,6 +460,12 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (type == EntityType.ARMOR_STAND || type == EntityType.ITEM) return 0;
 			NbtCompound data = stack.getNbt().getCompound("Contents");
 			int dmg = MathHelper.ceil(data.getFloat("Health")*MathHelper.sqrt(type.getDimensions().height*type.getDimensions().width));
+			if (type == EntityType.FALLING_BLOCK) {
+				var bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
+				if (bs.isOf(Blocks.SPAWNER)) {
+					dmg += 15;
+				}
+			}
 			switch (type.getSpawnGroup()) {
 				case AMBIENT:
 				case WATER_AMBIENT:
