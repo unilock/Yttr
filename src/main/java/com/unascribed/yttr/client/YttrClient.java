@@ -1,6 +1,5 @@
 package com.unascribed.yttr.client;
 
-import java.io.File;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -17,16 +16,9 @@ import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
-
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
-import com.unascribed.rend.fabric.client.render.item.DefaultPngItemStackHandler;
-import com.unascribed.rend.fabric.client.render.item.ItemStackRenderer;
-import com.unascribed.rend.fabric.client.render.manager.RenderManager;
-import com.unascribed.rend.render.item.ItemStackParameters;
-import com.unascribed.rend.render.request.RenderingRequest;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
@@ -48,7 +40,6 @@ import com.unascribed.yttr.content.block.mechanism.VelresinBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.item.RifleItem;
-import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEntities;
@@ -62,7 +53,6 @@ import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
@@ -119,7 +109,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootTables;
@@ -142,7 +131,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -675,59 +663,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return new Identifier("textures/models/armor/yttr_ultrapure_diamond_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
 		}
 		return id;
-	}
-
-	private static int totalRenders = 0;
-	private static int finishedRenders = 0;
-	private static int lastRenderPct = 0;
-	
-	public static void doBulkRender() {
-		YLog.info("Performing unattended autorender... 0%");
-		File dir = new File(System.getProperty("yttr.renderOutput", "yttr_autorender"));
-		synchronized (YttrClient.class) {
-			for (var i : Registry.ITEM) {
-				var id = Registry.ITEM.getId(i);
-				if (id.getNamespace().equals("yttr") || id.getNamespace().equals("minecraft")) {
-					DefaultedList<ItemStack> li = DefaultedList.of();
-					i.appendStacks(MoreObjects.firstNonNull(i.getGroup(), ItemGroup.SEARCH), li);
-					for (var is : li) {
-						var hnd = new DefaultPngItemStackHandler(dir, 512, true, false, false) {
-							@Override
-							protected String getFilename(ItemStack value) {
-								String fname = super.getFilename(value);
-								if (value.getItem() instanceof LampBlockItem || value.isOf(YItems.LAZOR_EMITTER)) {
-									if (LampBlockItem.isInverted(value)) {
-										fname += "_inverted";
-									}
-									fname += "_"+LampBlockItem.getColor(value).asString();
-								}
-								return fname;
-							}
-						};
-						RenderManager.push(new RenderingRequest<>(
-								new ItemStackRenderer(),
-								new ItemStackParameters(512),
-								is,
-								hnd,
-								(t) -> {
-									synchronized (YttrClient.class) {
-										finishedRenders++;
-										int pct = (finishedRenders*100)/totalRenders;
-										if (pct != lastRenderPct) {
-											YLog.info("Performing unattended autorender... {}%", pct);
-											lastRenderPct = pct;
-										}
-										if (finishedRenders >= totalRenders) {
-											GLFW.glfwSetWindowShouldClose(mc.getWindow().getHandle(), true);
-										}
-									}
-								}
-							));
-						totalRenders++;
-					}
-				}
-			}
-		}
 	}
 	
 }

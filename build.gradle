@@ -106,7 +106,7 @@ dependencies {
 	[
 		'core', 'lockpick', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
-		'recoil', 'mesh'
+		'recoil', 'mesh', 'aqi'
 	].each { module ->
 		modApi include("com.unascribed:lib39-${module}:1.5.0-pre1+1.18.2")
 	}

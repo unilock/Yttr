@@ -33,7 +33,6 @@
 		"minecraft": "1.18.2",
 		"lib39-core": "*",
 		"lib39-lockpick": "*",
-		"lib39-gesundheit": "*",
 		"lib39-fractal": "*",
 		"lib39-tunnel": "*",
 		"lib39-phantom": "*",
@@ -48,7 +47,8 @@
 		"lib39-util": "*",
 		"lib39-ripple": "*",
 		"lib39-recoil": "*",
-		"lib39-mesh": "*"
+		"lib39-mesh": "*",
+		"lib39-aqi": "*"
 	},
 	"conflicts": { "roughlyenoughitems": "*", "jei": "*" },
 	"suggests": { "trinkets": "*" },
