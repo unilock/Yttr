@@ -17,6 +17,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -59,7 +60,7 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 				
 				@Override
 				public Text getDisplayName() {
-					return Text.translatable("block.yttr.void_filter");
+					return new TranslatableText("block.yttr.void_filter");
 				}
 			});
 		}

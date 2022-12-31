@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YItems;
@@ -112,9 +111,9 @@ public class ScreeperNestBlockEntity extends BlockEntity implements YTickable, S
 						var bs = world.getBlockState(ib.pos);
 						boolean asplodified = !isAccessory(bs, infesting);
 						if (asplodified) {
-							sw.emitGameEvent(null, GameEvent.EXPLODE, ib.pos);
+							sw.emitGameEvent(GameEvent.EXPLODE, ib.pos);
 						} else {
-							sw.emitGameEvent(null, GameEvent.BLOCK_DESTROY, ib.pos);
+							sw.emitGameEvent(GameEvent.BLOCK_DESTROY, ib.pos);
 						}
 						var msg = new MessageS2CScreeperBreak(ib.pos, bs, asplodified);
 						double cX = ib.pos.getX()+0.5;
@@ -165,7 +164,7 @@ public class ScreeperNestBlockEntity extends BlockEntity implements YTickable, S
 								);
 						}
 						if (ib.timer == 20) {
-							sw.playSound(null, cX, cY, cZ, SoundEvents.ENTITY_CREEPER_PRIMED, SoundCategory.BLOCKS, 0.8f, ThreadLocalRandom.current().nextFloat(1.2f, 1.6f));
+							sw.playSound(null, cX, cY, cZ, SoundEvents.ENTITY_CREEPER_PRIMED, SoundCategory.BLOCKS, 0.8f, world.random.nextFloat(1.2f, 1.6f));
 						}
 					}
 				}

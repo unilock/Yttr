@@ -22,7 +22,7 @@ public class MixinNamedSet {
 	@SuppressWarnings("unchecked")
 	@ModifyVariable(at=@At("HEAD"), method="setContents", argsOnly=true, ordinal=0)
 	private List<? extends Holder<?>> replaceValues(List<? extends Holder<?>> values) {
-		if (!values.isEmpty() && Iterables.all(values, h -> h.getKey().map(k -> k.getRegistry().equals(Registry.ITEM_KEY)).orElse(false))) {
+		if (!values.isEmpty() && Iterables.all(values, h -> h.m_jdiodhmc().map(k -> k.getRegistry().equals(Registry.ITEM_KEY)).orElse(false))) {
 			var vi = (List<Holder<Item>>)values;
 			if (Iterables.any(vi, i -> Substitutes.getSubstitute(i.value()) != null)) {
 				List<Holder<Item>> res = new ArrayList<>();

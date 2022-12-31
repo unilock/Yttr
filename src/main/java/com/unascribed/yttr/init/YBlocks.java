@@ -100,7 +100,7 @@ import net.minecraft.block.AbstractBlock.TypedContextPredicate;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ExperienceDroppingBlock;
+import net.minecraft.block.OreBlock;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.FluidBlock;
@@ -336,8 +336,8 @@ public class YBlocks {
 	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
 	public static final DSUBlock DSU = new DSUBlock(HOLLOWHUGE_SETTINGS);
 	
-	public static final Block BROOKITE_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.EMERALD_ORE), UniformIntProvider.create(1, 5));
-	public static final Block DEEPSLATE_BROOKITE_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_EMERALD_ORE), UniformIntProvider.create(1, 5));
+	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.EMERALD_ORE), UniformIntProvider.create(1, 5));
+	public static final Block DEEPSLATE_BROOKITE_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_EMERALD_ORE), UniformIntProvider.create(1, 5));
 	
 	public static final RootOfContinuityBlock ROOT_OF_CONTINUITY = new RootOfContinuityBlock(FabricBlockSettings.of(Material.GLASS)
 			.strength(20)

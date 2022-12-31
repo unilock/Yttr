@@ -64,6 +64,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -306,11 +307,11 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type != null) {
 			if (type == EntityType.ITEM) {
-				return Text.translatable("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
+				return new TranslatableText("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
 			} else if (type == EntityType.FALLING_BLOCK) {
-				return Text.translatable("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
+				return new TranslatableText("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
 			}
-			return Text.translatable("item.yttr.snare.filled", type.getName());
+			return new TranslatableText("item.yttr.snare.filled", type.getName());
 		}
 		return super.getName(stack);
 	}
@@ -330,16 +331,16 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			int ticksLeft = ((maxDamage-stack.getDamage())/dmg)*(EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)+1);
 			ticksLeft -= getCheatedTicks(world, stack);
 			if (ticksLeft < 0) {
-				return Text.translatable("tip.yttr.snare.failed").formatted(Formatting.RED);
+				return new TranslatableText("tip.yttr.snare.failed").formatted(Formatting.RED);
 			} else {
 				int seconds = ticksLeft/20;
 				int minutes = seconds/60;
 				seconds = seconds%60;
-				return Text.translatable("tip.yttr.snare.unstable", minutes, Integer.toString(seconds+100).substring(1))
+				return new TranslatableText("tip.yttr.snare.unstable", minutes, Integer.toString(seconds+100).substring(1))
 						.formatted(minutes <= 1 ? minutes == 0 && seconds <= 30 ? Formatting.RED : Formatting.YELLOW : Formatting.GRAY);
 			}
 		} else if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
-			return Text.translatable("tip.yttr.snare.stable").formatted(Formatting.GRAY);
+			return new TranslatableText("tip.yttr.snare.stable").formatted(Formatting.GRAY);
 		} else {
 			return null;
 		}

@@ -1,11 +1,12 @@
 package com.unascribed.yttr.content.block.decor;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class ScorchedCryingObsidianBlock extends Block {
@@ -15,7 +16,7 @@ public class ScorchedCryingObsidianBlock extends Block {
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (random.nextInt(5) == 0) {
 			Direction d = Direction.random(random);
 			if (d != Direction.UP) {

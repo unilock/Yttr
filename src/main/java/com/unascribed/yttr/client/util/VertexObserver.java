@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client.util;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.render.VertexConsumer;
 
 public class VertexObserver implements VertexConsumer {
 	
@@ -49,7 +49,7 @@ public class VertexObserver implements VertexConsumer {
 	}
 	
 	@Override
-	public VertexConsumer uv(float u, float v) {
+	public VertexConsumer texture(float u, float v) {
 		return this;
 	}
 	
@@ -79,7 +79,7 @@ public class VertexObserver implements VertexConsumer {
 	}
 
 	@Override
-	public void fixColor(int var1, int var2, int var3, int var4) {
+	public void fixedColor(int var1, int var2, int var3, int var4) {
 		
 	}
 

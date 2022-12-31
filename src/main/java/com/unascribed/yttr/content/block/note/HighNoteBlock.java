@@ -17,9 +17,9 @@ public class HighNoteBlock extends AltNoteBlock {
 	public void buildRemap(Builder<SoundEvent, SoundEvent> builder) {
 		builder
 			.put(SoundEvents.BLOCK_NOTE_BLOCK_BANJO, YSounds.HIGH_NOTE_BANJO)
-			.put(SoundEvents.MUSIC_OVERWORLD_SWAMP, YSounds.HIGH_NOTE_BASEDRUM)
-			.put(SoundEvents.MUSIC_OVERWORLD_JUNGLE_AND_FOREST, YSounds.HIGH_NOTE_BASS)
-			.put(SoundEvents.MUSIC_OVERWORLD_OLD_GROWTH_TAIGA, YSounds.HIGH_NOTE_BELL)
+			.put(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, YSounds.HIGH_NOTE_BASEDRUM)
+			.put(SoundEvents.BLOCK_NOTE_BLOCK_BASS, YSounds.HIGH_NOTE_BASS)
+			.put(SoundEvents.BLOCK_NOTE_BLOCK_BELL, YSounds.HIGH_NOTE_BELL)
 			.put(SoundEvents.BLOCK_NOTE_BLOCK_BIT, YSounds.HIGH_NOTE_BIT)
 			.put(SoundEvents.BLOCK_NOTE_BLOCK_CHIME, YSounds.HIGH_NOTE_CHIME)
 			.put(SoundEvents.BLOCK_NOTE_BLOCK_COW_BELL, YSounds.HIGH_NOTE_COW_BELL)

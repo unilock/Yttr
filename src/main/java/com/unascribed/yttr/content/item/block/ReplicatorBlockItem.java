@@ -22,6 +22,7 @@ import net.minecraft.item.ThrowablePotionItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
@@ -52,9 +53,9 @@ public class ReplicatorBlockItem extends BlockItem {
 		if (held.isEmpty()) return;
 		List<Text> inner = held.getTooltip(MinecraftClient.getInstance().player, context);
 		for (int i = 0; i < inner.size(); i++) {
-			tooltip.add(Text.literal("  ").append(inner.get(i)));
+			tooltip.add(new LiteralText("  ").append(inner.get(i)));
 		}
-		tooltip.add(Text.literal(""));
+		tooltip.add(new LiteralText(""));
 	}
 	
 	@Override

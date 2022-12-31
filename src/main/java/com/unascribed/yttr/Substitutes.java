@@ -44,11 +44,10 @@ public class Substitutes extends SinglePreparationResourceReloader<BiMap<Item, I
 		BiMap<Item, Item> map = HashBiMap.create();
 		for (String ns : mgr.getAllNamespaces()) {
 			Identifier id = new Identifier(ns, "yttr_substitutes.json");
-			var opt = mgr.getResource(id);
-			if (opt.isPresent()) {
+			if (mgr.containsResource(id)) {
 				try {
-					Resource r = opt.get();
-					try (InputStreamReader isr = new InputStreamReader(r.open(), Charsets.UTF_8)) {
+					Resource r = mgr.getResource(id);
+					try (InputStreamReader isr = new InputStreamReader(r.getInputStream(), Charsets.UTF_8)) {
 						JsonObject obj = gson.fromJson(isr, JsonObject.class);
 						for (Map.Entry<String, JsonElement> en : obj.entrySet()) {
 							String k = en.getKey();

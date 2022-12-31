@@ -1,6 +1,7 @@
 package com.unascribed.yttr.world;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import com.unascribed.yttr.init.YBlocks;
@@ -27,21 +28,20 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
-import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class WastelandPopulator {
 
 	private static final int FLAGS = Block.SKIP_DROPS | Block.FORCE_STATE | Block.NOTIFY_LISTENERS;
 	
 	public static boolean isEligible(ServerWorld world, WorldChunk chunk) {
-		if (world.getBiome(chunk.getPos().getStartPos()).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
+		if (world.getBiome(chunk.getPos().getStartPos()).m_jdiodhmc().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
 			if (chunk.getBlockState(BlockPos.ORIGIN).getBlock() == YBlocks.SPECIALTY_BEDROCK) return false;
 			return true;
 		}
@@ -50,7 +50,7 @@ public class WastelandPopulator {
 	
 	public static void populate(long worldSeed, ServerWorld world, ChunkPos chunk) {
 		BlockPos chunkStart = chunk.getStartPos().withY(world.getBottomY());
-		if (world.getBiome(chunkStart).getKey().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
+		if (world.getBiome(chunkStart).m_jdiodhmc().map(k -> k.getValue().toString().equals("yttr:wasteland")).orElse(false)) {
 			if (world.getBlockState(chunkStart).getBlock() == YBlocks.SPECIALTY_BEDROCK) return;
 			world.setBlockState(chunkStart, YBlocks.SPECIALTY_BEDROCK.getDefaultState(), 0, 0);
 			ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(worldSeed));
@@ -256,7 +256,7 @@ public class WastelandPopulator {
 		}
 	}
 
-	public static boolean didYouKnowWeHaveVeinMiner(WorldAccess world, BlockPos pos, RandomGenerator rand) {
+	public static boolean didYouKnowWeHaveVeinMiner(WorldAccess world, BlockPos pos, Random rand) {
 		if (pos.getY() <= 0) return false;
 		Set<BlockPos> seen = Sets.newHashSet();
 		Set<BlockPos> scan = Sets.newHashSet();

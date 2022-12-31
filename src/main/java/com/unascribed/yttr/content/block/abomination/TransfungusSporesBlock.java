@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.abomination;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -46,7 +46,7 @@ public class TransfungusSporesBlock extends AirBlock implements Waterloggable {
 	}
 	
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		super.randomDisplayTick(state, world, pos, random);
 		if (world.isClient) {
 			addParticle(pos, false);
@@ -80,7 +80,7 @@ public class TransfungusSporesBlock extends AirBlock implements Waterloggable {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(DISTANCE) == 13) {
 			dropStacks(state, world, pos);
 			world.removeBlock(pos, false);
@@ -88,7 +88,7 @@ public class TransfungusSporesBlock extends AirBlock implements Waterloggable {
 	}
 
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.setBlockState(pos, updateDistanceFromFungus(state, world, pos), 3);
 	}
 

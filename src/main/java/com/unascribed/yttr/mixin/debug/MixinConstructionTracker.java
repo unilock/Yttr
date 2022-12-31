@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.unascribed.lib39.core.mixinsupport.AutoMixinEligible;
 import com.unascribed.yttr.mixinsupport.Blameable;
 
 import net.minecraft.block.Block;
@@ -16,7 +17,7 @@ import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.Schedule;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.decoration.painting.PaintingVariant;
+import net.minecraft.entity.decoration.painting.PaintingMotive;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -49,7 +50,7 @@ import net.minecraft.world.poi.PointOfInterestType;
 	Potion.class,
 	ParticleType.class,
 	BlockEntityType.class,
-	PaintingVariant.class,
+	PaintingMotive.class,
 	Identifier.class,
 	ChunkStatus.class,
 	ScreenHandlerType.class,
@@ -70,18 +71,15 @@ import net.minecraft.world.poi.PointOfInterestType;
 	LootNbtProviderType.class,
 	LootScoreProviderType.class
 })
+@AutoMixinEligible(ifSystemProperty="yttr.debugRegistration")
 public class MixinConstructionTracker implements Blameable {
 
-	private static final boolean yttr$debugRegistration = Boolean.getBoolean("yttr.debugRegistration");
-	
 	// Xaero's Minimap likes to serialize things it shouldn't
 	private transient Throwable yttr$blame;
 	
 	@Inject(at=@At("RETURN"), method="<init>", allow=900)
 	public void onConstruct(CallbackInfo ci) {
-		if (yttr$debugRegistration) {
-			yttr$blame = new Throwable("Object was constructed here");
-		}
+		yttr$blame = new Throwable("Object was constructed here");
 	}
 
 	@Override

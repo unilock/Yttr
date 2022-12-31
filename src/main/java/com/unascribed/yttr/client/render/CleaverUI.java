@@ -3,11 +3,6 @@ package com.unascribed.yttr.client.render;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
-import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YttrClient;
@@ -22,8 +17,13 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -64,7 +64,7 @@ public class CleaverUI extends IHasAClient {
 						float selectedY = 0;
 						float selectedZ = 0;
 						var tess = Tessellator.getInstance();
-						var vc = tess.getBufferBuilder();
+						var vc = tess.getBuffer();
 						RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 						RenderSystem.setShaderTexture(0, TEX);
 						RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -136,11 +136,11 @@ public class CleaverUI extends IHasAClient {
 											ms.translate(wX, wY, wZ);
 											ms.scale(size, size, size);
 											ms.multiply(wrc.camera().getRotation());
-											var mat = ms.peek().getPosition();
-											vc.vertex(mat, -1, -1, 0).uv(minU, minV).color(r, g, b, a).next();
-											vc.vertex(mat,  1, -1, 0).uv(maxU, minV).color(r, g, b, a).next();
-											vc.vertex(mat,  1,  1, 0).uv(maxU, maxV).color(r, g, b, a).next();
-											vc.vertex(mat, -1,  1, 0).uv(minU, maxV).color(r, g, b, a).next();
+											var mat = ms.peek().getModel();
+											vc.vertex(mat, -1, -1, 0).texture(minU, minV).color(r, g, b, a).next();
+											vc.vertex(mat,  1, -1, 0).texture(maxU, minV).color(r, g, b, a).next();
+											vc.vertex(mat,  1,  1, 0).texture(maxU, maxV).color(r, g, b, a).next();
+											vc.vertex(mat, -1,  1, 0).texture(minU, maxV).color(r, g, b, a).next();
 										ms.pop();
 									}
 								}
@@ -167,7 +167,7 @@ public class CleaverUI extends IHasAClient {
 							List<Polygon> cleave = CleaverItem.performCleave(plane, shape, true);
 							RenderSystem.setShader(GameRenderer::getPositionColorShader);
 							vc.begin(DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
-							var mat = ms.peek().getPosition();
+							var mat = ms.peek().getModel();
 							for (Polygon p : cleave) {
 								drawPolygon(mat, vc, p, r, g, b, a);
 							}

@@ -25,12 +25,12 @@ import com.unascribed.yttr.util.InventoryProviderItem;
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicates;
-import com.mojang.blaze3d.texture.NativeImage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -45,7 +45,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -139,9 +139,9 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 				if (ammo <= 0) {
 					user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
 					if (need > 1) {
-						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
 					} else {
-						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
 					}
 					return TypedActionResult.fail(stack);
 				}

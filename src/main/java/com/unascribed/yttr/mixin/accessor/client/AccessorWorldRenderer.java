@@ -13,10 +13,10 @@ import net.minecraft.client.render.WorldRenderer.ChunkInfo;
 @Mixin(WorldRenderer.class)
 public interface AccessorWorldRenderer {
 
-	@Accessor("needsFullBuiltChunkUpdate")
+	@Accessor("f_ebpbvmth")
 	void yttr$setNeedsTerrainUpdate(boolean b);
 	
-	@Accessor("chunkInfoList")
+	@Accessor("f_mdetieec")
 	ObjectArrayList<ChunkInfo> yttr$getChunkInfos();
 	
 }

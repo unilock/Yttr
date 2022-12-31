@@ -5,6 +5,7 @@ import static net.minecraft.util.math.Direction.UP;
 
 import java.awt.geom.Path2D;
 import java.util.Map;
+import java.util.Random;
 
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.content.block.natural.SqueezeLogBlock;
@@ -24,8 +25,6 @@ import net.minecraft.util.Holder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.util.random.RandomGenerator;
-import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.Heightmap.Type;
@@ -34,21 +33,22 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class SqueezeSaplingGenerator extends SaplingGenerator {
 
 	@Override
-	protected Holder<? extends ConfiguredFeature<?, ?>> getTreeFeature(RandomGenerator random, boolean bl) {
+	protected Holder<? extends ConfiguredFeature<?, ?>> getTreeFeature(Random random, boolean bl) {
 		// no thanks i'll do it myself
 		return null;
 	}
 	
 	@Override
-	public boolean generate(ServerWorld world, ChunkGenerator chunkGenerator, BlockPos pos, BlockState _unused_nullable, RandomGenerator random) {
+	public boolean generate(ServerWorld world, ChunkGenerator chunkGenerator, BlockPos pos, BlockState _unused_nullable, Random random) {
 		return generate(world, pos, random);
 	}
 		
-	public boolean generate(WorldAccess world, BlockPos pos, RandomGenerator random) {
+	public boolean generate(WorldAccess world, BlockPos pos, Random random) {
 		// make sure we're on valid soil
 		if (!YBlocks.SQUEEZE_SAPLING.canPlaceAt(YBlocks.SQUEEZE_SAPLING.getDefaultState(), world, pos)) return false;
 		Map<BlockPos, BlockState> plan = Maps.newLinkedHashMap();
@@ -250,7 +250,7 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 			int z = chunkRandom.nextInt(16);
 			chunkRandom.setPopulationSeed(world.getSeed(), x, z);
 			Holder<Biome> b = world.getBiome(new BlockPos(chunk.getPos().getStartX()+x, 0, chunk.getPos().getStartZ()+z));
-			if (b.getKey().get().getValue().getPath().contains("deep_ocean")) {
+			if (b.m_jdiodhmc().get().getValue().getPath().contains("deep_ocean")) {
 				int y = chunk.sampleHeightmap(Type.OCEAN_FLOOR_WG, x, z);
 				int waterSurface = chunk.sampleHeightmap(Type.WORLD_SURFACE_WG, x, z);
 				if (waterSurface - y > 20) {

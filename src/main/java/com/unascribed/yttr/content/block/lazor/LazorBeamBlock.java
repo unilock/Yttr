@@ -1,6 +1,10 @@
 package com.unascribed.yttr.content.block.lazor;
 
+import java.util.Random;
+
 import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
+import com.unascribed.yttr.util.YTickable;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -27,7 +31,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -74,7 +77,7 @@ public class LazorBeamBlock extends AbstractColoredLazorBlock implements BlockEn
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		Direction facing = state.get(FACING);
 		BlockPos opos = pos.offset(facing);
 		if (world.getBlockState(opos).isSideSolid(world, opos, facing.getOpposite(), SideShapeType.CENTER)) {
@@ -85,8 +88,8 @@ public class LazorBeamBlock extends AbstractColoredLazorBlock implements BlockEn
 			float b = (color&0xFF)/255f;
 			for (int i = 0; i < 2; i++) {
 				Particle prt = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FIREWORK,
-						p.x+random.nextGaussian()*0.1, p.y+random.nextGaussian()*0.1, p.z+random.nextGaussian()*0.1,
-						(random.nextGaussian()*0.025)+(facing.getOffsetX()*-0.05), (random.nextGaussian()*0.025)+0.05+(facing.getOffsetY()*-0.05), (random.nextGaussian()*0.025)+(facing.getOffsetZ()*-0.05));
+						p.x+random.nextGaussian(0, 0.1), p.y+random.nextGaussian(0, 0.1), p.z+random.nextGaussian(0, 0.1),
+						random.nextGaussian(0, 0.025)+(facing.getOffsetX()*-0.05), random.nextGaussian(0.05, 0.025)+(facing.getOffsetY()*-0.05), random.nextGaussian(0, 0.025)+(facing.getOffsetZ()*-0.05));
 				if (prt != null) prt.setColor(r, g, b);
 			}
 		}

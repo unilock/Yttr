@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.device;
 
+import java.util.Random;
+
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 import com.unascribed.yttr.util.YTickable;
@@ -29,7 +31,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class CentrifugeBlock extends Block implements BlockEntityProvider {
@@ -51,7 +52,7 @@ public class CentrifugeBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator rand) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if (state.get(LIT)) {
 			double x = pos.getX() + 0.5;
 			double y = pos.getY();

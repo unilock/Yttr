@@ -1,5 +1,7 @@
 package com.unascribed.yttr.mixin.snare;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,7 +13,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.random.RandomGenerator;
 
 @Mixin(Recipe.class)
 public interface MixinRecipe {
@@ -26,7 +27,7 @@ public interface MixinRecipe {
 				ci.getReturnValue().set(i, copy);
 			} else if (is.getItem() == YItems.SHEARS) {
 				ItemStack copy = is.copy();
-				if (!copy.damage(4, RandomGenerator.createLegacy(), null)) {
+				if (!copy.damage(4, ThreadLocalRandom.current(), null)) {
 					ci.getReturnValue().set(i, copy);
 				}
 			}

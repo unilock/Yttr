@@ -1,9 +1,9 @@
 package com.unascribed.yttr.client;
 
-import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
-import com.mojang.blaze3d.vertex.VertexFormats;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 
 // extends RenderPhase for access to protected fields

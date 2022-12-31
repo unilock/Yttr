@@ -11,8 +11,8 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.LiteralComponent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -73,7 +73,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		private final int hoverVOffset = 16;
 
 		public OscillatorButtonWidget(int x, int y, String name, PressAction onPress) {
-			super(x, y, 16, 16, Text.literal(""), onPress);
+			super(x, y, 16, 16, new LiteralText(""), onPress);
 			tex = new Identifier("yttr:textures/gui/inred_button_"+name+".png");
 			this.visible = true;
 		}
@@ -81,7 +81,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 		//TODO: button narration! important!!
 //		@Override
 //		protected MutableText getNarrationMessage() {
-//			return Text.translatable("tip.yttr.inred.oscillator.narrator");
+//			return new TranslatableText("tip.yttr.inred.oscillator.narrator");
 //		}
 
 		@Override

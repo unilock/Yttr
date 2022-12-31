@@ -3,6 +3,7 @@ package com.unascribed.yttr.client;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -29,7 +30,6 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockRenderView;
 
 public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedModel {
@@ -40,7 +40,7 @@ public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 	}
 
 	@Override
-	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
+	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
 		if (attachment instanceof Mesh) {
 			context.meshConsumer().accept((Mesh)attachment);
@@ -50,12 +50,12 @@ public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 	}
 
 	@Override
-	public void emitItemQuads(ItemStack stack, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
+	public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
 		
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction face, RandomGenerator random) {
+	public List<BakedQuad> getQuads(BlockState state, Direction face, Random random) {
 		return Collections.emptyList();
 	}
 

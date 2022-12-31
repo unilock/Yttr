@@ -211,7 +211,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 	public static void setDefaultName(World world, BlockPos pos, @Nullable LivingEntity creator) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof VoidGeyserBlockEntity) {
-			Identifier biomeId = world.getBiome(new BlockPos(pos.getX(), 64, pos.getZ())).getKey().get().getValue();
+			Identifier biomeId = world.getBiome(new BlockPos(pos.getX(), 64, pos.getZ())).m_jdiodhmc().get().getValue();
 			((VoidGeyserBlockEntity)be).setName((creator == null ? "" : creator.getName().getString()+"'s ")+Language.getInstance().get("biome."+biomeId.getNamespace()+"."+biomeId.getPath()));
 		}
 	}

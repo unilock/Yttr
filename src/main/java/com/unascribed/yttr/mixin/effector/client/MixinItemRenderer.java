@@ -8,14 +8,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tessellator;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.init.YItems;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -30,7 +30,7 @@ public class MixinItemRenderer {
 			RenderSystem.disableTexture();
 			RenderSystem.disableBlend();
 			Tessellator tess = Tessellator.getInstance();
-			BufferBuilder bb = tess.getBufferBuilder();
+			BufferBuilder bb = tess.getBuffer();
 			float dmg = YItems.EFFECTOR.getFuel(stack);
 			float maxDmg = EffectorItem.MAX_FUEL;
 			int w = Math.round(dmg * 13 / maxDmg);

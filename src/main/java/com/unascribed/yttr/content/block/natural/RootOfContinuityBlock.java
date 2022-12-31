@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.natural;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import com.unascribed.yttr.init.YSounds;
@@ -32,7 +33,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -94,7 +94,7 @@ public class RootOfContinuityBlock extends Block {
 					world.spawnEntity(ie);
 				}
 			});
-			state.onStacksDropped((ServerWorld)world, pos, stack, true);
+			state.onStacksDropped((ServerWorld)world, pos, stack);
 		} else {
 			super.afterBreak(world, player, pos, state, blockEntity, stack);
 		}
@@ -157,7 +157,7 @@ public class RootOfContinuityBlock extends Block {
 	}
 	
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		super.randomDisplayTick(state, world, pos, random);
 		boolean anchor = state.get(ANCHOR);
 		for (int i = 0; i < 6; i++) {

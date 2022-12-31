@@ -92,7 +92,7 @@ public class ThrownGlowingGasEntity extends ThrownItemEntity {
 			
 			for (var bp : BlockPos.iterateRandomly(random, 32, getBlockPos(), 4)) {
 				var bs = world.getBlockState(bp);
-				if (bs.isAir() || (bs.isOf(Blocks.WATER) && bs.getFluidState().isSource())) {
+				if (bs.isAir() || (bs.isOf(Blocks.WATER) && bs.getFluidState().isStill())) {
 					var cast = world.raycast(new RaycastContext(pos, Vec3d.ofCenter(bp), ShapeType.COLLIDER, FluidHandling.NONE, this));
 					if (cast == null || cast.getType() == Type.MISS) {
 						world.setBlockState(bp, (bs.isOf(Blocks.WATER) ? YBlocks.TEMPORARY_LIGHT_WATER : YBlocks.TEMPORARY_LIGHT_AIR).getDefaultState());

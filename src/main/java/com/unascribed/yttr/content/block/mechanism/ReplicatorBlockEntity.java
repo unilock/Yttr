@@ -30,7 +30,6 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 	public int seed = ThreadLocalRandom.current().nextInt();
 	public ItemStack item = ItemStack.EMPTY;
 	public UUID owner;
-	public boolean locked;
 	
 	public double distTmp;
 	
@@ -94,7 +93,6 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 		seed = tag.getInt("Seed");
 		item = ItemStack.fromNbt(tag.getCompound("Item"));
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
-		locked = tag.getBoolean("Locked");
 	}
 	
 	@Override
@@ -102,7 +100,6 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 		tag.putInt("Seed", seed);
 		tag.put("Item", item.writeNbt(new NbtCompound()));
 		if (owner != null) tag.putUuid("Owner", owner);
-		if (locked) tag.putBoolean("Locked", true);
 	}
 	
 	@Override

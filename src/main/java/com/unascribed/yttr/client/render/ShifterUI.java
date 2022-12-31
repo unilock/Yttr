@@ -5,7 +5,7 @@ import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 import java.util.Set;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.render.VertexConsumer;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.YttrClient;

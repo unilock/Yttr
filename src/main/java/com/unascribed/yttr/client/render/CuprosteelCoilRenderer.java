@@ -1,6 +1,5 @@
 package com.unascribed.yttr.client.render;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YItems;
 
@@ -10,6 +9,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -53,12 +53,12 @@ public class CuprosteelCoilRenderer {
 				matrices.translate(0.5f/16f*(flip?1:-1), 1/16f, 0);
 			}
 			matrices.scale(1.5f/16f, 1, 1.5f/16f);
-			Matrix4f mmat = matrices.peek().getPosition();
+			Matrix4f mmat = matrices.peek().getModel();
 			Matrix3f nmat = matrices.peek().getNormal();
-			vc.vertex(mmat, -1, 0,  1).color(1f, 1f, 1f, 1f).uv(flip ? 1 : 0, 1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
-			vc.vertex(mmat,  1, 0,  1).color(1f, 1f, 1f, 1f).uv(flip ? 0 : 1, 1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
-			vc.vertex(mmat,  1, 0, -1).color(1f, 1f, 1f, 1f).uv(flip ? 0 : 1, 0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
-			vc.vertex(mmat, -1, 0, -1).color(1f, 1f, 1f, 1f).uv(flip ? 1 : 0, 0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
+			vc.vertex(mmat, -1, 0,  1).color(1f, 1f, 1f, 1f).texture(flip ? 1 : 0, 1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
+			vc.vertex(mmat,  1, 0,  1).color(1f, 1f, 1f, 1f).texture(flip ? 0 : 1, 1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
+			vc.vertex(mmat,  1, 0, -1).color(1f, 1f, 1f, 1f).texture(flip ? 0 : 1, 0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
+			vc.vertex(mmat, -1, 0, -1).color(1f, 1f, 1f, 1f).texture(flip ? 1 : 0, 0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(nmat, 0, 1, 0).next();
 		matrices.pop();
 	}
 	

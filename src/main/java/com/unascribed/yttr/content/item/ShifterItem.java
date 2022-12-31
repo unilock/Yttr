@@ -50,7 +50,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -75,13 +75,13 @@ public class ShifterItem extends Item implements ControlHintable {
 		boolean curHidden = stack.hasNbt() && stack.getNbt().getBoolean("ReplaceHidden");
 		boolean curPlane = stack.hasNbt() && stack.getNbt().getBoolean("PlaneRestrict");
 		if (disconnected != curDisconnected) {
-			player.sendMessage(Text.translatable("tip.yttr.shifter.disconnected."+(disconnected ? "en" : "dis")+"abled"), true);
+			player.sendMessage(new TranslatableText("tip.yttr.shifter.disconnected."+(disconnected ? "en" : "dis")+"abled"), true);
 		}
 		if (hidden != curHidden) {
-			player.sendMessage(Text.translatable("tip.yttr.shifter.hidden."+(hidden ? "en" : "dis")+"abled"), true);
+			player.sendMessage(new TranslatableText("tip.yttr.shifter.hidden."+(hidden ? "en" : "dis")+"abled"), true);
 		}
 		if (plane != curPlane) {
-			player.sendMessage(Text.translatable("tip.yttr.shifter.plane."+(plane ? "en" : "dis")+"abled"), true);
+			player.sendMessage(new TranslatableText("tip.yttr.shifter.plane."+(plane ? "en" : "dis")+"abled"), true);
 		}
 		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		stack.getNbt().putBoolean("ReplaceDisconnected", disconnected);

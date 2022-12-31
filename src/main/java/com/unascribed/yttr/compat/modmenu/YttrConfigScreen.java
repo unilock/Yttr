@@ -27,7 +27,7 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
@@ -83,6 +83,8 @@ public class YttrConfigScreen extends Screen {
 			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
 			.put("client.config-color", "customize the color of this very setup utility")
+			.put("client.shrink-debug-hud", "make the vanilla debug hud smaller")
+			.put("client.rifle-timing-assist", "if on, play a ding noise at 500kj and three dings leading up to 650kj while charging the rifle")
 			.put("client.control-hints", "if on, show on-screen hints for nonstandard controls")
 			
 			.put("rifle.allow-void", "off disables the yttric rifle void mode to avoid griefing concerns - note there is a command to undo voids and voids are logged to console")
@@ -113,13 +115,12 @@ public class YttrConfigScreen extends Screen {
 			.put("client.force-opengl-core", Trilean.ON)
 			.put("rifle.allow-explode", TrileanSoft.OFF)
 			.put("worldgen.gadolinite", false)
-			.put("worldgen.continuity", false)
 			.build();
 	
 	private final Multiset<String> timesModified = HashMultiset.create();
 	
 	public YttrConfigScreen(Screen parent) {
-		super(Text.literal("Yttr configuration"));
+		super(new LiteralText("Yttr configuration"));
 		this.parent = parent;
 	}
 	
@@ -130,7 +131,7 @@ public class YttrConfigScreen extends Screen {
 	}
 	
 	@Override
-	public void closeScreen() {
+	public void onClose() {
 		if (isClosing) {
 			client.setScreen(parent);
 			client.getMusicTracker().stop();
@@ -313,7 +314,7 @@ public class YttrConfigScreen extends Screen {
 					textTestMode = false;
 					uniq++;
 				} else {
-					closeScreen();
+					onClose();
 				}
 			}
 			sr.tearDown();

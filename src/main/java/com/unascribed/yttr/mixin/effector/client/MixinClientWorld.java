@@ -23,8 +23,8 @@ import net.minecraft.world.dimension.DimensionType;
 @Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World implements YttrWorld {
 
-	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryKey, Holder<DimensionType> dimension, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
-		super(properties, registryKey, dimension, profiler, isClient, debugWorld, seed, maxChainedNeighborUpdates);
+	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, Holder<DimensionType> holder, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
+		super(properties, registryRef, holder, profiler, isClient, debugWorld, seed);
 	}
 
 	@Shadow

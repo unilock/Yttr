@@ -10,9 +10,8 @@ buildscript {
 	}
 }
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
-	id 'io.github.juuxel.loom-quiltflower' version '1.7.3'
-	id 'org.quiltmc.quilt-mappings-on-loom' version '4.2.0'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'io.github.juuxel.loom-quiltflower' version '1.8.0'
 }
 
 if (System.getenv("MODRINTH_TOKEN")) {
@@ -21,6 +20,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 if (System.getenv("CURSE_TOKEN")) {
 	apply plugin: "com.matthewprenger.cursegradle"
 }
+
 
 sourceCompatibility = JavaVersion.toVersion(17)
 targetCompatibility = JavaVersion.toVersion(17)
@@ -80,47 +80,65 @@ repositories {
 			includeGroup 'org.quiltmc'
 		}
 	}
+	maven {
+		url "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
 	mavenLocal()
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings(loom.layered {
-		addLayer quiltMappings.mappings("org.quiltmc:quilt-mappings:1.19.2+build.1:v2")
-	})
+	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${mappings_version}:intermediary-v2"
 	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
 	modImplementation "com.unascribed:ears-api:1.4.5"
-	modImplementation "dev.emi:emi:0.5.3+1.19.2"
+	modImplementation "dev.emi:emi:0.5.3+1.18.2"
 	
-	modImplementation "dev.emi:trinkets:3.4.0"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.0-beta.1"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.0-beta.1"
-	
-	include "me.luligabi:NoIndium:1.1.0+1.19"
+	modImplementation "dev.emi:trinkets:3.3.0"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.1.4"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:4.1.4"
 	
 	[
-		'core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
+		'core', 'lockpick', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
 		'recoil', 'mesh'
 	].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.4.1")
+		modApi include("com.unascribed:lib39-${module}:1.5.0-pre1+1.18.2")
 	}
 	
-	modRuntimeOnly(include("com.unascribed:lucium:1.1")) {
-		transitive = false
-	}
+	modCompileOnly "com.unascribed:rend:3.3"
+	
+	include "me.luligabi:NoIndium:1.0.2+1.18.2"
 
-	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {
+	modRuntimeOnly("com.terraformersmc:modmenu:3.1.0") {
 		transitive = false
 	}
 }
 
 loom {
 	accessWidenerPath = file("src/main/resources/yttr.accesswidener")
+	if (project.hasProperty("render")) {
+		dependencies {
+			modRuntimeOnly "com.unascribed:rend:3.3"
+			modRuntimeOnly "maven.modrinth:lazydfu:0.1.2"
+		}
+		runs {
+			client {
+				property("yttr.render", "true")
+				programArg "--height"
+				programArg "512"
+				runDir "run/render"
+				if (project.hasProperty("renderOutput")) {
+					property("yttr.renderOutput", file(project.getProperty("renderOutput")).getAbsolutePath())
+				}
+			}
+		}
+	}
 }
 
 processResources {
@@ -184,7 +202,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		versionName = 'v'+project.version
 		versionType = 'release'
 		uploadFile = remapJar
-		gameVersions = ['1.19', '1.19.1', '1.19.2']
+		gameVersions = ['1.18.2']
 		loaders = ['fabric', 'quilt']
 		detectLoaders = false
 		changelog = file('CHANGELOG.md').text
@@ -195,7 +213,6 @@ if (System.getenv("MODRINTH_TOKEN")) {
 			optional.project 'trinkets'
 			embedded.project 'no-indium'
 			embedded.project 'lib39'
-			embedded.project 'lucium'
 		}
 	}
 }
@@ -209,9 +226,7 @@ if (System.getenv("CURSE_TOKEN")) {
 			changelogType = 'markdown'
 			changelog = file('CHANGELOG.md')
 
-			addGameVersion '1.19'
-			addGameVersion '1.19.1'
-			addGameVersion '1.19.2'
+			addGameVersion '1.18.2'
 			addGameVersion 'Fabric'
 			addGameVersion 'Quilt'
 
@@ -227,7 +242,6 @@ if (System.getenv("CURSE_TOKEN")) {
 				optionalDependency 'trinkets'
 				embeddedLibrary 'no-indium'
 				embeddedLibrary 'lib39'
-				embeddedLibrary 'lucium'
 			}
 		}
 		options {
@@ -242,6 +256,6 @@ if (System.getenv("MCMODCN_COOKIE")) {
 	task mcmodcn(type: Exec) {
 		dependsOn remapJar
 
-		commandLine './mcmodcn-upload.sh', '3949', '1.19', '2,11', '', remapJar.archivePath.getPath()
+		commandLine './mcmodcn-upload.sh', '3949', '1.18.2', '2,11', '', remapJar.archivePath.getPath()
 	}
 }

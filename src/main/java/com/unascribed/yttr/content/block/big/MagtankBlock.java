@@ -18,6 +18,7 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -77,7 +78,7 @@ public class MagtankBlock extends BigBlock {
 			
 			@Override
 			public Text getDisplayName() {
-				return Text.translatable("block.yttr.magtank");
+				return new TranslatableText("block.yttr.magtank");
 			}
 		});
 		return ActionResult.SUCCESS;

@@ -1,7 +1,5 @@
 package com.unascribed.yttr.client.suit;
 
-import com.unascribed.yttr.util.YRandom;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundCategory;
@@ -18,7 +16,7 @@ public class SuitSound extends PositionedSoundInstance {
 	}
 	
 	public SuitSound(SoundEvent event, float volume, SoundCategory category) {
-		super(event, category, volume, 1, YRandom.get(), 0, 0, 0);
+		super(event, category, volume, 1, 0, 0, 0);
 		attenuationType = AttenuationType.NONE;
 	}
 	

@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -42,7 +42,7 @@ public class BloqueBlockItem extends DyedBlockItem {
 		super.appendTooltip(stack, world, tooltip, context);
 		int i = 1;
 		while (I18n.hasTranslation("block.yttr.bloque.tip."+i)) {
-			tooltip.add(Text.translatable("block.yttr.bloque.tip."+i));
+			tooltip.add(new TranslatableText("block.yttr.bloque.tip."+i));
 			i++;
 		}
 	}

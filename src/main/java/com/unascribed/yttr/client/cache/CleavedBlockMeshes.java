@@ -1,5 +1,7 @@
 package com.unascribed.yttr.client.cache;
 
+import java.util.Random;
+
 import com.google.gson.internal.UnsafeAllocator;
 import com.unascribed.yttr.client.util.UVObserver;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
@@ -24,8 +26,6 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.random.RandomGenerator;
-import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 
 public class CleavedBlockMeshes {
 
@@ -89,7 +89,7 @@ public class CleavedBlockMeshes {
 		RenderMaterial mat = r.materialFinder().blendMode(0, bm).find();
 		MeshBuilder bldr = r.meshBuilder();
 		QuadEmitter qe = bldr.getEmitter();
-		RandomGenerator rand = new Xoroshiro128PlusPlusRandom(7);
+		Random rand = new Random(7);
 		BakedQuad firstNullQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), null, rand), null);
 		Sprite particle = donor.getParticleSprite();
 		for (Polygon p : entity.getPolygons()) {
@@ -102,7 +102,7 @@ public class CleavedBlockMeshes {
 				sprite = particle;
 			} else {
 				uvo.reset();
-				uvo.bakedQuad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
+				uvo.quad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
 				sprite = DummySprite.create(uvo.getMinU(), uvo.getMinV(), uvo.getMaxU(), uvo.getMaxV());
 				tintIndex = firstQuad.getColorIndex();;
 			}

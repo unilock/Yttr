@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.abomination;
 
+import java.util.Random;
+
 import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.api.EnvType;
@@ -24,7 +26,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class ScreeperNestBlock extends FacingBlock implements BlockEntityProvider {
@@ -76,7 +77,7 @@ public class ScreeperNestBlock extends FacingBlock implements BlockEntityProvide
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		Direction facing = state.get(FACING);
 		if (world.getBlockState(pos.offset(facing)).isAir()) {
 			int ofsX = facing.getOffsetX();

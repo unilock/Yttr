@@ -17,7 +17,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -33,17 +33,17 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		if (!stack.hasNbt()) return Text.translatable("item.yttr.ammo_can.prefixed", Text.translatable("multiplayer.status.unknown"));
+		if (!stack.hasNbt()) return new TranslatableText("item.yttr.ammo_can.prefixed", new TranslatableText("multiplayer.status.unknown"));
 		RifleMode mode = Enums.getIfPresent(RifleMode.class, stack.getNbt().getString("Mode")).orNull();
-		if (mode == null) return Text.translatable("item.yttr.ammo_can.prefixed", Text.translatable("multiplayer.status.unknown"));
-		return Text.translatable("item.yttr.ammo_can.prefixed", Text.translatable("yttr.rifle_mode."+Ascii.toLowerCase(mode.name())));
+		if (mode == null) return new TranslatableText("item.yttr.ammo_can.prefixed", new TranslatableText("multiplayer.status.unknown"));
+		return new TranslatableText("item.yttr.ammo_can.prefixed", new TranslatableText("yttr.rifle_mode."+Ascii.toLowerCase(mode.name())));
 	}
 	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		int shots = stack.hasNbt() ? stack.getNbt().getInt("Shots") : 0;
-		tooltip.add(Text.translatable("item.yttr.ammo_can.shots", shots, CAPACITY).formatted(Formatting.GRAY));
+		tooltip.add(new TranslatableText("item.yttr.ammo_can.shots", shots, CAPACITY).formatted(Formatting.GRAY));
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		if (isInGroup(group)) {
+		if (isIn(group)) {
 			for (RifleMode mode : RifleMode.VALUES) {
 				ItemStack stack = new ItemStack(this);
 				stack.setNbt(new NbtCompound());

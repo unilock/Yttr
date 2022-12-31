@@ -25,7 +25,7 @@ public class VelresinUI extends IHasAClient {
 				ms.translate(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
 				var vc = wrc.consumers().getBuffer(RenderLayer.getTranslucent());
 				for (var bq : model.getQuads(YBlocks.VELRESIN.getDefaultState(), null, mc.textRenderer.random)) {
-					vc.bakedQuad(ms.peek(), bq, 1, 1, 1, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+					vc.quad(ms.peek(), bq, 1, 1, 1, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 				}
 				ms.pop();
 			}

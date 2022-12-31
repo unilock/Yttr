@@ -1,10 +1,12 @@
 package com.unascribed.yttr.content.block.ruined;
 
+import java.util.Random;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TorchBlock;
+import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class RuinedTorchBlock extends TorchBlock {
@@ -13,5 +15,5 @@ public class RuinedTorchBlock extends TorchBlock {
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
 }

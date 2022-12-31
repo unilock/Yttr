@@ -2,6 +2,7 @@ package com.unascribed.yttr.client.util;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
@@ -12,7 +13,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.color.biome.BiomeColorProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -29,6 +29,8 @@ import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.unmapped.C_qodopjcw;
+import net.minecraft.util.Holder;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.hit.BlockHitResult;
@@ -36,7 +38,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.shape.VoxelShape;
@@ -54,22 +55,22 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.chunk.light.LightingProvider;
-import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Spawner;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.level.storage.LevelStorage.Session;
 
 public class DummyServerWorld extends ServerWorld {
 	
-	public DummyServerWorld(MinecraftServer server, Executor workerExecutor, Session session, ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime) {
-		super(server, workerExecutor, session, properties, registryKey, dimensionOptions, worldGenerationProgressListener, debugWorld, seed, spawners, shouldTickTime);
+	public DummyServerWorld(MinecraftServer server, Executor workerExecutor, Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, Holder<DimensionType> holder, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime) {
+		super(server, workerExecutor, session, properties, worldKey, holder, worldGenerationProgressListener, chunkGenerator, debugWorld, seed, spawners, shouldTickTime);
 		// WILL NOT BE CALLED
 	}
 
 	public void init() {
 		isClient = true;
-		random = RandomGenerator.createLegacy();
+		random = new Random();
 	}
 	
 	@Override
@@ -199,10 +200,10 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public int getColor(BlockPos pos, BiomeColorProvider colorResolver) {
-		return getDelegate().getColor(pos, colorResolver);
+	public int getColor(BlockPos pos, C_qodopjcw c_qodopjcw) {
+		return getDelegate().getColor(pos, c_qodopjcw);
 	}
-
+	
 	@Override
 	public List<Entity> getOtherEntities(Entity except, Box box) {
 		return getDelegate().getOtherEntities(except, box);
@@ -453,7 +454,7 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public void m_asiupuuh(BlockPos sourcePos, Block sourceBlock,
+	public void updateNeighbor(BlockPos sourcePos, Block sourceBlock,
 			BlockPos neighborPos) {
 	}
 
@@ -793,7 +794,7 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public RandomGenerator getRandom() {
+	public Random getRandom() {
 		return getDelegate().getRandom();
 	}
 

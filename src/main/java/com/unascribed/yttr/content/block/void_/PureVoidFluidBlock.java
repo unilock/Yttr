@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.void_;
 
+import java.util.Random;
+
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mechanics.SolventDamageSource;
 
@@ -22,6 +24,10 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 	
 	public PureVoidFluidBlock(FlowableFluid fluid, Settings settings) {
 		super(fluid, settings);
+	}
+
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 	}
 	
 	@Override
@@ -53,12 +59,12 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 	
 	@Override
 	public PistonBehavior getPistonBehavior(BlockState state) {
-		return getFluidState(state).isSource() ? PistonBehavior.PUSH_ONLY : PistonBehavior.DESTROY;
+		return getFluidState(state).isStill() ? PistonBehavior.PUSH_ONLY : PistonBehavior.DESTROY;
 	}
 	
 	@Override
 	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return !getFluidState(state).isSource();
+		return !getFluidState(state).isStill();
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.unascribed.yttr.world;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
@@ -24,31 +25,31 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.Structure.StructureBlockInfo;
-import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
-import net.minecraft.util.random.Xoroshiro128PlusPlusRandom;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.dimension.DimensionTypes;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.random.Xoroshiro128PlusPlusRandom;
 
 public class ScorchedGenerator {
 
-	public static void generateTerminus(long worldSeed, ChunkRegion region, StructureManager accessor) {
+	public static void generateTerminus(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
 		if (!YConfig.WorldGen.scorched) return;
-		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID)) {
+		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
 			Chunk chunk = region.getChunk(region.getCenterPos().x, region.getCenterPos().z);
 			ChunkRandom rand = new ChunkRandom(new Xoroshiro128PlusPlusRandom(worldSeed));
@@ -93,7 +94,7 @@ public class ScorchedGenerator {
 				}
 			}
 			rand.setPopulationSeed(31*worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
-			if (accessor.shouldGenerate()) {
+			if (accessor.shouldGenerateStructures()) {
 				if (rand.nextInt(40) == 0) {
 					generateTerminusHouse(region, bp, chunk, rand);
 				}
@@ -240,7 +241,7 @@ public class ScorchedGenerator {
 				BlockEntity be = region.getBlockEntity(bp);
 				if (be instanceof DispenserBlockEntity) {
 					ItemStack potion = new ItemStack(Items.SPLASH_POTION);
-					potion.setCustomName(Text.translatable("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
+					potion.setCustomName(new TranslatableText("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
 					PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
 					potion.getNbt().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
 					((DispenserBlockEntity)be).setStack(4, potion);
@@ -250,7 +251,7 @@ public class ScorchedGenerator {
 	}
 
 	public static void generateSummit(ChunkRegion region, Chunk chunk) {
-		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID)) {
+		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
 			boolean scorch = replaceBedrocks(bp, region, chunk, false);
 			bp.set(0, 127, 0);
@@ -341,7 +342,7 @@ public class ScorchedGenerator {
 	}
 
 	public static boolean isEligibleForRetrogen(ServerWorld world, WorldChunk chunk) {
-		return YConfig.WorldGen.scorchedRetrogen && world.getRegistryKey().getValue().equals(DimensionTypes.THE_NETHER_ID) && chunk.getBlockState(new BlockPos(0, 127, 0)).isOf(Blocks.BEDROCK);
+		return YConfig.WorldGen.scorchedRetrogen && world.getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID) && chunk.getBlockState(new BlockPos(0, 127, 0)).isOf(Blocks.BEDROCK);
 	}
 
 	public static void retrogen(long seed, ServerWorld world, ChunkPos pos) {
@@ -375,7 +376,7 @@ public class ScorchedGenerator {
 			replaceBedrocks(new BlockPos.Mutable(), region, c, true);
 		}
 		if (terminusRetrogen) {
-			generateTerminus(seed, region, world.method_27056());
+			generateTerminus(seed, region, world.getStructureAccessor());
 		}
 		// this causes chunks to never load on the client
 //		for (int x = 0; x < BiomeCoords.SIZE; x++) {

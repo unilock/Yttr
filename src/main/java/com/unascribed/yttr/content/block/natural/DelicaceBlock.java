@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.natural;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import com.unascribed.yttr.client.particle.DrippingDelicaceParticle;
@@ -26,7 +27,6 @@ import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -70,7 +70,7 @@ public class DelicaceBlock extends Block {
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		int stage = state.get(STAGE);
 		if (stage < 7 && random.nextInt(8) == 0) {
 			world.setBlockState(pos, state.with(STAGE, stage+1));
@@ -84,7 +84,7 @@ public class DelicaceBlock extends Block {
 	}
 	
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		Box box = new Box(pos).expand(8);
 		List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, box, e -> true);
 		if (!players.isEmpty()) {
@@ -103,7 +103,7 @@ public class DelicaceBlock extends Block {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		double yOfs;
 		if (state.isOf(this)) {
 			yOfs = (getOutlineShape(state, world, pos, ShapeContext.absent()).getMin(Axis.Y));

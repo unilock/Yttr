@@ -76,6 +76,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
@@ -108,7 +109,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		Yttr.autoreg.autoRegister((id, c) -> {
 			c.id = id;
 			Identifier iconId = Yttr.id("textures/gui/emi_simple/"+id.getPath()+".png");
-			if (MinecraftClient.getInstance().getResourceManager().getResource(iconId).isPresent()) {
+			if (MinecraftClient.getInstance().getResourceManager().containsResource(iconId)) {
 				c.simplified = new EmiTexture(iconId, 0, 0, 16, 16, 16, 16, 16, 16);
 			}
 			registry.addCategory(c);
@@ -125,7 +126,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 				e.printStackTrace();
 			}
 		});
-		
+
 		registry.addWorkstation(VOID_FILTERING, EmiStack.of(YItems.VOID_FILTER));
 		registry.addWorkstation(CENTRIFUGING, EmiStack.of(YItems.CENTRIFUGE));
 		registry.addWorkstation(CONTINUITY_GIFTS, EmiStack.of(YItems.DROP_OF_CONTINUITY));
@@ -143,7 +144,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			@Override
 			public List<TooltipComponent> getTooltip() {
 				List<TooltipComponent> tooltip = Lists.newArrayList();
-				tooltip.add(TooltipComponent.of(Text.translatable("emi.tooltip.yttr.any_tool").asOrderedText()));
+				tooltip.add(TooltipComponent.of(new TranslatableText("emi.tooltip.yttr.any_tool").asOrderedText()));
 				tooltip.add(TooltipComponent.of(YEnchantments.SHATTERING_CURSE.getName(1).asOrderedText()));
 				tooltip.add(new IngredientTooltipComponent(pickaxes));
 				return tooltip;
@@ -198,8 +199,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.forEach(registry::addRecipe);
 		
 		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
-		for (var en : rm.findResources("textures/gui/ruined_recipe", id -> id.getPath().endsWith(".png")).entrySet()) {
-			Identifier id = en.getKey();
+		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
 			String name = id.getPath();
 			name = name.substring(27, name.length()-4);
 			if (id.getNamespace().equals("yttr") && (name.equals("border") || name.equals("overlay"))) continue;
@@ -208,7 +208,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			if (result != null) {
 				RuinedRecipeResourceMetadata meta = null;
 				try {
-					meta = en.getValue().getMetadata().readMetadata(RuinedRecipeResourceMetadata.READER).orElse(null);
+					meta = rm.getResource(id).getMetadata(RuinedRecipeResourceMetadata.READER);
 				} catch (IOException e) {
 				}
 				Set<Integer> emptySlots = Collections.emptySet();
@@ -266,11 +266,6 @@ public class YttrEmiPlugin implements EmiPlugin {
 				@Override
 				public boolean canUse(PlayerEntity player) {
 					return false;
-				}
-
-				@Override
-				public ItemStack transferSlot(PlayerEntity player, int index) {
-					return null;
 				}
 			}, w, h);
 			for (int i = 0; i < ingredients.size(); i++) {
@@ -346,7 +341,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 					List<Text> tip = Lists.newArrayList();
 					if (result.getItem() == YItems.SUIT_HELMET) {
 						LampColor color = LampBlockItem.getColor(result);
-						tip.add(Text.translatable("emi.yttr.suit_helmet_hud", Text.translatable("color.yttr."+color.asString())
+						tip.add(new TranslatableText("emi.yttr.suit_helmet_hud", new TranslatableText("color.yttr."+color.asString())
 								.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
 					}
 					EmiCraftingRecipe ecr = new EmiCraftingRecipe(

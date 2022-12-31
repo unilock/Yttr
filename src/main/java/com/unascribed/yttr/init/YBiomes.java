@@ -22,6 +22,7 @@ public class YBiomes {
 
 	public static final Biome SCORCHED_SUMMIT = new Biome.Builder()
 			.precipitation(Biome.Precipitation.NONE)
+			.category(Biome.Category.NETHER)
 			.temperature(2)
 			.downfall(0)
 			.effects(new BiomeEffects.Builder()
@@ -38,6 +39,7 @@ public class YBiomes {
 
 	public static final Biome SCORCHED_TERMINUS = new Biome.Builder()
 			.precipitation(Biome.Precipitation.NONE)
+			.category(Biome.Category.NETHER)
 			.temperature(2)
 			.downfall(0)
 			.effects(new BiomeEffects.Builder()
@@ -54,6 +56,7 @@ public class YBiomes {
 
 	public static final Biome WASTELAND = new Biome.Builder()
 			.precipitation(Biome.Precipitation.NONE)
+			.category(Biome.Category.DESERT)
 			.temperature(1.2f)
 			.downfall(0.5f)
 			.effects(new BiomeEffects.Builder()

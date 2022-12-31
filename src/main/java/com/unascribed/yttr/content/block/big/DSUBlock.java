@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.big;
 
+import java.util.Random;
+
 import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.lib39.weld.api.BigBlock;
 import com.unascribed.yttr.Yttr;
@@ -28,13 +30,13 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class DSUBlock extends BigBlock implements BlockEntityProvider {
@@ -109,7 +111,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 	}
 
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		super.scheduledTick(state, world, pos, random);
 		if (!isReceivingRedstonePower(world, pos, state)) {
 			BlockEntity be = world.getBlockEntity(pos);
@@ -140,7 +142,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 					
 					@Override
 					public Text getDisplayName() {
-						return Text.translatable("block.yttr.dsu");
+						return new TranslatableText("block.yttr.dsu");
 					}
 				});
 			}
@@ -160,9 +162,9 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 			if (state.get(X) == 0 && state.get(Y) == 0 && state.get(Z) == 0) {
 				BlockEntity be = world.getBlockEntity(pos);
 				if (be instanceof DSUBlockEntity) {
-					double x = pos.getX()+(getXSize()/2D);
-					double y = pos.getY()+(getYSize()/2D);
-					double z = pos.getZ()+(getZSize()/2D);
+					double x = pos.getX()+(getXSize(state)/2D);
+					double y = pos.getY()+(getYSize(state)/2D);
+					double z = pos.getZ()+(getZSize(state)/2D);
 					for (ItemStack is : Yttr.asList((DSUBlockEntity)be)) {
 						double xO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
 						double yO = (world.random.nextDouble()-world.random.nextDouble())*0.5;

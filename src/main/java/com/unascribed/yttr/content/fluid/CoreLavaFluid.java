@@ -20,7 +20,7 @@ import net.minecraft.world.WorldView;
 public class CoreLavaFluid extends LavaFluid {
 
 	@Override
-	public boolean isSource(FluidState state) {
+	public boolean isStill(FluidState state) {
 		return true;
 	}
 

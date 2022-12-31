@@ -135,7 +135,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 		if (e instanceof ServerPlayerEntity) {
 			// the spectral axe does not actually exist, so only the person who broke it can hear/see it vanish
 			ServerPlayerEntity spe = (ServerPlayerEntity)e;
-			PlaySoundFromEntityS2CPacket spkt = new PlaySoundFromEntityS2CPacket(YSounds.SPECTRAL_AXE_DISAPPEAR, SoundCategory.PLAYERS, e, 1f, 1, 7);
+			PlaySoundFromEntityS2CPacket spkt = new PlaySoundFromEntityS2CPacket(YSounds.SPECTRAL_AXE_DISAPPEAR, SoundCategory.PLAYERS, e, 1f, 1);
 			Vec3d hand = RifleItem.getMuzzlePos(e, true);
 			ParticleS2CPacket ppkt = new ParticleS2CPacket(new DustParticleEffect(new Vec3f(0.95f, 0.95f, 1), 0.6f), false, hand.x, hand.y, hand.z, 0.25f, 0.125f, 0.25f, 0, 20);
 			spe.networkHandler.sendPacket(spkt);

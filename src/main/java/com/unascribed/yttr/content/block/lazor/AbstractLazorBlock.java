@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.lazor;
 
+import java.util.Random;
+
 import com.unascribed.yttr.init.YBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,7 +14,6 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public abstract class AbstractLazorBlock extends Block implements Waterloggable {
@@ -54,7 +55,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable 
 	}
 
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		BlockPos behind = pos.offset(state.get(FACING).getOpposite());
 		BlockPos ahead = pos.offset(state.get(FACING));
 		BlockState behindState = world.getBlockState(behind);

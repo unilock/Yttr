@@ -18,8 +18,6 @@ public class LevitationChamberBlockEntityRenderer implements BlockEntityRenderer
 	private final ShulkerBulletEntityRenderer bullet = new ShulkerBulletEntityRenderer(new EntityRendererFactory.Context(
 			MinecraftClient.getInstance().getEntityRenderDispatcher(),
 			MinecraftClient.getInstance().getItemRenderer(),
-			MinecraftClient.getInstance().getBlockRenderManager(),
-			MinecraftClient.getInstance().getEntityRenderDispatcher().getHeldItemRenderer(),
 			MinecraftClient.getInstance().getResourceManager(),
 			MinecraftClient.getInstance().getEntityModelLoader(),
 			MinecraftClient.getInstance().textRenderer

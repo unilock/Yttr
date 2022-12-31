@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client;
 
+import java.io.File;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -16,10 +17,16 @@ import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
+import com.unascribed.rend.fabric.client.render.item.DefaultPngItemStackHandler;
+import com.unascribed.rend.fabric.client.render.item.ItemStackRenderer;
+import com.unascribed.rend.fabric.client.render.manager.RenderManager;
+import com.unascribed.rend.render.item.ItemStackParameters;
+import com.unascribed.rend.render.request.RenderingRequest;
 import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
@@ -41,6 +48,7 @@ import com.unascribed.yttr.content.block.mechanism.VelresinBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.item.RifleItem;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEntities;
@@ -54,15 +62,16 @@ import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import com.mojang.blaze3d.platform.GlStateManager.class_4534;
-import com.mojang.blaze3d.platform.GlStateManager.class_4535;
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.render.VertexConsumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -110,6 +119,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootTables;
@@ -126,10 +136,13 @@ import net.minecraft.resource.pack.metadata.PackResourceMetadata;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -222,11 +235,11 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				TextureColorThief.clearCache();
 			}));
 			rm.registerReloader(reloader("yttr:detect", (manager) -> {
-				Yttr.lessCreepyAwareHopper = manager.getResource(Yttr.id("lcah-marker")).isPresent();
-				Yttr.vectorSuit = manager.getResource(Yttr.id("vector-marker")).isPresent();
+				Yttr.lessCreepyAwareHopper = manager.containsResource(Yttr.id("lcah-marker"));
+				Yttr.vectorSuit = manager.containsResource(Yttr.id("vector-marker"));
 			}));
-			Yttr.lessCreepyAwareHopper = rm.getResource(Yttr.id("lcah-marker")).isPresent();
-			Yttr.vectorSuit = rm.getResource(Yttr.id("vector-marker")).isPresent();
+			Yttr.lessCreepyAwareHopper = rm.containsResource(Yttr.id("lcah-marker"));
+			Yttr.vectorSuit = rm.containsResource(Yttr.id("vector-marker"));
 		});
 		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -277,8 +290,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					int day = c.get(Calendar.DAY_OF_MONTH);
 					if (YConfig.General.shenanigans) {
 						if (month == 1 && (day >= 9 && day <= 15)) {
-							mc.player.sendMessage(Text.translatable("chat.type.text", Text.literal(">:]").formatted(Formatting.AQUA),
-									Text.translatable("msg.yttr.well_wishes")), false);
+							mc.player.sendMessage(new TranslatableText("chat.type.text", new LiteralText(">:]").formatted(Formatting.AQUA),
+									new TranslatableText("msg.yttr.well_wishes")), false);
 						}
 					}
 				}
@@ -365,7 +378,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		RecoilEvents.RENDER_CROSSHAIRS.register(matrices -> {
 			var stack = mc.player.getMainHandStack();
 			if (mc.player != null && stack.getItem() instanceof RifleItem ri) {
-				RenderSystem.blendFuncSeparate(class_4535.ONE_MINUS_DST_COLOR, class_4534.ONE_MINUS_SRC_COLOR, class_4535.ONE, class_4534.ZERO);
+				RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
 				RenderSystem.setShaderColor(1, 1, 1, 1);
 				RenderSystem.setShaderTexture(0, Yttr.id("textures/gui/rifle_crosshairs.png"));
 				int windowWidth = mc.getWindow().getScaledWidth();
@@ -409,10 +422,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			@Override
 			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
 				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("yttr:lcah", Text.literal("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(Text.literal("Makes the Aware Hopper less creepy."), 8),
+				consumer.accept(factory.create("yttr:lcah", new LiteralText("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 				f = () -> new EmbeddedResourcePack("vector");
-				consumer.accept(factory.create("yttr:vector", Text.literal("Vector Suit"), false, f, new PackResourceMetadata(Text.literal("Gives the suit HUD a more true vector aesthetic."), 8),
+				consumer.accept(factory.create("yttr:vector", new LiteralText("Vector Suit"), false, f, new PackResourceMetadata(new LiteralText("Gives the suit HUD a more true vector aesthetic."), 8),
 						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
 			}
 		};
@@ -559,14 +572,14 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				if (!fluidColors.containsKey(f.getType().getSuperclass())) {
 					fluidColors.put(f.getType().getSuperclass(), new int[] { -1, -1 });
 				}
-				fluidColors.get(f.getType().getSuperclass())[fl.isSource(fl.getDefaultState()) ? 0 : 1] = colAnn.value();
+				fluidColors.get(f.getType().getSuperclass())[fl.isStill(fl.getDefaultState()) ? 0 : 1] = colAnn.value();
 			}
 			YFluids.Sprite spriteAnn = f.getAnnotation(YFluids.Sprite.class);
 			if (spriteAnn != null) {
 				if (!fluidSprites.containsKey(f.getType().getSuperclass())) {
 					fluidSprites.put(f.getType().getSuperclass(), new Identifier[] { new Identifier("missingno"), new Identifier("missingno") });
 				}
-				fluidSprites.get(f.getType().getSuperclass())[fl.isSource(fl.getDefaultState()) ? 0 : 1] = new Identifier(spriteAnn.value());
+				fluidSprites.get(f.getType().getSuperclass())[fl.isStill(fl.getDefaultState()) ? 0 : 1] = new Identifier(spriteAnn.value());
 			}
 		});
 		int[] white = new int[] { -1, -1 };
@@ -586,7 +599,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 				@Override
 				public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
-					return state.isSource() ? colors[0] : colors[1];
+					return state.isStill() ? colors[0] : colors[1];
 				}
 			};
 			FluidRenderHandlerRegistry.INSTANCE.register(en.getKey(), frh);
@@ -622,7 +635,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			}
 		});
 	}
-	
+
 	public static void addLine(MatrixStack matrices, VertexConsumer vc,
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
@@ -647,7 +660,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		dX /= dist;
 		dY /= dist;
 		dZ /= dist;
-		Matrix4f model = matrices.peek().getPosition();
+		Matrix4f model = matrices.peek().getModel();
 		Matrix3f normal = matrices.peek().getNormal();
 		vc.vertex(model, x1, y1, z1).color(r1, g1, b1, a1).normal(normal, dX, dY, dZ).next();
 		vc.vertex(model, x2, y2, z2).color(r2, g2, b2, a2).normal(normal, dX, dY, dZ).next();
@@ -662,6 +675,59 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return new Identifier("textures/models/armor/yttr_ultrapure_diamond_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
 		}
 		return id;
+	}
+
+	private static int totalRenders = 0;
+	private static int finishedRenders = 0;
+	private static int lastRenderPct = 0;
+	
+	public static void doBulkRender() {
+		YLog.info("Performing unattended autorender... 0%");
+		File dir = new File(System.getProperty("yttr.renderOutput", "yttr_autorender"));
+		synchronized (YttrClient.class) {
+			for (var i : Registry.ITEM) {
+				var id = Registry.ITEM.getId(i);
+				if (id.getNamespace().equals("yttr") || id.getNamespace().equals("minecraft")) {
+					DefaultedList<ItemStack> li = DefaultedList.of();
+					i.appendStacks(MoreObjects.firstNonNull(i.getGroup(), ItemGroup.SEARCH), li);
+					for (var is : li) {
+						var hnd = new DefaultPngItemStackHandler(dir, 512, true, false, false) {
+							@Override
+							protected String getFilename(ItemStack value) {
+								String fname = super.getFilename(value);
+								if (value.getItem() instanceof LampBlockItem || value.isOf(YItems.LAZOR_EMITTER)) {
+									if (LampBlockItem.isInverted(value)) {
+										fname += "_inverted";
+									}
+									fname += "_"+LampBlockItem.getColor(value).asString();
+								}
+								return fname;
+							}
+						};
+						RenderManager.push(new RenderingRequest<>(
+								new ItemStackRenderer(),
+								new ItemStackParameters(512),
+								is,
+								hnd,
+								(t) -> {
+									synchronized (YttrClient.class) {
+										finishedRenders++;
+										int pct = (finishedRenders*100)/totalRenders;
+										if (pct != lastRenderPct) {
+											YLog.info("Performing unattended autorender... {}%", pct);
+											lastRenderPct = pct;
+										}
+										if (finishedRenders >= totalRenders) {
+											GLFW.glfwSetWindowShouldClose(mc.getWindow().getHandle(), true);
+										}
+									}
+								}
+							));
+						totalRenders++;
+					}
+				}
+			}
+		}
 	}
 	
 }

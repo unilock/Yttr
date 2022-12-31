@@ -14,6 +14,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -68,7 +69,7 @@ public class SSDBlockEntity extends BlockEntity implements Nameable, DelegatingI
 	
 	@Override
 	public Text getName() {
-		return Text.translatable("block.yttr.ssd");
+		return new TranslatableText("block.yttr.ssd");
 	}
 
 	@Override

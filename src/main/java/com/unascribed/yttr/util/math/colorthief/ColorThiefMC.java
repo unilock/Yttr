@@ -20,7 +20,7 @@
 package com.unascribed.yttr.util.math.colorthief;
 
 import java.util.Arrays;
-import com.mojang.blaze3d.texture.NativeImage;
+import net.minecraft.client.texture.NativeImage;
 import com.unascribed.yttr.util.math.colorthief.MMCQ.CMap;
 
 public class ColorThiefMC {

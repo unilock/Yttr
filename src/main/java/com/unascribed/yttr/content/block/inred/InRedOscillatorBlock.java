@@ -14,7 +14,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -43,7 +43,7 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 			player.openHandledScreen(new NamedScreenHandlerFactory() {
 				@Override
 				public Text getDisplayName() {
-					return Text.translatable(InRedOscillatorBlock.this.getTranslationKey());
+					return new TranslatableText(InRedOscillatorBlock.this.getTranslationKey());
 				}
 
 				@Nullable

@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager.Builder;
-import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -71,7 +71,7 @@ public class DivingPlateBlock extends Block implements Voidloggable, SimpleLootB
 		if (world instanceof World) {
 			VoidGeyserBlockEntity geyser = findClosestGeyser((World)world, pos);
 			if (geyser != null) {
-				stack.setCustomName(Text.literal(geyser.getName()));
+				stack.setCustomName(new LiteralText(geyser.getName()));
 			}
 		}
 		return stack;
@@ -83,7 +83,7 @@ public class DivingPlateBlock extends Block implements Voidloggable, SimpleLootB
 		if (!itemStack.hasCustomName()) return;
 		VoidGeyserBlockEntity geyser = findClosestGeyser(world, pos);
 		if (geyser != null) {
-			geyser.setName(itemStack.getName().getString());
+			geyser.setName(itemStack.getName().asString());
 			if (placer instanceof ServerPlayerEntity) {
 				YCriteria.NAME_GEYSER.trigger((ServerPlayerEntity)placer, pos, itemStack);
 			}

@@ -1,6 +1,6 @@
 package com.unascribed.yttr.network;
 
-import com.mojang.blaze3d.texture.NativeImage;
+import net.minecraft.client.texture.NativeImage;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.lib39.tunnel.api.NetworkContext;

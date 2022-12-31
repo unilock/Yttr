@@ -18,7 +18,7 @@ import net.minecraft.client.sound.SoundSystem;
 @Mixin(SoundSystem.class)
 public class MixinSoundSystem {
 
-	@Inject(at=@At("HEAD"), method="method_4853", cancellable=true)
+	@Inject(at=@At("HEAD"), method="getAdjustedVolume", cancellable=true)
 	private void getAdjustedVolume(SoundInstance soundInstance, CallbackInfoReturnable<Float> ci) {
 		if (MinecraftClient.getInstance().currentScreen instanceof SuitScreen && !(soundInstance instanceof SuitSound)) {
 			ci.setReturnValue(0f);

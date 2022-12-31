@@ -18,7 +18,7 @@ public class SkeletalSorterBlockItem extends BlockItem {
 
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		if (isInGroup(group)) {
+		if (isIn(group)) {
 			stacks.add(new ItemStack(this));
 		}
 

@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.natural;
 
+import java.util.Random;
+
 import com.unascribed.yttr.init.YBlocks;
 
 import net.fabricmc.api.EnvType;
@@ -24,7 +26,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public class SqueezeLogBlock extends PillarBlock {
@@ -43,7 +44,7 @@ public class SqueezeLogBlock extends PillarBlock {
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (random.nextInt(16) == 0) {
 			BlockPos down = pos.down();
 			BlockState below = world.getBlockState(down);
@@ -55,7 +56,7 @@ public class SqueezeLogBlock extends PillarBlock {
 	
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (hasRandomTicks(state) && random.nextInt(8) == 0) {
 			YBlocks.DELICACE.randomDisplayTick(state, world, pos, random);
 		}

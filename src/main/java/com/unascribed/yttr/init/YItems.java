@@ -5,8 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +72,9 @@ import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
@@ -197,7 +197,7 @@ public class YItems {
 	public static final BlockItem NEODYMIUM_SLAB = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
 		@Override
 		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-			if (isInGroup(group)) {
+			if (isIn(group)) {
 				stacks.add(new ItemStack(this));
 			}
 		}
@@ -209,7 +209,7 @@ public class YItems {
 		}
 		@Override
 		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-			if (isInGroup(group)) {
+			if (isIn(group)) {
 				stacks.add(new ItemStack(this));
 			}
 		}
@@ -341,17 +341,17 @@ public class YItems {
 		@Override
 		public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 			super.appendTooltip(stack, world, tooltip, context);
-			tooltip.add(Text.translatable("potion.withDuration",
-					Text.translatable("potion.withAmplifier",
-							Text.translatable("effect.yttr.delicaceness"),
-							Text.translatable("potion.potency.3")),
+			tooltip.add(new TranslatableText("potion.withDuration",
+					new TranslatableText("potion.withAmplifier",
+							new TranslatableText("effect.yttr.delicaceness"),
+							new TranslatableText("potion.potency.3")),
 					"0:30").formatted(Formatting.BLUE));
-			tooltip.add(Text.literal(""));
-			tooltip.add(Text.translatable("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
-			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_1").formatted(Formatting.BLUE));
-			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_2").formatted(Formatting.BLUE));
-			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_3").formatted(Formatting.BLUE));
-			tooltip.add(Text.translatable("tip.yttr.delicace_bonus_4").formatted(Formatting.BLUE));
+			tooltip.add(new LiteralText(""));
+			tooltip.add(new TranslatableText("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_1").formatted(Formatting.BLUE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_2").formatted(Formatting.BLUE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_3").formatted(Formatting.BLUE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_4").formatted(Formatting.BLUE));
 		}
 	};
 	
@@ -374,7 +374,10 @@ public class YItems {
 			.maxCount(1));
 	
 	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings());
-	public static final MusicDiscItem NEODYMIUM_DISC = createMusicDisc(15, YSounds.BUZZ, new Item.Settings(), 11);
+	public static final MusicDiscItem NEODYMIUM_DISC = new MusicDiscItem(15, YSounds.BUZZ, new Item.Settings()) {
+		@Override
+		public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {}
+	};
 	
 	private static final ArmorMaterial SUIT_MATERIAL = new ArmorMaterial() {
 
@@ -574,11 +577,11 @@ public class YItems {
 	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
 			.maxCount(1));
 	
-	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = createMusicDisc(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 219);
-	public static final MusicDiscItem MUSIC_DISC_VOID = createMusicDisc(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 615);
-	public static final MusicDiscItem MUSIC_DISC_DESERT_HEAT = createMusicDisc(14, YSounds.DESERT_HEAT_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 421);
-	public static final MusicDiscItem MUSIC_DISC_TORUS = createMusicDisc(14, YSounds.TORUS_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 396);
-	public static final MusicDiscItem MUSIC_DISC_MEMORANDUM = createMusicDisc(14, YSounds.MEMORANDUM_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 299);
+	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_DESERT_HEAT = new MusicDiscItem(14, YSounds.DESERT_HEAT_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_TORUS = new MusicDiscItem(14, YSounds.TORUS_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_MEMORANDUM = new MusicDiscItem(14, YSounds.MEMORANDUM_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	
 	public static final Item RUBBLE = new Item(new Item.Settings()) {};
 	
@@ -612,24 +615,6 @@ public class YItems {
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.ITEM, YItems.class, Item.class);
-	}
-	
-	private static MusicDiscItem createMusicDisc(int comparatorStrength, SoundEvent sound, Item.Settings settings, int lengthInSeconds) {
-		try {
-			// 1.19.1
-			return new MusicDiscItem(comparatorStrength, sound, settings, lengthInSeconds) {};
-		} catch (NoSuchMethodError e) {
-			try {
-				// 1.19.0
-				return (MusicDiscItem)MethodHandles.privateLookupIn(MusicDiscItem.class, MethodHandles.lookup())
-						.findConstructor(MusicDiscItem.class, MethodType.methodType(void.class, int.class, SoundEvent.class, Item.Settings.class))
-						.invokeExact(comparatorStrength, sound, settings);
-			} catch (Throwable e1) {
-				var re = new RuntimeException(e1);
-				re.addSuppressed(e);
-				throw re;
-			}
-		}
 	}
 
 	@Retention(RUNTIME)

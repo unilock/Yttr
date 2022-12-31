@@ -4,22 +4,21 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.texture.NativeImage;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unascribed.lib39.util.api.DelegatingVertexConsumer;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
-import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.client.util.UVObserver;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.util.YRandom;
 
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -60,8 +59,8 @@ public class RifleItemRenderer extends IHasAClient {
 			if (inUse) {
 				RenderLayer layer = RenderLayer.getEntityCutoutNoCull(CHAMBER_TEXTURE);
 				uvo.reset();
-				for (BakedQuad quad : chamber.getQuads(null, null, YRandom.get())) {
-					uvo.bakedQuad(matrices.peek(), quad, 1, 1, 1, 1, 1);
+				for (BakedQuad quad : chamber.getQuads(null, null, ThreadLocalRandom.current())) {
+					uvo.quad(matrices.peek(), quad, 1, 1, 1, 1, 1);
 				}
 				float minU = uvo.getMinU();
 				float minV = uvo.getMinV();
@@ -70,7 +69,7 @@ public class RifleItemRenderer extends IHasAClient {
 				int frame = useTime < 70 ? (int)((useTime/70f)*36) : 34+(int)(mc.world.getTime()%2);
 				mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, junk -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 					@Override
-					public VertexConsumer uv(float u, float v) {
+					public VertexConsumer texture(float u, float v) {
 						if (u >= minU && u <= maxU) {
 							u = ((u-minU)/(maxU-minU));
 						} else {
@@ -83,7 +82,7 @@ public class RifleItemRenderer extends IHasAClient {
 							System.out.println("V?? "+v+"; "+minV+"/"+maxV);
 							v = 0;
 						}
-						return super.uv(u, v);
+						return super.texture(u, v);
 					}
 					
 					@Override

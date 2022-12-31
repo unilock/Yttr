@@ -19,7 +19,7 @@ import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -99,7 +99,7 @@ public class LevitationChamberBlockEntity extends BlockEntity implements YTickab
 
 	@Override
 	public Text getDisplayName() {
-		return Text.translatable("block.yttr.levitation_chamber");
+		return new TranslatableText("block.yttr.levitation_chamber");
 	}
 	
 }

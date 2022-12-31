@@ -31,8 +31,8 @@ public class AmmoPackScreen extends HandledScreen<AmmoPackScreenHandler> {
 	}
 	
 	@Override
-	public void closeScreen() {
-		super.closeScreen();
+	public void onClose() {
+		super.onClose();
 		this.client.setScreen(parent);
 	}
 	

@@ -1,13 +1,14 @@
 package com.unascribed.yttr.compat.emi.stack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.Tessellator;
+
 import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.stack.ItemEmiStack;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
@@ -25,7 +26,7 @@ public class BlockEmiStack extends ItemEmiStack {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ItemStack stack = getItemStack();
 		if ((flags & 1) != 0) {
-			VertexConsumerProvider.Immediate vcp = VertexConsumerProvider.immediate(Tessellator.getInstance().getBufferBuilder());
+			VertexConsumerProvider.Immediate vcp = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
 			int light = LightmapTextureManager.pack(15, 15);
 			int overlay = OverlayTexture.DEFAULT_UV;
 			RenderSystem.setShaderColor(1, 1, 1, 1);

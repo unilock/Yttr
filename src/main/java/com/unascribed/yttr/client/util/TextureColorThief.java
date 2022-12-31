@@ -1,12 +1,12 @@
 package com.unascribed.yttr.client.util;
 
 import java.io.IOException;
-import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.yttr.util.math.colorthief.ColorThiefMC;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.ResourceTexture.TextureData;
 import net.minecraft.util.Identifier;
 

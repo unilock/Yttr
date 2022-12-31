@@ -1,7 +1,10 @@
 package com.unascribed.yttr.content.block.ruined;
 
+import java.util.Random;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeverBlock;
+import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -10,7 +13,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -28,7 +30,7 @@ public class RuinedLeverBlock extends LeverBlock {
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {}
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
 
 	@Override
 	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }

@@ -18,7 +18,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.TranslatableText;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
 public class LampBlockItem extends BlockItem implements ItemColorProvider {
@@ -31,10 +31,10 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	public Text getName(ItemStack stack) {
 		LampColor c = LampBlockItem.getColor(stack);
 		if (c == LampColor.COLORLESS) {
-			return Text.translatable(getBlock().getTranslationKey()+(LampBlockItem.isInverted(stack) ? ".inverted" : ""));
+			return new TranslatableText(getBlock().getTranslationKey()+(LampBlockItem.isInverted(stack) ? ".inverted" : ""));
 		}
-		return Text.translatable(getBlock().getTranslationKey()+"."+(LampBlockItem.isInverted(stack) ? "colored.inverted" : "colored"),
-				Text.translatable("color.yttr."+c.asString()));
+		return new TranslatableText(getBlock().getTranslationKey()+"."+(LampBlockItem.isInverted(stack) ? "colored.inverted" : "colored"),
+				new TranslatableText("color.yttr."+c.asString()));
 	}
 
 	public static LampColor getColor(ItemStack stack) {

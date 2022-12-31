@@ -9,7 +9,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 
 public class DopperBlockEntity extends HopperBlockEntity implements YTickable {
@@ -56,7 +56,7 @@ public class DopperBlockEntity extends HopperBlockEntity implements YTickable {
 	
 	@Override
 	protected Text getContainerName() {
-		return Text.translatable("block.yttr.dopper");
+		return new TranslatableText("block.yttr.dopper");
 	}
 	
 }

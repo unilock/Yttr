@@ -1,22 +1,22 @@
 package com.unascribed.yttr.client.particle;
 
-import com.mojang.blaze3d.platform.GlStateManager.class_4534;
-import com.mojang.blaze3d.platform.GlStateManager.class_4535;
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexBuffer;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
-import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.Yttr;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.particle.BillboardParticle;
 import net.minecraft.client.particle.ParticleTextureSheet;
+import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.ShaderProgram;
+import net.minecraft.client.render.Shader;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexFormat.DrawMode;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
@@ -39,14 +39,14 @@ public class VoidBallParticle extends BillboardParticle {
 	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
 		float age = this.age+tickDelta;
 		RenderSystem.enableBlend();
-		RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA, class_4535.ONE, class_4534.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ONE_MINUS_SRC_ALPHA);
 		if (!MinecraftClient.isFancyGraphicsOrBetter()) {
 			if (buf != null) {
 				buf.close();
 				buf = null;
 			}
 			RenderSystem.setShaderTexture(0, TEXTURE);
-			Tessellator.getInstance().getBufferBuilder().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
+			Tessellator.getInstance().getBuffer().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 			setColorAlpha(age < 10 ? 1 : 1-((age-10)/(maxAge-10)));
 			super.buildGeometry(vertexConsumer, camera, tickDelta);
 			Tessellator.getInstance().draw();
@@ -54,12 +54,12 @@ public class VoidBallParticle extends BillboardParticle {
 		}
 		if (buf == null) {
 			buf = new VertexBuffer();
-			BufferBuilder bb = Tessellator.getInstance().getBufferBuilder();
+			BufferBuilder bb = Tessellator.getInstance().getBuffer();
 			
 			bb.begin(DrawMode.TRIANGLES, VertexFormats.POSITION);
 			emitSubdividedSphere(bb);
 			buf.bind();
-			buf.upload(bb.end());
+			buf.upload(bb);
 		}
 		
 		Vec3d cam = camera.getPos();
@@ -68,7 +68,7 @@ public class VoidBallParticle extends BillboardParticle {
 		float oz = (float)(MathHelper.lerp(tickDelta, prevPosZ, z) - cam.getZ());
 		MatrixStack ms = RenderSystem.getModelViewStack();
 		ms.push();
-		ShaderProgram old = RenderSystem.getShader();
+		Shader old = RenderSystem.getShader();
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		float a = age < 10 ? 1 : 1-((age-10)/(maxAge-10));
 		RenderSystem.setShaderColor(0, 0, 0, a);
@@ -85,7 +85,7 @@ public class VoidBallParticle extends BillboardParticle {
 		buf.bind();
 		for (int i = 0; i < 40; i++) {
 			if (i >= cutoff) {
-				buf.setShader(ms.peek().getPosition(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+				buf.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 			}
 			ms.scale(0.97f, 0.97f, 0.97f);
 			RenderSystem.setShaderColor(0, 0, 0, a/3);
