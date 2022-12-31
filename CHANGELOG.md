@@ -3,3 +3,5 @@
 * The following only apply if you use a datapack to add spawners to the yttr:snareable block tag:
 	* Snared spawners will continue to tick, spawning mobs
 	* Snared spawners are no longer stable, breaking containment after ~2:20
+* Removed some obsolete mixins and utilities now handled by Lib39
+	* Might fix networking jank

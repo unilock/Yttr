@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
+import com.unascribed.lib39.util.api.DelegatingVertexConsumer;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.content.block.big.DSUBlock;
 import com.unascribed.yttr.content.block.big.DSUBlockEntity;
