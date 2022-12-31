@@ -5,3 +5,4 @@
 	* Snared spawners are no longer stable, breaking containment after ~2:20
 * Removed some obsolete mixins and utilities now handled by Lib39
 	* Might fix networking jank
+* New texture for carbon blocks
