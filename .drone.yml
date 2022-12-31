@@ -35,9 +35,9 @@ steps:
     GITEA_KEY:
       from_secret: gitea_key
   commands:
-  - "git tag -d dev-1.19 || true"
-  - git tag dev-1.19 1.19.2
-  - "git push -f https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git dev-1.19"
+  - "git tag -d dev-1.18-new || true"
+  - git tag dev-1.18-new 1.18.2
+  - "git push -f https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git dev-1.18-new"
 - name: release
   image: unascribed/drone-gitea-release
   settings:
@@ -46,9 +46,9 @@ steps:
     base_url: https://git.sleeping.town
     files:
       - build/libs/yttr-*.jar
-    title: "[1.19.2] Dev Build"
+    title: "[1.18.2] Devest Build"
     prerelease: true
-    tag: dev-1.19
+    tag: dev-1.18-new
     note: CHANGELOG.md
     allow_edit: true
 - name: rebuild-cache
@@ -74,7 +74,7 @@ steps:
 
 trigger:
     branch:
-    - "1.19.2"
+    - "1.18.2"
     event:
     - push
 
