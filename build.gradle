@@ -259,3 +259,11 @@ if (System.getenv("MCMODCN_COOKIE")) {
 		commandLine './mcmodcn-upload.sh', '3949', '1.18.2', '2,11', '', remapJar.archivePath.getPath()
 	}
 }
+
+if (System.getenv("GITEA_KEY")) {
+	task gitea(type: Exec) {
+		dependsOn remapJar
+
+		commandLine './gitea-upload.sh', '1.18.2', project.version, remapJar.archivePath.getPath()
+	}
+}
