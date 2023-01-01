@@ -1,14 +1,13 @@
-kind: pipeline
-name: autobuild
-
-steps:
+pipeline:
 - name: restore-cache
   image: meltwater/drone-cache
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: s3id
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: s3key
+  when:
+    event: [push, manual]
+  secrets:
+  - source: s3id
+    target: AWS_ACCESS_KEY_ID
+  - source: s3key
+    target: AWS_SECRET_ACCESS_KEY
   pull: true
   settings:
     restore: true
@@ -31,6 +30,8 @@ steps:
   - gradle --no-daemon clean build
 - name: retag
   image: alpine/git:latest
+  when:
+    event: [push, manual]
   environment:
     GITEA_KEY:
       from_secret: gitea_key
@@ -38,8 +39,10 @@ steps:
   - "git tag -d dev-1.18-new || true"
   - git tag dev-1.18-new 1.18.2
   - "git push -f https://drone:$GITEA_KEY@git.sleeping.town/unascribed/Yttr.git dev-1.18-new"
-- name: release
+- name: release-dev
   image: unascribed/drone-gitea-release
+  when:
+    event: [push, manual]
   settings:
     api_key:
       from_secret: gitea_key
@@ -53,11 +56,13 @@ steps:
     allow_edit: true
 - name: rebuild-cache
   image: meltwater/drone-cache
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: s3id
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: s3key
+  when:
+    event: [push, manual]
+  secrets:
+  - source: s3id
+    target: AWS_ACCESS_KEY_ID
+  - source: s3key
+    target: AWS_SECRET_ACCESS_KEY
   pull: true
   settings:
     rebuild: true
@@ -71,32 +76,20 @@ steps:
     mount:
       - '.gradle'
       - '.gradle-user'
-
-trigger:
-    branch:
-    - "1.18.2"
-    event:
-    - push
-
----
-
-kind: pipeline
-name: tagbuild
-
-steps:
-- name: build
+- name: publish
   image: gradle:7.4-jdk17
-  environment:
-    CURSE_TOKEN:
-      from_secret: curse_token
-    MODRINTH_TOKEN:
-      from_secret: modrinth_token
-    MCMODCN_COOKIE:
-      from_secret: mcmodcn_cookie
+  when:
+    event: [deployment]
+  secrets:
+  - curse_token
+  - modrinth_token
+  - mcmodcn_cookie
   commands:
-  - gradle clean build modrinth curseforge mcmodcn
+  - gradle modrinth curseforge mcmodcn
 - name: release
   image: unascribed/drone-gitea-release
+  when:
+    event: [deployment]
   settings:
     api_key:
       from_secret: gitea_key
@@ -107,9 +100,4 @@ steps:
     tag: "${DRONE_TAG}"
     note: CHANGELOG.md
 
-trigger:
-    event:
-    - tag
-    ref:
-      exclude:
-      - refs/tags/dev-*
+branches: "1.18.2"
