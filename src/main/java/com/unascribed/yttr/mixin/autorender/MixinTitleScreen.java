@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin;
+package com.unascribed.yttr.mixin.autorender;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,7 +17,7 @@ import net.minecraft.client.util.math.MatrixStack;
 @Environment(EnvType.CLIENT)
 @Mixin(TitleScreen.class)
 @AutoMixinEligible(ifSystemProperty="yttr.render")
-public class MixinTitleScreenRender {
+public class MixinTitleScreen {
 
 	private static boolean YTTR$RENDER = true;
 	
