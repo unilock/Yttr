@@ -3,14 +3,14 @@ package com.unascribed.yttr.network;
 import java.util.Locale;
 import java.util.UUID;
 
+import com.unascribed.lib39.tunnel.api.C2SMessage;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
-import com.unascribed.lib39.tunnel.api.C2SMessage;
-import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 

@@ -1,11 +1,11 @@
 package com.unascribed.yttr.network;
 
 import com.mojang.blaze3d.texture.NativeImage;
-import com.unascribed.yttr.content.item.RifleItem;
-import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.lib39.tunnel.api.S2CMessage;
 import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
+import com.unascribed.yttr.content.item.RifleItem;
+import com.unascribed.yttr.init.YNetwork;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

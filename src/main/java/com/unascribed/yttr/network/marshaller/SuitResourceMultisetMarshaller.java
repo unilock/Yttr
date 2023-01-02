@@ -1,7 +1,7 @@
 package com.unascribed.yttr.network.marshaller;
 
-import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.lib39.tunnel.api.Marshaller;
+import com.unascribed.yttr.mechanics.SuitResource;
 
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.Multiset;

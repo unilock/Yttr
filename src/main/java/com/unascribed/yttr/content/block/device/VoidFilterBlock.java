@@ -5,6 +5,7 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 import com.unascribed.yttr.world.network.FilterNetwork;
 import com.unascribed.yttr.world.network.FilterNodeTypes;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;

@@ -75,7 +75,7 @@ public class MixinEntity implements Magnetized {
 		if (receptiveBelow) {
 			Box box = self.getBoundingBox();
 			Box bottom = new Box(box.minX, box.minY-0.5, box.minZ, box.maxX, box.minY, box.maxZ);
-			if (Iterables.any(self.world.method_20812(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
+			if (Iterables.any(self.world.m_byqkqxkz(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
 				yttr$magnetizedBelow = true;
 			}
 		}

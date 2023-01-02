@@ -2,7 +2,6 @@ package com.unascribed.yttr.content.block.natural;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.ItemStack;

@@ -17,6 +17,7 @@ import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
 import com.unascribed.yttr.util.YLog;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Enums;
 import com.google.common.hash.Hashing;
@@ -80,8 +81,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.MobSpawnerLogic;
+import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)

@@ -47,10 +47,10 @@ public class DSUScreenHandler extends GenericContainerScreenHandler {
 	}
 
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int i) {
+	public ItemStack quickTransfer(PlayerEntity player, int i) {
 		try {
 			increaseStackSize.get().increment();
-			return super.transferSlot(player, i);
+			return super.quickTransfer(player, i);
 		} finally {
 			increaseStackSize.get().decrement();
 		}

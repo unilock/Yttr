@@ -8,6 +8,7 @@ import com.unascribed.lib39.mesh.api.BlockNetworkNode;
 import com.unascribed.lib39.mesh.api.BlockNetworkType;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.init.YBlocks;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;

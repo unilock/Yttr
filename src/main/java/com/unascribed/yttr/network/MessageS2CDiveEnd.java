@@ -1,11 +1,11 @@
 package com.unascribed.yttr.network;
 
+import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.lib39.tunnel.api.S2CMessage;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.suit.SuitSound;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.lib39.tunnel.api.NetworkContext;
-import com.unascribed.lib39.tunnel.api.S2CMessage;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

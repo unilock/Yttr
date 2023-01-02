@@ -17,7 +17,7 @@ public class ShatteringLogic {
 		}
 
 		@Override
-		public ItemStack transferSlot(PlayerEntity player, int index) {
+		public ItemStack quickTransfer(PlayerEntity player, int index) {
 			return null;
 		}
 	}, 1, 1);

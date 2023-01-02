@@ -2,6 +2,7 @@ package com.unascribed.yttr.compat.emi.stack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tessellator;
+
 import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.stack.ItemEmiStack;
 import net.minecraft.block.Block;

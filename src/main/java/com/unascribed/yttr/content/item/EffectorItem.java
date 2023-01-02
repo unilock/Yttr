@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import java.util.Arrays;
 import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YCriteria;
@@ -98,7 +99,7 @@ public class EffectorItem extends Item {
 	}
 	
 	@Override
-	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+	public boolean onClickedOnOther(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
 		if (slot.getStack().isOf(YItems.VOID_BUCKET)) {
 			slot.setStack(new ItemStack(Items.BUCKET));
 			player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1, 1);

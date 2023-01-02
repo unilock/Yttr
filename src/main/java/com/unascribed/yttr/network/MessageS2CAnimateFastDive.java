@@ -1,11 +1,11 @@
 package com.unascribed.yttr.network;
 
-import com.unascribed.yttr.client.screen.SuitScreen;
-import com.unascribed.yttr.init.YNetwork;
-import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.lib39.tunnel.api.S2CMessage;
 import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
+import com.unascribed.yttr.client.screen.SuitScreen;
+import com.unascribed.yttr.init.YNetwork;
+import com.unascribed.yttr.mechanics.SuitResource;
 
 import com.google.common.collect.Multiset;
 

@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.block.void_;
 
-import java.util.Random;
-
 import com.unascribed.yttr.init.YFluids;
 
 import net.minecraft.block.Block;

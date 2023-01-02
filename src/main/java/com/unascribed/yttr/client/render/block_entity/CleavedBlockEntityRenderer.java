@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
 import java.util.Random;
+
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;

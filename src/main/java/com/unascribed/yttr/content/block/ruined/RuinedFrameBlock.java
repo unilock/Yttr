@@ -1,7 +1,6 @@
 package com.unascribed.yttr.content.block.ruined;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.util.math.Direction;
 
 public class RuinedFrameBlock extends RuinedPipeBlock {

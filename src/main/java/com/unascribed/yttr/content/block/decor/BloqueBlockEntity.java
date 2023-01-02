@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.block.decor;
 
+import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
+
 import java.util.Arrays;
 
 import javax.annotation.Nullable;
@@ -23,8 +25,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
-
-import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
 
 public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
 

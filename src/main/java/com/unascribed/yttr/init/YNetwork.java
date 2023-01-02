@@ -1,5 +1,6 @@
 package com.unascribed.yttr.init;
 
+import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.network.MessageC2SAttack;
 import com.unascribed.yttr.network.MessageC2SDivePos;
@@ -19,7 +20,6 @@ import com.unascribed.yttr.network.MessageS2CDivePressure;
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
 import com.unascribed.yttr.network.MessageS2CScreeperBreak;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
-import com.unascribed.lib39.tunnel.api.NetworkContext;
 
 public class YNetwork {
 

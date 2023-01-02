@@ -5,6 +5,7 @@ import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.util.Resolvable;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;

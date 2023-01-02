@@ -1,10 +1,10 @@
 package com.unascribed.yttr.network;
 
+import com.unascribed.lib39.tunnel.api.C2SMessage;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
-import com.unascribed.lib39.tunnel.api.C2SMessage;
-import com.unascribed.lib39.tunnel.api.NetworkContext;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 

@@ -305,7 +305,7 @@ public class WastelandPopulator {
 	}
 	
 	private static boolean tryPlaceSchematic(ChunkRandom rand, ServerWorld world, BlockPos pos, String id, int yOffset, boolean eatDirt, boolean fill) {
-		var opt = world.getStructureManager().getStructure(new Identifier(id));
+		var opt = world.getStructureTemplateManager().getStructure(new Identifier(id));
 		if (!opt.isPresent()) return false;
 		var s = opt.get();
 		BlockRotation rot = BlockRotation.random(rand);

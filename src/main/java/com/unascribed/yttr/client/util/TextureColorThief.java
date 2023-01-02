@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client.util;
 
 import java.io.IOException;
+
 import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.yttr.util.math.colorthief.ColorThiefMC;
 

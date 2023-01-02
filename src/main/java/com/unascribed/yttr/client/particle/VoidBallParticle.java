@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.particle;
 
-import com.mojang.blaze3d.platform.GlStateManager.class_4534;
-import com.mojang.blaze3d.platform.GlStateManager.class_4535;
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
@@ -39,7 +39,7 @@ public class VoidBallParticle extends BillboardParticle {
 	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
 		float age = this.age+tickDelta;
 		RenderSystem.enableBlend();
-		RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA, class_4535.ONE, class_4534.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ONE_MINUS_SRC_ALPHA);
 		if (!MinecraftClient.isFancyGraphicsOrBetter()) {
 			if (buf != null) {
 				buf.close();
@@ -85,7 +85,7 @@ public class VoidBallParticle extends BillboardParticle {
 		buf.bind();
 		for (int i = 0; i < 40; i++) {
 			if (i >= cutoff) {
-				buf.setShader(ms.peek().getPosition(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+				buf.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 			}
 			ms.scale(0.97f, 0.97f, 0.97f);
 			RenderSystem.setShaderColor(0, 0, 0, a/3);

@@ -1,14 +1,14 @@
 package com.unascribed.yttr.network;
 
+import com.unascribed.lib39.tunnel.api.C2SMessage;
+import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
-import com.unascribed.lib39.tunnel.api.C2SMessage;
-import com.unascribed.lib39.tunnel.api.NetworkContext;
-import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.math.Vec2i;
 

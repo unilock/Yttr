@@ -19,7 +19,6 @@ import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 

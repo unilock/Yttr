@@ -83,7 +83,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float height = 2;
 						int textureWidth = RifleMode.ALL_VALUES.size()*2;
 						int textureHeight = 2;
-						Matrix4f mat = matrices.peek().getPosition();
+						Matrix4f mat = matrices.peek().getModel();
 						float x1 = 4.4f-(p/8f);
 						float x2 = x1 + width;
 						float y1 = -0.88f;
@@ -111,7 +111,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float height = mH-f;
 						float textureWidth = mH;
 						float textureHeight = mH;
-						Matrix4f mat = matrices.peek().getPosition();
+						Matrix4f mat = matrices.peek().getModel();
 						float x1 = -1.3f+(p/32f);
 						float x2 = x1 + width;
 						float y1 = f-(mH/2);

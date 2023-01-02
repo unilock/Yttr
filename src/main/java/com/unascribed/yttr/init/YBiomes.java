@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import com.unascribed.lib39.core.api.util.LatchHolder;
 import com.unascribed.yttr.Yttr;
+
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;

@@ -49,7 +49,7 @@ public class MagtankScreenHandler extends ScreenHandler {
 	}
 
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
+	public ItemStack quickTransfer(PlayerEntity player, int index) {
 		return ItemStack.EMPTY;
 	}
 

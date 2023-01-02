@@ -1,7 +1,5 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.lib39.deferral.api.RenderBridge.*;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +45,8 @@ import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.profiler.Profiler;
+
+import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 public class ReplicatorRenderer extends IHasAClient {
 

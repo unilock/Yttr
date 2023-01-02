@@ -17,6 +17,10 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
@@ -59,10 +63,6 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import com.mojang.blaze3d.platform.GlStateManager.class_4534;
-import com.mojang.blaze3d.platform.GlStateManager.class_4535;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -365,7 +365,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		RecoilEvents.RENDER_CROSSHAIRS.register(matrices -> {
 			var stack = mc.player.getMainHandStack();
 			if (mc.player != null && stack.getItem() instanceof RifleItem ri) {
-				RenderSystem.blendFuncSeparate(class_4535.ONE_MINUS_DST_COLOR, class_4534.ONE_MINUS_SRC_COLOR, class_4535.ONE, class_4534.ZERO);
+				RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
 				RenderSystem.setShaderColor(1, 1, 1, 1);
 				RenderSystem.setShaderTexture(0, Yttr.id("textures/gui/rifle_crosshairs.png"));
 				int windowWidth = mc.getWindow().getScaledWidth();
@@ -647,7 +647,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		dX /= dist;
 		dY /= dist;
 		dZ /= dist;
-		Matrix4f model = matrices.peek().getPosition();
+		Matrix4f model = matrices.peek().getModel();
 		Matrix3f normal = matrices.peek().getNormal();
 		vc.vertex(model, x1, y1, z1).color(r1, g1, b1, a1).normal(normal, dX, dY, dZ).next();
 		vc.vertex(model, x2, y2, z2).color(r2, g2, b2, a2).normal(normal, dX, dY, dZ).next();

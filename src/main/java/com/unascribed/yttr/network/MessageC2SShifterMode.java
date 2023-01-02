@@ -1,9 +1,9 @@
 package com.unascribed.yttr.network;
 
-import com.unascribed.yttr.content.item.ShifterItem;
-import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.lib39.tunnel.api.C2SMessage;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.yttr.content.item.ShifterItem;
+import com.unascribed.yttr.init.YNetwork;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 

@@ -3,10 +3,12 @@ package com.unascribed.yttr.world;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockState;
@@ -105,7 +107,7 @@ public class ScorchedGenerator {
 	}
 
 	private static void generateTerminusTotems(ChunkRegion region, BlockPos.Mutable bp, Chunk chunk, ChunkRandom rand) {
-		var opt = region.toServerWorld().getStructureManager().getStructure(Yttr.id("terminus_totems"));
+		var opt = region.toServerWorld().getStructureTemplateManager().getStructure(Yttr.id("terminus_totems"));
 		if (opt.isPresent()) {
 			Structure s = opt.get();
 			StructurePlacementData spd = new StructurePlacementData();
@@ -157,7 +159,7 @@ public class ScorchedGenerator {
 	}
 
 	private static void generateTerminusHouse(ChunkRegion region, BlockPos.Mutable bp, Chunk chunk, ChunkRandom rand) {
-		var opt = region.toServerWorld().getStructureManager().getStructure(Yttr.id("terminus_house"));
+		var opt = region.toServerWorld().getStructureTemplateManager().getStructure(Yttr.id("terminus_house"));
 		if (opt.isPresent()) {
 			Structure s = opt.get();
 			BlockRotation rot = BlockRotation.random(rand);
@@ -375,7 +377,7 @@ public class ScorchedGenerator {
 			replaceBedrocks(new BlockPos.Mutable(), region, c, true);
 		}
 		if (terminusRetrogen) {
-			generateTerminus(seed, region, world.method_27056());
+			generateTerminus(seed, region, world.getStructureManager());
 		}
 		// this causes chunks to never load on the client
 //		for (int x = 0; x < BiomeCoords.SIZE; x++) {

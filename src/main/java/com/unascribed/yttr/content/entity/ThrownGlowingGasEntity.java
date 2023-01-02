@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEntities;
 import com.unascribed.yttr.init.YItems;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.EntityGroup;
@@ -27,9 +28,9 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
+import net.minecraft.world.World;
 
 public class ThrownGlowingGasEntity extends ThrownItemEntity {
 	public ThrownGlowingGasEntity(EntityType<? extends ThrownGlowingGasEntity> entityType, World world) {

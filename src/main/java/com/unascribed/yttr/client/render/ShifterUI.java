@@ -1,7 +1,5 @@
 package com.unascribed.yttr.client.render;
 
-import static com.unascribed.lib39.deferral.api.RenderBridge.*;
-
 import java.util.Set;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -29,6 +27,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+
+import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 public class ShifterUI extends IHasAClient {
 

@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.lazor;
 
 import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;

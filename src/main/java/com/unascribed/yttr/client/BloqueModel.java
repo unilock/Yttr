@@ -1,5 +1,7 @@
 package com.unascribed.yttr.client;
 
+import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,8 +43,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockRenderView;
-
-import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
 
 public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 

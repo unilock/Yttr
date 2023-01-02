@@ -9,7 +9,6 @@ import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
 public class MercurialPotionItem extends PotionItem implements ItemColorProvider {

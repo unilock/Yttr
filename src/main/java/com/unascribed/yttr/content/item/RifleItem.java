@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.lib39.recoil.api.DirectClickItem;
 import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.YConfig;
@@ -25,7 +26,7 @@ import com.unascribed.yttr.util.InventoryProviderItem;
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicates;
-import com.mojang.blaze3d.texture.NativeImage;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;

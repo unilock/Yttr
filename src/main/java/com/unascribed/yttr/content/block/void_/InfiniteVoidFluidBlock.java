@@ -1,11 +1,10 @@
 package com.unascribed.yttr.content.block.void_;
 
+import com.unascribed.yttr.init.YItems;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
-
-import com.unascribed.yttr.init.YItems;
-
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.ItemStack;

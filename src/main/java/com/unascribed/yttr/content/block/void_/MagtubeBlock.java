@@ -3,8 +3,9 @@ package com.unascribed.yttr.content.block.void_;
 import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.yttr.content.block.basic.BasicConnectingBlock;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.world.network.FilterNodeTypes;
 import com.unascribed.yttr.world.network.FilterNetwork;
+import com.unascribed.yttr.world.network.FilterNodeTypes;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Waterloggable;

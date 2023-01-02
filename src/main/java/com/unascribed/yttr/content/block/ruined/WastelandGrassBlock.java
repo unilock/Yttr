@@ -4,7 +4,6 @@ import com.unascribed.yttr.init.YBlocks;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FernBlock;
-import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 

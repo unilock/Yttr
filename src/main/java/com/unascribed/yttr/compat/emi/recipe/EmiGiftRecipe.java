@@ -6,9 +6,6 @@ import java.util.List;
 import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.init.YItems;
 
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import dev.emi.emi.api.recipe.EmiIngredientRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -17,6 +14,9 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class EmiGiftRecipe extends EmiIngredientRecipe {
 	

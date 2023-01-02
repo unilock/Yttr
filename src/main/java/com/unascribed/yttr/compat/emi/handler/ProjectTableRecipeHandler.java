@@ -1,15 +1,15 @@
 package com.unascribed.yttr.compat.emi.handler;
 
 import java.util.List;
-import net.minecraft.screen.slot.Slot;
-
-import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 
 import org.jetbrains.annotations.Nullable;
+
+import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 
 import dev.emi.emi.api.EmiRecipeHandler;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
+import net.minecraft.screen.slot.Slot;
 
 public class ProjectTableRecipeHandler implements EmiRecipeHandler<ProjectTableScreenHandler> {
 

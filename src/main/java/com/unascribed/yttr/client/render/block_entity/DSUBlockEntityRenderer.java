@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client.render.block_entity;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.lib39.util.api.DelegatingVertexConsumer;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.util.TextureColorThief;
@@ -9,7 +10,7 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -110,7 +111,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 			matrices.translate(-dsu.getXSize()/2D, -dsu.getYSize()/2D, -dsu.getZSize()/2D);
 			matrices.translate(2, 2, 0);
 			matrices.scale(-1/16f, -1/16f, 1/16f);
-			Matrix4f mat = matrices.peek().getPosition();
+			Matrix4f mat = matrices.peek().getModel();
 			Matrix3f nmat = matrices.peek().getNormal();
 			matrices.translate(2.5, 2, -0.0025);
 			for (int y = 0; y < 5; y++) {
@@ -154,7 +155,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 							MinecraftClient.getInstance().getItemRenderer().renderItem(item, Mode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 								@Override
 								public void bakedQuad(Entry matrixEntry, BakedQuad quad, float red, float green, float blue, int light, int overlay) {
-									super.bakedQuad(new Entry(matrixEntry.getPosition(), nmat2), quad, red, green, blue, light, overlay);
+									super.bakedQuad(new Entry(matrixEntry.getModel(), nmat2), quad, red, green, blue, light, overlay);
 								}
 							}, 0);
 						matrices.pop();

@@ -136,7 +136,7 @@ public class CleaverUI extends IHasAClient {
 											ms.translate(wX, wY, wZ);
 											ms.scale(size, size, size);
 											ms.multiply(wrc.camera().getRotation());
-											var mat = ms.peek().getPosition();
+											var mat = ms.peek().getModel();
 											vc.vertex(mat, -1, -1, 0).uv(minU, minV).color(r, g, b, a).next();
 											vc.vertex(mat,  1, -1, 0).uv(maxU, minV).color(r, g, b, a).next();
 											vc.vertex(mat,  1,  1, 0).uv(maxU, maxV).color(r, g, b, a).next();
@@ -167,7 +167,7 @@ public class CleaverUI extends IHasAClient {
 							List<Polygon> cleave = CleaverItem.performCleave(plane, shape, true);
 							RenderSystem.setShader(GameRenderer::getPositionColorShader);
 							vc.begin(DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
-							var mat = ms.peek().getPosition();
+							var mat = ms.peek().getModel();
 							for (Polygon p : cleave) {
 								drawPolygon(mat, vc, p, r, g, b, a);
 							}

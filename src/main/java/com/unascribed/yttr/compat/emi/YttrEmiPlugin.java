@@ -36,6 +36,7 @@ import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.mechanics.LampColor;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -269,7 +270,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 				}
 
 				@Override
-				public ItemStack transferSlot(PlayerEntity player, int index) {
+				public ItemStack quickTransfer(PlayerEntity player, int index) {
 					return null;
 				}
 			}, w, h);

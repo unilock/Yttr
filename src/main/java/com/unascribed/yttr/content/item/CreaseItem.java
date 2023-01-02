@@ -30,7 +30,7 @@ public class CreaseItem extends Item implements InventoryProviderItem {
 	}
 	
 	@Override
-	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+	public boolean onClickedOnOther(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
 		return true;
 	}
 	

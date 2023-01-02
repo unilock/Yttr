@@ -8,7 +8,6 @@ import com.unascribed.yttr.inred.InRedLogic;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 

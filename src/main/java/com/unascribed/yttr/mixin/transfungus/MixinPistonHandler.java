@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import com.unascribed.yttr.content.entity.SlippingTransfungusEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonHandler;

@@ -75,7 +75,7 @@ public class SSDScreenHandler extends ScreenHandler {
 	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
+	public ItemStack quickTransfer(PlayerEntity player, int index) {
 		// mojang PLEASE rewrite shift clicking i am BEGGING you
 		ItemStack result = ItemStack.EMPTY;
 		Slot slot = this.slots.get(index);

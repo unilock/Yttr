@@ -3,7 +3,6 @@ package com.unascribed.yttr.content.block.void_;
 import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.block.AbstractGlassBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;

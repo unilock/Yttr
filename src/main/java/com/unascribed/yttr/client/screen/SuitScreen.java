@@ -7,10 +7,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
+
 import com.mojang.blaze3d.MemoryUntracker;
 import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager.class_4534;
-import com.mojang.blaze3d.platform.GlStateManager.class_4535;
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.suit.SuitMusic;
@@ -297,9 +298,9 @@ public class SuitScreen extends Screen {
 					int mainW = (int)(80*a);
 					int xo = 80-mainW;
 					float ca = costs.count(res)/(float)res.getMaximum();
-					RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ZERO, class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA);
+					RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ZERO, SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 					sr.drawElement(matrices, name+"-bar-cut", (width-97)+xo+2, resourceBarY+14, xo+2, 76, (int)(80*ca), 4, delta);
-					RenderSystem.blendFuncSeparate(class_4535.SRC_ALPHA, class_4534.ONE, class_4535.SRC_ALPHA, class_4534.ONE_MINUS_SRC_ALPHA);
+					RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE, SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 				}
 				resourceBarY += 24;
 			}

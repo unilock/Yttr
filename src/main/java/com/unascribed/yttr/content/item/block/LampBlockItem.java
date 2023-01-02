@@ -18,7 +18,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.component.TranslatableComponent;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
 public class LampBlockItem extends BlockItem implements ItemColorProvider {

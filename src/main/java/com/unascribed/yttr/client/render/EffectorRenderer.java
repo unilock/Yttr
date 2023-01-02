@@ -1,10 +1,9 @@
 package com.unascribed.yttr.client.render;
 
-import static org.lwjgl.opengl.GL11.GL_LEQUAL;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -19,6 +18,8 @@ import com.unascribed.yttr.util.math.Interp;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import static org.lwjgl.opengl.GL11.GL_LEQUAL;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
@@ -146,7 +147,7 @@ public class EffectorRenderer extends IHasAClient {
 		ms.translate(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
 		ms.translate(dir.getOffsetX()*-0.5, dir.getOffsetY()*-0.5, dir.getOffsetZ()*-0.5);
 		ms.multiply(dir.getRotationQuaternion());
-		Matrix4f mat = ms.peek().getPosition();
+		Matrix4f mat = ms.peek().getModel();
 		if (a != 0) {
 			float s = a*1.5f;
 			if (l > 0) {

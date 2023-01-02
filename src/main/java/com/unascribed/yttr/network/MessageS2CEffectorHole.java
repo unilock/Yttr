@@ -1,12 +1,12 @@
 package com.unascribed.yttr.network;
 
+import com.unascribed.lib39.tunnel.api.NetworkContext;
+import com.unascribed.lib39.tunnel.api.S2CMessage;
+import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 import com.unascribed.yttr.client.render.EffectorRenderer;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.lib39.tunnel.api.NetworkContext;
-import com.unascribed.lib39.tunnel.api.S2CMessage;
-import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 import com.unascribed.yttr.util.YRandom;
 
 import net.fabricmc.api.EnvType;
