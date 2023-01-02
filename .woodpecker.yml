@@ -1,0 +1,91 @@
+pipeline:
+- name: restore-cache
+  image: meltwater/drone-cache
+  when:
+    event: [push, manual]
+  secrets:
+  - source: s3id
+    target: AWS_ACCESS_KEY_ID
+  - source: s3key
+    target: AWS_SECRET_ACCESS_KEY
+  pull: true
+  settings:
+    restore: true
+    path_style: true
+    bucket:
+      from_secret: s3bucket
+    region:
+      from_secret: s3region
+    endpoint:
+      from_secret: s3url
+    mount:
+      - '.gradle'
+      - '.gradle-user'
+- name: build
+  image: gradle:7.4-jdk17
+  environment:
+    TERM: dumb
+    GRADLE_USER_HOME: ./.gradle-user
+  commands:
+  - gradle --no-daemon clean build
+- name: retag
+  image: alpine/git:latest
+  when:
+    event: [push, manual]
+  secrets:
+  - gitea_key
+  commands:
+  - "git tag -d dev-1.19 || true"
+  - git tag dev-1.19 1.19.2
+  - "git push -f https://woodpecker:$${GITEA_KEY}@git.sleeping.town/unascribed/Yttr.git dev-1.19"
+- name: release-dev
+  image: unascribed/drone-gitea-release
+  when:
+    event: [push, manual]
+  settings:
+    api_key:
+      from_secret: gitea_key
+    base_url: https://git.sleeping.town
+    files:
+      - build/libs/yttr-*.jar
+    title: "[1.19.2] Dev Build"
+    prerelease: true
+    tag: dev-1.19
+    note: CHANGELOG.md
+    allow_edit: true
+- name: rebuild-cache
+  image: meltwater/drone-cache
+  when:
+    event: [push, manual]
+  secrets:
+  - source: s3id
+    target: AWS_ACCESS_KEY_ID
+  - source: s3key
+    target: AWS_SECRET_ACCESS_KEY
+  pull: true
+  settings:
+    rebuild: true
+    path_style: true
+    bucket:
+      from_secret: s3bucket
+    region:
+      from_secret: s3region
+    endpoint:
+      from_secret: s3url
+    mount:
+      - '.gradle'
+      - '.gradle-user'
+- name: publish
+  image: gradle:7.4-jdk17
+  when:
+    event: [deployment]
+  group: release
+  secrets:
+  - curse_token
+  - modrinth_token
+  - mcmodcn_cookie
+  - gitea_key
+  commands:
+  - gradle modrinth curseforge mcmodcn gitea
+
+branches: "1.19.2"
