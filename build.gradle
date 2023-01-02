@@ -85,7 +85,7 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings 'org.quiltmc:quilt-mappings:1.19.2+build.21:intermediary-v2'
+	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${mappings_version}:intermediary-v2"
 	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
