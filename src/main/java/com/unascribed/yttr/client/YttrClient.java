@@ -337,10 +337,18 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		
 		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
+			var prof = mc.getProfiler();
+			prof.push("yttr");
+			prof.push("suit-hud");
 			SuitHUDRenderer.render(matrixStack, tickDelta);
+			prof.swap("rifle-hud");
 			RifleHUDRenderer.render(matrixStack, tickDelta);
+			prof.swap("shifter-ui");
 			ShifterUI.render(matrixStack, tickDelta);
+			prof.swap("control-hints");
 			ControlHints.render(matrixStack, tickDelta);
+			prof.pop();
+			prof.pop();
 		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);

@@ -16,8 +16,8 @@ import net.minecraft.util.ClickType;
 @Mixin(BundleItem.class)
 public class MixinBundleItem {
 
-	@Inject(at=@At("HEAD"), method="onStackClicked", cancellable=true)
-	public void yttr$onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player, CallbackInfoReturnable<Boolean> ci) {
+	@Inject(at=@At("HEAD"), method="onClickedOnOther", cancellable=true)
+	public void yttr$onClickedOnOther(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player, CallbackInfoReturnable<Boolean> ci) {
 		if (slot.getStack().isOf(YItems.VOID_BUCKET)) {
 			ci.setReturnValue(false);
 		}

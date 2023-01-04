@@ -21,8 +21,8 @@ public abstract class MixinEnchantmentScreenHandler extends ScreenHandler {
 		super(type, syncId);
 	}
 
-	@Inject(at=@At("HEAD"), method="transferSlot", cancellable=true)
-	public void transferSlot(PlayerEntity player, int index, CallbackInfoReturnable<ItemStack> ci) {
+	@Inject(at=@At("HEAD"), method="quickTransfer", cancellable=true)
+	public void yttr$quickTransfer(PlayerEntity player, int index, CallbackInfoReturnable<ItemStack> ci) {
 		Slot slot = slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack inSlot = slot.getStack();
