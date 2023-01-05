@@ -6,3 +6,5 @@
 * Removed some obsolete mixins and utilities now handled by Lib39
 	* Might fix networking jank
 * New texture for carbon blocks
+* Haemopal is now a piece of your soul
+* Continuous Platforms are now broken with *left*-click, and break instantly if not immortal

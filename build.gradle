@@ -78,9 +78,18 @@ repositories {
 		url 'https://maven.quiltmc.org/repository/release'
 		content {
 			includeGroup 'org.quiltmc'
+			includeGroup 'org.quiltmc.unpick'
 		}
 	}
 	mavenLocal()
+}
+
+configurations.all {
+	resolutionStrategy.dependencySubstitution {
+		substitute(module("org.quiltmc.unpick:unpick-cli:2.2.0"))
+			.using(module("net.fabricmc.unpick:unpick-cli:2.3.0"))
+			.because("It's gone")
+	}
 }
 
 dependencies {

@@ -20,6 +20,7 @@ import com.unascribed.yttr.content.item.CreaseItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.GlowingGasItem;
+import com.unascribed.yttr.content.item.HaemopalItem;
 import com.unascribed.yttr.content.item.HornItem;
 import com.unascribed.yttr.content.item.InRedMultimeterItem;
 import com.unascribed.yttr.content.item.ProjectorItem;
@@ -608,7 +609,7 @@ public class YItems {
 	public static final CreaseItem CREASE = new CreaseItem(new Item.Settings()
 			.maxCount(1));
 	
-	public static final Item HAEMOPAL = new Item(new Item.Settings());
+	public static final Item HAEMOPAL = new HaemopalItem(new Item.Settings());
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.ITEM, YItems.class, Item.class);

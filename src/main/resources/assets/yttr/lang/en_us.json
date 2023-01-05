@@ -140,8 +140,6 @@
 	
 	"item.yttr.lootbox_of_continuity.tip.1": "§7Can't be used for crafting.",
 	
-	"item.yttr.haemopal.tip.1": "§5§oIt seems to beat with you.",
-	
 	"item.yttr.rubble.tip.1": "§5§oSmashed fragments of a forgotten dream",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
@@ -174,7 +172,7 @@
 	
 	"item.yttr.projector.controlhint.normal.3": "{key.use}  Create Platform",
 	"item.yttr.projector.controlhint.normal.2": "{key.use} (Hold)  Create Bridge",
-	"item.yttr.projector.controlhint.normal.1": "{key.use} (On Block)  Immortalize/Destroy",
+	"item.yttr.projector.controlhint.normal.1": "{key.use} (On Block)  Immortalize",
 	
 	
 	"item.yttr.shifter.controlhint.normal.4": "{key.attack}  Exchange One",
@@ -565,6 +563,12 @@
 	
 	"tip.yttr.void_bucket.bundle": "Right-click to §cdestroy §rall bundle contents",
 	"tip.yttr.void_bucket.bundle.flair": "They will be lost forever! (A long time!)",
+	
+	"tip.yttr.too_weak.soul": "Your soul is too weak to break this block",
+	"tip.yttr.too_weak.body": "Your body is too weak to break this block",
+	
+	"tip.yttr.haemopal.self_own": "It seems to beat with you.",
+	"tip.yttr.haemopal.owner": "A piece of %s.",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",

@@ -62,6 +62,7 @@ import com.unascribed.yttr.content.block.mechanism.YttriumButtonBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumPressurePlateBlock;
 import com.unascribed.yttr.content.block.natural.CoreLavaFluidBlock;
 import com.unascribed.yttr.content.block.natural.DelicaceBlock;
+import com.unascribed.yttr.content.block.natural.HaemopalHolsterBlock;
 import com.unascribed.yttr.content.block.natural.RootOfContinuityBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeLogBlock;
@@ -128,6 +129,7 @@ public class YBlocks {
 	
 	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
 	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
+	public static final BlockSoundGroup CONTINUOUS_SOUNDS = new BlockSoundGroup(0.3f, 1, YSounds.PROJECT, YSounds.PROJECT, YSounds.PROJECT, YSounds.PROJECT, YSounds.PROJECT);
 	
 	private static final FabricBlockSettings HOLLOWHUGE_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.sounds(HOLLOWHUGE_SOUNDS)
@@ -479,6 +481,7 @@ public class YBlocks {
 			.blockVision((state, world, pos) -> false)
 			.suffocates((state, world, pos) -> false)
 			.allowsSpawning((state, world, pos, entity) -> false)
+			.sounds(CONTINUOUS_SOUNDS)
 		);
 	
 	public static final HighNoteBlock HIGH_NOTE_BLOCK = new HighNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
@@ -571,7 +574,7 @@ public class YBlocks {
 			.mapColor(MapColor.DULL_RED)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
-	public static final Block POLISHED_SCORCHED_OBSIDIAN_HOLSTER = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
+	public static final Block POLISHED_SCORCHED_OBSIDIAN_HOLSTER = new HaemopalHolsterBlock(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
 			.mapColor(MapColor.RED)
 			.luminance(4)
 			.sounds(BlockSoundGroup.NETHERITE)

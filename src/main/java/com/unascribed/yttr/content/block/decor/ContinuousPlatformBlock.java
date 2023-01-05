@@ -1,6 +1,8 @@
 package com.unascribed.yttr.content.block.decor;
 
 import com.unascribed.yttr.init.YFluids;
+import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YSounds;
 
 import com.google.common.base.Ascii;
 
@@ -16,12 +18,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -105,6 +109,14 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	}
 	
 	@Override
+	public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
+		if (player.getMainHandStack().isOf(YItems.PROJECTOR)) {
+			return state.get(AGE) == Age.IMMORTAL ? 0.2f : 1;
+		}
+		return 0;
+	}
+	
+	@Override
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
 		return stateFrom.isOf(this) && stateFrom.get(AGE) == state.get(AGE);
 	}
@@ -151,6 +163,12 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 		if (state.get(SPEEDY) && entity instanceof LivingEntity le) {
 			le.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 2, false, false));
 		}
+	}
+	
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBreak(world, pos, state, player);
+		world.playSound(player, pos, YSounds.PROJECT, SoundCategory.BLOCKS, 0.4f, 1.2f+(world.random.nextFloat()*0.3f));
 	}
 	
 	@Override

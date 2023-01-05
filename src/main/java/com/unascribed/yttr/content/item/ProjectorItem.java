@@ -74,19 +74,18 @@ public class ProjectorItem extends Item {
 		BlockPos pos = context.getBlockPos();
 		BlockState bs = world.getBlockState(pos);
 		if (bs.isOf(YBlocks.CONTINUOUS_PLATFORM)) {
-			if (!world.isClient) {
-				if (bs.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
-					world.breakBlock(pos, false);
-					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
-				} else {
+			if (bs.get(ContinuousPlatformBlock.AGE) != Age.IMMORTAL) {
+				if (!world.isClient) {
 					world.setBlockState(pos, bs.with(ContinuousPlatformBlock.AGE, Age.IMMORTAL).with(ContinuousPlatformBlock.SPEEDY, false));
 					if (world instanceof ServerWorld) {
 						((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 14, 0.5, 0.5, 0.5, 0.05);
 					}
 					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 1.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				}
+				return ActionResult.SUCCESS;
+			} else {
+				return ActionResult.FAIL;
 			}
-			return ActionResult.SUCCESS;
 		}
 		return ActionResult.PASS;
 	}
