@@ -6,17 +6,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferRenderer;
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
 import com.mojang.blaze3d.vertex.VertexFormats;
+import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorHeartType;
+import com.unascribed.yttr.util.math.Bits;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -28,16 +34,21 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 
 @Mixin(InGameHud.class)
 @Environment(EnvType.CLIENT)
 public class MixinInGameHud {
 
+	private static final Identifier YTTR$BEET_ICONS = Yttr.id("textures/gui/beet_icons.png");
+	
 	private float yttr$lastEvaporateProgress;
 	private float yttr$evaporateProgress;
 	private boolean yttr$evaporating;
+	private boolean yttr$impure;
 	private int yttr$wasEvaporating;
 	private boolean yttr$hide;
 	private float yttr$lastMaxHealth;
@@ -74,12 +85,52 @@ public class MixinInGameHud {
 		yttr$wasEvaporating--;
 	}
 	
+	@ModifyVariable(at=@At("HEAD"), method="renderHealthBar",
+			ordinal=0, argsOnly=true)
+	private float yttr$modifyMaxHealth(float maxHealth, MatrixStack matrices, PlayerEntity player) {
+		var mc = MinecraftClient.getInstance();
+		if (player == mc.player) {
+			maxHealth += Integer.bitCount(YttrClient.soulImpurity);
+		}
+		return maxHealth;
+	}
+	
+	@ModifyVariable(at=@At("HEAD"), method="renderHealthBar",
+			ordinal=5, argsOnly=true)
+	private int yttr$modifyHealth(int health, MatrixStack matrices, PlayerEntity player) {
+		var mc = MinecraftClient.getInstance();
+		if (player == mc.player) {
+			health = yttr$modifyHealth(health);
+		}
+		return health;
+	}
+	
+	@ModifyVariable(at=@At("HEAD"), method="renderHealthBar",
+			ordinal=4, argsOnly=true)
+	private int yttr$modifyLastHealth(int health, MatrixStack matrices, PlayerEntity player) {
+		var mc = MinecraftClient.getInstance();
+		if (player == mc.player) {
+			health = yttr$modifyHealth(health);
+		}
+		return health;
+	}
+	
+	private int yttr$modifyHealth(int health) {
+		for (int i = 0; i < Math.ceil(health/2); i++) {
+			if (Bits.get(YttrClient.soulImpurity, i)) {
+				health++;
+			}
+		}
+		return health;
+	}
+	
 	@Inject(at=@At(value="FIELD", target="net/minecraft/client/gui/hud/InGameHud$HeartType.CONTAINER:Lnet/minecraft/client/gui/hud/InGameHud$HeartType;"),
 			method="renderHealthBar", locals=LocalCapture.CAPTURE_FAILHARD)
-	private void yttr$contextualizeEvaporatingHeart(MatrixStack matrices, PlayerEntity player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking,
+	private void yttr$contextualizeHeart(MatrixStack matrices, PlayerEntity player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking,
 			CallbackInfo ci, @Coerce Object unused0, int unused1, int maxHearts, int unused2, int unused3, int i) {
 		yttr$evaporating = (yttr$hearticulates != null && i == (maxHearts-1));
 		yttr$hide = false;
+		yttr$impure = Bits.get(YttrClient.soulImpurity, i);
 		if (!yttr$evaporating && yttr$wasEvaporating > 0) {
 			float cutoff = player.getMaxHealth();
 			if (player.getMaxHealth() == yttr$lastMaxHealth) {
@@ -92,8 +143,57 @@ public class MixinInGameHud {
 	}
 	
 	@Inject(at=@At("HEAD"), method="drawHeart", cancellable=true)
-	private void yttr$drawEvaporatingHeart(MatrixStack matrices, @Coerce AccessorHeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
+	private void yttr$drawHeart(MatrixStack matrices, @Coerce AccessorHeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
 		if (yttr$hide) {
+			ci.cancel();
+			return;
+		}
+		if (!yttr$evaporating && yttr$impure && type.yttr$getU(false, false) >= 52) {
+			var mc = MinecraftClient.getInstance();
+			float td = mc.getTickDelta();
+			float vel = ((float)mc.player.getVelocity().horizontalLength()*5);
+			float speed = 40;
+			speed -= vel;
+			if (speed < 1) speed = 1;
+			float t = ((mc.player.age+td)/speed)+x;
+			float sloshiness = 27+(vel*25);
+			var yawr = (float)Math.toRadians(mc.player.getYaw(td));
+			var horizLook = new Vec3d(MathHelper.sin(-yawr), 0, MathHelper.cos(-yawr));
+			var crossVel = horizLook.crossProduct(mc.player.getVelocity());
+			int sloshX = Math.round(
+					(
+						((MathHelper.lerp(td, mc.player.lastRenderYaw, mc.player.renderYaw)-mc.player.getYaw(td))*1.5f)
+						+(MathHelper.sin(t)*sloshiness)
+						-((float)crossVel.y*400)
+					)/25);
+			int sloshY = Math.round(
+					(
+						(-(MathHelper.lerp(td, mc.player.lastRenderPitch, mc.player.renderPitch)-mc.player.getPitch(td)))
+						-((float)mc.player.getVelocity().y*100)
+					)/25);
+			boolean revSlosh = sloshX < 0;
+			sloshX = Math.min(Math.abs(sloshX), 8);
+			sloshY = Math.min(Math.max(sloshY, 0), 4);
+			RenderSystem.disableDepthTest();
+			RenderSystem.setShaderColor(1, 1, 1, 1);
+			RenderSystem.setShaderTexture(0, YTTR$BEET_ICONS);
+			RenderSystem.disableBlend();
+			RenderSystem.disableCull();
+			if (revSlosh) {
+				matrices.push();
+					matrices.translate(x, 0, 0);
+					matrices.scale(-1, 1, 1);
+					DrawableHelper.drawTexture(matrices, -9, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
+				matrices.pop();
+			} else {
+				DrawableHelper.drawTexture(matrices, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
+			}
+			RenderSystem.enableCull();
+			RenderSystem.enableBlend();
+			RenderSystem.blendFunc(SourceFactor.ZERO, DestFactor.SRC_COLOR);
+			DrawableHelper.drawTexture(matrices, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
 			ci.cancel();
 			return;
 		}
@@ -104,6 +204,11 @@ public class MixinInGameHud {
 			float f = 9f/yttr$heartResolution;
 			int u = type.yttr$getU(halfHeart, blinking);
 			float prog = MathHelper.lerp(mc.getTickDelta(), yttr$lastEvaporateProgress, yttr$evaporateProgress);
+			if (yttr$impure && type.yttr$getU(false, false) >= 52) {
+				u = 52;
+				v = 9;
+				RenderSystem.setShaderTexture(0, YTTR$BEET_ICONS);
+			}
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
@@ -149,6 +254,7 @@ public class MixinInGameHud {
 				}
 			}
 			BufferRenderer.drawWithShader(bldr.end());
+			RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
 			ci.cancel();
 		}
 	}

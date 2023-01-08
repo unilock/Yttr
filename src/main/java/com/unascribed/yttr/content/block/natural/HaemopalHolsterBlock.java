@@ -60,12 +60,19 @@ public class HaemopalHolsterBlock extends Block {
 		var li = new ArrayList<ItemStack>();
 		li.add(new ItemStack(YItems.POLISHED_SCORCHED_OBSIDIAN_CAPSTONE));
 		if (breaker instanceof PlayerEntity player && player.getMaxHealth() > 4) {
-			var is = new ItemStack(YItems.HAEMOPAL);
+			var ss = SoulState.get(builder.getWorld());
+			var item = YItems.HAEMOPAL;
+			int heart = (int)player.getMaxHealth()/2;
+			if (ss.isImpure(player.getUuid(), heart)) {
+				item = YItems.BEETOPAL;
+				ss.setImpure(player.getUuid(), heart, false);
+			}
+			var is = new ItemStack(item);
 			var nbt = is.getOrCreateNbt();
 			nbt.putUuid("Owner", player.getUuid());
 			nbt.putString("OwnerName", player.getGameProfile().getName());
 			nbt.putLong("ID", ThreadLocalRandom.current().nextLong());
-			SoulState.get(builder.getWorld()).addFragmentation(player.getUuid());
+			ss.addFragmentation(player.getUuid());
 			li.add(is);
 			if (player.getHealth() > 4) player.setHealth(4);
 			player.getHungerManager().setSaturationLevel(0);

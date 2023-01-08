@@ -8,3 +8,4 @@
 * New texture for carbon blocks
 * Haemopal is now a piece of your soul
 * Continuous Platforms are now broken with *left*-click, and break instantly if not immortal
+* You can now replace your soul with soup

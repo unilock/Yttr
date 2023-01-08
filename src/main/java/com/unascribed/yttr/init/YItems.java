@@ -609,7 +609,11 @@ public class YItems {
 	public static final CreaseItem CREASE = new CreaseItem(new Item.Settings()
 			.maxCount(1));
 	
-	public static final Item HAEMOPAL = new HaemopalItem(new Item.Settings());
+	public static final Item HAEMOPAL = new HaemopalItem(new Item.Settings().maxCount(1));
+	public static final Item BEETOPAL = new HaemopalItem(new Item.Settings().maxCount(1));
+	public static final Item EMPTY_HAEMOPAL = new Item(new Item.Settings().maxCount(1));
+	
+	public static final Item SPARK = new Item(new Item.Settings().maxCount(4));
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.ITEM, YItems.class, Item.class);

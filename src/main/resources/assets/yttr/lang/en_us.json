@@ -105,6 +105,9 @@
 	"item.yttr.delrene_scrap": "Delrene Scrap",
 	"item.yttr.crease": "Crease",
 	"item.yttr.haemopal": "Haemopal",
+	"item.yttr.beetopal": "Haemopal ...?",
+	"item.yttr.empty_haemopal": "§kHollow Soul",
+	"item.yttr.spark": "Spark",
 	
 	"item.yttr.promethium_speck.tip.1": "§5§oRemnants of a time before",
 	"item.yttr.promethium_lump.tip.1": "§5§oRemnants of a time before",
@@ -141,6 +144,8 @@
 	"item.yttr.lootbox_of_continuity.tip.1": "§7Can't be used for crafting.",
 	
 	"item.yttr.rubble.tip.1": "§5§oSmashed fragments of a forgotten dream",
+	
+	"item.yttr.empty_haemopal.tip.1": "§5§k§ohow could you",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
@@ -568,6 +573,7 @@
 	"tip.yttr.too_weak.body": "Your body is too weak to break this block",
 	
 	"tip.yttr.haemopal.self_own": "It seems to beat with you.",
+	"tip.yttr.beetopal": "Not very hearty.",
 	"tip.yttr.haemopal.owner": "A piece of %s.",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",

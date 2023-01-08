@@ -1,0 +1,16 @@
+{
+  "type": "yttr:haemopal_crafting",
+  "lib39:discovered_via": "yttr:empty_haemopal",
+  "ingredients": [
+    {
+      "item": "yttr:empty_haemopal"
+    },
+    {
+      "item": "minecraft:beetroot_soup"
+    }
+  ],
+  "result": {
+    "item": "yttr:beetopal",
+    "count": 1
+  }
+}

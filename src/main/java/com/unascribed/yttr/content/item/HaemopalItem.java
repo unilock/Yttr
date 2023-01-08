@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.world.SoulState;
 
 import net.fabricmc.api.EnvType;
@@ -54,7 +55,13 @@ public class HaemopalItem extends Item implements ItemColorProvider {
 			world.playSound(context.getPlayer(), pos, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.BLOCKS, 1, 1);
 			if (!world.isClient && world instanceof ServerWorld sw) {
 				world.setBlockState(pos, YBlocks.POLISHED_SCORCHED_OBSIDIAN_HOLSTER.getDefaultState());
-				SoulState.get(sw).addFragmentation(is.getNbt().getUuid("Owner"), -1);
+				var state = SoulState.get(sw);
+				var id = is.getNbt().getUuid("Owner");
+				var frag = state.getFragmentation(id);
+				state.addFragmentation(id, -1);
+				if (this == YItems.BEETOPAL) {
+					state.setImpure(id, 10-frag, true);
+				}
 				is.setCount(0);
 			}
 			return ActionResult.SUCCESS;
@@ -67,8 +74,11 @@ public class HaemopalItem extends Item implements ItemColorProvider {
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		if (stack.hasNbt() && stack.getNbt().contains("OwnerName")) {
 			var mc = MinecraftClient.getInstance();
+			if (this == YItems.BEETOPAL) {
+				tooltip.add(Text.translatable("tip.yttr.beetopal").formatted(Formatting.DARK_PURPLE, Formatting.ITALIC));
+			}
 			if (mc.player != null && mc.player.getUuid().equals(stack.getNbt().getUuid("Owner"))) {
-				tooltip.add(Text.translatable("tip.yttr.haemopal.self_own").formatted(Formatting.DARK_PURPLE, Formatting.ITALIC));
+				if (this != YItems.BEETOPAL) tooltip.add(Text.translatable("tip.yttr.haemopal.self_own").formatted(Formatting.DARK_PURPLE, Formatting.ITALIC));
 			} else {
 				tooltip.add(Text.translatable("tip.yttr.haemopal.owner", stack.getNbt().getString("OwnerName")).formatted(Formatting.DARK_PURPLE, Formatting.ITALIC));
 			}
@@ -78,7 +88,7 @@ public class HaemopalItem extends Item implements ItemColorProvider {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public int getColor(ItemStack itemStack, int i) {
-		return 0xCFFFFF;
+		return this == YItems.BEETOPAL ? -1 : 0xCFFFFF;
 	}
 
 }

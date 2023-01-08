@@ -3,15 +3,18 @@ package com.unascribed.yttr.content.block.device;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.init.YBlockEntities;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
+import com.unascribed.yttr.util.YRandom;
 import com.unascribed.yttr.util.YTickable;
 
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -85,6 +88,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 					spinTime = MathHelper.clamp(spinTime - 2, 0, maxSpinTime);
 				}
 			} else {
+				var input = getStack(0);
 				CentrifugingRecipe recipe = world.getRecipeManager().getFirstMatch(YRecipeTypes.CENTRIFUGING, this, world).orElse(null);
 				if (!isBurning() && recipe != null && recipe.canFitOutput(this)) {
 					fuelTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(fuelStack.getItem(), 0);
@@ -103,12 +107,41 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 				}
 
 				if (isBurning() && recipe != null && recipe.canFitOutput(this)) {
-					maxSpinTime = recipe.getSpinTime();
-					spinTime++;
-					if (spinTime >= maxSpinTime) {
+					boolean eligible = true;
+					boolean copyNbt = false;
+					if (input.isOf(YItems.HAEMOPAL)) {
+						if (input.hasNbt()) {
+							var player = world.getPlayerByUuid(input.getNbt().getUuid("Owner"));
+							if (player == null || player.isDead()) {
+								eligible = false;
+							} else {
+								copyNbt = true;
+								if (YRandom.get().nextInt(12) == 0) {
+									player.damage(DamageSource.MAGIC, 2);
+								}
+							}
+						} else {
+							eligible = false;
+						}
+					}
+					if (eligible) {
+						maxSpinTime = recipe.getSpinTime();
+						spinTime++;
+						if (spinTime >= maxSpinTime) {
+							spinTime = 0;
+							recipe.craft(this);
+							needsDirty = true;
+							if (copyNbt) {
+								for (var i = 1; i < 5; i++) {
+									var is = getStack(i);
+									if (is.isOf(YItems.EMPTY_HAEMOPAL)) {
+										is.setNbt(input.getNbt().copy());
+									}
+								}
+							}
+						}
+					} else {
 						spinTime = 0;
-						recipe.craft(this);
-						needsDirty = true;
 					}
 				} else {
 					spinTime = 0;

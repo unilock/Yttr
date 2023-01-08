@@ -1,0 +1,17 @@
+{
+	"type": "yttr:centrifuging",
+	"time": 1600,
+	"ingredient": {
+		"item": "yttr:haemopal"
+	},
+	"results": [
+		{
+			"item": "yttr:spark",
+			"count": 2
+		},
+		{
+			"item": "yttr:empty_haemopal",
+			"count": 1
+		}
+	]
+}

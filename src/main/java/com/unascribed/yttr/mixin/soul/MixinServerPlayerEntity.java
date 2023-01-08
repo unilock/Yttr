@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.unascribed.yttr.network.MessageS2CSoulImpurity;
 import com.unascribed.yttr.world.SoulState;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -15,21 +16,37 @@ import net.minecraft.server.network.ServerPlayerEntity;
 @Mixin(ServerPlayerEntity.class)
 public class MixinServerPlayerEntity {
 
-	private int yttr$lastImpurity = 0;
+	private int yttr$lastFragmentation = -1;
+	private int yttr$lastImpurity = -1;
 	
 	@Inject(at=@At("TAIL"), method="tick")
 	public void yttr$tick(CallbackInfo ci) {
 		var self = (ServerPlayerEntity)(Object)this;
-		int impurity = SoulState.get(self.getWorld()).getFragmentation(self.getUuid());
+		boolean changed = false;
+		
+		int fragmentation = SoulState.get(self.getWorld()).getFragmentation(self.getUuid());
+		if (fragmentation != yttr$lastFragmentation) {
+			yttr$lastFragmentation = fragmentation;
+			var inst = self.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+			inst.removeModifier(SoulState.FRAGMENTATION_MODIFIER);
+			inst.addTemporaryModifier(new EntityAttributeModifier(SoulState.FRAGMENTATION_MODIFIER,
+					"Yttr soul fragmentation debuff", -(fragmentation*2), Operation.ADDITION));
+			changed = true;
+		}
+		
+		int impurity = SoulState.get(self.getWorld()).getImpurityMask(self.getUuid());
 		if (impurity != yttr$lastImpurity) {
 			yttr$lastImpurity = impurity;
 			var inst = self.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-			inst.removeModifier(SoulState.MAX_HEALTH_MODIFIER);
-			inst.addTemporaryModifier(new EntityAttributeModifier(SoulState.MAX_HEALTH_MODIFIER,
-					"Yttr soul impurity debuff", -(impurity*2), Operation.ADDITION));
-			if (self.getHealth() > self.getMaxHealth()) {
-				self.setHealth(self.getMaxHealth());
-			}
+			inst.removeModifier(SoulState.IMPURITY_MODIFIER);
+			inst.addTemporaryModifier(new EntityAttributeModifier(SoulState.IMPURITY_MODIFIER,
+					"Yttr soul impurity debuff", -Integer.bitCount(impurity), Operation.ADDITION));
+			changed = true;
+			new MessageS2CSoulImpurity(impurity).sendTo(self);
+		}
+		
+		if (changed && self.getHealth() > self.getMaxHealth()) {
+			self.setHealth(self.getMaxHealth());
 		}
 	}
 	
