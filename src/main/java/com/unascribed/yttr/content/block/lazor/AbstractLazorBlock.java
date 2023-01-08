@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
-public abstract class AbstractLazorBlock extends Block implements Waterloggable {
+public abstract class AbstractLazorBlock extends Block {
 
 	public static final DamageSource DAMAGE_SOURCE = new DamageSource("yttr.lazor") {{setFire();}};
 
@@ -76,7 +76,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		super.neighborUpdate(state, world, pos, block, fromPos, notify);
-		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
+		if (this instanceof Waterloggable && !world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
 			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}
@@ -84,7 +84,7 @@ public abstract class AbstractLazorBlock extends Block implements Waterloggable 
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
-		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
+		if (this instanceof Waterloggable && !world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
 			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}
