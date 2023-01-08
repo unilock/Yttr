@@ -116,8 +116,11 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 								eligible = false;
 							} else {
 								copyNbt = true;
-								if (YRandom.get().nextInt(12) == 0) {
-									player.damage(DamageSource.MAGIC, 2);
+								if (YRandom.get().nextInt(16) == 0) {
+									player.damage(DamageSource.MAGIC, 1.5f);
+									if (player.getHealth() < 10 && player.getHungerManager().getSaturationLevel() < 1 && player.getHungerManager().getFoodLevel() == 20) {
+										player.getHungerManager().setFoodLevel(19);
+									}
 								}
 							}
 						} else {

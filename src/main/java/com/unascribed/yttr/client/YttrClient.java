@@ -196,7 +196,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					"Vertical!",
 					"§9var §flen §6= §9new §7Lennart§6(); §2// DRY",
 					"", // the scariest splash is no splash at all
-					"Now with Void!"
+					"Now with Void!",
+					"Ingestible food!",
+					"§4§lFILL YOUR SOUL WITH SOUP",
+					"Beetroot?",
+					"Beeproot?",
+					"§cwhy have you done this"
 				);
 			
 			SplashTextRegistry.registerTemporal("Happy birthday, Kat!", MonthDay.of(Month.JANUARY, 28));
