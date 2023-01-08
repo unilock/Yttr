@@ -10,8 +10,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferRenderer;
 import com.mojang.blaze3d.vertex.Tessellator;
@@ -174,10 +172,11 @@ public class MixinInGameHud {
 			boolean revSlosh = sloshX < 0;
 			sloshX = Math.min(Math.abs(sloshX), 8);
 			sloshY = Math.min(Math.max(sloshY, 0), 4);
-			RenderSystem.disableDepthTest();
 			RenderSystem.setShaderColor(1, 1, 1, 1);
 			RenderSystem.setShaderTexture(0, YTTR$BEET_ICONS);
-			RenderSystem.disableBlend();
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			DrawableHelper.drawTexture(matrices, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
 			RenderSystem.disableCull();
 			if (revSlosh) {
 				matrices.push();
@@ -188,12 +187,8 @@ public class MixinInGameHud {
 			} else {
 				DrawableHelper.drawTexture(matrices, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
 			}
-			RenderSystem.enableCull();
-			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(SourceFactor.ZERO, DestFactor.SRC_COLOR);
-			DrawableHelper.drawTexture(matrices, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
-			RenderSystem.defaultBlendFunc();
 			RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
+			RenderSystem.enableCull();
 			ci.cancel();
 			return;
 		}
