@@ -108,6 +108,7 @@
 	"item.yttr.beetopal": "Haemopal ...?",
 	"item.yttr.empty_haemopal": "§kHollow Soul",
 	"item.yttr.spark": "Spark",
+	"item.yttr.platforms": "Continuous Platforms",
 	
 	"item.yttr.promethium_speck.tip.1": "§5§oRemnants of a time before",
 	"item.yttr.promethium_lump.tip.1": "§5§oRemnants of a time before",
@@ -800,6 +801,8 @@
 	"tag.yttr.gates": "Gates",
 	"tag.yttr.bloques": "Bloque® Plastic Construction Building Bricks",
 	"tag.yttr.void_glass": "Void Glass",
+	"tag.yttr.gadolinite_ores": "Any Gadolinite",
+	"tag.yttr.brookite_ores": "Any Brookite Ore",
 	"tag.trinkets.feet.sole": "Sole Trinkets",
 	"tag.trinkets.chest.back": "Back Trinkets",
 	"tag.yttr.substituted_coal": "Coal",

@@ -1,9 +1,7 @@
 {
   "type": "minecraft:blasting",
   "lib39:discovered_via": "yttr:brookite_ore",
-  "ingredient": {
-    "item": "yttr:brookite_ore"
-  },
+  "ingredient": { "tag": "yttr:brookite_ores" },
   "result": "yttr:brookite",
   "experience": 1.0,
   "cookingtime": 100

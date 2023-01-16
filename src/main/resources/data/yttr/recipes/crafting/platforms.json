@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "lib39:discovered_via": "yttr:drop_of_continuity",
+  "pattern": [
+    "D D"
+  ],
+  "yttr:only_if": "trinkets",
+  "key": {
+    "D": { "item": "yttr:drop_of_continuity" }
+  },
+  "result": {
+    "item": "yttr:platforms"
+  }
+}

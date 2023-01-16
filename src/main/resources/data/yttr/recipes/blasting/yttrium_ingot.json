@@ -1,9 +1,7 @@
 {
 	"type": "minecraft:blasting",
 	"lib39:discovered_via": "yttr:gadolinite",
-	"ingredient": {
-		"item": "yttr:gadolinite"
-	},
+	"ingredient": { "tag": "yttr:gadolinite_ores" },
 	"result": "yttr:yttrium_ingot",
 	"experience": 0.7,
 	"cookingtime": 100

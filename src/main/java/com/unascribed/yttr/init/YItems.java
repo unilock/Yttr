@@ -615,6 +615,9 @@ public class YItems {
 	
 	public static final Item SPARK = new Item(new Item.Settings().maxCount(4));
 	
+	@ColorProvider("ContinuityItemColorProvider")
+	public static final LatchReference<Item> PLATFORMS = YLatches.create();
+	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registry.ITEM, YItems.class, Item.class);
 	}

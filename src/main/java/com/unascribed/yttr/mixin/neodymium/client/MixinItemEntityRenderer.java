@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.neodymium;
+package com.unascribed.yttr.mixin.neodymium.client;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,12 +8,15 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.unascribed.yttr.mixinsupport.Magnetized;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 
 @Mixin(ItemEntityRenderer.class)
+@Environment(EnvType.CLIENT)
 public class MixinItemEntityRenderer {
 	
 	@Shadow @Final

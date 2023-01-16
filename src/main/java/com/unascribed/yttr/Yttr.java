@@ -436,6 +436,10 @@ public class Yttr implements ModInitializer {
 		return trinketsAccess.count(p, is -> EnchantmentHelper.getLevel(YEnchantments.SPRINGING.get(), is));
 	}
 
+	public static boolean isWearingPlatforms(PlayerEntity p) {
+		return trinketsAccess.getWorn(p, YItems.PLATFORMS::is).isPresent();
+	}
+
 	public static Optional<SlotReference> getWornCoil(PlayerEntity e) {
 		return trinketsAccess.getWorn(e, YItems.CUPROSTEEL_COIL::is);
 	}

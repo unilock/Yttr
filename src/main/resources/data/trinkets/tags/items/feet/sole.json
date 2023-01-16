@@ -3,6 +3,10 @@
 		{
 			"id": "yttr:cuprosteel_coil",
 			"required": false
+		},
+		{
+			"id": "yttr:platforms",
+			"required": false
 		}
 	]
 }

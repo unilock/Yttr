@@ -1,9 +1,7 @@
 {
 	"type": "yttr:centrifuging",
 	"lib39:discovered_via": "yttr:gadolinite",
-	"ingredient": {
-		"item": "yttr:gadolinite"
-	},
+	"ingredient": { "tag": "yttr:gadolinite_ores" },
 	"results": [
 		{
 			"item": "yttr:iron_dust",

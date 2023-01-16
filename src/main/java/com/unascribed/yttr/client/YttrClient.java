@@ -1,9 +1,11 @@
 package com.unascribed.yttr.client;
 
+import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.time.Month;
 import java.time.MonthDay;
 import java.util.Calendar;
@@ -21,6 +23,7 @@ import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unascribed.lib39.core.api.util.LatchReference;
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
@@ -30,6 +33,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.ControlHints;
 import com.unascribed.yttr.client.render.EffectorRenderer;
+import com.unascribed.yttr.client.render.PlatformsRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.ShifterUI;
@@ -240,6 +244,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 				out.accept(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
 				out.accept(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
+				out.accept(new ModelIdentifier("yttr:platforms_model#inventory"));
 			});
 		}
 		
@@ -364,6 +369,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.BLOCK_OUTLINE.register(VelresinUI::render);
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(PlatformsRenderer::renderWorld);
 		DynamicBlockModelProvider.init();
 
 		EntityRendererRegistry.register(YEntities.SLIPPING_TRANSFUNGUS, FallingBlockEntityRenderer::new);
@@ -478,49 +484,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				BlockRenderLayerMap.INSTANCE.putBlocks(renderLayers.get(ann.value()), b);
 			}
 		});
-		Yttr.autoreg.eachRegisterableField(YItems.class, Item.class, null, (f, i, ann) -> {
-			if (i instanceof ItemColorProvider) ColorProviderRegistry.ITEM.register((ItemColorProvider)i, i);
-			ConstantColor colAnn = f.getAnnotation(ConstantColor.class);
-			if (colAnn != null) ColorProviderRegistry.ITEM.register((stack, tintIndex) -> colAnn.value(), i);
-			YItems.ColorProvider colProvAnn = f.getAnnotation(YItems.ColorProvider.class);
-			if (colProvAnn != null) {
-				try {
-					ColorProviderRegistry.ITEM.register((ItemColorProvider)Class.forName("com.unascribed.yttr.client."+colProvAnn.value()).newInstance(), i);
-				} catch (Exception e1) {
-					throw new RuntimeException(e1);
-				}
-			}
-			YItems.BuiltinRenderer birAnn = f.getAnnotation(YItems.BuiltinRenderer.class);
-			if (birAnn != null) {
-				try {
-					Class<?> rend = Class.forName("com.unascribed.yttr.client.render."+birAnn.value());
-					MethodHandle renderHandle = MethodHandles.publicLookup().findStatic(rend, "render", MethodType.methodType(void.class, ItemStack.class, Mode.class, MatrixStack.class, VertexConsumerProvider.class, int.class, int.class));
-					BuiltinItemRendererRegistry.INSTANCE.register(i, (is, mode, matrices, vcp, light, overlay) -> {
-						try {
-							renderHandle.invoke(is, mode, matrices, vcp, light, overlay);
-						} catch (RuntimeException | Error e) {
-							throw e;
-						} catch (Throwable e) {
-							throw new RuntimeException(e);
-						}
-					});
-					try {
-						MethodHandle registerModelsHandle = MethodHandles.publicLookup().findStatic(rend, "registerModels", MethodType.methodType(void.class, Consumer.class));
-						ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-							try {
-								registerModelsHandle.invoke(out);
-							} catch (RuntimeException | Error e) {
-								throw e;
-							} catch (Throwable e) {
-								throw new RuntimeException(e);
-							}
-						});
-					} catch (NoSuchMethodException e) {
-						// ignore
-					}
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
+		Yttr.autoreg.eachRegisterableField(YItems.class, Item.class, null, this::handleItemAutoreg);
+		Yttr.autoreg.eachRegisterableField(YItems.class, LatchReference.class, null, (f, l, s) -> {
+			if (l.isPresent() && l.get() instanceof Item i) {
+				handleItemAutoreg(f, i, s);
 			}
 		});
 		Yttr.autoreg.eachRegisterableField(YBlockEntities.class, BlockEntityType.class, YBlockEntities.Renderer.class, (f, type, ann) -> {
@@ -638,6 +605,52 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 	}
 	
+	public void handleItemAutoreg(Field f, Item i, Annotation ann) {
+		if (i instanceof ItemColorProvider) ColorProviderRegistry.ITEM.register((ItemColorProvider)i, i);
+		ConstantColor colAnn = f.getAnnotation(ConstantColor.class);
+		if (colAnn != null) ColorProviderRegistry.ITEM.register((stack, tintIndex) -> colAnn.value(), i);
+		YItems.ColorProvider colProvAnn = f.getAnnotation(YItems.ColorProvider.class);
+		if (colProvAnn != null) {
+			try {
+				ColorProviderRegistry.ITEM.register((ItemColorProvider)Class.forName("com.unascribed.yttr.client."+colProvAnn.value()).newInstance(), i);
+			} catch (Exception e1) {
+				throw new RuntimeException(e1);
+			}
+		}
+		YItems.BuiltinRenderer birAnn = f.getAnnotation(YItems.BuiltinRenderer.class);
+		if (birAnn != null) {
+			try {
+				Class<?> rend = Class.forName("com.unascribed.yttr.client.render."+birAnn.value());
+				MethodHandle renderHandle = MethodHandles.publicLookup().findStatic(rend, "render", MethodType.methodType(void.class, ItemStack.class, Mode.class, MatrixStack.class, VertexConsumerProvider.class, int.class, int.class));
+				BuiltinItemRendererRegistry.INSTANCE.register(i, (is, mode, matrices, vcp, light, overlay) -> {
+					try {
+						renderHandle.invoke(is, mode, matrices, vcp, light, overlay);
+					} catch (RuntimeException | Error e) {
+						throw e;
+					} catch (Throwable e) {
+						throw new RuntimeException(e);
+					}
+				});
+				try {
+					MethodHandle registerModelsHandle = MethodHandles.publicLookup().findStatic(rend, "registerModels", MethodType.methodType(void.class, Consumer.class));
+					ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+						try {
+							registerModelsHandle.invoke(out);
+						} catch (RuntimeException | Error e) {
+							throw e;
+						} catch (Throwable e) {
+							throw new RuntimeException(e);
+						}
+					});
+				} catch (NoSuchMethodException e) {
+					// ignore
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	public static void addLine(MatrixStack matrices, VertexConsumer vc,
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,

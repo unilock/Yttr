@@ -7,6 +7,12 @@
 	* Might fix networking jank
 * New texture for carbon blocks
 * Haemopal is now a piece of your soul
-* Continuous Platforms are now broken with *left*-click, and break instantly if not immortal
+* Continuous Platform blocks are now broken with *left*-click, and break instantly if not immortal
 * You can now replace your soul with soup
 * Fixed lazor emitters being half waterloggable
+* Added Continuous Platforms, a new sole-slot trinket that lets you sneak to walk on air anywhere
+* Fixed ore recipes not recognizing deepslate ores
+* Fixed cleaved block mesh caching
+* Fixed rifle scope persisting when switching items
+* Rifle now unscopes on overcharge
+* Fixed cleaved block collision sometimes bugging out

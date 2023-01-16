@@ -104,6 +104,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	
 	public void setPolygons(Iterable<Polygon> polygons) {
 		this.polygons = ImmutableList.copyOf(polygons);
+		fromTagInner(toTagInner(new NbtCompound()));
 		cachedShape = null;
 		markDirty();
 		Yttr.sync(this);

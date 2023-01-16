@@ -147,15 +147,7 @@ public class CleavedBlockMeshes {
 			}
 		}
 		Mesh mesh = bldr.build();
-//		List<BakedQuad> quads = Lists.newArrayList();
-//		mesh.forEach((qv) -> quads.add(qv.toBakedQuad(0, sprite, false)));
-//		Map<Direction, List<BakedQuad>> directions = Maps.newHashMap();
-//		for (Direction d : Direction.values()) {
-//			// TODO determine if any polygons entirely touch a face so they can be culled
-//			directions.put(d, Lists.newArrayList());
-//		}
-//		BasicBakedModel model = new BasicBakedModel(quads, directions, false, false, true, sprite, ModelTransformation.NONE, ModelOverrideList.EMPTY);
-//		entity.clientCacheData = model;
+		entity.clientCacheData = mesh;
 		MinecraftClient.getInstance().getProfiler().pop();
 		return mesh;
 	}
