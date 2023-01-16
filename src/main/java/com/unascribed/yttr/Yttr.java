@@ -45,6 +45,7 @@ import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.init.conditional.YTrinkets;
 import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.mixinsupport.ComplexDamageEnchant;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
@@ -76,6 +77,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -452,6 +454,33 @@ public class Yttr implements ModInitializer {
 			}
 		}
 		return null;
+	}
+	
+	private static final ThreadLocal<DamageSource> replacementDamageSource = new ThreadLocal<>();
+	
+	public static float getAdditionalAttackDamage(Entity target, Entity attacker) {
+		float dmg = 0;
+		replacementDamageSource.set(null);
+		if (attacker instanceof LivingEntity le) {
+			for (var en : EnchantmentHelper.get(le.getMainHandStack()).entrySet()) {
+				if (en.getKey() instanceof ComplexDamageEnchant cde) {
+					var res = cde.handleAttack(en.getValue(), target, attacker);
+					if (res != null) {
+						dmg += res.amount();
+						if (res.src() != null) {
+							replacementDamageSource.set(res.src());
+						}
+					}
+				}
+			}
+		}
+		return dmg;
+	}
+	
+	public static DamageSource modifyDamageSource(DamageSource orig) {
+		var repl = replacementDamageSource.get();
+		if (repl != null) return repl;
+		return orig;
 	}
 	
 }

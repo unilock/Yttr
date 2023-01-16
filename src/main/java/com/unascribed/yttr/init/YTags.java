@@ -72,6 +72,7 @@ public final class YTags {
 		public static final TagKey<EntityType<?>> MAGNETIC = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("magnetic"));
 		public static final TagKey<EntityType<?>> SCREEPER_IMMUNE = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("screeper_immune"));
 		public static final TagKey<EntityType<?>> BLOODLESS = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("bloodless"));
+		public static final TagKey<EntityType<?>> DISJUNCTIBLE = TagKey.of(Registry.ENTITY_TYPE_KEY, Yttr.id("disjunctible"));
 		
 		private static void init() {}
 		

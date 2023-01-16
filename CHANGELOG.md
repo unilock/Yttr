@@ -16,3 +16,5 @@
 * Fixed rifle scope persisting when switching items
 * Rifle now unscopes on overcharge
 * Fixed cleaved block collision sometimes bugging out
+* Reimplemented Disjunction and Vorpal to be less janky
+* Disjunction now uses the #yttr:disjunctible entity tag instead of being hardcoded

@@ -2,15 +2,17 @@ package com.unascribed.yttr.content.enchant;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.mixinsupport.ComplexDamageEnchant;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
@@ -19,7 +21,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
-public class VorpalEnchantment extends Enchantment {
+public class VorpalEnchantment extends Enchantment implements ComplexDamageEnchant {
 
 	public VorpalEnchantment() {
 		super(Rarity.VERY_RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
@@ -47,38 +49,32 @@ public class VorpalEnchantment extends Enchantment {
 		return 4;
 	}
 	
-	private LivingEntity lastAttacker;
-	private int lastAttackerAttackTime;
-	
 	@Override
-	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-		// in a display of sheer brilliance, this method is called twice for enchants on held items
-		if (lastAttacker == user && user.getLastAttackTime() == lastAttackerAttackTime) return;
-		lastAttacker = user;
-		lastAttackerAttackTime = user.getLastAttackTime();
+	public AttackResult handleAttack(int level, Entity target, @Nullable Entity attacker) {
 		if (ThreadLocalRandom.current().nextInt(150) < level*level) {
-			target.damage(new EntityDamageSource("yttr.vorpal", user), 100);
-			if (user instanceof ServerPlayerEntity) {
+			if (attacker instanceof ServerPlayerEntity) {
 				Box b = target.getBoundingBox();
 				Vec3d c = b.getCenter();
 				ParticleS2CPacket pkt = new ParticleS2CPacket(ParticleTypes.INSTANT_EFFECT, false, c.x, c.y, c.z,
 						(float)b.getXLength()/2, (float)b.getYLength()/2, (float)b.getZLength()/2,
 						0, 20);
-				((ServerPlayerEntity)user).networkHandler.sendPacket(pkt);
-				SoundCategory cat = user.getSoundCategory();
+				((ServerPlayerEntity)attacker).networkHandler.sendPacket(pkt);
+				SoundCategory cat = attacker.getSoundCategory();
 				double x = target.getPos().x;
 				double y = target.getPos().y;
 				double z = target.getPos().z;
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.7f);
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.9f);
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
-				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
-				YCriteria.VORPAL_HIT.trigger(((ServerPlayerEntity)user));
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.7f);
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.9f);
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				YCriteria.VORPAL_HIT.trigger(((ServerPlayerEntity)attacker));
 			}
+			return new AttackResult(new EntityDamageSource("yttr.vorpal", attacker), 100);
 		}
+		return null;
 	}
 	
 }
