@@ -13,6 +13,7 @@ import com.unascribed.yttr.mixin.accessor.client.AccessorInGameHud;
 import com.unascribed.yttr.mixin.accessor.client.AccessorKeyBind;
 import com.unascribed.yttr.util.ControlHintable;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.option.KeyBind;
@@ -52,6 +53,10 @@ public class ControlHints {
 				var winH = win.getScaledHeight();
 				
 				var sc = (int)win.getScaleFactor();
+				
+				if (FabricLoader.getInstance().isModLoaded("qdaa")) {
+					sc /= 2;
+				}
 				
 				int ofs = 59;
 				if (!mc.interactionManager.hasStatusBars()) ofs -= 14;
