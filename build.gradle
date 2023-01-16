@@ -116,11 +116,11 @@ dependencies {
 	include "me.luligabi:NoIndium:1.1.0+1.19"
 	
 	[
-		'core', 'lockpick', 'gesundheit', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
+		'core', 'lockpick', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
 		'recoil', 'mesh'
 	].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.4.1")
+		modApi include("com.unascribed:lib39-${module}:1.5.0-pre2+1.19.2")
 	}
 	
 	modRuntimeOnly(include("com.unascribed:lucium:1.1")) {

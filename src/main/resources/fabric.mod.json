@@ -33,7 +33,6 @@
 		"minecraft": ">=1.19",
 		"lib39-core": "*",
 		"lib39-lockpick": "*",
-		"lib39-gesundheit": "*",
 		"lib39-fractal": "*",
 		"lib39-tunnel": "*",
 		"lib39-phantom": "*",
