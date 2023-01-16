@@ -35,7 +35,13 @@ if (version.contains("{DIRTY}")) {
 	version = version.replace("{DIRTY}", dirty ? '-dirty' : '')
 }
 if (version.contains("{COMMITNUM}")) {
-	version = version.replace("{COMMITNUM}", 'git rev-list --count HEAD'.execute().getText().trim())
+	def num = null
+	if (System.getenv("CI")) {
+		num = './ci-commitnum.sh'.execute().getText().trim()
+	} else {
+		num = 'git rev-list --count HEAD'.execute().getText().trim()
+	}
+	version = version.replace("{COMMITNUM}", num)
 }
 group = project.maven_group
 
