@@ -160,7 +160,8 @@ public class ShifterItem extends Item implements ControlHintable {
 			if (curState.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
 				replState = curState.getFluidState().getBlockState();
 			} else {
-				replState = curState.with(ContinuousPlatformBlock.AGE, ContinuousPlatformBlock.Age.IMMORTAL);
+				replState = curState.with(ContinuousPlatformBlock.AGE, ContinuousPlatformBlock.Age.IMMORTAL)
+						.with(ContinuousPlatformBlock.SPEEDY, false);
 			}
 		} else {
 			if (!(i instanceof BlockItem)) return;

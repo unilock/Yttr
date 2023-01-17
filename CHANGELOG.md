@@ -20,3 +20,4 @@
 * Disjunction now uses the #yttr:disjunctible entity tag instead of being hardcoded
 * Control hints are no longer blurry on some GUI scales alongside QDAA
 * Updated Lib39 to 1.5.0-pre2
+* Fix Shifter-immortalized Continuous Platform blocks keeping their speedy state
