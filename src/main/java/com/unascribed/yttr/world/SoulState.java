@@ -19,7 +19,7 @@ public class SoulState extends PersistentState {
 	public static final UUID IMPURITY_MODIFIER = UUID.fromString("3dd603e4-3526-4658-aeeb-c40cafbf5a60");
 
 	public static SoulState get(ServerWorld world) {
-		return world.getPersistentStateManager().getOrCreate(SoulState::fromNbt, SoulState::new, "yttr_soul");
+		return world.getServer().getOverworld().getPersistentStateManager().getOrCreate(SoulState::fromNbt, SoulState::new, "yttr_soul");
 	}
 
 	public static SoulState fromNbt(NbtCompound tag) {
