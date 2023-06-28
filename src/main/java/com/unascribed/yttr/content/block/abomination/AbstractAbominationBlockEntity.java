@@ -27,7 +27,7 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	}
 	
 	public boolean isSuffocating() {
-		BlockPos headBlock = new BlockPos(getHeadPos());
+		BlockPos headBlock = BlockPos.fromPosition(getHeadPos());
 		if (headBlock.equals(pos)) return false;
 		return world.getBlockState(headBlock).shouldSuffocate(world, headBlock);
 	}
@@ -72,11 +72,13 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound tag = super.toInitialChunkDataNbt();
+	public NbtCompound toSyncedNbt() {
+		NbtCompound tag = super.toSyncedNbt();
 		tag.putFloat("HeadYaw", headYaw);
 		tag.putFloat("HeadPitch", headPitch);
 		return tag;
 	}
+
+
 	
 }

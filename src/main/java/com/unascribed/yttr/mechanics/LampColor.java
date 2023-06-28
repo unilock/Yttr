@@ -3,6 +3,7 @@ package com.unascribed.yttr.mechanics;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.util.Resolvable;
@@ -81,7 +82,7 @@ public enum LampColor implements StringIdentifiable {
 	
 	LampColor(DyeColor dyeColor, String item, int baseColor, int glowColor) {
 		this.dyeColor = dyeColor;
-		this.item = item == null ? null : Resolvable.of(new Identifier(item), Registry.ITEM);
+		this.item = item == null ? null : Resolvable.of(new Identifier(item), Registries.ITEM);
 		this.baseLitColor = baseColor;
 		this.glowColor = glowColor;
 		

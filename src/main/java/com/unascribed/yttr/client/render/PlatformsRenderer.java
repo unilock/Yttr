@@ -30,8 +30,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class PlatformsRenderer {
 	
@@ -173,11 +173,11 @@ public class PlatformsRenderer {
 				s = 4.75f/16f;
 				matrices.translate(0.5f/16f*(flip?1:-1), 1/16f, 0);
 			}
-			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
-			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
+			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
 			matrices.scale(s, s, s);
 			matrices.translate(-0.5, 0, -0.5);
-			BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:platforms_model#inventory"));
+			BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr", "platforms_model", "inventory"));
 			for (var bq : bm.getQuads(null, null, YRandom.get())) {
 				vc.bakedQuad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 			}

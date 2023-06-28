@@ -106,8 +106,8 @@ public class ReplicatorBlockEntity extends BlockEntity implements SideyInventory
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound tag = super.toInitialChunkDataNbt();
+	public NbtCompound toSyncedNbt() {
+		NbtCompound tag = super.toSyncedNbt();
 		writeNbt(tag);
 		tag.remove("Owner");
 		return tag;

@@ -63,13 +63,13 @@ public class VorpalEnchantment extends Enchantment implements ComplexDamageEncha
 				double x = target.getPos().x;
 				double y = target.getPos().y;
 				double z = target.getPos().z;
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.7f);
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.9f);
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
-				attacker.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.7f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.9f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
 				YCriteria.VORPAL_HIT.trigger(((ServerPlayerEntity)attacker));
 			}
 			return new AttackResult(new EntityDamageSource("yttr.vorpal", attacker), 100);

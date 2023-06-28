@@ -80,7 +80,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 			if (optional.isPresent()) {
 				CraftingRecipe craftingRecipe = optional.get();
 				if (resultInventory.shouldCraftRecipe(world, spe, craftingRecipe)) {
-					res = craftingRecipe.craft(craftingInventory);
+					res = craftingRecipe.craft(craftingInventory, world.getRegistryManager());
 				}
 			}
 
@@ -109,7 +109,7 @@ public class RafterScreenHandler extends AbstractRecipeScreenHandler<CraftingInv
 
 	@Override
 	public boolean matches(Recipe<? super CraftingInventory> recipe) {
-		return recipe.matches(input, player.world);
+		return recipe.matches(input, player.getWorld());
 	}
 
 	@Override

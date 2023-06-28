@@ -30,6 +30,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -120,7 +121,7 @@ public class ScreeperNestBlockEntity extends BlockEntity implements YTickable, S
 						double cX = ib.pos.getX()+0.5;
 						double cY = ib.pos.getY()+0.5;
 						double cZ = ib.pos.getZ()+0.5;
-						for (PlayerEntity player : sw.getPlayers(p -> p.squaredDistanceTo(cX, cY, cZ) < 64*64)) {
+						for (PlayerEntity player : sw.getMatchingPlayers(p -> p.squaredDistanceTo(cX, cY, cZ) < 64*64)) {
 							msg.sendTo(player);
 						}
 						for (Entity e : sw.getEntitiesByClass(Entity.class, new Box(pos).expand(0.5), e -> !e.getType().isIn(YTags.Entity.SCREEPER_IMMUNE))) {
@@ -315,7 +316,7 @@ public class ScreeperNestBlockEntity extends BlockEntity implements YTickable, S
 			infested.add(new InfestedBlock(new BlockPos(x, y, z), outOfRange, v/accDepth, v%accDepth));
 		}
 		if (nbt.contains("State")) {
-			infesting = NbtHelper.toBlockState(nbt.getCompound("State"));
+			infesting = NbtHelper.toBlockState(this.getWorld().filteredLookup(RegistryKeys.BLOCK), nbt.getCompound("State"));
 		} else {
 			infesting = null;
 		}

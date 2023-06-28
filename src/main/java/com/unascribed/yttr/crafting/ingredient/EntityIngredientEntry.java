@@ -3,6 +3,7 @@ package com.unascribed.yttr.crafting.ingredient;
 import java.util.Collection;
 import java.util.Collections;
 
+import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
@@ -16,7 +17,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.recipe.Ingredient.Entry;
 import net.minecraft.util.Arm;
-import net.minecraft.util.registry.Registry;
 
 public class EntityIngredientEntry implements Entry {
 
@@ -31,7 +31,7 @@ public class EntityIngredientEntry implements Entry {
 	@Override
 	public Collection<ItemStack> getStacks() {
 		ItemStack is = new ItemStack(YItems.SNARE);
-		is.getOrCreateSubNbt("Contents").putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
+		is.getOrCreateSubNbt("Contents").putString("id", Registries.ENTITY_TYPE.getId(entityType).toString());
 		if (mainHand != null) {
 			NbtList lore = new NbtList();
 			lore.add(NbtString.of("\"§7"+(mainHand == Arm.LEFT ? "Left" : "Right")+"-Handed\""));
@@ -43,7 +43,7 @@ public class EntityIngredientEntry implements Entry {
 	@Override
 	public JsonObject toJson() {
 		JsonObject obj = new JsonObject();
-		obj.addProperty("yttr:entity", Registry.ENTITY_TYPE.getId(entityType).toString());
+		obj.addProperty("yttr:entity", Registries.ENTITY_TYPE.getId(entityType).toString());
 		if (mainHand != null) {
 			obj.addProperty("yttr:main_hand", Ascii.toLowerCase(mainHand.name()));
 		}

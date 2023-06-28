@@ -2,8 +2,8 @@ package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
 
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.registry.Registry;
 
 public class YSounds {
 	
@@ -133,11 +133,11 @@ public class YSounds {
 	
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.SOUND_EVENT, YSounds.class, SoundEvent.class);
+		Yttr.autoreg.autoRegister(Registries.SOUND_EVENT, YSounds.class, SoundEvent.class);
 	}
 
 	private static SoundEvent create(String path) {
-		return new SoundEvent(Yttr.id(path));
+		return SoundEvent.createVariableRangeEvent(Yttr.id(path));
 	}
 	
 }

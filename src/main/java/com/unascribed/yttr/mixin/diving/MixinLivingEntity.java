@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.diving;
 
+import net.minecraft.registry.tag.DamageTypeTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +16,6 @@ import com.unascribed.yttr.util.EquipmentSlots;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -51,7 +51,7 @@ public class MixinLivingEntity implements SuitPiecesForJump {
 	public float modifyDamage(float dmg, DamageSource src) {
 		LivingEntity self = (LivingEntity)(Object)this;
 		if (Yttr.isWearingFullSuit(self)) {
-			if (!src.bypassesArmor()) {
+			if (!src.isTypeIn(DamageTypeTags.BYPASSES_ARMOR)) {
 				dmg /= 2;
 			}
 			if (src instanceof EntityDamageSource && self instanceof ServerPlayerEntity) {

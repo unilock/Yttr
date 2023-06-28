@@ -14,6 +14,7 @@ import com.unascribed.yttr.util.annotate.ConstantColor;
 import com.unascribed.yttr.util.annotate.RenderLayer;
 
 import net.minecraft.fluid.Fluid;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.registry.Registry;
 
 public class YFluids {
@@ -37,7 +38,7 @@ public class YFluids {
 	public static final CoreLavaFluid CORE_LAVA = new CoreLavaFluid();
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.FLUID, YFluids.class, Fluid.class);
+		Yttr.autoreg.autoRegister(Registries.FLUID, YFluids.class, Fluid.class);
 	}
 	
 	@Retention(RUNTIME)

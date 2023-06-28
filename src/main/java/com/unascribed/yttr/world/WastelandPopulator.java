@@ -293,7 +293,7 @@ public class WastelandPopulator {
 				}
 				if (bs.isIn(YTags.Block.ORES) || bs.isOf(YBlocks.WASTELAND_DIRT) || bs.isIn(BlockTags.BASE_STONE_OVERWORLD) || bs.getBlock() instanceof FallingBlock) {
 					world.setBlockState(bp, Blocks.AIR.getDefaultState(), FLAGS, 0);
-				} else if (!bs.isAir() && !bs.getMaterial().isReplaceable() && !bs.isOf(YBlocks.RUINED_WALL_TORCH)) {
+				} else if (!bs.isAir() && !bs.materialReplaceable() && !bs.isOf(YBlocks.RUINED_WALL_TORCH)) {
 					hitUnbreakable = true;
 				}
 			}
@@ -321,7 +321,7 @@ public class WastelandPopulator {
 		int originY = origin.getY();
 		for (BlockPos bpp : BlockPos.iterate(origin, origin.add(s.getRotatedSize(rot)))) {
 			BlockState bs = world.getBlockState(bpp);
-			if (!bs.isAir() && !bs.getMaterial().isReplaceable() && (!eatDirt || !bs.isOf(YBlocks.WASTELAND_DIRT))) {
+			if (!bs.isAir() && !bs.materialReplaceable() && (!eatDirt || !bs.isOf(YBlocks.WASTELAND_DIRT))) {
 				return false;
 			}
 		}
@@ -367,7 +367,7 @@ public class WastelandPopulator {
 		for (BlockPos b : fillIn) {
 			BlockPos.Mutable scan = b.mutableCopy();
 			scan.move(Direction.DOWN);
-			while (world.getBlockState(scan).isAir() || world.getBlockState(scan).getMaterial().isReplaceable()) {
+			while (world.getBlockState(scan).isAir() || world.getBlockState(scan).materialReplaceable()) {
 				world.setBlockState(scan, YBlocks.WASTELAND_DIRT.getDefaultState(), FLAGS, 0);
 				scan.move(Direction.DOWN);
 			}

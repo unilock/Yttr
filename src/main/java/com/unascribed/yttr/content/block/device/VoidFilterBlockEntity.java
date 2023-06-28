@@ -26,6 +26,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -142,7 +143,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements YTickable, Del
 		if (owner != null) tag.putUuid("Owner", owner);
 		NbtCompound statQTag = new NbtCompound();
 		for (Multiset.Entry<Item> en : statQueue.entrySet()) {
-			statQTag.putInt(Registry.ITEM.getId(en.getElement()).toString(), en.getCount());
+			statQTag.putInt(Registries.ITEM.getId(en.getElement()).toString(), en.getCount());
 		}
 		tag.put("StatQueue", statQTag);
 	}
@@ -155,7 +156,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements YTickable, Del
 		statQueue.clear();
 		NbtCompound statQTag = tag.getCompound("StatQueue");
 		for (String key : statQTag.getKeys()) {
-			Item i = Registry.ITEM.getOrEmpty(Identifier.tryParse(key)).orElse(null);
+			Item i = Registries.ITEM.getOrEmpty(Identifier.tryParse(key)).orElse(null);
 			if (i != null) {
 				statQueue.add(i, statQTag.getInt(key));
 			}

@@ -34,8 +34,8 @@ public class SlippingTransfungusEntity extends FallingBlockEntity {
 	
 	@Override
 	public void tick() {
-		if (!world.isClient && world.getBlockState(getBlockPos()).isAir()) {
-			world.setBlockState(getBlockPos(), YBlocks.TRANSFUNGUS_SPORES.getDefaultState());
+		if (!getWorld().isClient && getWorld().getBlockState(getBlockPos()).isAir()) {
+			getWorld().setBlockState(getBlockPos(), YBlocks.TRANSFUNGUS_SPORES.getDefaultState());
 		}
 		super.tick();
 	}
@@ -43,12 +43,12 @@ public class SlippingTransfungusEntity extends FallingBlockEntity {
 	@Override
 	public void move(MovementType movementType, Vec3d movement) {
 		super.move(movementType, movement);
-		if (onGround && (world.getBlockState(getBlockPos().down()).isIn(YTags.Block.TRANSFUNGUS_SLIPPERY) || age < 20)
+		if (isOnGround() && (getWorld().getBlockState(getBlockPos().down()).isIn(YTags.Block.TRANSFUNGUS_SLIPPERY) || age < 20)
 				&& getVelocity().lengthSquared() > 0.005 && !horizontalCollision) {
 			for (var d : Direction.values()) {
-				if (world.getBlockState(getBlockPos().offset(d)).isIn(YTags.Block.TRANSFUNGUS_STICKY)) return;
+				if (getWorld().getBlockState(getBlockPos().offset(d)).isIn(YTags.Block.TRANSFUNGUS_STICKY)) return;
 			}
-			this.onGround = false;
+			setOnGround(false);
 		}
 	}
 

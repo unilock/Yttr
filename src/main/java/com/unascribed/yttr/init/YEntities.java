@@ -13,7 +13,7 @@ import com.unascribed.yttr.content.entity.ThrownGlowingGasEntity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class YEntities {
 
@@ -35,7 +35,7 @@ public class YEntities {
 			.build("yttr:thrown_glowing_gas");
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.ENTITY_TYPE, YEntities.class, EntityType.class);
+		Yttr.autoreg.autoRegister(Registries.ENTITY_TYPE, YEntities.class, EntityType.class);
 	}
 
 	@Retention(RUNTIME)

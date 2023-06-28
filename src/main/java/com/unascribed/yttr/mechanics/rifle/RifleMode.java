@@ -42,23 +42,23 @@ public enum RifleMode {
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit instanceof EntityHitResult) {
 				int damage = (int)Math.ceil(power*14);
-				((EntityHitResult) hit).getEntity().damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.world), user), damage);
+				((EntityHitResult) hit).getEntity().damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.getWorld()), user), damage);
 			}
 			if (power > 1.2f) {
-				user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, DestructionType.NONE);
+				user.getWorld().createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, DestructionType.NONE);
 			}
 		}
 	},
 	EXPLODE(Formatting.GRAY, 0xAAAAAA, () -> Items.GUNPOWDER, 1, 1) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
-			user.world.createExplosion(null, DamageSource.explosion(user),
+			user.getWorld().createExplosion(null, DamageSource.explosion(user),
 					null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2,
 							YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? DestructionType.NONE : power > 1.2 ? DestructionType.DESTROY : DestructionType.BREAK);
 		}
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
-			user.world.createExplosion(null, DamageSource.explosion(user),
+			user.getWorld().createExplosion(null, DamageSource.explosion(user),
 					null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false,
 					YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? DestructionType.NONE : DestructionType.DESTROY);
 		}
@@ -72,12 +72,12 @@ public enum RifleMode {
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit.getType() == Type.MISS) return;
 			if (power > 1.1f) {
-				user.world.createExplosion(user, user.getPos().x, user.getPos().y, user.getPos().z, 1*power, DestructionType.NONE);
+				user.getWorld().createExplosion(user, user.getPos().x, user.getPos().y, user.getPos().z, 1*power, DestructionType.NONE);
 			}
 			user.teleport(hit.getPos().x, hit.getPos().y, hit.getPos().z);
 			if (power > 1.2f) {
 				user.damage(DamageSource.explosion(user), 4);
-				user.world.createExplosion(user, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, DestructionType.NONE);
+				user.getWorld().createExplosion(user, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, DestructionType.NONE);
 			}
 		}
 		
@@ -89,7 +89,7 @@ public enum RifleMode {
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			for (int i = 0; i < 4; i++) {
-				Items.CHORUS_FRUIT.finishUsing(new ItemStack(Items.CHORUS_FRUIT), user.world, user);
+				Items.CHORUS_FRUIT.finishUsing(new ItemStack(Items.CHORUS_FRUIT), user.getWorld(), user);
 			}
 		}
 	},
@@ -100,28 +100,28 @@ public enum RifleMode {
 				Entity e = ((EntityHitResult) hit).getEntity();
 				e.setFireTicks((int)(200*power));
 				int damage = (int)Math.ceil(power*6);
-				e.damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.world), user), damage);
+				e.damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.getWorld()), user), damage);
 			} else if (power > 0.5f && hit instanceof BlockHitResult) {
 				BlockHitResult bhr = (BlockHitResult)hit;
 				if (bhr.getType() == Type.MISS) return;
-				if (user.world.isAir(bhr.getBlockPos()) || user.world.getBlockState(bhr.getBlockPos()).isIn(YTags.Block.FIRE_MODE_INSTABREAK)) {
-					user.world.setBlockState(bhr.getBlockPos(), Blocks.FIRE.getDefaultState());
+				if (user.getWorld().isAir(bhr.getBlockPos()) || user.getWorld().getBlockState(bhr.getBlockPos()).isIn(YTags.Block.FIRE_MODE_INSTABREAK)) {
+					user.getWorld().setBlockState(bhr.getBlockPos(), Blocks.FIRE.getDefaultState());
 				} else {
 					BlockPos bp2 = bhr.getBlockPos().offset(bhr.getSide());
-					if (user.world.isAir(bp2)) {
-						user.world.setBlockState(bp2, Blocks.FIRE.getDefaultState());
+					if (user.getWorld().isAir(bp2)) {
+						user.getWorld().setBlockState(bp2, Blocks.FIRE.getDefaultState());
 					}
 				}
 			}
 			if (power > 1) {
-				user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, true, DestructionType.NONE);
+				user.getWorld().createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, true, DestructionType.NONE);
 				BlockPos base = new BlockPos(hit.getPos());
 				for (int x = -1; x <= 1; x++) {
 					for (int y = -1; y <= 1; y++) {
 						for (int z = -1; z <= 1; z++) {
 							BlockPos bp = base.add(x, y, z);
-							if (user.world.getBlockState(bp).isIn(YTags.Block.FIRE_MODE_INSTABREAK)) {
-								user.world.setBlockState(bp, Blocks.FIRE.getDefaultState());
+							if (user.getWorld().getBlockState(bp).isIn(YTags.Block.FIRE_MODE_INSTABREAK)) {
+								user.getWorld().setBlockState(bp, Blocks.FIRE.getDefaultState());
 							}
 						}
 					}
@@ -143,13 +143,13 @@ public enum RifleMode {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (!(user instanceof PlayerEntity)) return;
-			VoidLogic.doVoid((PlayerEntity)user, user.world, hit.getPos(), Math.round(7.5f*power)+1);
+			VoidLogic.doVoid((PlayerEntity)user, user.getWorld(), hit.getPos(), Math.round(7.5f*power)+1);
 		}
 		
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			if (!(user instanceof PlayerEntity)) return;
-			VoidLogic.doVoid((PlayerEntity)user, user.world, user.getPos(), 12);
+			VoidLogic.doVoid((PlayerEntity)user, user.getWorld(), user.getPos(), 12);
 		}
 		
 		@Override
@@ -174,7 +174,7 @@ public enum RifleMode {
 				double y = start.y+(diffY*t);
 				double z = start.z+(diffZ*t);
 				mut.set(x, y, z);
-				illuminate(user.world, mut, power > 1.1f);
+				illuminate(user.getWorld(), mut, power > 1.1f);
 			}
 			if (hit instanceof EntityHitResult) {
 				Entity e = ((EntityHitResult)hit).getEntity();
@@ -184,7 +184,7 @@ public enum RifleMode {
 			} else if (hit instanceof BlockHitResult && power > 0.8f) {
 				BlockHitResult bhr = (BlockHitResult)hit;
 				BlockPos end = bhr.getBlockPos().offset(bhr.getSide());
-				illuminate(user.world, end, true);
+				illuminate(user.getWorld(), end, true);
 			}
 		}
 		
@@ -192,7 +192,7 @@ public enum RifleMode {
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			user.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 300));
 			for (BlockPos bp : BlockPos.iterate(user.getBlockPos().add(-2, -2, -2), user.getBlockPos().add(2, 2, 2))) {
-				illuminate(user.world, bp, false);
+				illuminate(user.getWorld(), bp, false);
 			}
 		}
 

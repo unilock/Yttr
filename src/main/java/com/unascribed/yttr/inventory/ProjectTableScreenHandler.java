@@ -121,7 +121,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 		
 		YHandledScreens.addPlayerSlots(this::addSlot, playerInventory, 8, 133);
 		
-		updateResult(syncId, player.world, player, input, result, this);
+		updateResult(syncId, player.getWorld(), player, input, result, this);
 
 	}
 
@@ -223,7 +223,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 
 	@Override
 	public boolean matches(Recipe<? super CraftingInventory> recipe) {
-		return recipe.matches(input, player.world);
+		return recipe.matches(input, player.getWorld());
 	}
 
 	@Override

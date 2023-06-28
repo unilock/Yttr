@@ -23,12 +23,12 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.Structure.StructureBlockInfo;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.BlockRotation;
@@ -133,19 +133,19 @@ public class ScorchedGenerator {
 			}
 			s.place(region, origin, origin.add(size.getX()/2, 0, size.getZ()/2), spd, rand, 3);
 			for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
-				if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-					if (info.nbt != null) {
+				if (info != null && info.state().get(StructureBlock.MODE) == StructureBlockMode.DATA) {
+					if (info.nbt() != null) {
 						BlockState cap = null;
 						int height = 0;
-						if ("yttr:totem".equals(info.nbt.getString("metadata"))) {
+						if ("yttr:totem".equals(info.nbt().getString("metadata"))) {
 							height = rand.nextInt(4);
 							cap = YBlocks.POLISHED_SCORCHED_OBSIDIAN_CAPSTONE.getDefaultState();
-						} else if ("yttr:holster".equals(info.nbt.getString("metadata"))) {
+						} else if ("yttr:holster".equals(info.nbt().getString("metadata"))) {
 							height = rand.nextInt(4)+4;
 							cap = YBlocks.POLISHED_SCORCHED_OBSIDIAN_HOLSTER.getDefaultState();
 						}
 						if (cap != null) {
-							bp.set(info.pos);
+							bp.set(info.pos());
 							for (int i = 0; i < height; i++) {
 								region.setBlockState(bp, YBlocks.POLISHED_SCORCHED_OBSIDIAN.getDefaultState(), 3);
 								bp.move(Direction.UP);
@@ -191,9 +191,9 @@ public class ScorchedGenerator {
 			if (!success) return;
 			boolean foundAllAnchors = true;
 			for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
-				if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-					if (info.nbt != null && "yttr:chain".equals(info.nbt.getString("metadata"))) {
-						bp.set(info.pos);
+				if (info != null && info.state().get(StructureBlock.MODE) == StructureBlockMode.DATA) {
+					if (info.nbt() != null && "yttr:chain".equals(info.nbt().getString("metadata"))) {
+						bp.set(info.pos());
 						boolean foundAnchor = false;
 						for (int i = 0; i < 10; i++) {
 							bp.move(Direction.UP);
@@ -206,7 +206,7 @@ public class ScorchedGenerator {
 							foundAllAnchors = false;
 							break;
 						}
-						chains.add(info.pos.toImmutable());
+						chains.add(info.pos().toImmutable());
 					}
 				}
 			}

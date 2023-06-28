@@ -42,10 +42,6 @@ import net.minecraft.world.World;
 @Mixin(ServerPlayerEntity.class)
 public abstract class MixinServerPlayerEntity extends PlayerEntity implements DiverPlayer {
 
-	public MixinServerPlayerEntity(World world, BlockPos pos, float yaw, GameProfile gameProfile, PlayerPublicKey publicKey) {
-		super(world, pos, yaw, gameProfile, publicKey);
-	}
-
 	private boolean yttr$isDiving = false;
 	private boolean yttr$isInvisibleFromDiving = false;
 	private boolean yttr$isNoGravityFromDiving = false;
@@ -55,7 +51,11 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 	private BlockPos yttr$fastDiveTarget;
 	
 	private final Set<UUID> yttr$knownGeysers = Sets.newHashSet();
-	
+
+	public MixinServerPlayerEntity(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+		super(world, pos, yaw, gameProfile);
+	}
+
 	@Inject(at=@At("HEAD"), method="tick")
 	public void tick(CallbackInfo ci) {
 		ServerPlayerEntity self = (ServerPlayerEntity)(Object)this;
@@ -65,7 +65,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 				acc.yttr$setFloatingTicks(0);
 			}
 			YStats.add(self, YStats.TIME_IN_VOID, 1);
-			if (self.getPos().y > world.getBottomY()) {
+			if (self.getPos().y > getWorld().getBottomY()) {
 				yttr$isDiving = false;
 				new MessageS2CDiveEnd().sendTo(self);
 			} else {
@@ -76,12 +76,12 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 					self.setNoGravity(true);
 					yttr$isNoGravityFromDiving = true;
 				}
-				self.setPos(self.getPos().x, world.getBottomY() - 24, self.getPos().z);
+				self.setPos(self.getPos().x, getWorld().getBottomY() - 24, self.getPos().z);
 			}
 			ItemStack chest = self.getEquippedStack(EquipmentSlot.CHEST);
 			if (Yttr.isWearingFullSuit(self)) {
 				SuitArmorItem sai = (SuitArmorItem)chest.getItem();
-				int pressure = Yttr.calculatePressure(self.getWorld(), yttr$divePos.x, yttr$divePos.z);
+				int pressure = Yttr.calculatePressure(self.getServerWorld(), yttr$divePos.x, yttr$divePos.z);
 				for (SuitResource sr : SuitResource.VALUES) {
 					int amt = sai.getResourceAmount(chest, sr);
 					if (amt <= 0) {
@@ -102,7 +102,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 						YCriteria.DIVE_FAR.trigger(self);
 					}
 					// teleport prematurely to load chunks
-					self.teleport(pos.getX()+0.5, world.getBottomY() - 24, pos.getZ()+0.5);
+					self.teleport(pos.getX()+0.5, getWorld().getBottomY() - 24, pos.getZ()+0.5);
 				} else {
 					yttr$isDiving = false;
 					new MessageS2CDiveEnd().sendTo(self);
@@ -110,9 +110,9 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 					double closestDist = Double.POSITIVE_INFINITY;
 					BlockPos closestPad = null;
 					for (BlockPos bp : BlockPos.iterate(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
-						if (self.world.getBlockState(bp).isOf(YBlocks.DIVING_PLATE)) {
+						if (self.getWorld().getBlockState(bp).isOf(YBlocks.DIVING_PLATE)) {
 							double dist = bp.getSquaredDistance(pos);
-							if (dist < closestDist && self.world.isAir(bp.up())) {
+							if (dist < closestDist && self.getWorld().isAir(bp.up())) {
 								closestPad = bp.toImmutable();
 								closestDist = dist;
 							}
@@ -120,14 +120,14 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 					}
 					if (closestPad == null) {
 						self.teleport(pos.getX()+0.5, pos.getY()+4, pos.getZ()+0.5);
-						self.setVelocity(self.world.random.nextGaussian()/2, 1, self.world.random.nextGaussian()/2);
+						self.setVelocity(self.getWorld().random.nextGaussian()/2, 1, self.getWorld().random.nextGaussian()/2);
 						self.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(self));
 					} else {
 						self.teleport(closestPad.getX()+0.5, closestPad.getY()+1, closestPad.getZ()+0.5);
 					}
 				}
 			} else {
-				GeysersState gs = GeysersState.get(self.getWorld());
+				GeysersState gs = GeysersState.get(self.getServerWorld());
 				for (Geyser g : gs.getGeysersInRange(yttr$divePos.x, yttr$divePos.z, 64)) {
 					if (!yttr$knownGeysers.contains(g.id)) {
 						Yttr.discoverGeyser(g.id, self);

@@ -51,15 +51,15 @@ public class NetherWoodSwapStructureProcessor extends StructureProcessor {
 			StructureBlockInfo unk3, StructureBlockInfo block,
 			StructurePlacementData structurePlacementData) {
 		if (warped) {
-			Block swapped = SWAP.getOrDefault(block.state.getBlock(), SWAP.inverse().get(block.state.getBlock()));
+			Block swapped = SWAP.getOrDefault(block.state().getBlock(), SWAP.inverse().get(block.state().getBlock()));
 			if (swapped != null) {
 				BlockState bs = swapped.getDefaultState();
-				for (Property prop : block.state.getProperties()) {
+				for (Property prop : block.state().getProperties()) {
 					if (bs.contains(prop)) {
-						bs = bs.with(prop, block.state.get(prop));
+						bs = bs.with(prop, block.state().get(prop));
 					}
 				}
-				return new StructureBlockInfo(block.pos, bs, block.nbt);
+				return new StructureBlockInfo(block.pos(), bs, block.nbt());
 			}
 		}
 		return block;

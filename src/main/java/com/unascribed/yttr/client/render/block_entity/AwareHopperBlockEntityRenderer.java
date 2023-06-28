@@ -12,8 +12,8 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class AwareHopperBlockEntityRenderer implements BlockEntityRenderer<AwareHopperBlockEntity> {
 
@@ -26,8 +26,8 @@ public class AwareHopperBlockEntityRenderer implements BlockEntityRenderer<Aware
 	public void render(AwareHopperBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
 		matrices.translate(0.5, 2.5, 0.5);
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
+		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
+		matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(90));
 		zendermie.setAngles(null, entity.craftingTicks > 0 ? 1 : 0, 0, entity.age+tickDelta,
 				MathHelper.lerpAngleDegrees(tickDelta, entity.prevHeadYaw, entity.headYaw),
 				MathHelper.lerpAngleDegrees(tickDelta, entity.prevHeadPitch, entity.headPitch));
@@ -36,7 +36,7 @@ public class AwareHopperBlockEntityRenderer implements BlockEntityRenderer<Aware
 			zendermie.head.visible = false;
 			matrices.push();
 			zendermie.head.rotate(matrices);
-			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+			matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
 			matrices.scale(0.6f, 0.6f, 0.6f);
 			matrices.translate(-0.5f, -0.4f, -0.5f);
 			MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(Blocks.CARVED_PUMPKIN.getDefaultState(), matrices, vertexConsumers, light, overlay);

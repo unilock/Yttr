@@ -12,7 +12,7 @@ import net.minecraft.client.sound.SoundInstance;
 @Mixin(MusicTracker.class)
 public interface AccessorMusicTracker {
 
-	@Accessor("current")
+	@Accessor("currentMusic")
 	SoundInstance yttr$getCurrent();
 	
 }

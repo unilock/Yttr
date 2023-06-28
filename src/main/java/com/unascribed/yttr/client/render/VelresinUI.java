@@ -18,7 +18,7 @@ public class VelresinUI extends IHasAClient {
 		if (boc.blockState().getBlock() == YBlocks.VELRESIN && mc.crosshairTarget instanceof BlockHitResult bhr) {
 			var f = VelresinBlock.getTargetedFacing(bhr);
 			if (f != null) {
-				var model = mc.getBakedModelManager().getModel(new ModelIdentifier("yttr:spread_"+f.asString()+"#inventory"));
+				var model = mc.getBakedModelManager().getModel(new ModelIdentifier("yttr", "spread_"+f.asString(), "inventory"));
 				var ms = wrc.matrixStack();
 				var pos = boc.blockPos();
 				ms.push();

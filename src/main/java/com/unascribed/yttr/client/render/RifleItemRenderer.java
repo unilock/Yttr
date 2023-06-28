@@ -20,6 +20,7 @@ import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -35,10 +36,10 @@ public class RifleItemRenderer extends IHasAClient {
 	
 	private static final UVObserver uvo = new UVObserver();
 
-	public static void render(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public static void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		float tickDelta = mc.getTickDelta();
 		matrices.pop();
-		boolean fp = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND;
+		boolean fp = mode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND || mode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND;
 		boolean inUse = fp && mc.player != null && mc.player.isUsingItem();
 		float useTime = inUse ? ((RifleItem)stack.getItem()).calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft()-tickDelta) : 0;
 		if (useTime > 80) {
@@ -54,7 +55,7 @@ public class RifleItemRenderer extends IHasAClient {
 		BakedModel base = mc.getBakedModelManager().getModel(RIFLE_BASE_MODEL);
 		BakedModel chamber = mc.getBakedModelManager().getModel(RIFLE_CHAMBER_MODEL);
 		BakedModel chamberGlass = mc.getBakedModelManager().getModel(RIFLE_CHAMBER_GLASS_MODEL);
-		boolean leftHanded = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.THIRD_PERSON_LEFT_HAND;
+		boolean leftHanded = mode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND || mode == ModelTransformationMode.THIRD_PERSON_LEFT_HAND;
 		mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, vertexConsumers, light, overlay, base);
 		if (fp) {
 			if (inUse) {

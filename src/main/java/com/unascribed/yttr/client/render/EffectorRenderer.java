@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -36,7 +37,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.LightType;
@@ -84,16 +84,16 @@ public class EffectorRenderer extends IHasAClient {
 				bb.begin(DrawMode.QUADS, RenderLayer.getCutout().getVertexFormat());
 				ms.push();
 				var trans = hole.dir.getUnitVector();
-				trans.scale(hole.length/2f);
+				trans.mul(hole.length/2f);
 				ms.translate(hole.start.getX(), hole.start.getY(), hole.start.getZ());
-				ms.translate(trans.getX(), trans.getY(), trans.getZ());
+				ms.translate(trans.x(), trans.y(), trans.z());
 				float s = (hole.length-0.01f)/hole.length;
 				switch (axisZ) {
 					case X -> ms.scale(s, 1, 1);
 					case Y -> ms.scale(1, s, 1);
 					case Z -> ms.scale(1, 1, s);
 				}
-				ms.translate(-trans.getX(), -trans.getY(), -trans.getZ());
+				ms.translate(-trans.x(), -trans.y(), -trans.z());
 				ms.translate(-hole.start.getX(), -hole.start.getY(), -hole.start.getZ());
 				for (int z = 0; z < hole.length; z++) {
 					mut.set(hole.start).move(hole.dir, z);

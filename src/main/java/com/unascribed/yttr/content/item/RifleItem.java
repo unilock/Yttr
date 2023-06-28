@@ -58,11 +58,11 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
 public class RifleItem extends Item implements ItemColorProvider, DirectClickItem, ControlHintable {
@@ -120,17 +120,17 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 								}
 								if (mode == RifleMode.VOID) {
 									ammo = Math.max(1, mode.shotsPerItem/ammoMod);
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
 								} else if (mode == RifleMode.LIGHT) {
 									ammo = (mode.shotsPerItem*need)/ammoMod;
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, user.getSoundCategory(), 1, 1);
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, user.getSoundCategory(), 1, 1);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
 								} else {
 									ammo = (mode.shotsPerItem*need)/ammoMod;
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
-									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
+									user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
 								}
 								break;
 							}
@@ -138,7 +138,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 					}
 				}
 				if (ammo <= 0) {
-					user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
+					user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
 					if (need > 1) {
 						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
 					} else {
@@ -168,7 +168,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 	
 	@Override
 	public ActionResult onDirectAttack(PlayerEntity user, Hand hand) {
-		if (user.world.isClient) return ActionResult.CONSUME;
+		if (user.getWorld().isClient) return ActionResult.CONSUME;
 		ItemStack held = user.getStackInHand(Hand.MAIN_HAND);
 		if (!held.hasNbt()) held.setNbt(new NbtCompound());
 		boolean scoped = held.getNbt().getBoolean("Scoped");
@@ -176,7 +176,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		if (!scoped && user instanceof ServerPlayerEntity) {
 			YCriteria.RIFLE_SCOPE.trigger((ServerPlayerEntity)user);
 		}
-		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_SCOPE, SoundCategory.PLAYERS, 1, scoped ? 0.8f : 1.2f);
+		user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_SCOPE, SoundCategory.PLAYERS, 1, scoped ? 0.8f : 1.2f);
 		return ActionResult.SUCCESS;
 	}
 	
@@ -251,14 +251,14 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		if (stack.hasNbt() && stack.getNbt().getBoolean("ModeLocked")) return;
 		RifleMode oldMode = getMode(stack);
 		if (setMode(stack, mode)) {
-			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 0.75f);
-			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 1f);
-			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 1.5f);
-			if (user.world instanceof ServerWorld) {
+			user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 0.75f);
+			user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 1f);
+			user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 1.5f);
+			if (user.getWorld() instanceof ServerWorld) {
 				float r = (oldMode.color >> 16 & 255)/255f;
 				float g = (oldMode.color >> 8 & 255)/255f;
 				float b = (oldMode.color >> 0 & 255)/255f;
-				((ServerWorld)user.world).spawnParticles(new DustParticleEffect(new Vec3f(r, g, b), 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
+				((ServerWorld)user.getWorld()).spawnParticles(new DustParticleEffect(new Vector3f(r, g, b), 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
 			}
 		}
 		SlotReference can = getAmmoCanSlot(user, mode);
@@ -273,7 +273,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 			stack.getNbt().putFloat("LastCanFullness", can.getStack().getNbt().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
 		}
 		user.setStackInHand(Hand.MAIN_HAND, stack);
-		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
+		user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
 	}
 	
 	@Override
@@ -374,14 +374,14 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		Vec3d max = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(256));
 		Vec3d end = max;
 		BlockHitResult preBlock = world.raycast(new RaycastContext(preStart, preEnd, ShapeType.COLLIDER, FluidHandling.NONE, user));
-		EntityHitResult preEnt = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, preStart, preBlock.getPos(), new Box(preStart, preEnd).expand(0.3), Predicates.alwaysTrue()), preStart, preEnd);
+		EntityHitResult preEnt = correctEntityHit(ProjectileUtil.getEntityCollision(user.getWorld(), user, preStart, preBlock.getPos(), new Box(preStart, preEnd).expand(0.3), Predicates.alwaysTrue()), preStart, preEnd);
 		HitResult pre = MoreObjects.firstNonNull(preEnt, preBlock);
 		if (pre.getType() != Type.MISS && start.squaredDistanceTo(pre.getPos()) > 3*3) {
 			// add a bit of extension to ensure the block/entity gets hit instead of just barely not being reached
 			end = pre.getPos().add(preBlock.getPos().subtract(start).normalize());
 		}
 		BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
-		EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
+		EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.getWorld(), user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
 		return MoreObjects.firstNonNull(ehr, bhr);
 	}
 	

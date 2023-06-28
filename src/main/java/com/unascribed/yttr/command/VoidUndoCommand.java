@@ -30,6 +30,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -39,8 +42,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class VoidUndoCommand {
@@ -59,7 +60,7 @@ public class VoidUndoCommand {
 							} else {
 								count = 0;
 							}
-							ctx.getSource().sendFeedback(Text.translatable("commands.yttr.void_undo.clean", count), true);
+							ctx.getSource().sendFeedback(() -> Text.translatable("commands.yttr.void_undo.clean", count), true);
 						} catch (IOException e) {
 							YLog.warn("Failed to clean undos", e);
 							throw new UncheckedIOException(e);
@@ -73,7 +74,7 @@ public class VoidUndoCommand {
 							ServerCommandSource scs = ctx.getSource();
 							Path root = VoidLogic.getUndoDirectory(scs.getServer());
 							String dim = scs.getWorld().getRegistryKey().getValue().toString();
-							BlockPos pos = new BlockPos(scs.getPosition());
+							BlockPos pos = BlockPos.fromPosition(scs.getPosition());
 							ChunkPos chunkPos = new ChunkPos(pos);
 							return CompletableFuture.supplyAsync(() -> {
 								try {
@@ -127,7 +128,7 @@ public class VoidUndoCommand {
 										NbtIo.writeCompressed(index, indexFile.toFile());
 										Files.delete(file);
 									}
-									ctx.getSource().sendFeedback(Text.translatable("commands.yttr.void_undo.success", count), true);
+									ctx.getSource().sendFeedback(() -> Text.translatable("commands.yttr.void_undo.success", count), true);
 								} catch (IOException e) {
 									YLog.warn("Failed to undo", e);
 									throw new UncheckedIOException(e);
@@ -196,7 +197,9 @@ public class VoidUndoCommand {
 												YLog.warn("Failed to undo "+fname, e);
 											}
 										}
-										ctx.getSource().sendFeedback(Text.translatable("commands.yttr.void_undo.success_multi", count, success), true);
+										int finalCount = count;
+										int finalSuccess = success;
+										ctx.getSource().sendFeedback(() -> Text.translatable("commands.yttr.void_undo.success_multi", finalCount, finalSuccess), true);
 										removeFromIndex(index, fnames);
 										NbtIo.writeCompressed(index, indexFile.toFile());
 									} else {
@@ -218,7 +221,7 @@ public class VoidUndoCommand {
 	private static int undo(MinecraftServer server, NbtCompound data) {
 		int count = 0;
 		Identifier dim = new Identifier(data.getString("Dim"));
-		World world = server.getWorld(RegistryKey.of(Registry.WORLD_KEY, dim));
+		World world = server.getWorld(RegistryKey.of(RegistryKeys.WORLD, dim));
 		if (world == null) {
 			throw new CommandException(Text.translatable("commands.yttr.void_undo.no_world", dim.toString()));
 		}
@@ -230,7 +233,7 @@ public class VoidUndoCommand {
 			NbtCompound block = blocks.getCompound(i);
 			byte[] posOfs = block.getByteArray("Pos");
 			mut.set(pos.getX()+posOfs[0], pos.getY()+posOfs[1], pos.getZ()+posOfs[2]);
-			Block b = Registry.BLOCK.get(new Identifier(block.getString("Block")));
+			Block b = Registries.BLOCK.get(new Identifier(block.getString("Block")));
 			if (b == null) continue;
 			BlockState bs = b.getDefaultState();
 			if (block.contains("State", NbtType.COMPOUND)) {

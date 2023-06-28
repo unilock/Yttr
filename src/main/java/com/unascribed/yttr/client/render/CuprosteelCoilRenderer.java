@@ -19,8 +19,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class CuprosteelCoilRenderer {
 	

@@ -4,7 +4,7 @@ import com.unascribed.yttr.init.YEntities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
 
 public class RifleDummyEntity extends Entity {

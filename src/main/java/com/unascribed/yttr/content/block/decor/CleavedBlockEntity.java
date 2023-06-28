@@ -3,6 +3,8 @@ package com.unascribed.yttr.content.block.decor;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import net.minecraft.network.packet.Packet;
+import net.minecraft.registry.RegistryKeys;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
@@ -27,7 +29,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
@@ -178,7 +179,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		} else {
 			polygons = cube();
 		}
-		donor = NbtHelper.toBlockState(tag.getCompound("Donor"));
+		donor = NbtHelper.toBlockState(this.getWorld().filteredLookup(RegistryKeys.BLOCK), tag.getCompound("Donor"));
 		clientCacheData = null;
 		cachedShape = null;
 		if (world instanceof YttrWorld) ((YttrWorld)world).yttr$scheduleRenderUpdate(pos);
@@ -222,8 +223,8 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return toTagInner(super.toInitialChunkDataNbt());
+	public NbtCompound toSyncedNbt() {
+		return toTagInner(super.toSyncedNbt());
 	}
 
 	@Nullable

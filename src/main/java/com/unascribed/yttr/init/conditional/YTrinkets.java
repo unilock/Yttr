@@ -10,7 +10,7 @@ import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class YTrinkets {
 
@@ -24,8 +24,8 @@ public class YTrinkets {
 	private static final StabilizationEnchantment STABILIZATION = new StabilizationEnchantment();
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.ITEM, YTrinkets.class, Item.class);
-		Yttr.autoreg.autoRegister(Registry.ENCHANTMENT, YTrinkets.class, Enchantment.class);
+		Yttr.autoreg.autoRegister(Registries.ITEM, YTrinkets.class, Item.class);
+		Yttr.autoreg.autoRegister(Registries.ENCHANTMENT, YTrinkets.class, Enchantment.class);
 		
 		YItems.CUPROSTEEL_COIL.set(CUPROSTEEL_COIL);
 		YItems.AMMO_PACK.set(AMMO_PACK);

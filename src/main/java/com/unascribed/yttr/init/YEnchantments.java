@@ -10,7 +10,7 @@ import com.unascribed.yttr.content.enchant.StabilizationEnchantment;
 import com.unascribed.yttr.content.enchant.VorpalEnchantment;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class YEnchantments {
 
@@ -23,7 +23,7 @@ public class YEnchantments {
 	public static final LatchReference<StabilizationEnchantment> STABILIZATION = YLatches.create();
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.ENCHANTMENT, YEnchantments.class, Enchantment.class);
+		Yttr.autoreg.autoRegister(Registries.ENCHANTMENT, YEnchantments.class, Enchantment.class);
 	}
 	
 }

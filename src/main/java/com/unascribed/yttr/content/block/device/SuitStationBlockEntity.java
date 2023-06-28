@@ -205,7 +205,7 @@ public class SuitStationBlockEntity extends BlockEntity implements YTickable, Si
 	}
 	
 	public static boolean isSuit(ItemStack stack, EquipmentSlot slot) {
-		return stack.getItem() instanceof SuitArmorItem && ((SuitArmorItem)stack.getItem()).getSlotType() == slot;
+		return stack.getItem() instanceof SuitArmorItem && ((SuitArmorItem)stack.getItem()).getPreferredSlot() == slot;
 	}
 	
 }

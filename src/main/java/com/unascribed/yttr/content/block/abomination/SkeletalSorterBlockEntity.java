@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.abomination;
 
+import net.minecraft.network.packet.Packet;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
@@ -17,7 +18,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.sound.SoundEvent;
@@ -308,8 +308,8 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound tag = super.toInitialChunkDataNbt();
+	public NbtCompound toSyncedNbt() {
+		NbtCompound tag = super.toSyncedNbt();
 		tag.put("MainHand", heldItemMainHand.writeNbt(new NbtCompound()));
 		tag.put("OffHand", heldItemOffHand.writeNbt(new NbtCompound()));
 		return tag;

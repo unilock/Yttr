@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.big;
 
+import net.minecraft.network.packet.Packet;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.lib39.weld.api.BigBlock;
@@ -18,7 +19,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.sound.SoundCategory;
@@ -102,8 +102,8 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound tag = super.toInitialChunkDataNbt();
+	public NbtCompound toSyncedNbt() {
+		NbtCompound tag = super.toSyncedNbt();
 		tag.put("Contents", Yttr.serializeInv(contents));
 		return tag;
 	}

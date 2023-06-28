@@ -318,11 +318,11 @@ public class YBlocks {
 	public static final VoidFilterBlock VOID_FILTER = new VoidFilterBlock(FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.resistance(4000));
 	
-	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.of(Material.STONE)
+	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.of()
 			.strength(45, 0)
 		);
 	
-	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.of(Material.AIR)
+	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.of()
 			.collidable(false)
 			.dropsNothing()
 			.ticksRandomly()

@@ -12,23 +12,23 @@ import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 
 public class LampItemRenderer extends IHasAClient {
 
-	public static void render(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public static void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		LampColor color = LampBlockItem.getColor(stack);
 		boolean lit = LampBlockItem.isInverted(stack);
 		BlockState state = ((BlockItem)stack.getItem()).getBlock().getDefaultState()
 				.with(LampBlock.LIT, lit)
 				.with(LampBlock.COLOR, color);
 		matrices.translate(0.5, 0.5, 0.5);
-		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+		matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
 		matrices.translate(-0.5, -0.5, -0.5);
 		BakedModel model = mc.getBlockRenderManager().getModel(state);
 		int i = mc.getBlockColors().getColor(state, null, null, 0);

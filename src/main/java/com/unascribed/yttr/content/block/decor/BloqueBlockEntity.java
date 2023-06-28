@@ -25,6 +25,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 
 public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
 
@@ -336,7 +337,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
+	public NbtCompound toSyncedNbt() {
 		return toNbt();
 	}
 	
@@ -384,8 +385,8 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	public int getSlotForPlacement(Vec3d hitPos, BlockPos blockPos, Direction face) {
 		int slot = getSlot(hitPos, blockPos, face);
 		if (get(slot) != null) {
-			Vec3f vec = face.getUnitVector();
-			return getSlot(hitPos.add(new Vec3d(vec.getX()*0.2, vec.getY()*0.2, vec.getZ()*0.2)), blockPos, face);
+			Vector3f vec = face.getUnitVector();
+			return getSlot(hitPos.add(new Vec3d(vec.x()*0.2, vec.y()*0.2, vec.z()*0.2)), blockPos, face);
 		}
 		return slot;
 	}

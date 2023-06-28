@@ -27,7 +27,6 @@ public class MixinItemRenderer {
 	public void renderGuiItemOverlay(TextRenderer renderer, ItemStack stack, int x, int y, @Nullable String countLabel, CallbackInfo ci) {
 		if (stack.getItem() == YItems.EFFECTOR) {
 			RenderSystem.disableDepthTest();
-			RenderSystem.disableTexture();
 			RenderSystem.disableBlend();
 			Tessellator tess = Tessellator.getInstance();
 			BufferBuilder bb = tess.getBufferBuilder();
@@ -37,7 +36,6 @@ public class MixinItemRenderer {
 			renderGuiQuad(bb, x + 2, y + 13, 13, 1, 255, 255, 255, 255);
 			renderGuiQuad(bb, x + 2, y + 13, w, 1, 0, 0, 0, 255);
 			RenderSystem.enableBlend();
-			RenderSystem.enableTexture();
 			RenderSystem.enableDepthTest();
 		}
 	}

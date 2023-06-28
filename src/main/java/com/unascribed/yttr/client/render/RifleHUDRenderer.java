@@ -16,14 +16,14 @@ import com.unascribed.yttr.util.math.Interp;
 
 import com.google.common.base.Ascii;
 
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
 
 public class RifleHUDRenderer extends IHasAClient {
 
@@ -47,7 +47,9 @@ public class RifleHUDRenderer extends IHasAClient {
 	private static ItemStack rifleStack;
 	private static RifleItem rifleItem;
 	
-	public static void render(MatrixStack matrices, float delta) {
+	public static void render(GuiGraphics graphics, float delta) {
+		MatrixStack matrices = graphics.getMatrices();
+
 		if (mc.player == null || rifleStack == null || rifleItem == null) return;
 		if (scopeTime > 0) {
 			boolean scoped = rifleStack.hasNbt() && rifleStack.getNbt().getBoolean("Scoped");
@@ -64,10 +66,10 @@ public class RifleHUDRenderer extends IHasAClient {
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
 				DrawableHelper.drawTexture(matrices, -1, -1, 0, 0, 2, 2, 2, 2);
 				RenderSystem.setShaderColor(0, 0, 0, scopeA);
-				DrawableHelper.fill(matrices, -100, -2, -1, 2, -1);
-				DrawableHelper.fill(matrices, 1, -2, 100, 2, -1);
-				DrawableHelper.fill(matrices, -1, -2, 1, -1, -1);
-				DrawableHelper.fill(matrices, -1, 1, 1, 2, -1);
+				graphics.fill(-100, -2, -1, 2, -1);
+				graphics.fill(1, -2, 100, 2, -1);
+				graphics.fill(-1, -2, 1, -1, -1);
+				graphics.fill(-1, 1, 1, 2, -1);
 				matrices.scale(0.25f, 0.75f, 1);
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -141,7 +143,7 @@ public class RifleHUDRenderer extends IHasAClient {
 					int curTextCol = current.color;
 					curTextCol |= ((int)(mainA*255)&0xFF)<<24;
 					var curText = I18n.translate("yttr.rifle_mode."+Ascii.toLowerCase(current.name()));
-					mc.textRenderer.drawWithShadow(matrices, curText, -(mc.textRenderer.getWidth(curText)/2), 10, curTextCol);
+					graphics.drawShadowedText(mc.textRenderer, curText, -(mc.textRenderer.getWidth(curText)/2), 10, curTextCol);
 				}
 				for (int i = -3-(Math.abs(changeSignum)); i <= 3+(Math.abs(changeSignum)); i++) {
 					int j = (current.effectiveOrdinal()+i)%RifleMode.VALUES.size();
@@ -168,7 +170,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						if (ammo == -1) {
 							int textCol = 0x00FFFFFF;
 							textCol |= ((int)(a*255)&0xFF)<<24;
-							mc.textRenderer.drawWithShadow(matrices, "∞", x+16-(mc.textRenderer.getWidth("∞")), y+8, textCol);
+							graphics.drawShadowedText(mc.textRenderer, "∞", x+16-(mc.textRenderer.getWidth("∞")), y+8, textCol);
 						} else {
 							String str = Integer.toString(ammo);
 							int w = str.length()*4;

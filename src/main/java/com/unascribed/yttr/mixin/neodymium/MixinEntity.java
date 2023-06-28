@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.neodymium;
 
+import net.minecraft.registry.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,7 +24,6 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction.Axis;
@@ -54,7 +54,7 @@ public class MixinEntity implements Magnetized {
 		boolean receptiveAbove = false;
 		boolean receptiveBelow = false;
 		Entity self = (Entity)(Object)this;
-		if (self.getType() == null || self.world == null || self.getBoundingBox() == null) return;
+		if (self.getType() == null || self.getWorld() == null || self.getBoundingBox() == null) return;
 		if (self instanceof AbstractMinecartEntity || self.getType().isIn(YTags.Entity.MAGNETIC)) {
 			receptiveBelow = true;
 			receptiveAbove = true;
@@ -75,14 +75,14 @@ public class MixinEntity implements Magnetized {
 		if (receptiveBelow) {
 			Box box = self.getBoundingBox();
 			Box bottom = new Box(box.minX, box.minY-0.5, box.minZ, box.maxX, box.minY, box.maxZ);
-			if (Iterables.any(self.world.m_byqkqxkz(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
+			if (Iterables.any(self.getWorld().m_byqkqxkz(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
 				yttr$magnetizedBelow = true;
 			}
 		}
 		if (receptiveAbove) {
 			Box box = self.getBoundingBox();
 			Box top = new Box(box.minX, box.maxY, box.minZ, box.maxX, box.maxY+0.5, box.maxZ);
-			if (Iterables.any(self.world.getCollisions(self, top), vs -> {
+			if (Iterables.any(self.getWorld().getCollisions(self, top), vs -> {
 				if (!(vs instanceof MagneticVoxelShape)) return false;
 				double min = vs.getMin(Axis.Y);
 				if (min < box.maxY) return false;
@@ -97,7 +97,7 @@ public class MixinEntity implements Magnetized {
 			if (yttr$magnetizedBelow && !(self instanceof IronGolemEntity) && !(self instanceof ItemEntity)) {
 				self.damage(YTTR$MAGNET, 2);
 			}
-			if (Math.abs(self.getPitch()) > 0.01 && self.world.random.nextInt(20) == 0) {
+			if (Math.abs(self.getPitch()) > 0.01 && self.getWorld().random.nextInt(20) == 0) {
 				self.playSound(YSounds.MAGNET_STEP, 1, 1);
 			}
 			self.setPitch(self.getPitch() / 2);

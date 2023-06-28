@@ -25,9 +25,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class AmmoPackRenderer {
 	
@@ -40,7 +40,7 @@ public class AmmoPackRenderer {
 			BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
 			matrices.push();
 				bep.body.rotate(matrices);
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
 				matrices.translate(-8/16f, -12/16f, 2/16f);
 				VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutoutNoCull(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE));
 				for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), null, YRandom.get())) {

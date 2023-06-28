@@ -131,7 +131,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 				}
 				craftingTicks++;
 				if (craftingTicks >= 100) {
-					ItemStack outputStack = r.craft(input);
+					ItemStack outputStack = r.craft(input, world.getRegistryManager());
 					DefaultedList<ItemStack> remainders = world.getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, input, world);
 					for (int i = 0; i < input.size(); i++) {
 						input.removeStack(i, 1);
@@ -237,8 +237,8 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound tag = super.toInitialChunkDataNbt();
+	public NbtCompound toSyncedNbt() {
+		NbtCompound tag = super.toSyncedNbt();
 		tag.putInt("CraftingTicks", craftingTicks);
 		return tag;
 	}
@@ -265,7 +265,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 				if (world.raycast(new RaycastContext(head, player.getCameraPosVec(1), ShapeType.COLLIDER, FluidHandling.NONE, player)).getType() == Type.MISS) {
 					Optional<CraftingRecipe> recipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, learnInput, world);
 					if (recipe.isPresent()) {
-						if (recipe.get().getOutput().getItem() == YBlocks.AWARE_HOPPER.asItem()) {
+						if (recipe.get().getResult(world.getRegistryManager()).getItem() == YBlocks.AWARE_HOPPER.asItem()) {
 							sayTicks = -60;
 							world.playSound(null, pos, YSounds.AWARE_HOPPER_SCREAM, SoundCategory.BLOCKS, 1, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
 							return;

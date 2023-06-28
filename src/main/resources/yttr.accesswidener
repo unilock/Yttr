@@ -3,7 +3,7 @@ accessWidener v1 named
 accessible method net/minecraft/client/particle/RedDustParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/particle/DustParticleEffect;Lnet/minecraft/client/particle/SpriteProvider;)V
 accessible method net/minecraft/client/particle/BlockLeakParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;)V
 accessible method net/minecraft/util/shape/SimpleVoxelShape <init> (Lnet/minecraft/util/shape/VoxelSet;)V
-accessible method net/minecraft/client/util/math/MatrixStack$Entry <init> (Lnet/minecraft/util/math/Matrix4f;Lnet/minecraft/util/math/Matrix3f;)V
+#accessible method net/minecraft/client/util/math/MatrixStack$Entry <init> (Lnet/minecraft/util/math/Matrix4f;Lnet/minecraft/util/math/Matrix3f;)V
 accessible method net/minecraft/util/shape/VoxelShape <init> (Lnet/minecraft/util/shape/VoxelSet;)V
 
 mutable field net/minecraft/world/World isClient Z
@@ -12,7 +12,7 @@ mutable field net/minecraft/resource/pack/ResourcePackManager providers Ljava/ut
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible class net/minecraft/village/TradeOffers$SellItemFactory
 
-mutable field net/minecraft/item/Item group Lnet/minecraft/item/ItemGroup;
+#mutable field net/minecraft/item/Item group Lnet/minecraft/item/ItemGroup;
 
 accessible class net/minecraft/client/render/WorldRenderer$ChunkInfo
 accessible class net/minecraft/client/texture/ResourceTexture$TextureData
@@ -21,7 +21,7 @@ accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 accessible method net/minecraft/entity/FallingBlockEntity <init> (Lnet/minecraft/world/World;DDDLnet/minecraft/block/BlockState;)V
 
 accessible class net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
-accessible class net/minecraft/world/biome/source/MultiNoiseBiomeSource$Instance
+#accessible class net/minecraft/world/biome/source/MultiNoiseBiomeSource$Instance
 
 accessible method net/minecraft/world/gen/feature/VegetationConfiguredFeatures createRandomPatchFeatureConfig (Lnet/minecraft/world/gen/stateprovider/BlockStateProvider;I)Lnet/minecraft/world/gen/feature/RandomPatchFeatureConfig;
 

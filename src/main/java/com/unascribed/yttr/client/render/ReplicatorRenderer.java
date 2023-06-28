@@ -31,6 +31,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -38,13 +39,11 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult.Type;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.profiler.Profiler;
+import org.joml.Quaternionf;
 
 import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
@@ -78,9 +77,9 @@ public class ReplicatorRenderer extends IHasAClient {
 				int shape = rand.nextInt(ReplicatorShapes.ALL.size());
 				rand.nextInt(ReplicatorShapes.ALL.size());
 				
-				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(t*(rand.nextFloat()*2)));
-				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(t*(rand.nextFloat()*2)));
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(t*(rand.nextFloat()*2)));
+				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(t*(rand.nextFloat()*2)));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(t*(rand.nextFloat()*2)));
 				matrices.scale(1.4f-(rand.nextFloat()*0.65f), 1.4f-(rand.nextFloat()*0.65f), 1.4f-(rand.nextFloat()*0.65f));
 		
 				VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
@@ -128,11 +127,11 @@ public class ReplicatorRenderer extends IHasAClient {
 					// also make them face the right direction
 					BakedModel ours = ir.getModels().getModel(YItems.REPLICATOR);
 					Transformation undo = ours.getTransformation().gui;
-					matrices.scale(1/undo.scale.getX(), 1/undo.scale.getY(), 1/undo.scale.getZ());
-					Quaternion q = new Quaternion(undo.rotation.getX(), undo.rotation.getY(), undo.rotation.getZ(), true);
+					matrices.scale(1/undo.scale.x(), 1/undo.scale.y(), 1/undo.scale.z());
+					Quaternionf q = new Quaternionf(undo.rotation.x(), undo.rotation.y(), undo.rotation.z(), true);
 					q.conjugate();
 					matrices.multiply(q);
-					matrices.translate(-undo.translation.getX(), -undo.translation.getY(), -undo.translation.getZ());
+					matrices.translate(-undo.translation.x(), -undo.translation.y(), -undo.translation.z());
 					model.getTransformation().gui.apply(false, matrices);
 					matrices.scale(0.65f, 0.65f, 0.65f);
 				} else {
@@ -144,7 +143,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin((t/6)%((float)Math.PI*2))*10));
 
 				VertexConsumerProvider.Immediate imm = mc.getBufferBuilders().getEntityVertexConsumers();
-				ir.renderItem(item, Mode.NONE, false, matrices, imm, LightmapTextureManager.pack(15, 15), OverlayTexture.DEFAULT_UV, model);
+				ir.renderItem(item, ModelTransformationMode.NONE, false, matrices, imm, LightmapTextureManager.pack(15, 15), OverlayTexture.DEFAULT_UV, model);
 				imm.draw();
 				matrices.pop();
 			}

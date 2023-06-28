@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.block.device;
 
+import java.util.List;
 import java.util.Locale;
 
 import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
@@ -15,12 +16,13 @@ import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.registry.Registries;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 
@@ -57,16 +59,11 @@ public class DyedProjectTableBlock extends ProjectTableBlock implements BlockCol
 	
 	@Override
 	public ItemStack getLoot(BlockState state) {
-		return new ItemStack(Registry.ITEM.get(Yttr.id(state.get(COLOR).name().toLowerCase(Locale.ROOT)+"_project_table")));
+		return new ItemStack(Registries.ITEM.get(Yttr.id(state.get(COLOR).name().toLowerCase(Locale.ROOT)+"_project_table")));
 	}
 	
 	@Override
 	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
 		return getLoot(state);
 	}
-	
-	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-	}
-	
 }

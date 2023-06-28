@@ -60,10 +60,10 @@ public class ThrownGlowingGasEntity extends ThrownItemEntity {
 			var eff = getParticleParameters();
 			var r = ThreadLocalRandom.current();
 
-			world.playSound(getX(), getY(), getZ(), SoundEvents.ENTITY_SPLASH_POTION_BREAK, SoundCategory.NEUTRAL,
+			getWorld().playSound(getX(), getY(), getZ(), SoundEvents.ENTITY_SPLASH_POTION_BREAK, SoundCategory.NEUTRAL,
 					1, r.nextFloat(0.9f, 1), false);
 			for (int i = 0; i < 8; ++i) {
-				world.addParticle(eff, getX(), getY(), getZ(), r.nextGaussian(0, 0.1), r.nextGaussian(0, 0.1), r.nextGaussian(0, 0.1));
+				getWorld().addParticle(eff, getX(), getY(), getZ(), r.nextGaussian(0, 0.1), r.nextGaussian(0, 0.1), r.nextGaussian(0, 0.1));
 			}
 		}
 
@@ -72,9 +72,9 @@ public class ThrownGlowingGasEntity extends ThrownItemEntity {
 	@Override
 	protected void onCollision(HitResult hitResult) {
 		super.onCollision(hitResult);
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			var pos = hitResult.getPos();
-			world.sendEntityStatus(this, (byte)3);
+			getWorld().sendEntityStatus(this, (byte)3);
 			
 			if (hitResult instanceof EntityHitResult ehr) {
 				if (ehr.getEntity() instanceof LivingEntity le && le.getGroup() == EntityGroup.UNDEAD) {
@@ -83,20 +83,20 @@ public class ThrownGlowingGasEntity extends ThrownItemEntity {
 				}
 			}
 			
-			AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
+			AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(getWorld(), pos.x, pos.y, pos.z);
 			cloud.setColor(0xFEAC6D);
 			cloud.setRadius(0.3f);
 			cloud.setDuration(40);
 			cloud.addEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100));
 			cloud.addEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
-			world.spawnEntity(cloud);
+			getWorld().spawnEntity(cloud);
 			
 			for (var bp : BlockPos.iterateRandomly(random, 32, getBlockPos(), 4)) {
-				var bs = world.getBlockState(bp);
+				var bs = getWorld().getBlockState(bp);
 				if (bs.isAir() || (bs.isOf(Blocks.WATER) && bs.getFluidState().isSource())) {
-					var cast = world.raycast(new RaycastContext(pos, Vec3d.ofCenter(bp), ShapeType.COLLIDER, FluidHandling.NONE, this));
+					var cast = getWorld().raycast(new RaycastContext(pos, Vec3d.ofCenter(bp), ShapeType.COLLIDER, FluidHandling.NONE, this));
 					if (cast == null || cast.getType() == Type.MISS) {
-						world.setBlockState(bp, (bs.isOf(Blocks.WATER) ? YBlocks.TEMPORARY_LIGHT_WATER : YBlocks.TEMPORARY_LIGHT_AIR).getDefaultState());
+						getWorld().setBlockState(bp, (bs.isOf(Blocks.WATER) ? YBlocks.TEMPORARY_LIGHT_WATER : YBlocks.TEMPORARY_LIGHT_AIR).getDefaultState());
 					}
 				}
 			}

@@ -6,8 +6,8 @@ import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRecipeBookWidget;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.gui.screen.recipe.book.RecipeBookProvider;
+import net.minecraft.client.gui.screen.recipe.book.RecipeBookWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -43,7 +43,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 			this.recipeBook.reset();
 			this.recipeBook.toggleOpen();
 			this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
-			((TexturedButtonWidget)buttonWidget).setPos(this.x + 5, this.y + 34);
+			buttonWidget.setPosition(this.x + 5, this.y + 34);
 		}));
 	}
 

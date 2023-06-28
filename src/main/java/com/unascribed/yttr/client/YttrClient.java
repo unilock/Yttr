@@ -17,6 +17,9 @@ import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 
+import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
@@ -79,7 +82,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -99,7 +101,6 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.FallingBlockEntityRenderer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
@@ -137,13 +138,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
@@ -173,7 +172,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			for (var f : VelresinBlock.Facing.values()) {
-				out.accept(new ModelIdentifier("yttr:spread_"+f.asString()+"#inventory"));
+				out.accept(new ModelIdentifier("yttr", "spread_"+f.asString(), "inventory"));
 			}
 		});
 		if (RenderBridge.canUseCompatFunctions()) {
@@ -319,7 +318,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							}
 						}
 					}
-					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
+					for (Map.Entry<RegistryKey<Item>, Item> en : Registries.ITEM.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
@@ -348,17 +347,19 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			prof.pop();
 		});
 		
-		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
+		HudRenderCallback.EVENT.register((graphics, tickDelta) -> {
+			MatrixStack matrixStack = graphics.getMatrices();
+
 			var prof = mc.getProfiler();
 			prof.push("yttr");
 			prof.push("suit-hud");
 			SuitHUDRenderer.render(matrixStack, tickDelta);
 			prof.swap("rifle-hud");
-			RifleHUDRenderer.render(matrixStack, tickDelta);
+			RifleHUDRenderer.render(graphics, tickDelta);
 			prof.swap("shifter-ui");
 			ShifterUI.render(matrixStack, tickDelta);
 			prof.swap("control-hints");
-			ControlHints.render(matrixStack, tickDelta);
+			ControlHints.render(graphics, tickDelta);
 			prof.pop();
 			prof.pop();
 		});
@@ -408,7 +409,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				if (mc.player.isUsingItem() && mc.player.getActiveHand() == Hand.MAIN_HAND) {
 					int useTicks = ri.calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft());
 					float power = ri.calculatePower(useTicks);
-					IntConsumer draw = (u2) -> DrawableHelper.drawTexture(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);;
+					IntConsumer draw = (u2) -> DrawableHelper.drawTexture(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);
 					if (power >= 1.2f) {
 						draw.accept(15);
 						draw.accept(30);
@@ -621,7 +622,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		if (birAnn != null) {
 			try {
 				Class<?> rend = Class.forName("com.unascribed.yttr.client.render."+birAnn.value());
-				MethodHandle renderHandle = MethodHandles.publicLookup().findStatic(rend, "render", MethodType.methodType(void.class, ItemStack.class, Mode.class, MatrixStack.class, VertexConsumerProvider.class, int.class, int.class));
+				MethodHandle renderHandle = MethodHandles.publicLookup().findStatic(rend, "render", MethodType.methodType(void.class, ItemStack.class, ModelTransformationMode.class, MatrixStack.class, VertexConsumerProvider.class, int.class, int.class));
 				BuiltinItemRendererRegistry.INSTANCE.register(i, (is, mode, matrices, vcp, light, overlay) -> {
 					try {
 						renderHandle.invoke(is, mode, matrices, vcp, light, overlay);

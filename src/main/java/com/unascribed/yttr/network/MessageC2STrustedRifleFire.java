@@ -30,9 +30,9 @@ public class MessageC2STrustedRifleFire extends C2SMessage {
 		ItemStack is = player.getMainHandStack();
 		if (is.getItem() instanceof RifleItem) {
 			if (remainingUseTicks <= 0) {
-				((RifleItem)player.getMainHandStack().getItem()).finishUsing(is, player.world, player);
+				((RifleItem)player.getMainHandStack().getItem()).finishUsing(is, player.getWorld(), player);
 			} else {
-				((RifleItem)player.getMainHandStack().getItem()).doOnStoppedUsing(is, player.world, player, remainingUseTicks);
+				((RifleItem)player.getMainHandStack().getItem()).doOnStoppedUsing(is, player.getWorld(), player, remainingUseTicks);
 			}
 			player.clearActiveItem();
 		}

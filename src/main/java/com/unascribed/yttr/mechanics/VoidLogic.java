@@ -32,6 +32,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -108,7 +109,7 @@ public class VoidLogic {
 							BlockEntity be = world.getBlockEntity(bp);
 							NbtCompound block = new NbtCompound();
 							block.putByteArray("Pos", new byte[] {(byte)x, (byte)y, (byte)z});
-							block.putString("Block", Registry.BLOCK.getId(bs.getBlock()).toString());
+							block.putString("Block", Registries.BLOCK.getId(bs.getBlock()).toString());
 							if (!bs.getEntries().isEmpty()) {
 								NbtCompound state = new NbtCompound();
 								for (Map.Entry<Property, Comparable<?>> en : (Set<Map.Entry<Property, Comparable<?>>>)(Set)(bs.getEntries().entrySet())) {

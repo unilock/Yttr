@@ -15,16 +15,16 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import org.joml.Vector3f;
 
 public abstract class VoidFluid extends FlowableFluid {
 
-	public static final DustParticleEffect BLACK_DUST = new DustParticleEffect(Vec3f.ZERO, 1);
+	public static final DustParticleEffect BLACK_DUST = new DustParticleEffect(new Vector3f(), 1);
 	
 	public static class Flowing extends VoidFluid {
 		@Override
@@ -69,7 +69,7 @@ public abstract class VoidFluid extends FlowableFluid {
 	}
 
 	@Override
-	protected boolean isInfinite() {
+	protected boolean isInfinite(World world) {
 		return false;
 	}
 

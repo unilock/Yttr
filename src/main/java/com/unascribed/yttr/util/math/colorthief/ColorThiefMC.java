@@ -213,10 +213,11 @@ public class ColorThiefMC {
 
 		for (int i = 0; i < pixelCount; i += quality) {
 			offset = i;
-			a = NativeImage.getAlpha(pixels[offset]);
-			b = NativeImage.getBlue(pixels[offset]);
-			g = NativeImage.getGreen(pixels[offset]);
-			r = NativeImage.getRed(pixels[offset]);
+			int color = pixels[offset];
+			a = getAlpha(color);
+			b = getBlue(color);
+			g = getGreen(color);
+			r = getRed(color);
 
 			// If pixel is mostly opaque and not white
 			if (a >= 125 && !(ignoreWhite && r > 250 && g > 250 && b > 250)) {
@@ -227,6 +228,22 @@ public class ColorThiefMC {
 
 		// Remove unused pixels from the array
 		return Arrays.copyOfRange(pixelArray, 0, numUsedPixels);
+	}
+
+	private static int getAlpha(int color) {
+		return color >> 24 & 0xFF;
+	}
+
+	private static int getRed(int color) {
+		return color >> 0 & 0xFF;
+	}
+
+	private static int getGreen(int color) {
+		return color >> 8 & 0xFF;
+	}
+
+	private static int getBlue(int color) {
+		return color >> 16 & 0xFF;
 	}
 
 }

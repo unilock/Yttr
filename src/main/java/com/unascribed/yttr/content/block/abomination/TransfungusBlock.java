@@ -89,11 +89,6 @@ public class TransfungusBlock extends Block {
 	}
 	
 	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.NORMAL;
-	}
-	
-	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (hit.getSide().getAxis() != Axis.Y && world.getBlockState(pos.offset(hit.getSide().getOpposite())).isAir()) {
 			world.setBlockState(pos.offset(hit.getSide().getOpposite()), state);

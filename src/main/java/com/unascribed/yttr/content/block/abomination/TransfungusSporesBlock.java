@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.abomination;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.registry.tag.FluidTags;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YBlocks;
@@ -24,7 +25,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.random.RandomGenerator;

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.FluidTags;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
@@ -44,7 +46,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -55,13 +56,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import org.joml.Vector3f;
 
 public class BloqueBlock extends Block implements Waterloggable, BlockEntityProvider, BlockPickInteractionAware {
 	
@@ -130,7 +130,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 				double dZ = box.getZLength()/2;
 				if (is.isOf(YItems.VOID_BUCKET) && be.isWeldable()) {
 					if (world instanceof ServerWorld sw) {
-						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 0, 0), 1), center.x, center.y, center.z, 18, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vector3f(0, 0, 0), 1), center.x, center.y, center.z, 18, dX, dY, dZ, 1);
 						sw.playSound(null, pos, YSounds.DISSOLVE, SoundCategory.PLAYERS, 1, 1);
 					}
 					if (!be.isWelded() && player instanceof ServerPlayerEntity spe) {
@@ -141,11 +141,11 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 				} else if (is.isOf(Items.BUCKET) && be.isWelded()) {
 					be.unweld();
 					if (world instanceof ServerWorld sw) {
-						sw.spawnParticles(new DustParticleEffect(new Vec3f(1, 0, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
-						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 1, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
-						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 0, 1), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
-						sw.spawnParticles(new DustParticleEffect(new Vec3f(1, 1, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
-						sw.spawnParticles(new DustParticleEffect(new Vec3f(0, 1, 1), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vector3f(1, 0, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vector3f(0, 1, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vector3f(0, 0, 1), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vector3f(1, 1, 0), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
+						sw.spawnParticles(new DustParticleEffect(new Vector3f(0, 1, 1), 1), center.x, center.y, center.z, 10, dX, dY, dZ, 1);
 						sw.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.PLAYERS, 1, 0.5f);
 					}
 				} else {
@@ -174,7 +174,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 				}
 				if (cur != null) {
 					be.set(slot, null);
-					ItemStack drop = new ItemStack(Registry.ITEM.get(Yttr.id(cur.name().toLowerCase(Locale.ROOT)+"_bloque")));
+					ItemStack drop = new ItemStack(Registries.ITEM.get(Yttr.id(cur.name().toLowerCase(Locale.ROOT)+"_bloque")));
 					if (!player.isCreative()) {
 						ItemEntity ie = new ItemEntity(world, pos.getX()+((x+.5)/XSIZE), pos.getY()+((y+.5)/YSIZE), pos.getZ()+((z+.5)/ZSIZE), drop);
 						world.spawnEntity(ie);
@@ -240,7 +240,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 			for (int i = 0; i < SLOTS; i++) {
 				DyeColor color = be.get(i);
 				if (color != null) {
-					li.add(new ItemStack(Registry.ITEM.get(Yttr.id(color.name().toLowerCase(Locale.ROOT)+"_bloque"))));
+					li.add(new ItemStack(Registries.ITEM.get(Yttr.id(color.name().toLowerCase(Locale.ROOT)+"_bloque"))));
 				}
 			}
 			return li;
@@ -258,7 +258,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 		if (result instanceof BlockHitResult bhr && view.getBlockEntity(pos) instanceof BloqueBlockEntity be) {
 			DyeColor color = be.get(getSlot(bhr.getPos(), bhr.getBlockPos(), bhr.getSide()));
 			if (color != null) {
-				return new ItemStack(Registry.ITEM.get(Yttr.id(color.name().toLowerCase(Locale.ROOT)+"_bloque")));
+				return new ItemStack(Registries.ITEM.get(Yttr.id(color.name().toLowerCase(Locale.ROOT)+"_bloque")));
 			}
 		}
 		return getPickStack(view, pos, state);
