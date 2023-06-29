@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
+import com.unascribed.yttr.init.*;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.lib39.core.api.AutoRegistry;
@@ -20,28 +21,6 @@ import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
-import com.unascribed.yttr.init.YBiomes;
-import com.unascribed.yttr.init.YBlockEntities;
-import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.init.YBrewing;
-import com.unascribed.yttr.init.YCommands;
-import com.unascribed.yttr.init.YCriteria;
-import com.unascribed.yttr.init.YEnchantments;
-import com.unascribed.yttr.init.YEntities;
-import com.unascribed.yttr.init.YFluids;
-import com.unascribed.yttr.init.YFuels;
-import com.unascribed.yttr.init.YHandledScreens;
-import com.unascribed.yttr.init.YItemGroups;
-import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YNetwork;
-import com.unascribed.yttr.init.YRecipeSerializers;
-import com.unascribed.yttr.init.YRecipeTypes;
-import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.init.YStats;
-import com.unascribed.yttr.init.YStatusEffects;
-import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.init.YTrades;
-import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.init.conditional.YTrinkets;
 import com.unascribed.yttr.inred.InRedLogic;
 import com.unascribed.yttr.mechanics.SuitResource;
@@ -170,6 +149,7 @@ public class Yttr implements ModInitializer {
 		
 		// miscellaneous other stuff
 		YStats.init();
+		YDamageTypes.init();
 		YCriteria.init();
 		YBrewing.init();
 		YTrades.init();
@@ -342,12 +322,12 @@ public class Yttr implements ModInitializer {
 	}
 	
 	public static boolean isStandingOnDivingPlate(Entity e) {
-		return e.isOnGround() && e.world.getBlockState(e.getBlockPos().down()).isOf(YBlocks.DIVING_PLATE);
+		return e.isOnGround() && e.getWorld().getBlockState(e.getBlockPos().down()).isOf(YBlocks.DIVING_PLATE);
 	}
 
 	public static void syncDive(ServerPlayerEntity p) {
 		if (!(p instanceof DiverPlayer)) return;
-		GeysersState gs = GeysersState.get(p.getWorld());
+		GeysersState gs = GeysersState.get(p.getServerWorld());
 		List<Geyser> geysers = ((DiverPlayer)p).yttr$getKnownGeysers().stream()
 				.map(gs::getGeyser).filter(g -> g != null)
 				.collect(Collectors.toList());
@@ -359,7 +339,7 @@ public class Yttr implements ModInitializer {
 		DiverPlayer diver = (DiverPlayer)player;
 		Set<UUID> knownGeysers = diver.yttr$getKnownGeysers();
 		if (!knownGeysers.contains(id)) {
-			Geyser g = GeysersState.get(player.getWorld()).getGeyser(id);
+			Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
 			if (g == null) return;
 			knownGeysers.add(id);
 			new MessageS2CDiscoveredGeyser(g).sendTo(player);

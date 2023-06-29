@@ -41,7 +41,7 @@ public class InRedEncoderBlock extends InRedLogicTileBlock {
 	}
 
 	@Override
-	public boolean emitsRedstonePower(BlockState blockState) {
+	public boolean isRedstonePowerSource(BlockState blockState) {
 		return true;
 	}
 

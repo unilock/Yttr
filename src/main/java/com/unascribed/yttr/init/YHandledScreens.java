@@ -33,6 +33,7 @@ import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.registry.Registry;
@@ -63,7 +64,7 @@ public class YHandledScreens {
 	public static final ScreenHandlerType<SSDScreenHandler> SSD = new ScreenHandlerType<>(SSDScreenHandler::new);
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.SCREEN_HANDLER, YHandledScreens.class, ScreenHandlerType.class);
+		Yttr.autoreg.autoRegister(Registries.SCREEN_HANDLER_TYPE, YHandledScreens.class, ScreenHandlerType.class);
 	}
 	
 	@Retention(RUNTIME)

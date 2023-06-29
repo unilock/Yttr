@@ -51,10 +51,5 @@ public class LazorEmitterBlock extends AbstractColoredLazorBlock {
 			list.add(stack);
 		}
 	}
-	
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
-	}
 
 }

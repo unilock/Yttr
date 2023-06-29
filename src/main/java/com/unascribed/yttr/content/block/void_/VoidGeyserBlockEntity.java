@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.minecraft.registry.tag.FluidTags;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +58,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 	public void tick() {
 		if (world.isDebugWorld()) return;
 		if (pos.getY() != world.getBottomY() && !world.getBlockState(pos.down()).isOf(Blocks.BEDROCK)) {
-			world.createExplosion(null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 4, DestructionType.NONE);
+			world.createExplosion(null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 4, World.ExplosionSourceType.NONE);
 			world.setBlockState(pos, Blocks.VOID_AIR.getDefaultState());
 			return;
 		}

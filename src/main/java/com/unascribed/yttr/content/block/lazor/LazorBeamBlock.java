@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.lazor;
 
 import com.unascribed.lib39.waypoint.api.AbstractHaloBlockEntity;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -68,7 +69,7 @@ public class LazorBeamBlock extends AbstractColoredLazorBlock implements BlockEn
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		super.onEntityCollision(state, world, pos, entity);
-		entity.damage(DAMAGE_SOURCE, 2);
+		entity.damage(entity.getDamageSources().create(YDamageTypes.LAZOR), 2);
 		if (entity instanceof LivingEntity && ((int)entity.getEyeY()) == pos.getY()) {
 			((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 80));
 		}
@@ -103,10 +104,4 @@ public class LazorBeamBlock extends AbstractColoredLazorBlock implements BlockEn
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new LazorBeamBlockEntity(pos, state);
 	}
-	
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
-	}
-	
 }

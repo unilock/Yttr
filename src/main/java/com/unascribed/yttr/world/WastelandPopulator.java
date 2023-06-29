@@ -17,11 +17,10 @@ import net.minecraft.block.SideShapeType;
 import net.minecraft.block.StructureBlock;
 import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.enums.StructureBlockMode;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure.StructureBlockInfo;
 import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -241,7 +240,7 @@ public class WastelandPopulator {
 	}
 	
 	private static void explode(ServerWorld world, double x, double y, double z, float power) {
-		Explosion e = new Explosion(world, null, DamageSource.OUT_OF_WORLD, null, x, y, z, power, false, DestructionType.DESTROY);
+		Explosion e = new Explosion(world, null, world.getDamageSources().outOfWorld(), null, x, y, z, power, false, DestructionType.DESTROY);
 		e.collectBlocksAndDamageEntities();
 		for (BlockPos bp : e.getAffectedBlocks()) {
 			world.setBlockState(bp, Blocks.AIR.getDefaultState(), FLAGS, 0);
@@ -328,9 +327,9 @@ public class WastelandPopulator {
 		List<BlockPos> fillIn = Lists.newArrayList();
 		if (fill) {
 			spd.addProcessor(SimpleStructureProcessor.of((block) -> {
-				if (block.pos.getY() == originY && block.state.isSideSolid(world, block.pos, Direction.DOWN, SideShapeType.FULL)) {
-					if (block.nbt == null || !"yttr:quarry_hole".equals(block.nbt.getString("metadata"))) {
-						fillIn.add(block.pos);
+				if (block.pos().getY() == originY && block.state().isSideSolid(world, block.pos(), Direction.DOWN, SideShapeType.FULL)) {
+					if (block.nbt() == null || !"yttr:quarry_hole".equals(block.nbt().getString("metadata"))) {
+						fillIn.add(block.pos());
 					}
 				}
 				return block;
@@ -338,18 +337,18 @@ public class WastelandPopulator {
 		}
 		s.place(world, origin, origin, spd, rand, 3);
 		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
-			if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-				if (info.nbt != null) {
-					if ("yttr:quarry_hole".equals(info.nbt.getString("metadata"))) {
-						BlockPos.Mutable bp = info.pos.mutableCopy();
-						for (int y = info.pos.getY(); y >= world.getBottomY(); y--) {
+			if (info != null && info.state().get(StructureBlock.MODE) == StructureBlockMode.DATA) {
+				if (info.nbt() != null) {
+					if ("yttr:quarry_hole".equals(info.nbt().getString("metadata"))) {
+						BlockPos.Mutable bp = info.pos().mutableCopy();
+						for (int y = info.pos().getY(); y >= world.getBottomY(); y--) {
 							bp.setY(y);
 							BlockState bs = world.getBlockState(bp);
 							if (bs.isOf(Blocks.BEDROCK)) break;
 							world.setBlockState(bp, Blocks.AIR.getDefaultState());
 						}
-					} else if ("yttr:maybe_tree".equals(info.nbt.getString("metadata"))) {
-						BlockPos.Mutable bp = info.pos.mutableCopy();
+					} else if ("yttr:maybe_tree".equals(info.nbt().getString("metadata"))) {
+						BlockPos.Mutable bp = info.pos().mutableCopy();
 						if (rand.nextInt(5) == 0) {
 							for (int i = 0; i < rand.nextInt(7)+1; i++) {
 								world.setBlockState(bp, YBlocks.WASTELAND_LOG.getDefaultState());

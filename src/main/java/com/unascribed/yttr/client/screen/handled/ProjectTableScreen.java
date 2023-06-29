@@ -5,6 +5,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRecipeBookWidget;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.recipe.book.RecipeBookProvider;
 import net.minecraft.client.gui.screen.recipe.book.RecipeBookWidget;
@@ -59,34 +60,34 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderBackground(matrices);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.renderBackground(graphics);
 		if (this.recipeBook.isOpen() && this.narrow) {
-			this.drawBackground(matrices, delta, mouseX, mouseY);
-			this.recipeBook.render(matrices, mouseX, mouseY, delta);
+			this.drawBackground(graphics, delta, mouseX, mouseY);
+			this.recipeBook.render(graphics, mouseX, mouseY, delta);
 		} else {
-			this.recipeBook.render(matrices, mouseX, mouseY, delta);
-			super.render(matrices, mouseX, mouseY, delta);
-			this.recipeBook.drawGhostSlots(matrices, this.x, this.y, true, delta);
+			this.recipeBook.render(graphics, mouseX, mouseY, delta);
+			super.render(graphics, mouseX, mouseY, delta);
+			this.recipeBook.drawGhostSlots(graphics, this.x, this.y, true, delta);
 		}
 
-		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
-		this.recipeBook.drawTooltip(matrices, this.x, this.y, mouseX, mouseY);
+		this.drawMouseoverTooltip(graphics, mouseX, mouseY);
+		this.recipeBook.drawTooltip(graphics, this.x, this.y, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+	protected void drawBackground(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		int x = this.x;
 		int y = (this.height - this.backgroundHeight) / 2;
-		drawTexture(matrices, x+0, y+0, 0, 0, backgroundWidth, backgroundHeight);
+		graphics.drawTexture(TEXTURE, x+0, y+0, 0, 0, backgroundWidth, backgroundHeight);
 	}
 	
 	@Override
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-		textRenderer.draw(matrices, title, (backgroundWidth-textRenderer.getWidth(title))/2, titleY, 4210752);
-		textRenderer.draw(matrices, playerInventoryTitle, playerInventoryTitleX, playerInventoryTitleY, 4210752);
+	protected void drawForeground(GuiGraphics graphics, int mouseX, int mouseY) {
+		graphics.drawText(textRenderer, title, (backgroundWidth-textRenderer.getWidth(title))/2, titleY, 4210752, false);
+		graphics.drawText(textRenderer, playerInventoryTitle, playerInventoryTitleX, playerInventoryTitleY, 4210752, false);
 		
 //		for (Slot s : handler.slots) {
 //			drawCenteredText(matrices, textRenderer, Integer.toString(s.id), s.x+8, s.y+4, 0xFFCC00);
@@ -101,7 +102,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (this.recipeBook.mouseClicked(mouseX, mouseY, button)) {
-			this.setFocused(this.recipeBook);
+			this.setFocusedChild(this.recipeBook);
 			return true;
 		} else {
 			return this.narrow && this.recipeBook.isOpen() ? true : super.mouseClicked(mouseX, mouseY, button);
@@ -127,7 +128,6 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 
 	@Override
 	public void removed() {
-		this.recipeBook.close();
 		super.removed();
 	}
 

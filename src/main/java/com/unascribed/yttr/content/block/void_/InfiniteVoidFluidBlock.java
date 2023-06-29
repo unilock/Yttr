@@ -36,9 +36,4 @@ public class InfiniteVoidFluidBlock extends FluidBlock {
 	public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
 		return new ItemStack(YItems.VOID_BUCKET);
 	}
-
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.BLOCK;
-	}
 }

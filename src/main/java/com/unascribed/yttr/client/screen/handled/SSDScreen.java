@@ -5,6 +5,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.SSDScreenHandler;
 import com.unascribed.yttr.mixin.accessor.client.AccessorHandledScreen;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -32,24 +33,23 @@ public class SSDScreen extends HandledScreen<SSDScreenHandler> {
 	}
 	
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		renderBackground(matrices);
-		super.render(matrices, mouseX, mouseY, delta);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, delta);
 		if (!dragging) {
-			drawMouseoverTooltip(matrices, mouseX, mouseY);
+			drawMouseoverTooltip(graphics, mouseX, mouseY);
 		}
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.setShaderTexture(0, BG);
+	protected void drawBackground(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
-		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+		graphics.drawTexture(BG, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
 	}
 	
 	@Override
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+	protected void drawForeground(GuiGraphics graphics, int mouseX, int mouseY) {
 		if (sizeLag == -1) {
 			lastSizeLag = handler.props.get(0);
 			sizeLag = handler.props.get(0);
@@ -59,21 +59,20 @@ public class SSDScreen extends HandledScreen<SSDScreenHandler> {
 			Slot slot = handler.slots.get(i);
 			if (!slot.isEnabled()) {
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
-				((AccessorHandledScreen)this).yttr$drawSlot(matrices, slot);
+				((AccessorHandledScreen)this).yttr$drawSlot(graphics, slot);
 			}
 		}
 		
-		super.drawForeground(matrices, mouseX, mouseY);
+		super.drawForeground(graphics, mouseX, mouseY);
 		
 		int slotsMissing = 8-handler.props.get(0);
 		int w = slotsMissing*18;
 
-		RenderSystem.setShaderTexture(0, BG);
-		drawTexture(matrices, 151-w, 19, 126-w, 153, w, 18, 256, 256);
+		graphics.drawTexture(BG, 151-w, 19, 126-w, 153, w, 18, 256, 256);
 		
 		w = calcPistonWidth();
-		drawTexture(matrices, 156-w, 19, 0, 133, w, 20, 256, 256);
-		drawTexture(matrices, 155, 19, 130, 133, 16, 20, 256, 256);
+		graphics.drawTexture(BG, 156-w, 19, 0, 133, w, 20, 256, 256);
+		graphics.drawTexture(BG, 155, 19, 130, 133, 16, 20, 256, 256);
 	}
 	
 	private int calcPistonWidth() {

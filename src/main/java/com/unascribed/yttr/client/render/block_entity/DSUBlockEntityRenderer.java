@@ -19,7 +19,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.MatrixStack.Entry;
 import net.minecraft.item.Item;
@@ -28,10 +28,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.LightType;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntity> {
 
@@ -107,7 +106,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 					ang = -30;
 					break;
 			}
-			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
+			matrices.multiply(net.minecraft.util.math.Axis.Y_POSITIVE.rotationDegrees(ang));
 			matrices.translate(-dsu.getXSize()/2D, -dsu.getYSize()/2D, -dsu.getZSize()/2D);
 			matrices.translate(2, 2, 0);
 			matrices.scale(-1/16f, -1/16f, 1/16f);
@@ -152,12 +151,12 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 							matrices.translate(x*3, y*6, 0);
 							matrices.translate(1.5, 1.5, -0.015);
 							matrices.scale(3, -3, -0.01f);
-							MinecraftClient.getInstance().getItemRenderer().renderItem(item, Mode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
+							MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformationMode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 								@Override
 								public void bakedQuad(Entry matrixEntry, BakedQuad quad, float red, float green, float blue, int light, int overlay) {
 									super.bakedQuad(new Entry(matrixEntry.getModel(), nmat2), quad, red, green, blue, light, overlay);
 								}
-							}, 0);
+							}, entity.getWorld(), 0);
 						matrices.pop();
 					}
 				}

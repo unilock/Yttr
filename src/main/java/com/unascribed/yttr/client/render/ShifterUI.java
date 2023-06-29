@@ -13,7 +13,6 @@ import com.unascribed.yttr.util.math.Interp;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -165,20 +164,20 @@ public class ShifterUI extends IHasAClient {
 				boolean disconnected = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceDisconnected");
 				boolean hidden = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceHidden");
 				boolean plane = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("PlaneRestrict");
-				DrawableHelper.drawTexture(matrices, -24, -8, 0, disconnected ? 16 : 0, 16, 16, 48, 32);
-				DrawableHelper.drawTexture(matrices, -8, -24, 16, hidden ? 16 : 0, 16, 16, 48, 32);
-				DrawableHelper.drawTexture(matrices, 8, -8, 32, plane ? 16 : 0, 16, 16, 48, 32);
+				YttrClient.drawQuad(matrices, -24, -8, 0, disconnected ? 16 : 0, 16, 16, 48, 32);
+				YttrClient.drawQuad(matrices, -8, -24, 16, hidden ? 16 : 0, 16, 16, 48, 32);
+				YttrClient.drawQuad(matrices, 8, -8, 32, plane ? 16 : 0, 16, 16, 48, 32);
 				if (ticksSinceChangeDisconnected < ANIM_TIME) {
 					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeDisconnected+delta)/ANIM_TIMEf)*mainA);
-					DrawableHelper.drawTexture(matrices, -24, -8, 0, disconnected ? 0 : 16, 16, 16, 48, 32);
+					YttrClient.drawQuad(matrices, -24, -8, 0, disconnected ? 0 : 16, 16, 16, 48, 32);
 				}
 				if (ticksSinceChangeHidden < ANIM_TIME) {
 					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeHidden+delta)/ANIM_TIMEf)*mainA);
-					DrawableHelper.drawTexture(matrices, -8, -24, 16, hidden ? 0 : 16, 16, 16, 48, 32);
+					YttrClient.drawQuad(matrices, -8, -24, 16, hidden ? 0 : 16, 16, 16, 48, 32);
 				}
 				if (ticksSinceChangePlane < ANIM_TIME) {
 					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangePlane+delta)/ANIM_TIMEf)*mainA);
-					DrawableHelper.drawTexture(matrices, 8, -8, 32, plane ? 0 : 16, 16, 16, 48, 32);
+					YttrClient.drawQuad(matrices, 8, -8, 32, plane ? 0 : 16, 16, 16, 48, 32);
 				}
 			matrices.pop();
 		}

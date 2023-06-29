@@ -6,13 +6,14 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
 import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,33 +30,33 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 	public VoidFilterScreen(VoidFilterScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
-	
+
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		renderBackground(matrices);
-		super.render(matrices, mouseX, mouseY, delta);
-		drawMouseoverTooltip(matrices, mouseX, mouseY);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, delta);
+		drawMouseoverTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.setShaderColor(1, 1, 1, 1);
+	protected void drawBackground(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
+		MatrixStack matrices = graphics.getMatrices();
+		graphics.setShaderColor(1, 1, 1, 1);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		
 		RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		for (int xo = 0; xo < 2; xo++) {
 			for (int yo = 0; yo < 2; yo++) {
-				drawSprite(matrices, x+4+(xo*32), y+14+(yo*32), 0, 32, 32, FluidRenderHandlerRegistry.INSTANCE.get(YFluids.VOID).getFluidSprites(null, null, YFluids.VOID.getDefaultState())[0]);
+				graphics.drawSprite(x+4+(xo*32), y+14+(yo*32), 0, 32, 32, FluidRenderHandlerRegistry.INSTANCE.get(YFluids.VOID).getFluidSprites(null, null, YFluids.VOID.getDefaultState())[0]);
 			}
 		}
-		
-		RenderSystem.setShaderTexture(0, BG);
+
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+		graphics.drawTexture(BG, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
 		if (!handler.isIndependent()) {
-			drawTexture(matrices, x+115, y+3, 0, 189, 54, 67, 256, 256);
+			graphics.drawTexture(BG, x+115, y+3, 0, 189, 54, 67, 256, 256);
 		}
 		RenderSystem.disableBlend();
 		
@@ -65,19 +66,19 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 			gp.render(matrices, delta);
 		}
 		matrices.pop();
-		
-		drawTexture(matrices, x+67, y+27, 176, 0, ((handler.getProgress()*40)/handler.getMaxProgress()), 28, 256, 256);
+
+		graphics.drawTexture(BG, x+67, y+27, 176, 0, ((handler.getProgress()*40)/handler.getMaxProgress()), 28, 256, 256);
 		
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShaderColor(1, 1, 1, 0.75f);
-		drawTexture(matrices, x+titleX-2, y+titleY-2, titleX-2, titleY-2, textRenderer.getWidth(getTitle())+4, 12, 256, 256);
+		graphics.setShaderColor(1, 1, 1, 0.75f);
+		graphics.drawTexture(BG, x+titleX-2, y+titleY-2, titleX-2, titleY-2, textRenderer.getWidth(getTitle())+4, 12, 256, 256);
 		RenderSystem.disableBlend();
 	}
 	
 	@Override
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-		super.drawForeground(matrices, mouseX, mouseY);
+	protected void drawForeground(GuiGraphics graphics, int mouseX, int mouseY) {
+		super.drawForeground(graphics, mouseX, mouseY);
 	}
 	
 	@Override
@@ -161,7 +162,7 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 			RenderSystem.setShaderTexture(0, BG);
 			float u = (7 - age * 8 / maxAge)*8;
 			float v = 166;
-			DrawableHelper.drawTexture(matrices, (int)interpPosX-4, (int)interpPosY-4, 0, u, v, 8, 8, 256, 256);
+			YttrClient.drawQuad(matrices, (int)interpPosX-4, (int)interpPosY-4, 0, u, v, 8, 8, 256, 256);
 		}
 
 	}

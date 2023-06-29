@@ -8,6 +8,7 @@ import com.unascribed.yttr.YConfig.TrileanSoft;
 import com.unascribed.yttr.content.entity.RifleDummyEntity;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YDamageTypes;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mechanics.VoidLogic;
@@ -19,7 +20,6 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,25 +42,25 @@ public enum RifleMode {
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit instanceof EntityHitResult) {
 				int damage = (int)Math.ceil(power*14);
-				((EntityHitResult) hit).getEntity().damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.getWorld()), user), damage);
+				((EntityHitResult) hit).getEntity().damage(user.getDamageSources().create(YDamageTypes.RIFLE, new RifleDummyEntity(user.getWorld()), user), damage);
 			}
 			if (power > 1.2f) {
-				user.getWorld().createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, DestructionType.NONE);
+				user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, World.ExplosionSourceType.NONE);
 			}
 		}
 	},
 	EXPLODE(Formatting.GRAY, 0xAAAAAA, () -> Items.GUNPOWDER, 1, 1) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
-			user.getWorld().createExplosion(null, DamageSource.explosion(user),
+			user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user),
 					null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2,
-							YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? DestructionType.NONE : power > 1.2 ? DestructionType.DESTROY : DestructionType.BREAK);
+							YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? World.ExplosionSourceType.NONE : power > 1.2 ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.BLOCK);
 		}
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
-			user.getWorld().createExplosion(null, DamageSource.explosion(user),
+			user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user),
 					null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false,
-					YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? DestructionType.NONE : DestructionType.DESTROY);
+					YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? World.ExplosionSourceType.NONE : World.ExplosionSourceType.BLOCK);
 		}
 		@Override
 		public boolean isEnabled() {
@@ -72,12 +72,12 @@ public enum RifleMode {
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit.getType() == Type.MISS) return;
 			if (power > 1.1f) {
-				user.getWorld().createExplosion(user, user.getPos().x, user.getPos().y, user.getPos().z, 1*power, DestructionType.NONE);
+				user.getWorld().createExplosion(user, user.getPos().x, user.getPos().y, user.getPos().z, 1*power, World.ExplosionSourceType.NONE);
 			}
 			user.teleport(hit.getPos().x, hit.getPos().y, hit.getPos().z);
 			if (power > 1.2f) {
-				user.damage(DamageSource.explosion(user), 4);
-				user.getWorld().createExplosion(user, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, DestructionType.NONE);
+				user.damage(user.getDamageSources().explosion(user, user), 4);
+				user.getWorld().createExplosion(user, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, World.ExplosionSourceType.NONE);
 			}
 		}
 		
@@ -100,7 +100,7 @@ public enum RifleMode {
 				Entity e = ((EntityHitResult) hit).getEntity();
 				e.setFireTicks((int)(200*power));
 				int damage = (int)Math.ceil(power*6);
-				e.damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.getWorld()), user), damage);
+				e.damage(e.getDamageSources().create(YDamageTypes.RIFLE, new RifleDummyEntity(user.getWorld()), user), damage);
 			} else if (power > 0.5f && hit instanceof BlockHitResult) {
 				BlockHitResult bhr = (BlockHitResult)hit;
 				if (bhr.getType() == Type.MISS) return;
@@ -114,8 +114,8 @@ public enum RifleMode {
 				}
 			}
 			if (power > 1) {
-				user.getWorld().createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, true, DestructionType.NONE);
-				BlockPos base = new BlockPos(hit.getPos());
+				user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, true, World.ExplosionSourceType.NONE);
+				BlockPos base = BlockPos.fromPosition(hit.getPos());
 				for (int x = -1; x <= 1; x++) {
 					for (int y = -1; y <= 1; y++) {
 						for (int z = -1; z <= 1; z++) {

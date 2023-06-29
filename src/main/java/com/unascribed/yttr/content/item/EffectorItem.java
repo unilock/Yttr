@@ -3,12 +3,10 @@ package com.unascribed.yttr.content.item;
 import java.util.Arrays;
 import java.util.List;
 
+import com.unascribed.yttr.init.*;
+import net.minecraft.entity.damage.DamageSource;
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.init.YCriteria;
-import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YStats;
-import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
 
 import com.google.common.collect.Iterables;
@@ -18,7 +16,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
@@ -141,7 +138,7 @@ public class EffectorItem extends Item {
 					BlockState bs = world.getBlockState(outerCursor);
 					if (bs.getHardness(world, outerCursor) < 0) continue;
 					if (!bs.isAir()) everythingWasUnpassable = false;
-					world.phaseBlock(outerCursor, 150, 0, owner == null ? null : new EffectorDamageSource(owner));
+					world.phaseBlock(outerCursor, 150, 0, owner == null ? null : new EffectorDamageSource(world, owner));
 				}
 			}
 			if (z >= 0 && server && everythingWasUnpassable) {
@@ -161,19 +158,17 @@ public class EffectorItem extends Item {
 		}
 	}
 	
-	public static class EffectorDamageSource extends EntityDamageSource {
-		
-		public EffectorDamageSource(Entity attacker) {
-			super("yttr.effector_fall", attacker);
-			setFromFalling();
-			setBypassesArmor();
+	public static class EffectorDamageSource extends DamageSource {
+
+		public EffectorDamageSource(World world, @Nullable Entity source) {
+			super(world.getDamageSources().registry.getHolderOrThrow(YDamageTypes.EFFECTOR_FALL), source);
 		}
 		
 		@Override
 		public Text getDeathMessage(LivingEntity entity) {
 			// no .item support
-			String string = "death.attack." + this.name;
-			return Text.translatable(string, entity.getDisplayName(), this.source.getDisplayName());
+			String string = "death.attack." + this.getName();
+			return Text.translatable(string, entity.getDisplayName(), this.getSource().getDisplayName());
 		}
 	}
 

@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -35,8 +36,8 @@ public class YItemGroups {
 	public static final ItemSubGroup MISC = ItemSubGroup.create(PARENT, Yttr.id("misc"));
 
 	public static void init() {
-		Registry.ITEM.forEach(i -> {
-			Identifier id = Registry.ITEM.getId(i);
+		Registries.ITEM.forEach(i -> {
+			Identifier id = Registries.ITEM.getId(i);
 			if (id != null && id.getNamespace().equals("yttr")) {
 				ItemGroup group = MISC;
 				if (i instanceof LampBlockItem) {

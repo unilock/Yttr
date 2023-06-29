@@ -2,6 +2,7 @@ package com.unascribed.yttr.mechanics;
 
 import com.google.common.collect.ImmutableList;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -25,11 +26,6 @@ public enum SuitResource {
 		}
 	},
 	OXYGEN {
-		private final DamageSource SUFFOCATION = new DamageSource("yttr.suit_suffocation") {{
-			setUnblockable();
-			setBypassesArmor();
-		}};
-		
 		@Override
 		public int getConsumptionPerBlock(int pressure) {
 			return 2*((pressure+699)/700);
@@ -45,17 +41,11 @@ public enum SuitResource {
 		@Override
 		public void applyDepletedEffect(ServerPlayerEntity player) {
 			if (player.age % 10 == 0) {
-				player.damage(SUFFOCATION, 1);
+				player.damage(player.getDamageSources().create(YDamageTypes.SUIT_SUFFOCATION), 1);
 			}
 		}
 	},
 	INTEGRITY {
-		private final DamageSource INTEGRITY_FAILURE = new DamageSource("yttr.suit_integrity_failure") {{
-			setUnblockable();
-			setBypassesArmor();
-			setOutOfWorld();
-		}};
-		
 		@Override
 		public int getConsumptionPerBlock(int pressure) {
 			return 0;
@@ -75,7 +65,7 @@ public enum SuitResource {
 		}
 		@Override
 		public void applyDepletedEffect(ServerPlayerEntity player) {
-			player.damage(INTEGRITY_FAILURE, player.getHealth()*6);
+			player.damage(player.getDamageSources().create(YDamageTypes.SUIT_INTEGRITY_FAILURE), player.getHealth()*6);
 		}
 	},
 	;

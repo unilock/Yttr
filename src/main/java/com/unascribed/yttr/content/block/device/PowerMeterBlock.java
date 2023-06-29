@@ -67,7 +67,7 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 	
 	
 	@Override
-	public boolean emitsRedstonePower(BlockState state) {
+	public boolean isRedstonePowerSource(BlockState state) {
 		return true;
 	}
 	

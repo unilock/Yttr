@@ -65,11 +65,6 @@ public class IRLazorBeamBlock extends AbstractLazorBlock implements Waterloggabl
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getDefaultState() : Fluids.EMPTY.getDefaultState();
 	}
-
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
-	}
 	
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {

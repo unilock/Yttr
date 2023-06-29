@@ -3,6 +3,7 @@ package com.unascribed.yttr.network;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.lib39.tunnel.api.S2CMessage;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.init.YNetwork;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
+import net.minecraft.client.util.math.MatrixStack;
 
 public class MessageS2CDiscoveredGeyser extends S2CMessage {
 	
@@ -36,13 +38,14 @@ public class MessageS2CDiscoveredGeyser extends S2CMessage {
 			((SuitScreen)mc.currentScreen).addGeyser(geyser);
 		} else {
 			String name = geyser.name;
-			mc.getToastManager().add((matrices, manager, startTime) -> {
-				RenderSystem.setShaderTexture(0, Toast.TEXTURE);
-				manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
+			mc.getToastManager().add((graphics, manager, startTime) -> {
+				MatrixStack matrices = graphics.getMatrices();
+
+				graphics.drawTexture(Toast.TEXTURE, 0, 0, 0, 0, 160, 32);
 				RenderSystem.setShaderTexture(0, SuitRenderer.SUIT_TEX);
-				DrawableHelper.drawTexture(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
-				manager.getGame().textRenderer.draw(matrices, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1);
-				manager.getGame().textRenderer.draw(matrices, name, 30, 18, -1);
+				YttrClient.drawQuad(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+				graphics.drawText(manager.getGame().textRenderer, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1, false);
+				graphics.drawText(manager.getGame().textRenderer, name, 30, 18, -1, false);
 				return startTime >= 5000 ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
 			});
 		}

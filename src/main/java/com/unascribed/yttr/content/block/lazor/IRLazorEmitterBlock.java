@@ -21,10 +21,4 @@ public class IRLazorEmitterBlock extends AbstractLazorBlock {
 	protected Block getBeam() {
 		return YBlocks.IR_LAZOR_BEAM;
 	}
-	
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
-	}
-
 }

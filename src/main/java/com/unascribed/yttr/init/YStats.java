@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.StatFormatter;
 import net.minecraft.stat.Stats;
@@ -55,7 +56,7 @@ public class YStats {
 	private static final Map<Identifier, StatFormatter> formatters = Maps.newHashMap();
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.CUSTOM_STAT, YStats.class, Identifier.class);
+		Yttr.autoreg.autoRegister(Registries.CUSTOM_STAT, YStats.class, Identifier.class);
 		Yttr.autoreg.eachRegisterableField(YStats.class, Identifier.class, FormattedAs.class, (f, id, ann) -> {
 			if (ann != null) {
 				formatters.put(id, formattersByName.get(ann.value()));

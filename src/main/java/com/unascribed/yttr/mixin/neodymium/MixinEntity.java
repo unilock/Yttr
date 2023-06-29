@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.neodymium;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import net.minecraft.registry.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,13 +31,6 @@ import net.minecraft.util.math.Direction.Axis;
 
 @Mixin(Entity.class)
 public class MixinEntity implements Magnetized {
-
-	private static final DamageSource YTTR$MAGNET = new DamageSource("yttr.magnet") {{
-		setBypassesArmor();
-		setUnblockable();
-		setScaledWithDifficulty();
-	}};
-	
 	private boolean yttr$magnetizedBelow;
 	private boolean yttr$magnetizedAbove;
 	private boolean yttr$magnetizedAboveStuck;
@@ -95,7 +89,7 @@ public class MixinEntity implements Magnetized {
 		if (yttr$magnetizedAbove) {
 			self.setVelocity(self.getVelocity().x, Math.max(self.getVelocity().y, 0.1), self.getVelocity().z);
 			if (yttr$magnetizedBelow && !(self instanceof IronGolemEntity) && !(self instanceof ItemEntity)) {
-				self.damage(YTTR$MAGNET, 2);
+				self.damage(self.getDamageSources().create(YDamageTypes.MAGNET), 2);
 			}
 			if (Math.abs(self.getPitch()) > 0.01 && self.getWorld().random.nextInt(20) == 0) {
 				self.playSound(YSounds.MAGNET_STEP, 1, 1);

@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -25,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.lib39.core.api.util.LatchReference;
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
@@ -161,7 +161,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	private HitResult rifleHitResult;
 	private long lastRifleHitUpdate;
-	
+
 	@Override
 	public void onInitializeClient() {
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
@@ -241,9 +241,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-				out.accept(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
-				out.accept(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
-				out.accept(new ModelIdentifier("yttr:platforms_model#inventory"));
+				out.accept(new ModelIdentifier("yttr", "ammo_pack_model", "inventory"));
+				out.accept(new ModelIdentifier("yttr", "ammo_pack_seg_model", "inventory"));
+				out.accept(new ModelIdentifier("yttr", "platforms_model", "inventory"));
 			});
 		}
 		
@@ -299,7 +299,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
 					hasCheckedRegistry = true;
-					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
+					for (Map.Entry<RegistryKey<Block>, Block> en : Registries.BLOCK.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
@@ -323,7 +323,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
-					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
+					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registries.ENTITY_TYPE.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
@@ -405,11 +405,11 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					case ENTITY -> 30;
 					default -> 0;
 				};
-				DrawableHelper.drawTexture(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u, 0, w, h, 45, 30);
+				drawQuad(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u, 0, w, h, 45, 30);
 				if (mc.player.isUsingItem() && mc.player.getActiveHand() == Hand.MAIN_HAND) {
 					int useTicks = ri.calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft());
 					float power = ri.calculatePower(useTicks);
-					IntConsumer draw = (u2) -> DrawableHelper.drawTexture(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);
+					IntConsumer draw = (u2) -> drawQuad(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);
 					if (power >= 1.2f) {
 						draw.accept(15);
 						draw.accept(30);
@@ -691,6 +691,38 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return new Identifier("textures/models/armor/yttr_ultrapure_diamond_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
 		}
 		return id;
+	}
+
+	public static void drawQuad(MatrixStack matrices, int x, int y, int z, float u, float v, int width, int height, int textureWidth, int textureHeight) {
+		drawQuad(matrices, x, y, z, width, height, u, v, width, height, textureWidth, textureHeight);
+	}
+
+	public static void drawQuad(MatrixStack matrices, int x, int y, int width, int height, float u, float v, int textureWidth, int textureHeight) {
+		drawQuad(matrices, x, y, 0, width, height, u, v, width, height, textureWidth, textureHeight);
+	}
+
+	public static void drawQuad(MatrixStack matrices, int x, int y, int z, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+		// Direct rendering ported out of GuiGraphics
+
+		int x1 = x;
+		int x2 = x + width;
+		int y1 = y;
+		int y2 = y + height;
+
+
+		float u1 = (u + 0.0F) / (float)textureWidth;
+		float u2 = (u + (float)regionWidth) / (float)textureWidth;
+		float v1 = (v + 0.0F) / (float)textureHeight;
+		float v2 = (v + (float)regionHeight) / (float)textureHeight;
+
+		Matrix4f matrix4f = matrices.peek().getModel();
+		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+		bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).uv(u1, v1).next();
+		bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).uv(u1, v2).next();
+		bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).uv(u2, v2).next();
+		bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).uv(u2, v1).next();
+		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 	
 }

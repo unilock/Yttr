@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.snare;
 
+import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,7 +52,7 @@ public class MixinIngredient {
 	private static void entryFromJson(JsonObject obj, CallbackInfoReturnable<Ingredient.Entry> ci) {
 		if (obj.has("yttr:entity")) {
 			ci.setReturnValue(new EntityIngredientEntry(
-					Registry.ENTITY_TYPE.get(new Identifier(obj.get("yttr:entity").getAsString())),
+					Registries.ENTITY_TYPE.get(new Identifier(obj.get("yttr:entity").getAsString())),
 					obj.has("yttr:main_hand") ? Arm.valueOf(Ascii.toUpperCase(obj.get("yttr:main_hand").getAsString())) : null
 				)
 			);

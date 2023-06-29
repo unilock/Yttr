@@ -6,6 +6,7 @@ import java.util.Set;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.compat.emi.widget.RuinedInputWidget;
 import com.unascribed.yttr.compat.emi.widget.RuinedOutputWidget;
@@ -15,7 +16,6 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.util.Identifier;
 
 public class EmiForgottenRecipe implements EmiRecipe {
@@ -71,11 +71,11 @@ public class EmiForgottenRecipe implements EmiRecipe {
 			RenderSystem.setShaderTexture(0, new Identifier(id.getNamespace(), "textures/gui/ruined_recipe/"+id.getPath()+".png"));
 			matrices.push();
 			matrices.translate(x-(w/2f), y, 0);
-			DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, w, h, w, h);
+			YttrClient.drawQuad(matrices, 0, 0, 0, 0, w, h, w, h);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(SourceFactor.ZERO, DestFactor.SRC_COLOR); // multiply
 			RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/ruined_recipe/overlay.png"));
-			DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, w, h, w, h);
+			YttrClient.drawQuad(matrices, 0, 0, 0, 0, w, h, w, h);
 			
 			double wFactor = 872/696D;
 			double hFactor = 500/324D;
@@ -86,7 +86,7 @@ public class EmiForgottenRecipe implements EmiRecipe {
 			matrices.translate(-w/2f, -h/2f, 0);
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/ruined_recipe/border.png"));
-			DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, w, h, w, h);
+			YttrClient.drawQuad(matrices, 0, 0, 0, 0, w, h, w, h);
 			matrices.pop();
 			matrices.pop();
 		});

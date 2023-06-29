@@ -19,7 +19,7 @@ public class MixinPlayerEntity {
 
 	private float yttr$storedBreakSpeed;
 	
-	@Inject(at=@At(value="FIELD", target="net/minecraft/entity/player/PlayerEntity.onGround:Z"),
+	@Inject(at=@At(value="INVOKE", target="Lnet/minecraft/entity/player/PlayerEntity;isOnGround()Z"),
 			method="getBlockBreakingSpeed", locals=LocalCapture.CAPTURE_FAILHARD)
 	public void storeBreakSpeedBeforeOnGroundCheck(BlockState bs, CallbackInfoReturnable<Float> ci, float breakSpeed) {
 		yttr$storedBreakSpeed = breakSpeed;

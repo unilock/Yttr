@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -30,7 +31,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
@@ -40,8 +40,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.profiler.Profiler;
 import org.joml.Quaternionf;
 
@@ -52,8 +50,7 @@ public class ReplicatorRenderer extends IHasAClient {
 	public static final Set<ReplicatorBlockEntity> replicators = Sets.newLinkedHashSet();
 	public static final Set<ReplicatorBlockEntity> removing = Sets.newLinkedHashSet();
 	private static final List<ReplicatorBlockEntity> renderList = Lists.newArrayList();
-	
-	private static final Screen dummyScreen = new Screen(Text.literal("")) {};
+
 	private static final Random rand = new Random();
 	
 	public static boolean renderOutline(WorldRenderContext wrc, BlockOutlineContext boc) {
@@ -140,7 +137,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				if (cam != null) {
 					matrices.multiply(cam.getRotation());
 				}
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin((t/6)%((float)Math.PI*2))*10));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(MathHelper.sin((t/6)%((float)Math.PI*2))*10));
 
 				VertexConsumerProvider.Immediate imm = mc.getBufferBuilders().getEntityVertexConsumers();
 				ir.renderItem(item, ModelTransformationMode.NONE, false, matrices, imm, LightmapTextureManager.pack(15, 15), OverlayTexture.DEFAULT_UV, model);
@@ -222,20 +219,24 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.scale(-0.0125F, -0.0125F, 0.01f);
 				matrices.translate(0, -50, -400);
 
-				dummyScreen.init(mc, 4000, 4000);
-				List<OrderedText> tip = Lists.transform(dummyScreen.getTooltipFromItem(item), Text::asOrderedText);
+				List<OrderedText> tip = Lists.transform(Screen.getTooltipFromItem(mc, item), Text::asOrderedText);
 				int width = 0;
 				int height = tip.size()*8;
 				for (OrderedText ot : tip) {
 					width = Math.max(width, mc.textRenderer.getWidth(ot));
 				}
 				matrices.translate(-(width+16)/2f, -height, 0);
-				dummyScreen.renderOrderedTooltip(matrices, tip, 0, 0);
+				GuiGraphics graphics = setupGraphicsState(matrices);
+				graphics.drawOrderedTooltip(mc.textRenderer, tip, 0, 0);
 				
 				matrices.pop();
 				RenderSystem.disableBlend();
 			}
 		}
+	}
+
+	private static GuiGraphics setupGraphicsState(MatrixStack stack) {
+		return new GuiGraphics(mc, stack, mc.getBufferBuilders().getEntityVertexConsumers());
 	}
 	
 	public static void render(WorldRenderContext wrc) {
@@ -268,7 +269,7 @@ public class ReplicatorRenderer extends IHasAClient {
 						float a = Interp.sCurve5(Math.max(0, 1-((rbe.removedTicks+wrc.tickDelta())/10f)));
 						matrices.translate(0.5, 0.5, 0.5);
 						matrices.scale(a, a, a);
-						matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(a*720));
+						matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(a*720));
 						matrices.translate(-0.5, -0.5, -0.5);
 					}
 					float detail = 1;

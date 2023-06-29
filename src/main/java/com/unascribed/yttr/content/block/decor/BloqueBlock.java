@@ -5,16 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import com.unascribed.yttr.init.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.init.YCriteria;
-import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.init.YStats;
-import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.block.Block;
@@ -74,8 +70,6 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	public static final double ZSIZED = ZSIZE;
 	
 	public static final int SLOTS = XSIZE*YSIZE*ZSIZE;
-	
-	public static final DamageSource DAMAGE_SOURCE = new DamageSource("yttr.bloque") {};
 	
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	
@@ -269,7 +263,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 		if (entity instanceof LivingEntity le) {
 			if (world.getBlockEntity(pos) instanceof BloqueBlockEntity be && be.isWelded()) return;
 			if (le.getEquippedStack(EquipmentSlot.FEET).isEmpty()) {
-				entity.damage(DAMAGE_SOURCE, 1);
+				entity.damage(entity.getDamageSources().create(YDamageTypes.BLOQUE), 1);
 			}
 		}
 	}

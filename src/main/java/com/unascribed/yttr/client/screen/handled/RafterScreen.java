@@ -11,9 +11,10 @@ import com.unascribed.yttr.inventory.RafterScreenHandler;
 import com.unascribed.yttr.inventory.RafterScreenHandler.FloatingSlot;
 import com.unascribed.yttr.mixin.accessor.client.AccessorHandledScreen;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.gui.screen.recipe.book.RecipeBookProvider;
+import net.minecraft.client.gui.screen.recipe.book.RecipeBookWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,8 +22,8 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class RafterScreen extends HandledScreen<RafterScreenHandler> implements RecipeBookProvider {
 	private static final Identifier TEXTURE = Yttr.id("textures/gui/rafter.png");
@@ -53,7 +54,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 			this.recipeBook.reset();
 			this.recipeBook.toggleOpen();
 			this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
-			((TexturedButtonWidget)buttonWidget).setPos(this.x + 113, this.y + 97);
+			buttonWidget.setPosition(this.x + 113, this.y + 97);
 		}));
 	}
 
@@ -64,30 +65,31 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderBackground(matrices);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.renderBackground(graphics);
 		if (this.recipeBook.isOpen() && this.narrow) {
-			this.drawBackground(matrices, delta, mouseX, mouseY);
-			this.recipeBook.render(matrices, mouseX, mouseY, delta);
+			this.drawBackground(graphics, delta, mouseX, mouseY);
+			this.recipeBook.render(graphics, mouseX, mouseY, delta);
 		} else {
-			this.recipeBook.render(matrices, mouseX, mouseY, delta);
-			super.render(matrices, mouseX, mouseY, delta);
-			this.recipeBook.drawGhostSlots(matrices, this.x, this.y, true, delta);
+			this.recipeBook.render(graphics, mouseX, mouseY, delta);
+			super.render(graphics, mouseX, mouseY, delta);
+			this.recipeBook.drawGhostSlots(graphics, this.x, this.y, true, delta);
 		}
 
-		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
-		this.recipeBook.drawTooltip(matrices, this.x, this.y, mouseX, mouseY);
+		this.drawMouseoverTooltip(graphics, mouseX, mouseY);
+		this.recipeBook.drawTooltip(graphics, this.x, this.y, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+	protected void drawBackground(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
+		MatrixStack matrices = graphics.getMatrices();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		int x = this.x;
 		int y = (this.height - this.backgroundHeight) / 2;
-		drawTexture(matrices, x+36, y+36, 36, 36, 165, 168);
-		drawTexture(matrices, x+0, y+108, 0, 108, 36, 96);
-		drawTexture(matrices, x+108, y+0, 108, 0, 93, 36);
+		graphics.drawTexture(TEXTURE, x+36, y+36, 36, 36, 165, 168);
+		graphics.drawTexture(TEXTURE, x+0, y+108, 0, 108, 36, 96);
+		graphics.drawTexture(TEXTURE, x+108, y+0, 108, 0, 93, 36);
 		Random r = new Random(hashCode());
 		for (int sx = 0; sx < 6; sx++) {
 			for (int sy = 0; sy < 6; sy++) {
@@ -116,8 +118,8 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 					matrices.push();
 						matrices.translate(x+px+ox, y+py+oy, 0);
 						matrices.translate(9, 9, 0);
-						matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(ang));
-						drawTexture(matrices, -9, -9, px, py, 18, 18);
+						matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(ang));
+						graphics.drawTexture(TEXTURE, -9, -9, px, py, 18, 18);
 					matrices.pop();
 				}
 			}
@@ -129,7 +131,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 	}
 	
 	@Override
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+	protected void drawForeground(GuiGraphics graphics, int mouseX, int mouseY) {
 		for (int i = 0; i < this.handler.slots.size(); ++i) {
 			Slot slot = this.handler.slots.get(i);
 			if (slot instanceof FloatingSlot) {
@@ -138,17 +140,17 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 				mv.push();
 					mv.translate(fs.floatingX, fs.floatingY, 0);
 					mv.translate(9, 9, 0);
-					mv.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(fs.ang));
+					mv.multiply(Axis.Z_POSITIVE.rotationDegrees(fs.ang));
 					mv.translate(-8, -8, 0);
 					RenderSystem.applyModelViewMatrix();
-					((AccessorHandledScreen)this).yttr$drawSlot(matrices, slot);
+					((AccessorHandledScreen)this).yttr$drawSlot(graphics, slot);
 	
 					Path2D.Float path = getPathFor(fs);
 					if (path.contains(mouseX-this.x, mouseY-this.y)) {
 						this.focusedSlot = slot;
 						RenderSystem.disableDepthTest();
 						RenderSystem.colorMask(true, true, true, false);
-						fillGradient(matrices, 0, 0, 16, 16, -2130706433, -2130706433);
+						graphics.fillGradient(0, 0, 16, 16, -2130706433, -2130706433);
 						RenderSystem.colorMask(true, true, true, true);
 						RenderSystem.enableDepthTest();
 					}
@@ -156,7 +158,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 			}
 		}
 		RenderSystem.applyModelViewMatrix();
-		super.drawForeground(matrices, mouseX, mouseY);
+		super.drawForeground(graphics, mouseX, mouseY);
 	}
 	
 	private Path2D.Float getPathFor(FloatingSlot fs) {
@@ -191,7 +193,7 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (this.recipeBook.mouseClicked(mouseX, mouseY, button)) {
-			this.setFocused(this.recipeBook);
+			this.setFocusedChild(this.recipeBook);
 			return true;
 		} else {
 			return this.narrow && this.recipeBook.isOpen() ? true : super.mouseClicked(mouseX, mouseY, button);
@@ -217,7 +219,6 @@ public class RafterScreen extends HandledScreen<RafterScreenHandler> implements 
 
 	@Override
 	public void removed() {
-		this.recipeBook.close();
 		super.removed();
 	}
 

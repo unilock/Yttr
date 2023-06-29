@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import com.unascribed.yttr.util.YRandom;
 import com.unascribed.yttr.world.WastelandPopulator;
 
@@ -26,7 +27,7 @@ public class ShearsItem extends net.minecraft.item.ShearsItem {
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		if (selected && entity.isSprinting() && ThreadLocalRandom.current().nextInt(10) == 0) {
-			entity.damage(new EntityDamageSource("yttr.scissors", entity), 4+ThreadLocalRandom.current().nextInt(8));
+			entity.damage(entity.getDamageSources().create(YDamageTypes.SCISSORS, entity), 4+ThreadLocalRandom.current().nextInt(8));
 		}
 	}
 	

@@ -36,7 +36,7 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 				if (le.timeUntilRegen > 10) return;
 			}
 		}
-		if (entity.damage(new SolventDamageSource(i), 2*i)) {
+		if (entity.damage(new SolventDamageSource(world, i), 2*i)) {
 			if (entity instanceof LivingEntity) {
 				LivingEntity le = (LivingEntity)entity;
 				for (EquipmentSlot es : EquipmentSlot.values()) {
@@ -49,11 +49,6 @@ public class PureVoidFluidBlock extends VoidFluidBlock {
 			}
 			world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.DISSOLVE, SoundCategory.BLOCKS, 1, 0.8f+(i*0.1f));
 		}
-	}
-	
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return getFluidState(state).isSource() ? PistonBehavior.PUSH_ONLY : PistonBehavior.DESTROY;
 	}
 	
 	@Override

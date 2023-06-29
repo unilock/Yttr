@@ -7,6 +7,7 @@ import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.util.math.Interp;
 
@@ -15,7 +16,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.hash.Hashing;
 
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
@@ -157,12 +157,12 @@ public class SuitRenderer {
 			for (float yo = -o; yo <= o; yo += s) {
 				matrices.push();
 				matrices.translate(xo, yo, 0);
-				DrawableHelper.drawTexture(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+				YttrClient.drawQuad(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 				matrices.pop();
 			}
 		}
 		RenderSystem.setShaderColor(r, g, b, a);
-		DrawableHelper.drawTexture(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+		YttrClient.drawQuad(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 	}
 
 	public void drawBar(MatrixStack matrices, String id, int x, int y, float value, boolean flip, float delta) {

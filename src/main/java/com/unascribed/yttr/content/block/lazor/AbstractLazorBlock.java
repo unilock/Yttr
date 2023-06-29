@@ -7,19 +7,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public abstract class AbstractLazorBlock extends Block {
-
-	public static final DamageSource DAMAGE_SOURCE = new DamageSource("yttr.lazor") {{setFire();}};
-
 	public static final DirectionProperty FACING = Properties.FACING;
 
 	public AbstractLazorBlock(Settings settings) {
@@ -62,7 +59,7 @@ public abstract class AbstractLazorBlock extends Block {
 		BlockState aheadState = world.getBlockState(ahead);
 		if (!isEmitter() && !areEquivalent(behindState, state)) {
 			world.setBlockState(pos, state.getFluidState().getBlockState());
-		} else if (aheadState.isAir() || aheadState.getMaterial().isReplaceable()) {
+		} else if (aheadState.isAir() || aheadState.materialReplaceable()) {
 			if (isEmitter()) {
 				state = copyProperties(state, getBeam().getDefaultState());
 			}

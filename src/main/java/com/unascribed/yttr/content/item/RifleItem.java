@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.item;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
+import com.unascribed.yttr.init.*;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.texture.NativeImage;
@@ -11,10 +12,6 @@ import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
-import com.unascribed.yttr.init.YCriteria;
-import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
@@ -492,7 +489,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		if (!(_user instanceof PlayerEntity)) return stack;
 		PlayerEntity user = (PlayerEntity)_user;
 		user.playSound(YSounds.RIFLE_OVERCHARGE, 1, 1);
-		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8*speedMod);
+		user.damage(user.getDamageSources().create(YDamageTypes.OVERCHARGE), 8*speedMod);
 		user.setOnFireFor((int)(3*speedMod));
 		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		SlotReference can = getAmmoCanSlot(user, getMode(stack));

@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client.cache;
 
 import com.google.gson.internal.UnsafeAllocator;
+import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.yttr.client.util.UVObserver;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
@@ -20,7 +21,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
+import net.minecraft.client.resource.metadata.FrameSize;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteContents;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -35,12 +38,12 @@ public class CleavedBlockMeshes {
 	
 	private static class DummySprite extends Sprite {
 
-		private static final UnsafeAllocator UA = UnsafeAllocator.create();
+		private static final UnsafeAllocator UA = UnsafeAllocator.INSTANCE;
 		
 		private float minU, minV, maxU, maxV;
 		
 		protected DummySprite() {
-			super(null, new Info(null, 0, 0, null), 0, 0, 0, 0, 0, null);
+			super(null, new SpriteContents(null, new FrameSize(0, 0), new NativeImage(0, 0, false), null), 0, 0, 0, 0);
 			// NOT CALLED
 		}
 		

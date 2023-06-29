@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.effect;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import com.unascribed.yttr.init.YItems;
 
 import net.minecraft.entity.LivingEntity;
@@ -15,11 +16,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class BleedingStatusEffect extends StatusEffect {
-	private static final DamageSource SOURCE = new DamageSource("yttr.bleeding") {{
-		setBypassesArmor();
-		setUnblockable();
-	}};
-	
 	public BleedingStatusEffect(StatusEffectType type, int color) {
 		super(type, color);
 	}
@@ -36,7 +32,7 @@ public class BleedingStatusEffect extends StatusEffect {
 			hurt = true;
 			int oldHurtTime = entity.hurtTime;
 			entity.hurtTime = -20;
-			entity.damage(SOURCE, (amplifier/4)+1);
+			entity.damage(entity.getDamageSources().create(YDamageTypes.BLEEDING), (amplifier/4)+1);
 			entity.hurtTime = oldHurtTime;
 		}
 		World w = entity.getWorld();

@@ -2,6 +2,8 @@ package com.unascribed.yttr.mixin.soul.client;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
@@ -51,7 +53,7 @@ public class MixinInGameHud {
 	private boolean yttr$hide;
 	private float yttr$lastMaxHealth;
 	private int yttr$heartResolution;
-	private Vec3f[] yttr$hearticulates; // x, y, start
+	private Vector3f[] yttr$hearticulates; // x, y, start
 	
 	@Inject(at=@At("HEAD"), method="tick")
 	private void yttr$tickEvaporate(boolean paused, CallbackInfo ci) {
@@ -72,11 +74,11 @@ public class MixinInGameHud {
 			if (yttr$hearticulates == null) {
 				mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
 				yttr$heartResolution = (glGetTexLevelParameteri(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH)*9)/256;
-				yttr$hearticulates = new Vec3f[yttr$heartResolution*yttr$heartResolution];
+				yttr$hearticulates = new Vector3f[yttr$heartResolution*yttr$heartResolution];
 				var r = ThreadLocalRandom.current();
 				for (int i = 0; i < yttr$hearticulates.length; i++) {
 					float y = ((i/yttr$heartResolution)+1)/(float)yttr$heartResolution;
-					yttr$hearticulates[i] = new Vec3f((float)r.nextGaussian(0, 4), -r.nextFloat(12), r.nextFloat()*r.nextFloat(y));
+					yttr$hearticulates[i] = new Vector3f((float)r.nextGaussian(0, 4), -r.nextFloat(12), r.nextFloat()*r.nextFloat(y));
 				}
 			}
 		}
@@ -85,7 +87,7 @@ public class MixinInGameHud {
 	
 	@ModifyVariable(at=@At("HEAD"), method="renderHealthBar",
 			ordinal=0, argsOnly=true)
-	private float yttr$modifyMaxHealth(float maxHealth, MatrixStack matrices, PlayerEntity player) {
+	private float yttr$modifyMaxHealth(float maxHealth, GuiGraphics graphics, PlayerEntity player) {
 		var mc = MinecraftClient.getInstance();
 		if (player == mc.player) {
 			maxHealth += Integer.bitCount(YttrClient.soulImpurity);
@@ -95,7 +97,7 @@ public class MixinInGameHud {
 	
 	@ModifyVariable(at=@At("HEAD"), method="renderHealthBar",
 			ordinal=5, argsOnly=true)
-	private int yttr$modifyHealth(int health, MatrixStack matrices, PlayerEntity player) {
+	private int yttr$modifyHealth(int health, GuiGraphics graphics, PlayerEntity player) {
 		var mc = MinecraftClient.getInstance();
 		if (player == mc.player) {
 			health = yttr$modifyHealth(health);
@@ -105,7 +107,7 @@ public class MixinInGameHud {
 	
 	@ModifyVariable(at=@At("HEAD"), method="renderHealthBar",
 			ordinal=4, argsOnly=true)
-	private int yttr$modifyLastHealth(int health, MatrixStack matrices, PlayerEntity player) {
+	private int yttr$modifyLastHealth(int health, GuiGraphics graphics, PlayerEntity player) {
 		var mc = MinecraftClient.getInstance();
 		if (player == mc.player) {
 			health = yttr$modifyHealth(health);
@@ -141,11 +143,13 @@ public class MixinInGameHud {
 	}
 	
 	@Inject(at=@At("HEAD"), method="drawHeart", cancellable=true)
-	private void yttr$drawHeart(MatrixStack matrices, @Coerce AccessorHeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
+	private void yttr$drawHeart(GuiGraphics graphics, @Coerce AccessorHeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
 		if (yttr$hide) {
 			ci.cancel();
 			return;
 		}
+
+		MatrixStack matrices = graphics.getMatrices();
 		if (!yttr$evaporating && yttr$impure && type.yttr$getU(false, false) >= 52) {
 			var mc = MinecraftClient.getInstance();
 			float td = mc.getTickDelta();
@@ -176,16 +180,16 @@ public class MixinInGameHud {
 			RenderSystem.setShaderTexture(0, YTTR$BEET_ICONS);
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			DrawableHelper.drawTexture(matrices, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
+			YttrClient.drawQuad(matrices, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
 			RenderSystem.disableCull();
 			if (revSlosh) {
 				matrices.push();
 					matrices.translate(x, 0, 0);
 					matrices.scale(-1, 1, 1);
-					DrawableHelper.drawTexture(matrices, -9, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
+					YttrClient.drawQuad(matrices, -9, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
 				matrices.pop();
 			} else {
-				DrawableHelper.drawTexture(matrices, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
+				YttrClient.drawQuad(matrices, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
 			}
 			RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
 			RenderSystem.enableCull();
@@ -212,7 +216,7 @@ public class MixinInGameHud {
 			for (int xi = 0; xi < yttr$heartResolution; xi++) {
 				for (int yi = 0; yi < yttr$heartResolution; yi++) {
 					var params = yttr$hearticulates[(yi*yttr$heartResolution)+xi];
-					float start = params.getZ();
+					float start = params.z();
 					float a;
 					if (prog > start) {
 						float span = 1-start;
@@ -226,8 +230,8 @@ public class MixinInGameHud {
 					}
 					if (a <= 0) continue;
 					float ai = 1-a;
-					float xo = params.getX()*ai;
-					float yo = params.getY()*ai;
+					float xo = params.x()*ai;
+					float yo = params.y()*ai;
 					
 					float xif = xi*f;
 					float yif = yi*f;

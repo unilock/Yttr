@@ -73,6 +73,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -81,6 +82,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -251,7 +253,7 @@ public class YItems {
 	public static final BlockItem RUINED_CONSTRUCT_RC_1 = createBlockItem(YBlocks.RUINED_CONSTRUCT_RC_1);
 	public static final BlockItem RUINED_CONSTRUCT_RC_2 = createBlockItem(YBlocks.RUINED_CONSTRUCT_RC_2);
 	
-	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings());
+	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings(), Direction.DOWN);
 	
 	@BuiltinRenderer("LampItemRenderer")
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings());
@@ -359,10 +361,7 @@ public class YItems {
 	public static final Item GLOWING_GAS = new GlowingGasItem(new Item.Settings()
 			.recipeRemainder(Items.GLASS_BOTTLE));
 	
-	public static final Item LOGO = new Item(new Item.Settings()) {
-		@Override
-		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {}
-	};
+	public static final Item LOGO = new Item(new Item.Settings());
 	
 	public static final Item CLEAVER = new CleaverItem(new Item.Settings()
 			.maxDamage(1562));
@@ -380,13 +379,13 @@ public class YItems {
 	private static final ArmorMaterial SUIT_MATERIAL = new ArmorMaterial() {
 
 		@Override
-		public int getDurability(EquipmentSlot slot) {
+		public int getDurability(ArmorItem.ArmorSlot slot) {
 			return ArmorMaterials.DIAMOND.getDurability(slot);
 		}
 
 		@Override
-		public int getProtectionAmount(EquipmentSlot slot) {
-			return ArmorMaterials.DIAMOND.getProtectionAmount(slot)+2;
+		public int getProtection(ArmorItem.ArmorSlot slot) {
+			return ArmorMaterials.DIAMOND.getProtection(slot)+2;
 		}
 
 		@Override
@@ -448,7 +447,7 @@ public class YItems {
 		}
 		
 		@Override
-		public int getProtectionAmount(EquipmentSlot slot) {
+		public int getProtection(ArmorItem.ArmorSlot slot) {
 			return 0;
 		}
 		
@@ -473,10 +472,10 @@ public class YItems {
 		}
 		
 		@Override
-		public int getDurability(EquipmentSlot slot) {
+		public int getDurability(ArmorItem.ArmorSlot slot) {
 			return 32;
 		}
-	}, EquipmentSlot.HEAD, new Item.Settings()) {
+	}, ArmorItem.ArmorSlot.HELMET, new Item.Settings()) {
 
 
 		@Override
@@ -564,9 +563,7 @@ public class YItems {
 	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings()) {};
 	
 	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1));
-	public static final DropOfContinuityItem LOOTBOX_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1)) {
-		@Override public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {}
-	};
+	public static final DropOfContinuityItem LOOTBOX_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1));
 	
 	@ColorProvider("ContinuityItemColorProvider")
 	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
@@ -619,7 +616,7 @@ public class YItems {
 	public static final LatchReference<Item> PLATFORMS = YLatches.create();
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.ITEM, YItems.class, Item.class);
+		Yttr.autoreg.autoRegister(Registries.ITEM, YItems.class, Item.class);
 	}
 	
 	private static MusicDiscItem createMusicDisc(int comparatorStrength, SoundEvent sound, Item.Settings settings, int lengthInSeconds) {

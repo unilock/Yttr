@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.enchant;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.YConfig;
@@ -13,7 +14,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -72,7 +72,7 @@ public class VorpalEnchantment extends Enchantment implements ComplexDamageEncha
 				attacker.getWorld().playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
 				YCriteria.VORPAL_HIT.trigger(((ServerPlayerEntity)attacker));
 			}
-			return new AttackResult(new EntityDamageSource("yttr.vorpal", attacker), 100);
+			return new AttackResult(attacker.getDamageSources().create(YDamageTypes.VORPAL, attacker), 100);
 		}
 		return null;
 	}

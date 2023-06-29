@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.note;
 
+import net.minecraft.block.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,7 +39,7 @@ public class MixinNoteBlock {
 	private void playNote(@Nullable Entity entity, World world, BlockPos pos) {}
 	
 	@Inject(at=@At("HEAD"), method="playNote", cancellable=true)
-	private void playNote(@Nullable Entity entity, World world, BlockPos pos, CallbackInfo ci) {
+	private void playNote(@Nullable Entity entity, BlockState state, World world, BlockPos pos, CallbackInfo ci) {
 		if (yttr$dontBog) return;
 		Object self = this;
 		if (self instanceof Bogged && world.getServer() != null) {

@@ -46,6 +46,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.BlockEntityType.BlockEntityFactory;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.registry.Registry;
 
 public class YBlockEntities {
@@ -97,7 +98,7 @@ public class YBlockEntities {
 	}
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.BLOCK_ENTITY_TYPE, YBlockEntities.class, BlockEntityType.class);
+		Yttr.autoreg.autoRegister(Registries.BLOCK_ENTITY_TYPE, YBlockEntities.class, BlockEntityType.class);
 	}
 
 	@Retention(RUNTIME)

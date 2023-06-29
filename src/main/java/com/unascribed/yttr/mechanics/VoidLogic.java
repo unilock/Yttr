@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.init.YDamageTypes;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
@@ -26,7 +27,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
@@ -42,7 +42,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class VoidLogic {
@@ -63,7 +62,7 @@ public class VoidLogic {
 				msg.sendTo(pe);
 			}
 			world.playSound(null, _pos.x, _pos.y, _pos.z, YSounds.VOID, SoundCategory.PLAYERS, 4, 1);
-			BlockPos pos = new BlockPos(_pos);
+			BlockPos pos = BlockPos.fromPosition(_pos);
 			Path root = getUndoDirectory(world.getServer());
 			Path out = root.resolve(undoName+".dat");
 			MoreFiles.createParentDirectories(out);
@@ -150,7 +149,7 @@ public class VoidLogic {
 				double d = _pos.squaredDistanceTo(e.getPos());
 				if (d < r*r) {
 					float dmg = (float) ((r*r)-d);
-					e.damage(new EntityDamageSource("yttr.void_rifle", user), dmg);
+					e.damage(e.getDamageSources().create(YDamageTypes.VOID_RIFLE, user), dmg);
 					if (e instanceof LivingEntity) {
 						LivingEntity le = (LivingEntity)e;
 						for (EquipmentSlot es : EquipmentSlots.ARMOR) {

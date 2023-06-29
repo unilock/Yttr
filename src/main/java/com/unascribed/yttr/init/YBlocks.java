@@ -108,6 +108,7 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.PillarBlock;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.sound.BlockSoundGroup;
@@ -163,15 +164,11 @@ public class YBlocks {
 		.dropsNothing()
 	);
 	@RenderLayer("translucent")
-	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MapColor.CLEAR)
-				.allowsMovement()
-				.lightPassesThrough()
-				.notSolid()
-				.liquid()
-				.build()
-			)
+	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.of()
+		.liquid()
+		.notSolid()
 		.noCollision()
+		.pistonBehavior(PistonBehavior.DESTROY)
 		.strength(100)
 		.dropsNothing()
 	);
@@ -328,11 +325,17 @@ public class YBlocks {
 			.ticksRandomly()
 			.strength(0, 10000)
 			.luminance(bs -> 13)
+			.pistonBehavior(PistonBehavior.DESTROY)
 			.air()
 		);
 	
 	@RenderLayer("cutout")
-	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(METALLIC_SETTINGS);
+	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.sounds(BlockSoundGroup.METAL)
+		);
 	
 	public static final MagtankBlock MAGTANK = new MagtankBlock(HOLLOWHUGE_SETTINGS);
 	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
@@ -629,6 +632,7 @@ public class YBlocks {
 				.liquid()
 				.build()
 			)
+		.pistonBehavior(PistonBehavior.BLOCK)
 		.noCollision()
 		.strength(-1)
 		.dropsNothing());
@@ -654,11 +658,17 @@ public class YBlocks {
 			.dropsNothing()
 			.ticksRandomly()
 			.strength(0, 10000)
+			.pistonBehavior(PistonBehavior.DESTROY)
 			.air()
 		);
 	
 	@RenderLayer("cutout")
-	public static final IRLazorEmitterBlock IR_LAZOR_EMITTER = new IRLazorEmitterBlock(METALLIC_SETTINGS);
+	public static final IRLazorEmitterBlock IR_LAZOR_EMITTER = new IRLazorEmitterBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.sounds(BlockSoundGroup.METAL)
+		);
 	
 	
 

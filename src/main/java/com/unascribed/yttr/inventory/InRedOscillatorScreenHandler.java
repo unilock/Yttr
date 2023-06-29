@@ -22,8 +22,8 @@ public class InRedOscillatorScreenHandler extends ScreenHandler {
 	public InRedOscillatorScreenHandler(int syncId, BlockPos pos, PlayerEntity player) {
 		super(YHandledScreens.INRED_OSCILLATOR, syncId);
 		this.pos = pos;
-		this.state = player.world.getBlockState(pos);
-		this.be = (InRedOscillatorBlockEntity) player.world.getBlockEntity(pos);
+		this.state = player.getWorld().getBlockState(pos);
+		this.be = (InRedOscillatorBlockEntity) player.getWorld().getBlockEntity(pos);
 	}
 
 	@Override

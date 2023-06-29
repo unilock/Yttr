@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.accessor.client;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -14,6 +15,6 @@ import net.minecraft.screen.slot.Slot;
 public interface AccessorHandledScreen {
 
 	@Invoker("drawSlot")
-	void yttr$drawSlot(MatrixStack matrices, Slot slot);
+	void yttr$drawSlot(GuiGraphics graphics, Slot slot);
 	
 }

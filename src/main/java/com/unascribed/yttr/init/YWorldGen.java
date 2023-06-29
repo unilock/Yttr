@@ -8,9 +8,9 @@ import com.unascribed.yttr.Yttr;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.structure.rule.TagMatchRuleTest;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.decorator.BiomePlacementModifier;
@@ -34,11 +34,11 @@ public class YWorldGen {
 					new OreFeatureConfig(
 						List.of(
 							OreFeatureConfig.createTarget(
-								OreConfiguredFeatures.STONE_ORE_REPLACEABLES,
+							new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES),
 								YBlocks.GADOLINITE.getDefaultState()
 							),
 							OreFeatureConfig.createTarget(
-								OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES,
+							new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES),
 								YBlocks.DEEPSLATE_GADOLINITE.getDefaultState()
 							)
 						),
@@ -66,11 +66,11 @@ public class YWorldGen {
 					new OreFeatureConfig(
 						List.of(
 							OreFeatureConfig.createTarget(
-								OreConfiguredFeatures.STONE_ORE_REPLACEABLES,
+							new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES),
 								YBlocks.BROOKITE_ORE.getDefaultState()
 							),
 							OreFeatureConfig.createTarget(
-								OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES,
+							new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES),
 								YBlocks.DEEPSLATE_BROOKITE_ORE.getDefaultState()
 							)
 						),
