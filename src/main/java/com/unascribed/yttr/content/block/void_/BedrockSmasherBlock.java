@@ -46,7 +46,7 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 		boolean correctMode = (mode == RifleMode.EXPLODE);
 		boolean enoughPower = (power > 1.1f);
 		boolean isOverworld = (world.getRegistryKey().getValue().toString().equals("minecraft:overworld"));
-		boolean isBottomTen = (pos.getY() < world.getBottomY() + 10);
+		boolean isBottomTen = (pos.getY() < (world.getBottomY() + 10));
 		boolean bhrIsUp = (bhr.getSide() == Direction.UP);
 		boolean breakBedrockAnywhere = YConfig.General.breakBedrockAnywhere;
 
@@ -78,7 +78,12 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 
 		YStats.add(user, YStats.BEDROCK_BROKEN, 1);
 		world.setBlockState(pos, Blocks.AIR.getDefaultState());
-		playBreakingSounds(world, pos);
+		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 2);
+		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 1.5f);
+		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.CLANG, SoundCategory.BLOCKS, 1, 0.5f);
+		if (world instanceof ServerWorld) {
+			((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
+		}
 	}
 
 	private void createVoidGeyser(World world, BlockPos down, LivingEntity user, BlockPos pos) {
@@ -98,15 +103,4 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 		world.breakBlock(down.south(), true, user);
 	}
 
-	private void playBreakingSounds(World world, BlockPos down) {
-		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 2);
-		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 1.5f);
-		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.CLANG, SoundCategory.BLOCKS, 1, 0.5f);
-	}
-
-	private void spawnExplosionParticles(World world, BlockPos down) {
-		if (world instanceof ServerWorld) {
-			((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
-		}
-	}
 }

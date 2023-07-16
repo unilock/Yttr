@@ -1,6 +1,7 @@
 
 #general {
 	trust-players: off;
+	break-bedrock-anywhere: off;
 	shenanigans: on;
 	convert-void-holes: on;
 }

@@ -13,7 +13,8 @@
 	trust-players: var(general.trust-players);
 
 	/*
-	 * If set to "on", Allows players to break bedrock anywhere in any dimension
+	 * If set to "on", allows players to break bedrock anywhere in any dimension, instead of only at
+	 * the bottom of the overworld.
 	 */
 	break-bedrock-anywhere: var(general.break-bedrock-anywhere);
 	

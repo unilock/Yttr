@@ -81,6 +81,7 @@ public class YttrConfigScreen extends Screen {
 			.put("general.fixup-debug-world", "adds missing modded blockstates to the vanilla debug world")
 			.put("general.shenanigans", "inside-jokes and various chaos - nothing destructive")
 			.put("general.convert-void-holes", "automatically convert non-yttr overworld void holes into geysers")
+			.put("general.break-bedrock-anywhere", "allow breaking bedrock in any dimension at any y level instead of only the bottom of the overworld")
 			
 			.put("client.slope-smoothing", "attempts to smooth your camera when walking on slopes - a little buggy but cool when it works")
 			.put("client.force-opengl-core", "force-disables opengl compatibility mode - not supported, may cause render bugs and crashes - restart required")
@@ -249,6 +250,9 @@ public class YttrConfigScreen extends Screen {
 						if (type == void.class) continue;
 						Object objV = null;
 						String label = name.replace('-', ' ');
+						if (label.equals("break bedrock anywhere")) {
+							label = "break any bedrock";
+						}
 						if (type == boolean.class) {
 							boolean v = YConfig.data.getBoolean(k).get();
 							if (drawBoolean(ctx, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
