@@ -154,6 +154,8 @@ public class YConfig {
 	public static final class General {
 		@Key("general.trust-players")
 		public static boolean trustPlayers     = false;
+		@Key("general.break-bedrock-anywhere")
+		public static boolean breakBedrockAnywhere = false;
 		@Key("general.shenanigans")
 		public static boolean shenanigans      = true;
 		@Key("general.convert-void-holes")

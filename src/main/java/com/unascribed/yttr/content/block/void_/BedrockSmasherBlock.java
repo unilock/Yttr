@@ -4,6 +4,7 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 
@@ -42,38 +43,70 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 
 	@Override
 	public boolean onShotByRifle(World world, BlockState bs, LivingEntity user, RifleMode mode, float power, BlockPos pos, BlockHitResult bhr) {
-		if (mode == RifleMode.EXPLODE && power > 1.1f && world.getRegistryKey().getValue().toString().equals("minecraft:overworld")
-				&& pos.getY() < world.getBottomY()+10 && bhr.getSide() == Direction.UP) {
+		boolean correctMode = (mode == RifleMode.EXPLODE);
+		boolean enoughPower = (power > 1.1f);
+		boolean isOverworld = (world.getRegistryKey().getValue().toString().equals("minecraft:overworld"));
+		boolean isBottomTen = (pos.getY() < world.getBottomY() + 10);
+		boolean bhrIsUp = (bhr.getSide() == Direction.UP);
+		boolean breakBedrockAnywhere = YConfig.General.breakBedrockAnywhere;
+
+		if (correctMode && enoughPower && bhrIsUp && ((isOverworld && isBottomTen) || breakBedrockAnywhere)) {
 			BlockPos down = pos.down();
-			if (world.getBlockState(down).isOf(Blocks.BEDROCK)) {
-				if (down.getY() == world.getBottomY()) {
-					world.setBlockState(down, YBlocks.VOID_GEYSER.getDefaultState());
-					VoidGeyserBlockEntity.setDefaultName(world, down, user);
-					world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.VOID_HOLE, SoundCategory.BLOCKS, 1, 0.5f);
-					YStats.add(user, YStats.GEYSERS_OPENED, 1);
-					if (user instanceof ServerPlayerEntity) {
-						YCriteria.OPEN_GEYSER.trigger((ServerPlayerEntity)user, pos, user.getStackInHand(Hand.MAIN_HAND));
-					}
-				} else {
-					world.setBlockState(down, YBlocks.RUINED_BEDROCK.getDefaultState());
-					world.breakBlock(down.north(), true, user);
-					world.breakBlock(down.south(), true, user);
-				}
-				if (user instanceof ServerPlayerEntity) {
-					YCriteria.BREAK_BEDROCK.trigger((ServerPlayerEntity)user, pos, user.getStackInHand(Hand.MAIN_HAND));
-				}
-				YStats.add(user, YStats.BEDROCK_BROKEN, 1);
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 2);
-				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 1.5f);
-				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.CLANG, SoundCategory.BLOCKS, 1, 0.5f);
-				if (world instanceof ServerWorld) {
-					((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
-				}
+			BlockState downState = world.getBlockState(down);
+			
+			if (downState.isOf(Blocks.BEDROCK)) {
+				performBedrockBreaking(world, down, user, pos);
 			}
 		}
+
 		return false;
 	}
-	
-	
+
+	private void performBedrockBreaking(World world, BlockPos down, LivingEntity user, BlockPos pos) {
+		boolean isBottomY = (down.getY() == world.getBottomY());
+		boolean isOverworld = (world.getRegistryKey().getValue().toString().equals("minecraft:overworld"));
+
+		if (isBottomY && isOverworld) {
+			createVoidGeyser(world, down, user, pos);
+		} else {
+			createRuinedBedrock(world, down, user);
+		}
+
+		if (user instanceof ServerPlayerEntity) {
+			YCriteria.BREAK_BEDROCK.trigger((ServerPlayerEntity)user, pos, user.getStackInHand(Hand.MAIN_HAND));
+		}
+
+		YStats.add(user, YStats.BEDROCK_BROKEN, 1);
+		world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		playBreakingSounds(world, pos);
+	}
+
+	private void createVoidGeyser(World world, BlockPos down, LivingEntity user, BlockPos pos) {
+		world.setBlockState(down, YBlocks.VOID_GEYSER.getDefaultState());
+		VoidGeyserBlockEntity.setDefaultName(world, down, user);
+		world.playSound(null, down.getX() + 0.5, down.getY() + 0.5, down.getZ() + 0.5, YSounds.VOID_HOLE, SoundCategory.BLOCKS, 1, 0.5f);
+		YStats.add(user, YStats.GEYSERS_OPENED, 1);
+
+		if (user instanceof ServerPlayerEntity) {
+			YCriteria.OPEN_GEYSER.trigger((ServerPlayerEntity) user, pos, user.getStackInHand(Hand.MAIN_HAND));
+		}
+	}
+
+	private void createRuinedBedrock(World world, BlockPos down, LivingEntity user) {
+		world.setBlockState(down, YBlocks.RUINED_BEDROCK.getDefaultState());
+		world.breakBlock(down.north(), true, user);
+		world.breakBlock(down.south(), true, user);
+	}
+
+	private void playBreakingSounds(World world, BlockPos down) {
+		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 2);
+		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 1.5f);
+		world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.CLANG, SoundCategory.BLOCKS, 1, 0.5f);
+	}
+
+	private void spawnExplosionParticles(World world, BlockPos down) {
+		if (world instanceof ServerWorld) {
+			((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
+		}
+	}
 }

@@ -11,6 +11,11 @@
 	 * client can get perfect shots every time.
 	 */
 	trust-players: var(general.trust-players);
+
+	/*
+	 * If set to "on", Allows players to break bedrock anywhere in any dimension
+	 */
+	break-bedrock-anywhere: var(general.break-bedrock-anywhere);
 	
 	/*
 	 * If set to "on", enables inside-jokes and various chaos. Nothing destructive.
