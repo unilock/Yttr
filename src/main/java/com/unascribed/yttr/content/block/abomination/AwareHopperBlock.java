@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.abomination;
 import java.util.List;
 import java.util.stream.Stream;
 
+import net.minecraft.loot.context.LootContextParameterSet;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YSounds;
@@ -175,7 +176,7 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
 		List<ItemStack> li = super.getDroppedStacks(state, builder);
 		if (state.get(BLIND)) {
 			li = Lists.newArrayList(li);

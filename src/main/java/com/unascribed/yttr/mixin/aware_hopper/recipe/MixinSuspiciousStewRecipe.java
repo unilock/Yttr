@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.aware_hopper.recipe;
 
+import net.minecraft.registry.tag.ItemTags;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.unascribed.yttr.mechanics.SpecialInputsRecipe;
@@ -8,7 +9,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.SuspiciousStewRecipe;
-import net.minecraft.tag.ItemTags;
 
 @Mixin(SuspiciousStewRecipe.class)
 public class MixinSuspiciousStewRecipe implements SpecialInputsRecipe {

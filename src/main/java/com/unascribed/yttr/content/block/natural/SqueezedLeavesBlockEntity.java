@@ -16,7 +16,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.tag.FluidTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -79,7 +79,7 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 					markDirty();
 					queue.add(new BlockPos(pos.getX(), y, pos.getZ()));
 					scannedThisLayer.clear();
-				} else if (world.getBlockState(pos.up()).getMaterial().isReplaceable()) {
+				} else if (world.getBlockState(pos.up()).materialReplaceable()) {
 					world.setBlockState(pos.up(), getCachedState());
 					world.setBlockState(pos, Blocks.WATER.getDefaultState());
 				} else {
@@ -118,7 +118,7 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 		FluidState fs = bs.getFluidState();
 		return !scannedThisLayer.contains(pos)
 				&& (fs.isEmpty() || fs.isIn(FluidTags.WATER))
-				&& (bs.getMaterial().isReplaceable() || (bs.getBlock() instanceof FluidFillable && ((FluidFillable)bs.getBlock()).canFillWithFluid(world, pos, bs, Fluids.WATER)));
+				&& (bs.materialReplaceable() || (bs.getBlock() instanceof FluidFillable && ((FluidFillable)bs.getBlock()).canFillWithFluid(world, pos, bs, Fluids.WATER)));
 	}
 	
 	private boolean fill(BlockPos pos) {
@@ -127,7 +127,7 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 		if (fs.isEmpty() || fs.isIn(FluidTags.WATER)) {
 			if (bs.getBlock() instanceof FluidFillable) {
 				return ((FluidFillable)bs.getBlock()).tryFillWithFluid(world, pos, bs, Fluids.WATER.getDefaultState());
-			} else if (bs.getMaterial().isReplaceable()) {
+			} else if (bs.materialReplaceable()) {
 				return world.setBlockState(pos, Blocks.WATER.getDefaultState());
 			}
 		}

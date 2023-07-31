@@ -30,9 +30,9 @@ public class RifleItemRenderer extends IHasAClient {
 	
 	private static final Identifier CHAMBER_TEXTURE = Yttr.id("textures/item/rifle_chamber.png");
 	
-	private static final ModelIdentifier RIFLE_BASE_MODEL = new ModelIdentifier("yttr:rifle_base#inventory");
-	private static final ModelIdentifier RIFLE_CHAMBER_MODEL = new ModelIdentifier("yttr:rifle_chamber#inventory");
-	private static final ModelIdentifier RIFLE_CHAMBER_GLASS_MODEL = new ModelIdentifier("yttr:rifle_chamber_glass#inventory");
+	private static final ModelIdentifier RIFLE_BASE_MODEL = new ModelIdentifier("yttr", "rifle_base", "inventory");
+	private static final ModelIdentifier RIFLE_CHAMBER_MODEL = new ModelIdentifier("yttr", "rifle_chamber", "inventory");
+	private static final ModelIdentifier RIFLE_CHAMBER_GLASS_MODEL = new ModelIdentifier("yttr", "rifle_chamber_glass", "inventory");
 	
 	private static final UVObserver uvo = new UVObserver();
 

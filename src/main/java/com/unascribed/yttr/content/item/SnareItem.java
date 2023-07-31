@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.lib39.sandman.api.TicksAlwaysItem;
@@ -79,8 +81,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.World;
@@ -128,7 +128,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				FallingBlockEntity fbe = (FallingBlockEntity)e;
 				if (ehr == null && hr.getType() == Type.BLOCK) {
 					BlockState bs = fbe.getBlockState();
-					BlockPos target = world.getBlockState(hr.getBlockPos()).getMaterial().isReplaceable() ? hr.getBlockPos() : hr.getBlockPos().offset(hr.getSide());
+					BlockPos target = world.getBlockState(hr.getBlockPos()).materialReplaceable() ? hr.getBlockPos() : hr.getBlockPos().offset(hr.getSide());
 					AutomaticItemPlacementContext ctx = new AutomaticItemPlacementContext(world, target, user.getHorizontalFacing(), new ItemStack(bs.getBlock()), hr.getSide()) {
 						@Override
 						public float getPlayerYaw() {
@@ -248,7 +248,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					MobEntity mob = ((MobEntity) hit);
 					SoundEvent sound = ((AccessorMobEntity)hit).yttr$getAmbientSound();
 					if (sound != null) {
-						Identifier id = Registry.SOUND_EVENT.getId(sound);
+						Identifier id = Registries.SOUND_EVENT.getId(sound);
 						stack.getNbt().putString("AmbientSound", id.toString());
 						stack.getNbt().putInt("AmbientSoundTimer", -mob.getMinAmbientSoundDelay());
 						stack.getNbt().putInt("AmbientSoundDelay", mob.getMinAmbientSoundDelay());
@@ -266,7 +266,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				boolean baby = hit instanceof LivingEntity && ((LivingEntity)hit).isBaby();
 				hit.discard();
 				if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
-				stack.getNbt().putLong("LastUpdate", user.world.getServer().getTicks());
+				stack.getNbt().putLong("LastUpdate", user.getWorld().getServer().getTicks());
 				stack.getNbt().put("Contents", data);
 				stack.getNbt().putBoolean("Baby", baby);
 				return TypedActionResult.success(stack, true);
@@ -420,7 +420,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				int[] volumes = stack.getNbt().getIntArray("AmbientSoundVolumes");
 				Identifier id = Identifier.tryParse(stack.getNbt().getString("AmbientSound"));
 				if (id == null) return;
-				SoundEvent sound = Registry.SOUND_EVENT.getOrEmpty(id).orElse(null);
+				SoundEvent sound = Registries.SOUND_EVENT.getOrEmpty(id).orElse(null);
 				if (sound == null) return;
 				SoundCategory category = Enums.getIfPresent(SoundCategory.class, stack.getNbt().getString("AmbientSoundCategory")).or(SoundCategory.MASTER);
 				world.playSound(null, pos.x, pos.y, pos.z, sound, category, Float.intBitsToFloat(volumes[ThreadLocalRandom.current().nextInt(volumes.length)])/(selected ? 2 : 3), Float.intBitsToFloat(pitches[ThreadLocalRandom.current().nextInt(pitches.length)]));
@@ -432,7 +432,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			var data = stack.getNbt().getCompound("Contents");
 			var bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
 			if (bs.isOf(Blocks.SPAWNER) && data.contains("TileEntityData", NbtElement.COMPOUND_TYPE)) {
-				var bp = new BlockPos(pos);
+				var bp = BlockPos.fromPosition(pos);
 				var logic = new MobSpawnerLogic() {
 					@Override
 					public void sendStatus(World world, BlockPos pos, int i) {
@@ -505,7 +505,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		NbtCompound data = stack.getNbt().getCompound("Contents");
 		Identifier id = Identifier.tryParse(data.getString("id"));
 		if (id == null) return null;
-		return Registry.ENTITY_TYPE.getOrEmpty(id).orElse(null);
+		return Registries.ENTITY_TYPE.getOrEmpty(id).orElse(null);
 	}
 
 	private Entity release(@Nullable PlayerEntity player, World world, ItemStack stack, Vec3d pos, float yaw, boolean spawn) {
@@ -577,7 +577,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 					primary = spi.getColor(0);
 					secondary = spi.getColor(1);
 				} else {
-					primary = Hashing.murmur3_32_fixed().hashString(Registry.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
+					primary = Hashing.murmur3_32_fixed().hashString(Registries.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
 					secondary = ~primary;
 				}
 			}

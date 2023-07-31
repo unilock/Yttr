@@ -10,10 +10,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Axis;
 
 public class BlockEmiStack extends ItemEmiStack {
 
@@ -33,9 +33,9 @@ public class BlockEmiStack extends ItemEmiStack {
 			matrices.push();
 			matrices.translate(x+8, y+8, 0);
 			matrices.scale(16, -16, 16);
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
 			matrices.push();
-			MinecraftClient.getInstance().getItemRenderer().renderItem(getItemStack(), Mode.NONE, light, overlay, matrices, vcp, 0);
+			MinecraftClient.getInstance().getItemRenderer().renderItem(getItemStack(), ModelTransformationMode.NONE, light, overlay, matrices, vcp, 0);
 			matrices.pop();
 			vcp.draw();
 			matrices.pop();

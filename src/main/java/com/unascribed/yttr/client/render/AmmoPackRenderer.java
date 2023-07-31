@@ -37,7 +37,7 @@ public class AmmoPackRenderer {
 			float headPitch) {
 		if (entity.getEquippedStack(EquipmentSlot.CHEST).getItem() == YItems.SUIT_CHESTPLATE) return;
 		if (model instanceof BipedEntityModel<?> bep) {
-			BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
+			BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr", "ammo_pack_model", "inventory"));
 			matrices.push();
 				bep.body.rotate(matrices);
 				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
@@ -66,7 +66,7 @@ public class AmmoPackRenderer {
 						chest = Yttr.earsAccess.getChestSize(player);
 					} catch (Throwable t) {}
 				}
-				BakedModel seg = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
+				BakedModel seg = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr", "ammo_pack_seg_model", "inventory"));
 				matrices.translate(3.5f/16f, 11f/16f, -4.5f/16f);
 				if (chest > 0) {
 					float ang = chest*45;
@@ -78,7 +78,7 @@ public class AmmoPackRenderer {
 							}
 						matrices.pop();
 	
-						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(ang));
+						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(ang));
 						matrices.translate(0, -5.5f/16f, 0);
 						matrices.push();
 							matrices.scale(1, 5.5f, 1);
@@ -91,7 +91,7 @@ public class AmmoPackRenderer {
 						float angr = (float)Math.toRadians(ang);
 						float len = (float)(scale * Math.tan(angr));
 						float h = scale/MathHelper.cos(angr);
-						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
 						matrices.translate(0, -len/16f, 0);
 						matrices.push();
 							matrices.scale(1, len, 1);

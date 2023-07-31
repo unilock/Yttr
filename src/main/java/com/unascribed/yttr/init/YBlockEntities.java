@@ -47,7 +47,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.BlockEntityType.BlockEntityFactory;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.registry.Registry;
 
 public class YBlockEntities {
 

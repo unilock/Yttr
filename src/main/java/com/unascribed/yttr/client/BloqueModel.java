@@ -32,7 +32,6 @@ import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.DyeColor;
@@ -40,9 +39,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.BlockRenderView;
+import org.joml.Vector3f;
 
 public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
@@ -84,45 +83,45 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 								float maxX = (float)box.maxX;
 								float maxY = (float)box.maxY;
 								float maxZ = (float)box.maxZ;
-								Vec3f[] vertices = new Vec3f[4];
+								Vector3f[] vertices = new Vector3f[4];
 								switch (d) {
 									case UP:
 										sprite = top;
-										vertices[3] = new Vec3f(minX, maxY, minZ);
-										vertices[2] = new Vec3f(maxX, maxY, minZ);
-										vertices[1] = new Vec3f(maxX, maxY, maxZ);
-										vertices[0] = new Vec3f(minX, maxY, maxZ);
+										vertices[3] = new Vector3f(minX, maxY, minZ);
+										vertices[2] = new Vector3f(maxX, maxY, minZ);
+										vertices[1] = new Vector3f(maxX, maxY, maxZ);
+										vertices[0] = new Vector3f(minX, maxY, maxZ);
 										break;
 									case DOWN:
 										sprite = bottom;
-										vertices[0] = new Vec3f(minX, minY, minZ);
-										vertices[1] = new Vec3f(maxX, minY, minZ);
-										vertices[2] = new Vec3f(maxX, minY, maxZ);
-										vertices[3] = new Vec3f(minX, minY, maxZ);
+										vertices[0] = new Vector3f(minX, minY, minZ);
+										vertices[1] = new Vector3f(maxX, minY, minZ);
+										vertices[2] = new Vector3f(maxX, minY, maxZ);
+										vertices[3] = new Vector3f(minX, minY, maxZ);
 										break;
 									case NORTH:
-										vertices[3] = new Vec3f(minX, minY, minZ);
-										vertices[2] = new Vec3f(maxX, minY, minZ);
-										vertices[1] = new Vec3f(maxX, maxY, minZ);
-										vertices[0] = new Vec3f(minX, maxY, minZ);
+										vertices[3] = new Vector3f(minX, minY, minZ);
+										vertices[2] = new Vector3f(maxX, minY, minZ);
+										vertices[1] = new Vector3f(maxX, maxY, minZ);
+										vertices[0] = new Vector3f(minX, maxY, minZ);
 										break;
 									case SOUTH:
-										vertices[0] = new Vec3f(minX, minY, maxZ);
-										vertices[1] = new Vec3f(maxX, minY, maxZ);
-										vertices[2] = new Vec3f(maxX, maxY, maxZ);
-										vertices[3] = new Vec3f(minX, maxY, maxZ);
+										vertices[0] = new Vector3f(minX, minY, maxZ);
+										vertices[1] = new Vector3f(maxX, minY, maxZ);
+										vertices[2] = new Vector3f(maxX, maxY, maxZ);
+										vertices[3] = new Vector3f(minX, maxY, maxZ);
 										break;
 									case WEST:
-										vertices[3] = new Vec3f(minX, minY, maxZ);
-										vertices[2] = new Vec3f(minX, minY, minZ);
-										vertices[1] = new Vec3f(minX, maxY, minZ);
-										vertices[0] = new Vec3f(minX, maxY, maxZ);
+										vertices[3] = new Vector3f(minX, minY, maxZ);
+										vertices[2] = new Vector3f(minX, minY, minZ);
+										vertices[1] = new Vector3f(minX, maxY, minZ);
+										vertices[0] = new Vector3f(minX, maxY, maxZ);
 										break;
 									case EAST:
-										vertices[0] = new Vec3f(maxX, minY, maxZ);
-										vertices[1] = new Vec3f(maxX, minY, minZ);
-										vertices[2] = new Vec3f(maxX, maxY, minZ);
-										vertices[3] = new Vec3f(maxX, maxY, maxZ);
+										vertices[0] = new Vector3f(maxX, minY, maxZ);
+										vertices[1] = new Vector3f(maxX, minY, minZ);
+										vertices[2] = new Vector3f(maxX, maxY, minZ);
+										vertices[3] = new Vector3f(maxX, maxY, maxZ);
 										break;
 								}
 								int packedColor = color.getFireworkColor();
@@ -282,7 +281,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 											qe.pos(i, vertices[i]);
 											for (int j = 0; j < vertices.length; j++) {
 												if (j != i) {
-													Vec3f v = vertices[j].copy();
+													Vector3f v = new Vector3f(vertices[j]);
 													v.lerp(vertices[i], 0.5f);
 													qe.pos(j, v);
 												}

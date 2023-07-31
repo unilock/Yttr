@@ -9,7 +9,7 @@ import com.unascribed.yttr.crafting.ShatteringRecipe;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class YRecipeSerializers {
 
@@ -21,7 +21,7 @@ public class YRecipeSerializers {
 	public static final HaemopalRecipe.Serializer HAEMOPAL_CRAFTING = new HaemopalRecipe.Serializer();
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.RECIPE_SERIALIZER, YRecipeSerializers.class, RecipeSerializer.class);
+		Yttr.autoreg.autoRegister(Registries.RECIPE_SERIALIZER, YRecipeSerializers.class, RecipeSerializer.class);
 	}
 	
 }

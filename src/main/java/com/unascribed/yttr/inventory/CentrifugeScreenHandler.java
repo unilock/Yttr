@@ -41,7 +41,7 @@ public class CentrifugeScreenHandler extends ScreenHandler {
 	
 	public CentrifugeScreenHandler(Inventory centrifuge, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
 		super(YHandledScreens.CENTRIFUGE, syncId);
-		world = playerInv.player.world;
+		world = playerInv.player.getWorld();
 		
 		this.centrifuge = centrifuge;
 		this.properties = properties;

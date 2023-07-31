@@ -12,9 +12,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Axis;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerMeterBlockEntity> {
 
@@ -52,7 +52,7 @@ public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerM
 					ang = 270;
 					break;
 			}
-			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
+			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(ang));
 			matrices.translate(-0.5f, -0.5f, -0.5f);
 			matrices.translate(1/16f, 0.5f, 0.89825f);
 			matrices.translate(0, 0, -0.01f);

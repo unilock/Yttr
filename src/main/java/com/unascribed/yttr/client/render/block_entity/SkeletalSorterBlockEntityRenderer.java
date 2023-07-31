@@ -52,8 +52,8 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 				ang = -70;
 				break;
 		}
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+		matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(ang));
+		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
 		matrices.translate(0, -0.5, 0);
 		matrices.translate(0, 0, -1/16f);
 		skeletonModel.child = false;
@@ -148,8 +148,8 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 			skeletonModel.leftArm.rotate(matrices);
 			matrices.translate(0, 0.65, 0);
 			matrices.scale(0.5f, 0.5f, 0.5f);
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-50));
-			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(40));
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-50));
+			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(40));
 			mc.getItemRenderer().renderItem(null, left, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
 			matrices.pop();
 			
@@ -157,8 +157,8 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 			skeletonModel.rightArm.rotate(matrices);
 			matrices.translate(0, 0.65, 0);
 			matrices.scale(0.5f, 0.5f, 0.5f);
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-50));
-			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-40));
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-50));
+			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-40));
 			mc.getItemRenderer().renderItem(null, right, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
 			matrices.pop();
 		}

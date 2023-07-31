@@ -29,6 +29,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -93,8 +94,8 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
-		BlockEntity be = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+		BlockEntity be = builder.getOptionalParameter(LootContextParameters.BLOCK_ENTITY);
 		if (be instanceof CleavedBlockEntity) {
 			return ((CleavedBlockEntity)be).getDonor().getDroppedStacks(builder);
 		}

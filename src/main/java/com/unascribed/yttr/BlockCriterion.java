@@ -1,5 +1,6 @@
 package com.unascribed.yttr;
 
+import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
@@ -18,7 +19,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 
 public class BlockCriterion extends PlacedBlockCriterion {
 
@@ -62,7 +62,7 @@ public class BlockCriterion extends PlacedBlockCriterion {
 	private static Block getBlock(JsonObject obj) {
 		if (obj.has("block")) {
 			Identifier identifier = new Identifier(JsonHelper.getString(obj, "block"));
-			return Registry.BLOCK.getOrEmpty(identifier).orElseThrow(() -> {
+			return Registries.BLOCK.getOrEmpty(identifier).orElseThrow(() -> {
 				return new JsonSyntaxException("Unknown block type '" + identifier + "'");
 			});
 		} else {

@@ -20,6 +20,7 @@ import net.minecraft.item.ToolItem;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -28,9 +29,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 public class DropOfContinuityItem extends Item {
 
@@ -71,7 +71,7 @@ public class DropOfContinuityItem extends Item {
 				}
 				((ServerWorld)world).spawnParticles(ParticleTypes.FIREWORK, center.x, center.y, center.z, 1*m, box.getXLength()/3, box.getYLength()/3, box.getZLength()/3, 0.05);
 				float f = ThreadLocalRandom.current().nextFloat()/2;
-				((ServerWorld)world).spawnParticles(new DustParticleEffect(new Vec3f(1, 0.75f-f, 0.5f), 0.5f), center.x, center.y, center.z, 3*m, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0);
+				((ServerWorld)world).spawnParticles(new DustParticleEffect(new Vector3f(1, 0.75f-f, 0.5f), 0.5f), center.x, center.y, center.z, 3*m, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0);
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public class DropOfContinuityItem extends Item {
 			Box box = user.getBoundingBox();
 			Vec3d center = box.getCenter();
 			((ServerWorld)world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, stack), center.x, center.y, center.z, 30, 0.25, 0.25, 0.25, 0.05);
-			((ServerWorld)world).spawnParticles(new DustParticleEffect(new Vec3f(1, 0.75f, 0.5f), 0.5f), center.x, center.y, center.z, 10, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0.0125);
+			((ServerWorld)world).spawnParticles(new DustParticleEffect(new Vector3f(1, 0.75f, 0.5f), 0.5f), center.x, center.y, center.z, 10, box.getXLength()/2, box.getYLength()/2, box.getZLength()/2, 0.0125);
 			ThreadLocalRandom r = ThreadLocalRandom.current();
 			for (int i = 0; i < 50; i++) {
 				((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, center.x, center.y, center.z, 0, r.nextGaussian(), r.nextGaussian(), r.nextGaussian(), 0.25);
@@ -121,18 +121,18 @@ public class DropOfContinuityItem extends Item {
 	
 	public static Set<Item> getPossibilities() {
 		Set<Item> possibilities = Sets.newHashSet();
-		Registry.ITEM.getTag(YTags.Item.GIFTS).get().stream()
+		Registries.ITEM.getTag(YTags.Item.GIFTS).get().stream()
 			.map(re -> re.value())
 			.forEach(possibilities::add);
-		Registry.BLOCK.getTag(YTags.Block.GIFTS).get().stream()
+		Registries.BLOCK.getTag(YTags.Block.GIFTS).get().stream()
 			.map(re -> re.value().asItem())
 			.forEach(possibilities::add);
 		// the gifts tag used to include all the fabric tool tags but those are gone now
-		Registry.ITEM.getEntries().stream()
+		Registries.ITEM.getEntries().stream()
 			.map(Map.Entry::getValue)
 			.filter(i -> i instanceof ToolItem)
 			.forEach(possibilities::add);
-		Registry.ITEM.getTag(YTags.Item.NOT_GIFTS).get().stream()
+		Registries.ITEM.getTag(YTags.Item.NOT_GIFTS).get().stream()
 			.map(re -> re.value())
 			.forEach(possibilities::remove);
 		possibilities.remove(null);

@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.scorched;
 
+import net.minecraft.registry.Holder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -8,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.mixinsupport.ScorchedEnablement;
 
-import net.minecraft.util.Holder;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;

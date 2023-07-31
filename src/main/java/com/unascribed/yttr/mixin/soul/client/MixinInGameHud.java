@@ -29,7 +29,6 @@ import static org.lwjgl.opengl.GL11.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -37,13 +36,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 
 @Mixin(InGameHud.class)
 @Environment(EnvType.CLIENT)
 public class MixinInGameHud {
 
 	private static final Identifier YTTR$BEET_ICONS = Yttr.id("textures/gui/beet_icons.png");
+	private static final Identifier YTTR$GUI_ICONS = new Identifier("textures/gui/icons.png");
 	
 	private float yttr$lastEvaporateProgress;
 	private float yttr$evaporateProgress;
@@ -72,7 +71,7 @@ public class MixinInGameHud {
 		}
 		if (yttr$evaporateProgress > 0) {
 			if (yttr$hearticulates == null) {
-				mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
+				mc.getTextureManager().bindTexture(YTTR$GUI_ICONS);
 				yttr$heartResolution = (glGetTexLevelParameteri(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH)*9)/256;
 				yttr$hearticulates = new Vector3f[yttr$heartResolution*yttr$heartResolution];
 				var r = ThreadLocalRandom.current();
@@ -191,7 +190,7 @@ public class MixinInGameHud {
 			} else {
 				YttrClient.drawQuad(matrices, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
 			}
-			RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
+			RenderSystem.setShaderTexture(0, YTTR$GUI_ICONS);
 			RenderSystem.enableCull();
 			ci.cancel();
 			return;
@@ -253,7 +252,7 @@ public class MixinInGameHud {
 				}
 			}
 			BufferRenderer.drawWithShader(bldr.end());
-			RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
+			RenderSystem.setShaderTexture(0, YTTR$GUI_ICONS);
 			ci.cancel();
 		}
 	}

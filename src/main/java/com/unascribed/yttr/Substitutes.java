@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.Gson;
@@ -24,7 +25,6 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SinglePreparationResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.Registry;
 
 public class Substitutes extends SinglePreparationResourceReloader<BiMap<Item, Item>> implements IdentifiableResourceReloadListener {
 	
@@ -59,7 +59,7 @@ public class Substitutes extends SinglePreparationResourceReloader<BiMap<Item, I
 								optionalK = true;
 							}
 							Identifier kId = new Identifier(k);
-							Optional<Item> kI = Registry.ITEM.getOrEmpty(kId);
+							Optional<Item> kI = Registries.ITEM.getOrEmpty(kId);
 							if (kI.isPresent()) {
 								String v = en.getValue().getAsString();
 								boolean optionalV = false;
@@ -68,12 +68,12 @@ public class Substitutes extends SinglePreparationResourceReloader<BiMap<Item, I
 									optionalV = true;
 								}
 								Identifier vId = new Identifier(v);
-								Optional<Item> vI = Registry.ITEM.getOrEmpty(vId);
+								Optional<Item> vI = Registries.ITEM.getOrEmpty(vId);
 								if (vI.isPresent()) {
 									if (map.containsKey(kI.get())) {
-										if (!optionalK) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this substitute to prime "+Registry.ITEM.getId(map.get(kI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
+										if (!optionalK) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this substitute to prime "+Registries.ITEM.getId(map.get(kI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
 									} else if (map.containsValue(vI.get())) {
-										if (!optionalV) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this prime to substitute "+Registry.ITEM.getId(map.inverse().get(vI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
+										if (!optionalV) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this prime to substitute "+Registries.ITEM.getId(map.inverse().get(vI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
 									} else {
 										map.put(kI.get(), vI.get());
 									}

@@ -3,7 +3,6 @@ package com.unascribed.yttr.client.cache;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import com.google.gson.internal.UnsafeAllocator;
 import com.unascribed.yttr.client.util.DummyServerWorld;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YItems;
@@ -21,8 +20,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.spongepowered.include.com.google.gson.internal.UnsafeAllocator;
 
 public class SnareEntityTextureCache {
 
@@ -50,7 +51,7 @@ public class SnareEntityTextureCache {
 		NbtCompound data = stack.getNbt().getCompound("Contents");
 		if (!textureCache.asMap().containsKey(data)) {
 			if (type == EntityType.FALLING_BLOCK) {
-				BlockState bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
+				BlockState bs = NbtHelper.toBlockState(dummyWorld.get().filteredLookup(RegistryKeys.BLOCK), data.getCompound("BlockState"));
 				BakedModel bm = MinecraftClient.getInstance().getBlockRenderManager().getModel(bs);
 				Identifier id = bm.getParticleSprite().getId();
 				textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));

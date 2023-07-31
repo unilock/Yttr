@@ -7,7 +7,7 @@ import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class YRecipeTypes {
 
@@ -16,7 +16,7 @@ public class YRecipeTypes {
 	public static final RecipeType<ShatteringRecipe> SHATTERING = create("shattering");
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.RECIPE_TYPE, YRecipeTypes.class, RecipeType.class);
+		Yttr.autoreg.autoRegister(Registries.RECIPE_TYPE, YRecipeTypes.class, RecipeType.class);
 	}
 	
 	private static <T extends Recipe<?>> RecipeType<T> create(String id) {

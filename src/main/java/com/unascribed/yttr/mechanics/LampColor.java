@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.registry.Registry;
 
 public enum LampColor implements StringIdentifiable {
 	WHITE(DyeColor.WHITE),

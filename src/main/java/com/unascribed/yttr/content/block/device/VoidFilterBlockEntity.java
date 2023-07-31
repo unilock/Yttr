@@ -34,7 +34,6 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 
 public class VoidFilterBlockEntity extends BlockEntity implements YTickable, DelegatingInventory, SideyInventory {
 	

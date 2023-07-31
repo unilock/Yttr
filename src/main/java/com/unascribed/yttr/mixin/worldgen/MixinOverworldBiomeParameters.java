@@ -2,6 +2,7 @@ package com.unascribed.yttr.mixin.worldgen;
 
 import java.util.function.Consumer;
 
+import net.minecraft.registry.RegistryKey;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,8 +15,6 @@ import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.YConfig;
 
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.biome.source.util.OverworldBiomeParameters;

@@ -13,13 +13,13 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -47,7 +47,7 @@ public class SqueezeLogBlock extends PillarBlock {
 		if (random.nextInt(16) == 0) {
 			BlockPos down = pos.down();
 			BlockState below = world.getBlockState(down);
-			if ((below.isAir() || below.getMaterial().isReplaceable()) && below.getFluidState().isIn(FluidTags.WATER)) {
+			if ((below.isAir() || below.materialReplaceable()) && below.getFluidState().isIn(FluidTags.WATER)) {
 				world.setBlockState(down, YBlocks.DELICACE.getDefaultState());
 			}
 		}

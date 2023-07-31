@@ -89,7 +89,7 @@ public class YBiomes {
 	public static final LatchHolder<Biome> SCORCHED_TERMINUS_HOLDER = LatchHolder.unset();
 	
 	public static void init() {
-		Yttr.autoreg.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
+//		Yttr.autoreg.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
 	}
 
 	@SafeVarargs

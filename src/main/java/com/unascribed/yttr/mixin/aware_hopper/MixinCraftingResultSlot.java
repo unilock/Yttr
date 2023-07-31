@@ -28,11 +28,11 @@ public class MixinCraftingResultSlot {
 	@Inject(at=@At("HEAD"), method="onCrafted(Lnet/minecraft/item/ItemStack;)V")
 	protected void onCrafted(ItemStack stack, CallbackInfo ci) {
 		if (player == null) return;
-		if (player.world.isClient) return;
+		if (player.getWorld().isClient) return;
 		ChunkPos cp = new ChunkPos(player.getBlockPos());
 		for (int cX = -1; cX <= 1; cX++) {
 			for (int cZ = -1; cZ <= 1; cZ++) {
-				WorldChunk c = player.world.getChunk(cp.x+cX, cp.z+cZ);
+				WorldChunk c = player.getWorld().getChunk(cp.x+cX, cp.z+cZ);
 				for (BlockEntity be : c.getBlockEntities().values()) {
 					if (be instanceof AwareHopperBlockEntity) {
 						AwareHopperBlockEntity ah = (AwareHopperBlockEntity)be;

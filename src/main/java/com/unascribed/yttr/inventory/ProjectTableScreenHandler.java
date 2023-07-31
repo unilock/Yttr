@@ -133,7 +133,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 			if (optional.isPresent()) {
 				CraftingRecipe craftingRecipe = optional.get();
 				if (resultInventory.shouldCraftRecipe(world, spe, craftingRecipe)) {
-					res = craftingRecipe.craft(craftingInventory);
+					res = craftingRecipe.craft(craftingInventory, world.getRegistryManager());
 				}
 			}
 

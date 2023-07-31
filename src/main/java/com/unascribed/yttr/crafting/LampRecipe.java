@@ -24,9 +24,9 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class LampRecipe extends ShapedRecipe {
@@ -83,7 +83,7 @@ public class LampRecipe extends ShapedRecipe {
 				if (item instanceof DyeItem) {
 					thisColor = LampColor.BY_DYE.get(((DyeItem)item).getColor());
 				} else {
-					thisColor = LampColor.BY_ITEM.get(Resolvable.mapKey(item, Registry.ITEM));
+					thisColor = LampColor.BY_ITEM.get(Resolvable.mapKey(item, Registries.ITEM));
 				}
 				if (color != null && color != thisColor) return ItemStack.EMPTY;
 				if (thisColor != null) color = thisColor;

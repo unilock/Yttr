@@ -12,6 +12,7 @@ import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
@@ -34,7 +35,7 @@ public class LazorEmitterBlock extends AbstractColoredLazorBlock {
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
 		return Lists.newArrayList(getDrop(state));
 	}
 	
@@ -42,14 +43,4 @@ public class LazorEmitterBlock extends AbstractColoredLazorBlock {
 	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
 		return getDrop(state);
 	}
-	
-	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
-		for (LampColor color : LampColor.VALUES) {
-			ItemStack stack = new ItemStack(this);
-			LampBlockItem.setColor(stack, color);
-			list.add(stack);
-		}
-	}
-
 }

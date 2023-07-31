@@ -36,7 +36,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.registry.Registry;
 
 public class YHandledScreens {
 

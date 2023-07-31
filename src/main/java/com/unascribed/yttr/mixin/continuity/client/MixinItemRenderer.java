@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.continuity.client;
 
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 public class MixinItemRenderer {
 
 	@Inject(at=@At("HEAD"), method="renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;III)V")
-	public void renderItemHead(LivingEntity entity, ItemStack stack, ModelTransformation.Mode mode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, int light, int overlay, int seed, CallbackInfo ci) {
+	public void renderItemHead(LivingEntity entity, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, int light, int overlay, int seed, CallbackInfo ci) {
 		if (entity != null && stack.getItem() == YItems.SHIFTER) {
 			if (mode.isFirstPerson()) return;
 			ContinuityItemColorProvider.holderYaw = entity.bodyYaw;
@@ -32,7 +33,7 @@ public class MixinItemRenderer {
 	}
 	
 	@Inject(at=@At("TAIL"), method="renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;III)V")
-	public void renderItemTail(LivingEntity entity, ItemStack stack, ModelTransformation.Mode mode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vcp, World w, int light, int overlay, int seed, CallbackInfo ci) {
+	public void renderItemTail(LivingEntity entity, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vcp, World w, int light, int overlay, int seed, CallbackInfo ci) {
 		if (entity != null && stack.getItem() == YItems.SHIFTER) {
 			ContinuityItemColorProvider.holderYawValid = false;
 		}

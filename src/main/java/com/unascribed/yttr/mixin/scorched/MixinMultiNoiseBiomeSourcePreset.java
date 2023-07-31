@@ -1,5 +1,8 @@
 package com.unascribed.yttr.mixin.scorched;
 
+import net.minecraft.registry.Holder;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -9,9 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.mixinsupport.ScorchedEnablement;
 
-import net.minecraft.util.Holder;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource.Preset;
@@ -28,8 +28,8 @@ public class MixinMultiNoiseBiomeSourcePreset {
 		if (self == Preset.NETHER) {
 			var registry = instance.biomeRegistry();
 			((ScorchedEnablement)ci.getReturnValue()).yttr$setScorchedBiomes(
-					registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("scorched_summit"))).getOrThrow(false, s -> {}),
-					registry.getOrCreateHolder(RegistryKey.of(Registry.BIOME_KEY, Yttr.id("scorched_terminus"))).getOrThrow(false, s -> {})
+					registry.getOrCreateHolder(RegistryKey.of(RegistryKeys.BIOME, Yttr.id("scorched_summit"))).getOrThrow(false, s -> {}),
+					registry.getOrCreateHolder(RegistryKey.of(RegistryKeys.BIOME, Yttr.id("scorched_terminus"))).getOrThrow(false, s -> {})
 				);
 		}
 	}

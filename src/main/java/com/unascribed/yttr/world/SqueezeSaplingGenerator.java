@@ -17,10 +17,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.block.sapling.SaplingGenerator;
+import net.minecraft.registry.Holder;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.util.Holder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
@@ -38,7 +39,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 public class SqueezeSaplingGenerator extends SaplingGenerator {
 
 	@Override
-	protected Holder<? extends ConfiguredFeature<?, ?>> getTreeFeature(RandomGenerator random, boolean bl) {
+	protected RegistryKey<ConfiguredFeature<?, ?>> getTreeFeature(RandomGenerator random, boolean bl) {
 		// no thanks i'll do it myself
 		return null;
 	}
@@ -238,7 +239,7 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 		if (bs.isOf(YBlocks.SQUEEZE_LEAVES) || bs.isOf(YBlocks.SQUEEZE_SAPLING) || bs.isOf(YBlocks.SQUEEZED_LEAVES)
 				|| (!leaves && (bs.isOf(YBlocks.SQUEEZE_LOG) || bs.isOf(YBlocks.STRIPPED_SQUEEZE_LOG))))
 			return true;
-		return bs.isAir() || bs.getMaterial().isReplaceable() || bs.isOf(Blocks.KELP_PLANT);
+		return bs.isAir() || bs.materialReplaceable() || bs.isOf(Blocks.KELP_PLANT);
 	}
 
 	public static void generateNaturalTrees(long seed, ChunkRegion world, Chunk chunk) {

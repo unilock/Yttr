@@ -12,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -55,8 +56,8 @@ public class HaemopalHolsterBlock extends Block {
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
-		var breaker = builder.getNullable(LootContextParameters.THIS_ENTITY);
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+		var breaker = builder.getOptionalParameter(LootContextParameters.THIS_ENTITY);
 		var li = new ArrayList<ItemStack>();
 		li.add(new ItemStack(YItems.POLISHED_SCORCHED_OBSIDIAN_CAPSTONE));
 		if (breaker instanceof PlayerEntity player && player.getMaxHealth() > 4) {

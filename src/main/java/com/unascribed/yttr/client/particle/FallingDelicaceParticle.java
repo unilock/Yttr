@@ -8,7 +8,7 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class FallingDelicaceParticle extends BlockLeakParticle {
 
@@ -18,7 +18,7 @@ public class FallingDelicaceParticle extends BlockLeakParticle {
 		maxAge = 100;
 		setColor(0.998f, 0.564f, 0.994f);
 		setColorAlpha(0.5f);
-		SpriteProvider sprites = ((ParticleManagerAccessor)MinecraftClient.getInstance().particleManager).getSpriteAwareFactories().get(Registry.PARTICLE_TYPE.getKey(ParticleTypes.FALLING_HONEY).get().getValue());
+		SpriteProvider sprites = ((ParticleManagerAccessor)MinecraftClient.getInstance().particleManager).getSpriteAwareFactories().get(Registries.PARTICLE_TYPE.getKey(ParticleTypes.FALLING_HONEY).get().getValue());
 		setSprite(sprites);
 	}
 	

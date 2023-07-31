@@ -3,6 +3,9 @@ package com.unascribed.yttr.compat.modmenu;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.registry.Holder;
+import net.minecraft.util.math.Axis;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -29,11 +32,10 @@ import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class YttrConfigScreen extends Screen {
 
-	public static final MusicSound MUSIC = new MusicSound(YSounds.SILENCE, 10, 10, true);
+	public static final MusicSound MUSIC = new MusicSound(Holder.createDirect(YSounds.SILENCE), 10, 10, true);
 	
 	private enum Section {
 		GENERAL,
@@ -133,7 +135,7 @@ public class YttrConfigScreen extends Screen {
 	public void closeScreen() {
 		if (isClosing) {
 			client.setScreen(parent);
-			client.getMusicTracker().stop();
+			client.getMusicTracker().stopPlaying();
 			return;
 		}
 		isClosing = true;
@@ -141,7 +143,8 @@ public class YttrConfigScreen extends Screen {
 	}
 	
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		MatrixStack matrices = graphics.getMatrices();
 		sr.setColor(YConfig.Client.configColor);
 		anyDescDrawnThisFrame = false;
 		this.mouseX = mouseX;
@@ -170,7 +173,7 @@ public class YttrConfigScreen extends Screen {
 			modelView.scale(1+(sca/2), 1+(sca/2), 1);
 			modelView.translate(-initialMouseX, -initialMouseY, 0);
 			RenderSystem.applyModelViewMatrix();
-			parent.render(matrices, -200, -200, delta);
+			parent.render(graphics, -200, -200, delta);
 			modelView.pop();
 			RenderSystem.applyModelViewMatrix();
 			matrices.pop();
@@ -178,11 +181,11 @@ public class YttrConfigScreen extends Screen {
 			matrices.push();
 			matrices.translate(initialMouseX, initialMouseY, 0);
 			matrices.scale(r/10, r/10, 1);
-			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45));
-			fill(matrices, -10, -10, 10, 10, 0xFF000000);
-			fill(matrices, -12, -12, 12, 12, 0x33000000);
-			fill(matrices, -16, -16, 16, 16, 0x33000000);
-			fill(matrices, -20, -20, 20, 20, 0x33000000);
+			matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(45));
+			graphics.fill(-10, -10, 10, 10, 0xFF000000);
+			graphics.fill(-12, -12, 12, 12, 0x33000000);
+			graphics.fill(-16, -16, 16, 16, 0x33000000);
+			graphics.fill(-20, -20, 20, 20, 0x33000000);
 			matrices.pop();
 		} else {
 			RenderSystem.clearColor(0, 0, 0, 1);
@@ -318,7 +321,7 @@ public class YttrConfigScreen extends Screen {
 			}
 			sr.tearDown();
 		}
-		super.render(matrices, mouseX, mouseY, delta);
+		super.render(graphics, mouseX, mouseY, delta);
 		clicked = false;
 		rclicked = false;
 		if (!anyDescDrawnThisFrame) {
@@ -423,7 +426,7 @@ public class YttrConfigScreen extends Screen {
 			closeTime++;
 			if (closeTime > 20) {
 				client.setScreen(parent);
-				client.getMusicTracker().stop();
+				client.getMusicTracker().stopPlaying();
 			}
 		}
 		sr.tick();

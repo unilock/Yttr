@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 @Mixin(Ingredient.class)
 public class MixinIngredient {

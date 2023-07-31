@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.unascribed.yttr.init.*;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import org.jetbrains.annotations.Nullable;
@@ -225,8 +226,8 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-		if (builder.getNullable(LootContextParameters.BLOCK_ENTITY) instanceof BloqueBlockEntity be) {
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+		if (builder.getOptionalParameter(LootContextParameters.BLOCK_ENTITY) instanceof BloqueBlockEntity be) {
 			if (be.isWelded()) {
 				return List.of(new ItemStack(YItems.DELRENE_SCRAP, be.getPopCount()));
 			}

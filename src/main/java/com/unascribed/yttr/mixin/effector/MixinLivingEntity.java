@@ -11,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
@@ -24,10 +23,9 @@ public abstract class MixinLivingEntity extends Entity {
 
 	@Inject(at=@At("HEAD"), method="onDeath")
 	public void onDeath(DamageSource source, CallbackInfo ci) {
-		if (source instanceof EntityDamageSource && source.getName().equals("yttr.effector_fall")) {
-			EntityDamageSource eds = (EntityDamageSource)source;
-			if (eds.getAttacker() instanceof ServerPlayerEntity) {
-				YCriteria.KILL_WITH_EFFECTOR.trigger((ServerPlayerEntity)eds.getAttacker());
+		if (source.getName().equals("yttr.effector_fall")) {
+			if (source.getAttacker() instanceof ServerPlayerEntity) {
+				YCriteria.KILL_WITH_EFFECTOR.trigger((ServerPlayerEntity)source.getAttacker());
 			}
 		}
 	}

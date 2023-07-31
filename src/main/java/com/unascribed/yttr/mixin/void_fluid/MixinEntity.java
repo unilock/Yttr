@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.void_fluid;
 
+import net.minecraft.registry.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +12,6 @@ import com.unascribed.yttr.init.YTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.TagKey;
 
 @Mixin(Entity.class)
 public class MixinEntity {

@@ -20,10 +20,10 @@ import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.registry.Registry;
+import org.joml.Vector3f;
 
 public class MessageS2CBeam extends S2CMessage {
 
@@ -59,7 +59,7 @@ public class MessageS2CBeam extends S2CMessage {
 		float r = NativeImage.getBlue(color)/255f;
 		float g = NativeImage.getGreen(color)/255f;
 		float b = NativeImage.getRed(color)/255f;
-		Entity ent = player.world.getEntityById(entityId);
+		Entity ent = player.getWorld().getEntityById(entityId);
 		if (ent == null) return;
 		boolean fp = ent == player && mc.options.getPerspective() == Perspective.FIRST_PERSON;
 		Vec3d start = RifleItem.getMuzzlePos(ent, fp);
@@ -68,8 +68,8 @@ public class MessageS2CBeam extends S2CMessage {
 		double diffY = endY-start.y;
 		double diffZ = endZ-start.z;
 		int count = (int)(len*14);
-		DustParticleEffect eff = new DustParticleEffect(new Vec3f(r, g, b), 0.2f);
-		SpriteProvider sprites = ((ParticleManagerAccessor)mc.particleManager).getSpriteAwareFactories().get(Registry.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
+		DustParticleEffect eff = new DustParticleEffect(new Vector3f(r, g, b), 0.2f);
+		SpriteProvider sprites = ((ParticleManagerAccessor)mc.particleManager).getSpriteAwareFactories().get(Registries.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
 		for (int i = 0; i < count; i++) {
 			double t = (i/(double)count);
 			double x = start.x+(diffX*t);

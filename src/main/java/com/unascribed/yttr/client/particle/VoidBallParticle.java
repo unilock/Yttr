@@ -53,7 +53,7 @@ public class VoidBallParticle extends BillboardParticle {
 			return;
 		}
 		if (buf == null) {
-			buf = new VertexBuffer();
+			buf = new VertexBuffer(VertexBuffer.Usage.STATIC);
 			BufferBuilder bb = Tessellator.getInstance().getBufferBuilder();
 			
 			bb.begin(DrawMode.TRIANGLES, VertexFormats.POSITION);
@@ -85,7 +85,7 @@ public class VoidBallParticle extends BillboardParticle {
 		buf.bind();
 		for (int i = 0; i < 40; i++) {
 			if (i >= cutoff) {
-				buf.setShader(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+				buf.draw(ms.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 			}
 			ms.scale(0.97f, 0.97f, 0.97f);
 			RenderSystem.setShaderColor(0, 0, 0, a/3);

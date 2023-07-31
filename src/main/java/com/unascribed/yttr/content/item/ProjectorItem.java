@@ -110,7 +110,7 @@ public class ProjectorItem extends Item {
 	}
 
 	private boolean canReplace(BlockState bs) {
-		return bs.isAir() || bs.getMaterial().isReplaceable() || (bs.isOf(YBlocks.CONTINUOUS_PLATFORM) && bs.get(ContinuousPlatformBlock.AGE) != Age.IMMORTAL);
+		return bs.isAir() || bs.materialReplaceable() || (bs.isOf(YBlocks.CONTINUOUS_PLATFORM) && bs.get(ContinuousPlatformBlock.AGE) != Age.IMMORTAL);
 	}
 
 	@Override

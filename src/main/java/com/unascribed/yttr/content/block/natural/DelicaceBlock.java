@@ -60,7 +60,7 @@ public class DelicaceBlock extends Block {
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (getOutlineShape(state, world, pos, ShapeContext.absent()).getBoundingBox().offset(pos).intersects(entity.getBoundingBox())) {
-			entity.slowMovement(state, new Vec3d(0.8, 0.75, 0.8));
+			entity.setMovementMultiplier(state, new Vec3d(0.8, 0.75, 0.8));
 		}
 	}
 

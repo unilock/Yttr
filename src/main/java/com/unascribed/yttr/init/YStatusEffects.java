@@ -5,7 +5,7 @@ import com.unascribed.yttr.content.effect.BleedingStatusEffect;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class YStatusEffects {
 
@@ -14,7 +14,7 @@ public class YStatusEffects {
 	public static final StatusEffect POTION_SICKNESS = new StatusEffect(StatusEffectType.HARMFUL, 0xC8C6E2) {};
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.STATUS_EFFECT, YStatusEffects.class, StatusEffect.class);
+		Yttr.autoreg.autoRegister(Registries.STATUS_EFFECT, YStatusEffects.class, StatusEffect.class);
 	}
 
 }

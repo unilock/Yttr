@@ -49,14 +49,14 @@ public class MixinHeldItemRenderer {
 			float f = MathHelper.sin(swingProgress * swingProgress * 3.1415927F);
 			applyEquipOffset(matrices, arm, yttr$equipProgress*MathHelper.sqrt(swingProgress));
 			matrices.translate(i*g*-0.5f, f*0.5f, 0);
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(i * (f * 80.0F)));
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(i * (g * -90.0F)));
-			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(i * (g * -60.0F)));
-			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(i * (g * 90.0F)));
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(i * (g * -90.0F)));
-//			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(i * g * -20.0F));
-//			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(g * -80.0F));
-//			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(i * -45.0F));
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(i * (f * 80.0F)));
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(i * (g * -90.0F)));
+			matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(i * (g * -60.0F)));
+			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(i * (g * 90.0F)));
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(i * (g * -90.0F)));
+//			matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(i * g * -20.0F));
+//			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(g * -80.0F));
+//			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(i * -45.0F));
 			ci.cancel();
 		}
 	}

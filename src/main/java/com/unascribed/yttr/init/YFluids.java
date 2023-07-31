@@ -15,7 +15,6 @@ import com.unascribed.yttr.util.annotate.RenderLayer;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.registry.Registry;
 
 public class YFluids {
 

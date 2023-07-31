@@ -1,6 +1,6 @@
 package com.unascribed.yttr.mixinsupport;
 
-import net.minecraft.util.Holder;
+import net.minecraft.registry.Holder;
 import net.minecraft.world.biome.Biome;
 
 public interface ScorchedEnablement {

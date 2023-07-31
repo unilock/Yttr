@@ -2,6 +2,9 @@ package com.unascribed.yttr.mixin.rifle.client;
 
 import java.util.function.Supplier;
 
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Holder;
+import net.minecraft.registry.RegistryKey;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,9 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Holder;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -31,8 +32,8 @@ import net.minecraft.world.dimension.DimensionType;
 @Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World {
 
-	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryKey, Holder<DimensionType> dimension, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
-		super(properties, registryKey, dimension, profiler, isClient, debugWorld, seed, maxChainedNeighborUpdates);
+	protected MixinClientWorld(MutableWorldProperties worldProperties, RegistryKey<World> registryKey, DynamicRegistryManager registryManager, Holder<DimensionType> dimension, Supplier<Profiler> profiler, boolean client, boolean debug, long seed, int maxChainedNeighborUpdates) {
+		super(worldProperties, registryKey, registryManager, dimension, profiler, client, debug, seed, maxChainedNeighborUpdates);
 	}
 
 	@Inject(at=@At("HEAD"), method="m_dmodcllo", cancellable=true)
