@@ -123,7 +123,7 @@ dependencies {
 		modApi include("com.unascribed:lib39-${module}:1.5.0-experimental+1.20.1")
 	}
 	
-	modRuntimeOnly("com.terraformersmc:modmenu:7.2.1") {
+	modImplementation("com.terraformersmc:modmenu:7.2.1") {
 		transitive = false
 	}
 }
