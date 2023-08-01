@@ -60,6 +60,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
@@ -180,7 +181,20 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.setDefaultComparison(YItems.FIXTURE, compareNbt);
 		registry.setDefaultComparison(YItems.CAGE_LAMP, compareNbt);
 		registry.setDefaultComparison(YItems.PANEL, compareNbt);
-		
+
+		registry.setDefaultComparison(YItems.SNARE, Comparison.of(
+				(a, b) -> {
+					EntityType<?> ae = YItems.SNARE.getEntityType(a.getItemStack());
+					EntityType<?> be = YItems.SNARE.getEntityType(b.getItemStack());
+
+					if (ae == null || be == null) {
+						return ae == be;
+					} else {
+						return ae.equals(be);
+					}
+				}
+		));
+
 		registry.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING).stream()
 			.filter(r -> !r.isHidden())
 			.sorted((a, b) -> Float.compare(b.getChance(), a.getChance()))
