@@ -18,7 +18,7 @@ import org.joml.Matrix4f;
 
 public class PowerMeterBlockEntityRenderer implements BlockEntityRenderer<PowerMeterBlockEntity> {
 
-	private static final Identifier LCD = Yttr.id("textures/block/lcd.png");
+	private static final Identifier LCD = Yttr.id("textures/lcd.png");
 	
 	@Override
 	public void render(PowerMeterBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
