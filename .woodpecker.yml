@@ -35,9 +35,9 @@ pipeline:
   secrets:
   - gitea_key
   commands:
-  - "git tag -d dev-1.19 || true"
-  - git tag dev-1.19 1.19.2
-  - "git push -f https://woodpecker:$${GITEA_KEY}@git.sleeping.town/unascribed/Yttr.git dev-1.19"
+  - "git tag -d dev-1.20 || true"
+  - git tag dev-1.20 1.20.1
+  - "git push -f https://woodpecker:$${GITEA_KEY}@git.sleeping.town/unascribed/Yttr.git dev-1.20"
 - name: release-dev
   image: unascribed/drone-gitea-release
   when:
@@ -48,9 +48,9 @@ pipeline:
     base_url: https://git.sleeping.town
     files:
       - build/libs/yttr-*.jar
-    title: "[1.19.2] Dev Build"
+    title: "[1.20.1] Dev Build"
     prerelease: true
-    tag: dev-1.19
+    tag: dev-1.20
     note: CHANGELOG.md
     allow_edit: true
 - name: rebuild-cache
@@ -88,4 +88,4 @@ pipeline:
   commands:
   - gradle modrinth curseforge mcmodcn gitea
 
-branches: "1.19.2"
+branches: "1.20.1"
