@@ -27,7 +27,8 @@ public class MixinClientPlayNetworkHandler {
 	
 	@Inject(at=@At("HEAD"), method="onPlaySoundFromEntity", cancellable=true)
 	public void onPlaySoundFromEntity(PlaySoundFromEntityS2CPacket pkt, CallbackInfo ci) {
-		if (pkt.getSound() == YSounds.RIFLE_CHARGE_CANCEL) {
+		var snd = pkt.getSound().value();
+		if (snd == YSounds.RIFLE_CHARGE_CANCEL) {
 			SoundInstance si = YttrClient.rifleChargeSounds.remove(world.getEntityById(pkt.getEntityId()));
 			if (si != null) {
 				MinecraftClient.getInstance().send(() -> {
@@ -35,7 +36,7 @@ public class MixinClientPlayNetworkHandler {
 				});
 			}
 			ci.cancel();
-		} else if (pkt.getSound() == YSounds.DROP_CAST_CANCEL) {
+		} else if (snd == YSounds.DROP_CAST_CANCEL) {
 			SoundInstance si = YttrClient.dropCastSounds.remove(world.getEntityById(pkt.getEntityId()));
 			if (si != null) {
 				MinecraftClient.getInstance().send(() -> {
