@@ -5,6 +5,7 @@ import java.util.List;
 import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
 import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mixin.accessor.AccessorVoxelShape;
 
@@ -56,8 +57,10 @@ public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock, Specia
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
-		list.add(new ItemStack(YItems.NEODYMIUM_BLOCK));
-		list.add(new ItemStack(YItems.NEODYMIUM_SLAB));
+		if (group == YItemGroups.GENERAL) {
+			list.add(new ItemStack(YItems.NEODYMIUM_BLOCK));
+			list.add(new ItemStack(YItems.NEODYMIUM_SLAB));
+		}
 	}
 	
 	@Override

@@ -5,7 +5,6 @@ import com.unascribed.yttr.init.YBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Waterloggable;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
@@ -73,7 +72,7 @@ public abstract class AbstractLazorBlock extends Block {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		super.neighborUpdate(state, world, pos, block, fromPos, notify);
-		if (this instanceof Waterloggable && !world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
+		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
 			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}
@@ -81,7 +80,7 @@ public abstract class AbstractLazorBlock extends Block {
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		super.onBlockAdded(state, world, pos, oldState, notify);
-		if (this instanceof Waterloggable && !world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
+		if (!world.getBlockTickScheduler().isQueued(pos, state.getBlock())) {
 			world.scheduleBlockTick(pos, state.getBlock(), getFluidState(state).isEmpty() ? 1 : 2);
 		}
 	}

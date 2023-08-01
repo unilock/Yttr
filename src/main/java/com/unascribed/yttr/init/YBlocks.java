@@ -315,6 +315,7 @@ public class YBlocks {
 	
 	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.create()
 			.collidable(false)
+			.replaceable()
 			.dropsNothing()
 			.ticksRandomly()
 			.strength(0, 10000)
@@ -635,12 +636,14 @@ public class YBlocks {
 	public static final TransfungusSporesBlock TRANSFUNGUS_SPORES = new TransfungusSporesBlock(FabricBlockSettings.create()
 			.noCollision()
 			.air()
+			.replaceable()
 			.nonOpaque()
 		);
 	
 	public static final IRLazorBeamBlock IR_LAZOR_BEAM = new IRLazorBeamBlock(FabricBlockSettings.create()
 			.collidable(false)
 			.dropsNothing()
+			.replaceable()
 			.ticksRandomly()
 			.strength(0, 10000)
 			.pistonBehavior(PistonBehavior.DESTROY)

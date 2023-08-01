@@ -167,6 +167,7 @@ public class Yttr implements ModInitializer {
 		}
 		
 		// general initialization
+		YItemGroups.init();
 		
 		DessicantControl.optIn("yttr");
 		

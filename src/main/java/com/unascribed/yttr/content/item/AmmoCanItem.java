@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.item;
 import java.util.List;
 
 import com.unascribed.yttr.SpecialSubItems;
+import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 
 import com.google.common.base.Ascii;
@@ -66,12 +67,14 @@ public class AmmoCanItem extends Item implements ItemColorProvider, SpecialSubIt
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		for (RifleMode mode : RifleMode.VALUES) {
-			ItemStack stack = new ItemStack(this);
-			stack.setNbt(new NbtCompound());
-			stack.getNbt().putString("Mode", mode.name());
-			stack.getNbt().putInt("Shots", CAPACITY);
-			stacks.add(stack);
+		if (group == YItemGroups.GENERAL) {
+			for (RifleMode mode : RifleMode.VALUES) {
+				ItemStack stack = new ItemStack(this);
+				stack.setNbt(new NbtCompound());
+				stack.getNbt().putString("Mode", mode.name());
+				stack.getNbt().putInt("Shots", CAPACITY);
+				stacks.add(stack);
+			}
 		}
 	}
 

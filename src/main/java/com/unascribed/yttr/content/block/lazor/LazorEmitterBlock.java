@@ -2,22 +2,22 @@ package com.unascribed.yttr.content.block.lazor;
 
 import java.util.List;
 
+import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
+import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-public class LazorEmitterBlock extends AbstractColoredLazorBlock {
+public class LazorEmitterBlock extends AbstractColoredLazorBlock implements SpecialSubItems {
 
 	public LazorEmitterBlock(Settings settings) {
 		super(settings);
@@ -42,5 +42,16 @@ public class LazorEmitterBlock extends AbstractColoredLazorBlock {
 	@Override
 	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
 		return getDrop(state);
+	}
+	
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> list) {
+		if (group == YItemGroups.LAMPS) {
+			for (LampColor color : LampColor.VALUES) {
+				ItemStack stack = new ItemStack(this);
+				LampBlockItem.setColor(stack, color);
+				list.add(stack);
+			}
+		}
 	}
 }

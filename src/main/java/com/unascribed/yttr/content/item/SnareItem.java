@@ -15,6 +15,7 @@ import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.client.cache.SnareEntityTextureCache;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YCriteria;
+import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
@@ -551,14 +552,18 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registries.ENTITY_TYPE.getEntries()) {
-			EntityType<?> e = en.getValue();
-			if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
-			if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {
-				ItemStack is = new ItemStack(this);
-				is.getOrCreateSubNbt("Contents").putString("id", en.getKey().getValue().toString());
-				stacks.add(is);
+		if (group == YItemGroups.SNARES) {
+			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registries.ENTITY_TYPE.getEntries()) {
+				EntityType<?> e = en.getValue();
+				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
+				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {
+					ItemStack is = new ItemStack(this);
+					is.getOrCreateSubNbt("Contents").putString("id", en.getKey().getValue().toString());
+					stacks.add(is);
+				}
 			}
+		} else if (group == YItemGroups.GENERAL) {
+			stacks.add(new ItemStack(this));
 		}
 	}
 

@@ -14,7 +14,6 @@ import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
@@ -69,6 +68,7 @@ public class LazorBeamBlock extends AbstractColoredLazorBlock implements BlockEn
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		super.onEntityCollision(state, world, pos, entity);
+		if (world.isClient) return;
 		entity.damage(entity.getDamageSources().create(YDamageTypes.LAZOR), 2);
 		if (entity instanceof LivingEntity && ((int)entity.getEyeY()) == pos.getY()) {
 			((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 80));
