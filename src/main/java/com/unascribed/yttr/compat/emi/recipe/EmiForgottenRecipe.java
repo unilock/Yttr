@@ -93,6 +93,7 @@ public class EmiForgottenRecipe implements EmiRecipe {
 		int bX = x-(w/2);
 		int bY = y;
 		widgets.add(new RuinedOutputWidget(result, bX+90, bY+14).recipeContext(this)
+				.large(true)
 				.drawBack(false));
 		for (int i = 0; i < 9; i++) {
 			widgets.add(new RuinedInputWidget(bX+((i%3)*18), bY+((i/3)*18))
