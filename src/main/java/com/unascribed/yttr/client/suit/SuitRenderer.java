@@ -7,7 +7,6 @@ import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.util.math.Interp;
 
@@ -16,7 +15,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.hash.Hashing;
 
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Identifier;
 
 public class SuitRenderer {
@@ -85,11 +84,11 @@ public class SuitRenderer {
 		}
 	}
 	
-	public void drawText(MatrixStack matrices, String s, int x, int y, float delta) {
-		drawText(matrices, s, s, x, y, delta);
+	public void drawText(GuiGraphics ctx, String s, int x, int y, float delta) {
+		drawText(ctx, s, s, x, y, delta);
 	}
 	
-	public void drawText(MatrixStack matrices, String id, String s, int x, int y, float delta) {
+	public void drawText(GuiGraphics ctx, String id, String s, int x, int y, float delta) {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			int u, v;
@@ -112,12 +111,13 @@ public class SuitRenderer {
 				u = 75;
 				v = 46;
 			}
-			drawElement(matrices, id+":"+i, x, y, u, v, 5, 9, delta);
+			drawElement(ctx, id+":"+i, x, y, u, v, 5, 9, delta);
 			x += 6;
 		}
 	}
 	
-	public void drawElement(MatrixStack matrices, String name, int x, int y, int u, int v, int w, int h, float delta) {
+	public void drawElement(GuiGraphics ctx, String name, int x, int y, int u, int v, int w, int h, float delta) {
+		var matrices = ctx.getMatrices();
 		int uniq = uniqifiers.computeIfAbsent(name, k -> Hashing.murmur3_32(seed).hashUnencodedChars(name).asInt());
 		rand.setSeed(uniq);
 		int timeToEnable = rand.nextInt(10);
@@ -157,19 +157,19 @@ public class SuitRenderer {
 			for (float yo = -o; yo <= o; yo += s) {
 				matrices.push();
 				matrices.translate(xo, yo, 0);
-				YttrClient.drawQuad(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+				ctx.drawTexture(SUIT_TEX, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 				matrices.pop();
 			}
 		}
 		RenderSystem.setShaderColor(r, g, b, a);
-		YttrClient.drawQuad(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+		ctx.drawTexture(SUIT_TEX, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 	}
 
-	public void drawBar(MatrixStack matrices, String id, int x, int y, float value, boolean flip, float delta) {
+	public void drawBar(GuiGraphics ctx, String id, int x, int y, float value, boolean flip, float delta) {
 		int w = (int)(80*value);
 		int xo = (flip?80-w:0);
-		drawElement(matrices, id+"-backdrop", x, y, 0, 30, 80, 8, delta);
-		drawElement(matrices, id+"-bar", x+xo, y, xo, 38, w, 8, delta);
+		drawElement(ctx, id+"-backdrop", x, y, 0, 30, 80, 8, delta);
+		drawElement(ctx, id+"-bar", x+xo, y, xo, 38, w, 8, delta);
 	}
 
 }

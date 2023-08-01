@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 @Mixin(EntityTrackingSoundInstance.class)
 public interface AccessorEntityTrackingSoundInstance {
 
-	@Accessor("entity")
+	@Accessor("trackedEntity")
 	Entity yttr$getEntity();
 	
 }

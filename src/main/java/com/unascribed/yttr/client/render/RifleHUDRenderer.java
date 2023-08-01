@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.IHasAClient;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
@@ -48,8 +47,8 @@ public class RifleHUDRenderer extends IHasAClient {
 	private static ItemStack rifleStack;
 	private static RifleItem rifleItem;
 	
-	public static void render(GuiGraphics graphics, float delta) {
-		MatrixStack matrices = graphics.getMatrices();
+	public static void render(GuiGraphics ctx, float delta) {
+		MatrixStack matrices = ctx.getMatrices();
 
 		if (mc.player == null || rifleStack == null || rifleItem == null) return;
 		if (scopeTime > 0) {
@@ -65,12 +64,12 @@ public class RifleHUDRenderer extends IHasAClient {
 				RenderSystem.defaultBlendFunc();
 				RifleMode mode = rifleItem.getMode(rifleStack);
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
-				YttrClient.drawQuad(matrices, -1, -1, 0, 0, 2, 2, 2, 2);
+				ctx.drawTexture(SCOPE, -1, -1, 0, 0, 2, 2, 2, 2);
 				RenderSystem.setShaderColor(0, 0, 0, scopeA);
-				graphics.fill(-100, -2, -1, 2, -1);
-				graphics.fill(1, -2, 100, 2, -1);
-				graphics.fill(-1, -2, 1, -1, -1);
-				graphics.fill(-1, 1, 1, 2, -1);
+				ctx.fill(-100, -2, -1, 2, -1);
+				ctx.fill(1, -2, 100, 2, -1);
+				ctx.fill(-1, -2, 1, -1, -1);
+				ctx.fill(-1, 1, 1, 2, -1);
 				matrices.scale(0.25f, 0.75f, 1);
 				RenderSystem.setShaderColor(((mode.color>>16)&0xFF)/255f, ((mode.color>>8)&0xFF)/255f, ((mode.color>>0)&0xFF)/255f, scopeA);
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -144,7 +143,7 @@ public class RifleHUDRenderer extends IHasAClient {
 					int curTextCol = current.color;
 					curTextCol |= ((int)(mainA*255)&0xFF)<<24;
 					var curText = I18n.translate("yttr.rifle_mode."+Ascii.toLowerCase(current.name()));
-					graphics.drawShadowedText(mc.textRenderer, curText, -(mc.textRenderer.getWidth(curText)/2), 10, curTextCol);
+					ctx.drawShadowedText(mc.textRenderer, curText, -(mc.textRenderer.getWidth(curText)/2), 10, curTextCol);
 				}
 				for (int i = -3-(Math.abs(changeSignum)); i <= 3+(Math.abs(changeSignum)); i++) {
 					int j = (current.effectiveOrdinal()+i)%RifleMode.VALUES.size();
@@ -166,12 +165,12 @@ public class RifleHUDRenderer extends IHasAClient {
 					// text renderer messes up the render state, so we have to set it every loop
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
-					YttrClient.drawQuad(matrices, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.ALL_VALUES.size()*16, 16);
+					ctx.drawTexture(MODES, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.ALL_VALUES.size()*16, 16);
 					if (a > 0.1f) {
 						if (ammo == -1) {
 							int textCol = 0x00FFFFFF;
 							textCol |= ((int)(a*255)&0xFF)<<24;
-							graphics.drawShadowedText(mc.textRenderer, "∞", x+16-(mc.textRenderer.getWidth("∞")), y+8, textCol);
+							ctx.drawShadowedText(mc.textRenderer, "∞", x+16-(mc.textRenderer.getWidth("∞")), y+8, textCol);
 						} else {
 							String str = Integer.toString(ammo);
 							int w = str.length()*4;
@@ -187,14 +186,14 @@ public class RifleHUDRenderer extends IHasAClient {
 								}
 								if (canned) {
 									RenderSystem.setShaderTexture(0, CANICON);
-									YttrClient.drawQuad(matrices, x+18-5, y+12-7, 300, 0, 0, 5, 5, 5, 5);
+									ctx.drawTexture(CANICON, x+18-5, y+12-7, 300, 0, 0, 5, 5, 5, 5);
 								}
 								RenderSystem.setShaderTexture(0, TINYNUMBERS);
 								for (int ci = 0; ci < str.length(); ci++) {
 									int cj = str.charAt(ci)-'0';
 									int u = (cj%5)*3;
 									int v = (cj/5)*5;
-									YttrClient.drawQuad(matrices, cx, cy, 300, u, v, 3, 5, 15, 10);
+									ctx.drawTexture(TINYNUMBERS, cx, cy, 300, u, v, 3, 5, 15, 10);
 									cx += 4;
 								}
 							}

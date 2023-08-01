@@ -1,7 +1,6 @@
 package com.unascribed.yttr.client.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.inred.InRedOscillatorBlockEntity;
 import com.unascribed.yttr.inventory.InRedOscillatorScreenHandler;
 import com.unascribed.yttr.network.MessageC2SOscillatorShift;
@@ -11,7 +10,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -86,7 +84,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 //		}
 
 		@Override
-		public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
 			if (this.visible) {
 				this.hovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + this.width && mouseY < getY() + this.height;
 				MinecraftClient client = MinecraftClient.getInstance();
@@ -97,7 +95,7 @@ public class InRedOscillatorScreen extends HandledScreen<InRedOscillatorScreenHa
 					hotV += this.hoverVOffset;
 				}
 
-				YttrClient.drawQuad(graphics.getMatrices(),getX(), getY(), 0, this.u, hotV, this.width, this.height, 256, 256);
+				ctx.drawTexture(this.tex, getX(), getY(), 0, this.u, hotV, this.width, this.height, 256, 256);
 				RenderSystem.enableDepthTest();
 			}
 		}

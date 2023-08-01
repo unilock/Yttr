@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -258,7 +259,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 		return bs.getBlock() == YBlocks.AWARE_HOPPER && bs.get(AwareHopperBlock.BLIND);
 	}
 
-	public void onNearbyCrafting(PlayerEntity player, CraftingInventory learnInput) {
+	public void onNearbyCrafting(PlayerEntity player, RecipeInputInventory learnInput) {
 		if (!isBlind()) {
 			if (player.squaredDistanceTo(getHeadPos()) < 4*4) {
 				Vec3d head = getHeadPos();

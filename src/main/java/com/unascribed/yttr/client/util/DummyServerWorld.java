@@ -25,6 +25,8 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.HolderLookup;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
@@ -32,6 +34,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.unmapped.C_xmjhbbku;
+import net.minecraft.util.TypeFilter;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.hit.BlockHitResult;
@@ -45,6 +48,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.Heightmap.Type;
+import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.LightType;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.RaycastContext;
@@ -802,5 +806,25 @@ public class DummyServerWorld extends ServerWorld {
 	public boolean isSavingDisabled() {
 		return true;
 	}
-
+	
+	@Override
+	public <T> HolderLookup<T> filteredLookup(RegistryKey<? extends Registry<? extends T>> registryKey) {
+		return getDelegate().filteredLookup(registryKey);
+	}
+	
+	@Override
+	public BiomeAccess getBiomeAccess() {
+		return getDelegate().getBiomeAccess();
+	}
+	
+	@Override
+	public <T extends Entity> List<T> getEntitiesByType(TypeFilter<Entity, T> filter, Box box, Predicate<? super T> predicate) {
+		return getDelegate().getEntitiesByType(filter, box, predicate);
+	}
+	
+	@Override
+	public long getSubTickOrder() {
+		return getDelegate().getSubTickOrder();
+	}
+	
 }

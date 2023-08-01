@@ -125,7 +125,7 @@ public class MixinInGameHud {
 	
 	@Inject(at=@At(value="FIELD", target="net/minecraft/client/gui/hud/InGameHud$HeartType.CONTAINER:Lnet/minecraft/client/gui/hud/InGameHud$HeartType;"),
 			method="renderHealthBar", locals=LocalCapture.CAPTURE_FAILHARD)
-	private void yttr$contextualizeHeart(MatrixStack matrices, PlayerEntity player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking,
+	private void yttr$contextualizeHeart(GuiGraphics ctx, PlayerEntity player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking,
 			CallbackInfo ci, @Coerce Object unused0, int unused1, int maxHearts, int unused2, int unused3, int i) {
 		yttr$evaporating = (yttr$hearticulates != null && i == (maxHearts-1));
 		yttr$hide = false;
@@ -142,13 +142,13 @@ public class MixinInGameHud {
 	}
 	
 	@Inject(at=@At("HEAD"), method="drawHeart", cancellable=true)
-	private void yttr$drawHeart(GuiGraphics graphics, @Coerce AccessorHeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
+	private void yttr$drawHeart(GuiGraphics ctx, @Coerce AccessorHeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
 		if (yttr$hide) {
 			ci.cancel();
 			return;
 		}
 
-		MatrixStack matrices = graphics.getMatrices();
+		MatrixStack matrices = ctx.getMatrices();
 		if (!yttr$evaporating && yttr$impure && type.yttr$getU(false, false) >= 52) {
 			var mc = MinecraftClient.getInstance();
 			float td = mc.getTickDelta();
@@ -176,21 +176,19 @@ public class MixinInGameHud {
 			sloshX = Math.min(Math.abs(sloshX), 8);
 			sloshY = Math.min(Math.max(sloshY, 0), 4);
 			RenderSystem.setShaderColor(1, 1, 1, 1);
-			RenderSystem.setShaderTexture(0, YTTR$BEET_ICONS);
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			YttrClient.drawQuad(matrices, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
+			ctx.drawTexture(YTTR$BEET_ICONS, x, y, 47, type.yttr$getU(false, blinking), v, 9, 9, 256, 256);
 			RenderSystem.disableCull();
 			if (revSlosh) {
 				matrices.push();
 					matrices.translate(x, 0, 0);
 					matrices.scale(-1, 1, 1);
-					YttrClient.drawQuad(matrices, -9, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
+					ctx.drawTexture(YTTR$BEET_ICONS, -9, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
 				matrices.pop();
 			} else {
-				YttrClient.drawQuad(matrices, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
+				ctx.drawTexture(YTTR$BEET_ICONS, x, y, 47, sloshY*9, 72-(sloshX*9), 9, 9, 256, 256);
 			}
-			RenderSystem.setShaderTexture(0, YTTR$GUI_ICONS);
 			RenderSystem.enableCull();
 			ci.cancel();
 			return;

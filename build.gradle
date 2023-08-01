@@ -109,25 +109,21 @@ dependencies {
 	modImplementation "com.unascribed:ears-api:1.4.5"
 	modImplementation "dev.emi:emi-fabric:1.0.15+1.20.1"
 	
-	modImplementation "dev.emi:trinkets:3.4.0"
+	modImplementation "dev.emi:trinkets:3.7.1"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.1"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.2.1"
 	
 	include "me.luligabi:NoIndium:1.1.0+1.19"
 	
 	[
-		'core', 'lockpick', 'fractal', 'tunnel', 'phantom', 'waypoint', 'weld',
+		'core', 'lockpick', 'tunnel', 'phantom', 'waypoint', 'weld',
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
 		'recoil', 'mesh'
 	].each { module ->
 		modApi include("com.unascribed:lib39-${module}:1.5.0+1.20.1")
 	}
 	
-	modRuntimeOnly(include("com.unascribed:lucium:1.1")) {
-		transitive = false
-	}
-
-	modRuntimeOnly("com.terraformersmc:modmenu:4.0.6") {
+	modRuntimeOnly("com.terraformersmc:modmenu:7.2.1") {
 		transitive = false
 	}
 }

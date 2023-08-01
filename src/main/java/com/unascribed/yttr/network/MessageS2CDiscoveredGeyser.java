@@ -1,9 +1,7 @@
 package com.unascribed.yttr.network;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.lib39.tunnel.api.S2CMessage;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.init.YNetwork;
@@ -37,14 +35,13 @@ public class MessageS2CDiscoveredGeyser extends S2CMessage {
 			((SuitScreen)mc.currentScreen).addGeyser(geyser);
 		} else {
 			String name = geyser.name;
-			mc.getToastManager().add((graphics, manager, startTime) -> {
-				MatrixStack matrices = graphics.getMatrices();
+			mc.getToastManager().add((ctx, manager, startTime) -> {
+				MatrixStack matrices = ctx.getMatrices();
 
-				graphics.drawTexture(Toast.TEXTURE, 0, 0, 0, 0, 160, 32);
-				RenderSystem.setShaderTexture(0, SuitRenderer.SUIT_TEX);
-				YttrClient.drawQuad(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
-				graphics.drawText(manager.getGame().textRenderer, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1, false);
-				graphics.drawText(manager.getGame().textRenderer, name, 30, 18, -1, false);
+				ctx.drawTexture(Toast.TEXTURE, 0, 0, 0, 0, 160, 32);
+				ctx.drawTexture(SuitRenderer.SUIT_TEX, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+				ctx.drawText(manager.getGame().textRenderer, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1, false);
+				ctx.drawText(manager.getGame().textRenderer, name, 30, 18, -1, false);
 				return startTime >= 5000 ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
 			});
 		}

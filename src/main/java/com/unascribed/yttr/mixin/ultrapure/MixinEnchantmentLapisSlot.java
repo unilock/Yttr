@@ -11,7 +11,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
-@Mixin(targets="net/minecraft/unmapped/C_pyejtqnd$C_zupkjqht")
+@Mixin(targets="net/minecraft/screen/EnchantmentScreenHandler$C_zupkjqht")
 public abstract class MixinEnchantmentLapisSlot extends Slot {
 
 	public MixinEnchantmentLapisSlot(Inventory inventory, int index, int x, int y) {

@@ -24,8 +24,8 @@ import net.minecraft.world.World;
 @Mixin(value=NoteBlock.class, priority=900)
 public class MixinNoteBlock {
 
-	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/world/World.playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/registry/Holder;Lnet/minecraft/sound/SoundCategory;FF)V"),
-			method="onSyncedBlockEvent", index=2)
+	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/world/World.playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/registry/Holder;Lnet/minecraft/sound/SoundCategory;FFJ)V"),
+			method="onSyncedBlockEvent", index=4)
 	private Holder<SoundEvent> changeSoundEvent(Holder<SoundEvent> se) {
 		Object self = this;
 		if (self instanceof AltNoteBlock) {
@@ -37,7 +37,7 @@ public class MixinNoteBlock {
 	private boolean yttr$dontBog = false;
 	
 	@Shadow
-	private void playNote(@Nullable Entity entity, World world, BlockPos pos) {}
+	private void playNote(@Nullable Entity entity, BlockState state, World world, BlockPos pos) {}
 	
 	@Inject(at=@At("HEAD"), method="playNote", cancellable=true)
 	private void playNote(@Nullable Entity entity, BlockState state, World world, BlockPos pos, CallbackInfo ci) {
@@ -47,7 +47,7 @@ public class MixinNoteBlock {
 			Yttr.delayedServerTasks.add(new DelayedTask(1, () -> {
 				try {
 					yttr$dontBog = true;
-					playNote(entity, world, pos);
+					playNote(entity, state, world, pos);
 				} finally {
 					yttr$dontBog = false;
 				}

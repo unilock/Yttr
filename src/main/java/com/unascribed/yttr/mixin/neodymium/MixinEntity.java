@@ -24,7 +24,6 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction.Axis;
 
@@ -118,7 +117,7 @@ public class MixinEntity implements Magnetized {
 	}
 	
 	@Inject(at=@At("HEAD"), method="playStepSound")
-	protected void playStepSound(BlockPos pos, BlockState state, CallbackInfo ci) {
+	protected void playStepSound(BlockState state, CallbackInfo ci) {
 		if (yttr$magnetizedBelow) {
 			Entity self = (Entity)(Object)this;
 			self.playSound(YSounds.MAGNET_STEP, 1, 1);

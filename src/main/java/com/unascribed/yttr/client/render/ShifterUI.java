@@ -13,8 +13,8 @@ import com.unascribed.yttr.util.math.Interp;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
@@ -151,8 +151,9 @@ public class ShifterUI extends IHasAClient {
 	private static ItemStack shifterStack;
 	private static ShifterItem shifterItem;
 	
-	public static void render(MatrixStack matrices, float delta) {
+	public static void render(GuiGraphics ctx, float delta) {
 		if (mc.player == null || shifterStack == null || shifterItem == null) return;
+		var matrices = ctx.getMatrices();
 		if (ticksSinceOpen > 0 || (ticksSinceClose != -1 && ticksSinceClose < ANIM_TIME)) {
 			float mainA = Interp.sCurve5((Math.min((ticksSinceOpen > 0 ? ticksSinceOpen+delta : ANIM_TIME-(ticksSinceClose+delta)), ANIM_TIME)/ANIM_TIMEf));
 			RenderSystem.enableBlend();
@@ -160,24 +161,23 @@ public class ShifterUI extends IHasAClient {
 			matrices.push();
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
 				RenderSystem.setShaderColor(1, 1, 1, mainA);
-				RenderSystem.setShaderTexture(0, MODES);
 				boolean disconnected = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceDisconnected");
 				boolean hidden = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("ReplaceHidden");
 				boolean plane = shifterStack.hasNbt() && shifterStack.getNbt().getBoolean("PlaneRestrict");
-				YttrClient.drawQuad(matrices, -24, -8, 0, disconnected ? 16 : 0, 16, 16, 48, 32);
-				YttrClient.drawQuad(matrices, -8, -24, 16, hidden ? 16 : 0, 16, 16, 48, 32);
-				YttrClient.drawQuad(matrices, 8, -8, 32, plane ? 16 : 0, 16, 16, 48, 32);
+				ctx.drawTexture(MODES, -24, -8, 0, disconnected ? 16 : 0, 16, 16, 48, 32);
+				ctx.drawTexture(MODES, -8, -24, 16, hidden ? 16 : 0, 16, 16, 48, 32);
+				ctx.drawTexture(MODES, 8, -8, 32, plane ? 16 : 0, 16, 16, 48, 32);
 				if (ticksSinceChangeDisconnected < ANIM_TIME) {
 					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeDisconnected+delta)/ANIM_TIMEf)*mainA);
-					YttrClient.drawQuad(matrices, -24, -8, 0, disconnected ? 0 : 16, 16, 16, 48, 32);
+					ctx.drawTexture(MODES, -24, -8, 0, disconnected ? 0 : 16, 16, 16, 48, 32);
 				}
 				if (ticksSinceChangeHidden < ANIM_TIME) {
 					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangeHidden+delta)/ANIM_TIMEf)*mainA);
-					YttrClient.drawQuad(matrices, -8, -24, 16, hidden ? 0 : 16, 16, 16, 48, 32);
+					ctx.drawTexture(MODES, -8, -24, 16, hidden ? 0 : 16, 16, 16, 48, 32);
 				}
 				if (ticksSinceChangePlane < ANIM_TIME) {
 					RenderSystem.setShaderColor(1, 1, 1, 1-Interp.sCurve5((ticksSinceChangePlane+delta)/ANIM_TIMEf)*mainA);
-					YttrClient.drawQuad(matrices, 8, -8, 32, plane ? 0 : 16, 16, 16, 48, 32);
+					ctx.drawTexture(MODES, 8, -8, 32, plane ? 0 : 16, 16, 16, 48, 32);
 				}
 			matrices.pop();
 		}

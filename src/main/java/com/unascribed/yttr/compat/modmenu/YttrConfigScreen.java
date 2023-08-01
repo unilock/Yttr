@@ -143,8 +143,8 @@ public class YttrConfigScreen extends Screen {
 	}
 	
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		MatrixStack matrices = graphics.getMatrices();
+	public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
+		MatrixStack matrices = ctx.getMatrices();
 		sr.setColor(YConfig.Client.configColor);
 		anyDescDrawnThisFrame = false;
 		this.mouseX = mouseX;
@@ -173,7 +173,7 @@ public class YttrConfigScreen extends Screen {
 			modelView.scale(1+(sca/2), 1+(sca/2), 1);
 			modelView.translate(-initialMouseX, -initialMouseY, 0);
 			RenderSystem.applyModelViewMatrix();
-			parent.render(graphics, -200, -200, delta);
+			parent.render(ctx, -200, -200, delta);
 			modelView.pop();
 			RenderSystem.applyModelViewMatrix();
 			matrices.pop();
@@ -182,10 +182,10 @@ public class YttrConfigScreen extends Screen {
 			matrices.translate(initialMouseX, initialMouseY, 0);
 			matrices.scale(r/10, r/10, 1);
 			matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(45));
-			graphics.fill(-10, -10, 10, 10, 0xFF000000);
-			graphics.fill(-12, -12, 12, 12, 0x33000000);
-			graphics.fill(-16, -16, 16, 16, 0x33000000);
-			graphics.fill(-20, -20, 20, 20, 0x33000000);
+			ctx.fill(-10, -10, 10, 10, 0xFF000000);
+			ctx.fill(-12, -12, 12, 12, 0x33000000);
+			ctx.fill(-16, -16, 16, 16, 0x33000000);
+			ctx.fill(-20, -20, 20, 20, 0x33000000);
 			matrices.pop();
 		} else {
 			RenderSystem.clearColor(0, 0, 0, 1);
@@ -206,23 +206,23 @@ public class YttrConfigScreen extends Screen {
 				matrices.scale(2, 2, 1);
 				for (String line : content.split("\n")) {
 					if (time-15 > y) {
-						sr.drawText(matrices, "test"+uniq+y, line, x-(line.length()*3), y, delta);
+						sr.drawText(ctx, "test"+uniq+y, line, x-(line.length()*3), y, delta);
 					}
 					y += 12;
 				}
 				matrices.pop();
 				
-				if (drawButton(matrices, "reset", 0, "reset", width-180, height-24, 80, delta)) {
+				if (drawButton(ctx, "reset", 0, "reset", width-180, height-24, 80, delta)) {
 					uniq++;
 					if (rclicked) {
 						time = 15;
 					}
 				}
 			} else if (currentSection == null) {
-				drawHeading(matrices, "sections", 6, 6, delta);
+				drawHeading(ctx, "sections", 6, 6, delta);
 				int y = 26;
 				for (Section s : Section.values()) {
-					if (sectionTicks >= y/8 && drawButton(matrices, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 80, delta)) {
+					if (sectionTicks >= y/8 && drawButton(ctx, s.name()+uniq, uniq, Ascii.toLowerCase(s.name()), 6, y, 80, delta)) {
 						currentSection = s;
 						sectionTicks = 0;
 						uniq = ThreadLocalRandom.current().nextInt();
@@ -230,14 +230,14 @@ public class YttrConfigScreen extends Screen {
 					y += 22;
 				}
 				y += 8;
-				if (sectionTicks >= y/8) drawHeading(matrices, "extras", 6, y, delta);
+				if (sectionTicks >= y/8) drawHeading(ctx, "extras", 6, y, delta);
 				y += 20;
-				if (sectionTicks >= y/8 && drawButton(matrices, "texttest"+uniq, uniq, "text test", 6, y, 80, delta)) {
+				if (sectionTicks >= y/8 && drawButton(ctx, "texttest"+uniq, uniq, "text test", 6, y, 80, delta)) {
 					textTestMode = true;
 				}
 			} else {
 				String currentSectionStr = Ascii.toLowerCase(currentSection.name());
-				drawHeading(matrices, currentSectionStr, 6, 6, delta);
+				drawHeading(ctx, currentSectionStr, 6, 6, delta);
 				int y = 24;
 				for (String k : YConfig.data.keySet()) {
 					if (sectionTicks < y/8) break;
@@ -251,7 +251,7 @@ public class YttrConfigScreen extends Screen {
 						String label = name.replace('-', ' ');
 						if (type == boolean.class) {
 							boolean v = YConfig.data.getBoolean(k).get();
-							if (drawBoolean(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
+							if (drawBoolean(ctx, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
 								v = !v;
 								if (badSettings.get(k) == Boolean.valueOf(v)) {
 									client.getSoundManager().play(PositionedSoundInstance.master(YSounds.DANGER, 1, 1));
@@ -265,7 +265,7 @@ public class YttrConfigScreen extends Screen {
 							objV = v;
 						} else if (type.isEnum()) {
 							Enum<?> v = (Enum<?>)YConfig.data.getEnum(k, (Class)type).get();
-							if (drawEnum(matrices, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
+							if (drawEnum(ctx, label, v, 6, y, shortDescs.getOrDefault(k, "no description"), delta)) {
 								int idx;
 								if (rclicked) {
 									idx = (v.ordinal()-1);
@@ -286,14 +286,14 @@ public class YttrConfigScreen extends Screen {
 							objV = v;
 						}
 						if (badSettings.get(k) == objV) {
-							drawDescription(matrices, 170, y+2, 18, 18, "this setting is not supported and may cause problems", delta);
-							sr.drawElement(matrices, "ogl-warning"+uniq+timesModified.count(label), 170, y+2, 0, 18, 11, 12, delta);
+							drawDescription(ctx, 170, y+2, 18, 18, "this setting is not supported and may cause problems", delta);
+							sr.drawElement(ctx, "ogl-warning"+uniq+timesModified.count(label), 170, y+2, 0, 18, 11, 12, delta);
 						}
 						y += 22;
 					}
 				}
-				drawDescription(matrices, 6, 2, 18, 18, "go back to the section list", delta);
-				if (drawButton(matrices, "back"+uniq, uniq, "<", 6, 2, 18, delta)) {
+				drawDescription(ctx, 6, 2, 18, 18, "go back to the section list", delta);
+				if (drawButton(ctx, "back"+uniq, uniq, "<", 6, 2, 18, delta)) {
 					currentSection = null;
 					sectionTicks = 0;
 					uniq = ThreadLocalRandom.current().nextInt();
@@ -305,13 +305,13 @@ public class YttrConfigScreen extends Screen {
 				if (v.equals("${version}")) {
 					v = "dev";
 				}
-				sr.drawText(matrices, "setup"+descUniq, "yttr "+v+" setup utility", width-113-((v.length()+1)*6), 6, delta);
+				sr.drawText(ctx, "setup"+descUniq, "yttr "+v+" setup utility", width-113-((v.length()+1)*6), 6, delta);
 				if (currentSection != null) {
-					sr.drawText(matrices, "setup2"+descUniq+uniq, "hover for descriptions", width-137, 17, delta);
+					sr.drawText(ctx, "setup2"+descUniq+uniq, "hover for descriptions", width-137, 17, delta);
 				}
 			}
 			
-			if (drawButton(matrices, "done", 0, "done", width-90, height-24, 80, delta)) {
+			if (drawButton(ctx, "done", 0, "done", width-90, height-24, 80, delta)) {
 				if (textTestMode) {
 					textTestMode = false;
 					uniq++;
@@ -321,7 +321,7 @@ public class YttrConfigScreen extends Screen {
 			}
 			sr.tearDown();
 		}
-		super.render(graphics, mouseX, mouseY, delta);
+		super.render(ctx, mouseX, mouseY, delta);
 		clicked = false;
 		rclicked = false;
 		if (!anyDescDrawnThisFrame) {
@@ -329,24 +329,25 @@ public class YttrConfigScreen extends Screen {
 		}
 	}
 
-	private void drawHeading(MatrixStack matrices, String text, int x, int y, float delta) {
-		sr.drawText(matrices, uniq+text, text, currentSection == null ? x : x+22, y, delta);
+	private void drawHeading(GuiGraphics ctx, String text, int x, int y, float delta) {
+		var matrices = ctx.getMatrices();
+		sr.drawText(ctx, uniq+text, text, currentSection == null ? x : x+22, y, delta);
 		matrices.push();
 		matrices.translate(x, 0, 0);
 		matrices.scale(2, 1, 1);
-		sr.drawElement(matrices, "separator", 0, y+15, 0, 30, 80, 1, delta);
+		sr.drawElement(ctx, "separator", 0, y+15, 0, 30, 80, 1, delta);
 		matrices.pop();
 	}
 	
-	private boolean drawBoolean(MatrixStack matrices, String label, boolean value, int x, int y, String desc, float delta) {
-		drawDescription(matrices, x, y, 160, 16, desc, delta);
-		sr.drawText(matrices, uniq+label, label, x, y+4, delta);
-		return drawButton(matrices, label, uniq+timesModified.count(label), value ? "on" : "off", x+120, y, 40, delta);
+	private boolean drawBoolean(GuiGraphics ctx, String label, boolean value, int x, int y, String desc, float delta) {
+		drawDescription(ctx, x, y, 160, 16, desc, delta);
+		sr.drawText(ctx, uniq+label, label, x, y+4, delta);
+		return drawButton(ctx, label, uniq+timesModified.count(label), value ? "on" : "off", x+120, y, 40, delta);
 	}
 	
-	private boolean drawEnum(MatrixStack matrices, String label, Enum<?> value, int x, int y, String desc, float delta) {
-		drawDescription(matrices, x, y, 160, 16, desc, delta);
-		sr.drawText(matrices, uniq+label, label, x, y+4, delta);
+	private boolean drawEnum(GuiGraphics ctx, String label, Enum<?> value, int x, int y, String desc, float delta) {
+		drawDescription(ctx, x, y, 160, 16, desc, delta);
+		sr.drawText(ctx, uniq+label, label, x, y+4, delta);
 		String display;
 		if (value instanceof LampColor lc) {
 			display = switch (lc) {
@@ -359,10 +360,10 @@ public class YttrConfigScreen extends Screen {
 		} else {
 			display = Ascii.toLowerCase(value.name());
 		}
-		return drawButton(matrices, label, uniq+timesModified.count(label), display, x+120, y, 40, delta);
+		return drawButton(ctx, label, uniq+timesModified.count(label), display, x+120, y, 40, delta);
 	}
 
-	private void drawDescription(MatrixStack matrices, int x, int y, int w, int h, String desc, float delta) {
+	private void drawDescription(GuiGraphics ctx, int x, int y, int w, int h, String desc, float delta) {
 		if (mouseX >= x && mouseX <= x+w &&
 				mouseY >= y && mouseY <= y+h) {
 			anyDescDrawnThisFrame = true;
@@ -381,30 +382,31 @@ public class YttrConfigScreen extends Screen {
 					x = initialX;
 					y += 12;
 				}
-				sr.drawText(matrices, "description"+i+descUniq+desc.hashCode(), word, x, y, delta);
+				sr.drawText(ctx, "description"+i+descUniq+desc.hashCode(), word, x, y, delta);
 				x += wordW;
 				i++;
 			}
 		}
 	}
 	
-	private boolean drawButton(MatrixStack matrices, String id, int uniq, String text, int x, int y, int w, float delta) {
+	private boolean drawButton(GuiGraphics ctx, String id, int uniq, String text, int x, int y, int w, float delta) {
+		var matrices = ctx.getMatrices();
 		matrices.push();
 		matrices.translate(x, 0, 0);
 		int uniq2 = (uniq == 0 ? 0 : this.uniq);
 		if (w > 50) {
 			matrices.scale(w/50f, 1, 1);
-			sr.drawElement(matrices, id+"top"+uniq2, 0, y, 0, 30, 50, 1, delta);
-			sr.drawElement(matrices, id+"bot"+uniq2, 0, y+16, 0, 30, 50, 1, delta);
+			sr.drawElement(ctx, id+"top"+uniq2, 0, y, 0, 30, 50, 1, delta);
+			sr.drawElement(ctx, id+"bot"+uniq2, 0, y+16, 0, 30, 50, 1, delta);
 		} else {
-			sr.drawElement(matrices, id+"top"+uniq2, 0, y, 0, 30, w, 1, delta);
-			sr.drawElement(matrices, id+"bot"+uniq2, 0, y+16, 0, 30, w, 1, delta);
+			sr.drawElement(ctx, id+"top"+uniq2, 0, y, 0, 30, w, 1, delta);
+			sr.drawElement(ctx, id+"bot"+uniq2, 0, y+16, 0, 30, w, 1, delta);
 		}
 		matrices.pop();
-		sr.drawElement(matrices, id+"left"+uniq2, x, y, 80, 4, 1, 16, delta);
-		sr.drawElement(matrices, id+"right"+uniq2, x+w-1, y, 80, 4, 1, 16, delta);
+		sr.drawElement(ctx, id+"left"+uniq2, x, y, 80, 4, 1, 16, delta);
+		sr.drawElement(ctx, id+"right"+uniq2, x+w-1, y, 80, 4, 1, 16, delta);
 		int tw = 6*text.length();
-		sr.drawText(matrices, id+uniq, text, x+(w-tw)/2, y+4, delta);
+		sr.drawText(ctx, id+uniq, text, x+(w-tw)/2, y+4, delta);
 		boolean rtrn = clicked && mouseX >= x && mouseX <= x+w &&
 				mouseY >= y && mouseY <= y+16;
 		if (rtrn) {

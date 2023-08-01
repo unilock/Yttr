@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets="net/minecraft/unmapped/C_dlxbwxyf$C_edusymfy")
+@Mixin(targets="net/minecraft/block/entity/AbstractFurnaceBlockEntity$C_edusymfy")
 public abstract class MixinAbstractFurnaceBlockEntityPropertyDelegate {
 
 	private boolean yttr$reentering = false;

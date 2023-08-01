@@ -36,9 +36,10 @@ public abstract class MixinClientWorld extends World {
 		super(worldProperties, registryKey, registryManager, dimension, profiler, client, debug, seed, maxChainedNeighborUpdates);
 	}
 
-	@Inject(at=@At("HEAD"), method="m_dmodcllo", cancellable=true)
-	public void playSoundFromEntity(@Nullable PlayerEntity player, Entity entity, SoundEvent sound, SoundCategory category, float volume, float pitch, long seed, CallbackInfo ci) {
+	@Inject(at=@At("HEAD"), method="playSoundFromEntity", cancellable=true)
+	public void playSoundFromEntity(@Nullable PlayerEntity player, Entity entity, Holder<SoundEvent> soundh, SoundCategory category, float volume, float pitch, long seed, CallbackInfo ci) {
 		if (player != MinecraftClient.getInstance().player) return;
+		var sound = soundh.value();
 		if (sound == YSounds.RIFLE_CHARGE_CANCEL) {
 			SoundInstance si = YttrClient.rifleChargeSounds.remove(entity);
 			if (si != null) {

@@ -10,7 +10,7 @@ import com.unascribed.yttr.init.YItems;
 import net.minecraft.item.Item;
 
 // WEAPON and DIGGER
-@Mixin(targets={"net/minecraft/unmapped/C_lkwvnptq$C_hkngjlpo", "net/minecraft/unmapped/C_lkwvnptq$C_gdezogus"})
+@Mixin(targets={"net/minecraft/enchantment/EnchantmentTarget$C_hkngjlpo", "net/minecraft/enchantment/EnchantmentTarget$C_gdezogus"})
 public class MixinEnchantmentTargets {
 
 	@Inject(at=@At("HEAD"), method="isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable=true)

@@ -6,7 +6,6 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
@@ -39,40 +38,40 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 	}
 
 	@Override
-	protected void drawBackground(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
-		MatrixStack matrices = graphics.getMatrices();
-		graphics.setShaderColor(1, 1, 1, 1);
+	protected void drawBackground(GuiGraphics ctx, float delta, int mouseX, int mouseY) {
+		MatrixStack matrices = ctx.getMatrices();
+		ctx.setShaderColor(1, 1, 1, 1);
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		
 		RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		for (int xo = 0; xo < 2; xo++) {
 			for (int yo = 0; yo < 2; yo++) {
-				graphics.drawSprite(x+4+(xo*32), y+14+(yo*32), 0, 32, 32, FluidRenderHandlerRegistry.INSTANCE.get(YFluids.VOID).getFluidSprites(null, null, YFluids.VOID.getDefaultState())[0]);
+				ctx.drawSprite(x+4+(xo*32), y+14+(yo*32), 0, 32, 32, FluidRenderHandlerRegistry.INSTANCE.get(YFluids.VOID).getFluidSprites(null, null, YFluids.VOID.getDefaultState())[0]);
 			}
 		}
 
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		graphics.drawTexture(BG, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+		ctx.drawTexture(BG, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
 		if (!handler.isIndependent()) {
-			graphics.drawTexture(BG, x+115, y+3, 0, 189, 54, 67, 256, 256);
+			ctx.drawTexture(BG, x+115, y+3, 0, 189, 54, 67, 256, 256);
 		}
 		RenderSystem.disableBlend();
 		
 		matrices.push();
 		matrices.translate(x, y, 0);
 		for (GuiParticle gp : particles) {
-			gp.render(matrices, delta);
+			gp.render(ctx, delta);
 		}
 		matrices.pop();
 
-		graphics.drawTexture(BG, x+67, y+27, 176, 0, ((handler.getProgress()*40)/handler.getMaxProgress()), 28, 256, 256);
+		ctx.drawTexture(BG, x+67, y+27, 176, 0, ((handler.getProgress()*40)/handler.getMaxProgress()), 28, 256, 256);
 		
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		graphics.setShaderColor(1, 1, 1, 0.75f);
-		graphics.drawTexture(BG, x+titleX-2, y+titleY-2, titleX-2, titleY-2, textRenderer.getWidth(getTitle())+4, 12, 256, 256);
+		ctx.setShaderColor(1, 1, 1, 0.75f);
+		ctx.drawTexture(BG, x+titleX-2, y+titleY-2, titleX-2, titleY-2, textRenderer.getWidth(getTitle())+4, 12, 256, 256);
 		RenderSystem.disableBlend();
 	}
 	
@@ -155,14 +154,14 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 			posY += motionY;
 		}
 
-		public void render(MatrixStack matrices, float delta) {
+		public void render(GuiGraphics ctx, float delta) {
 			double interpPosX = prevPosX + (posX - prevPosX) * delta;
 			double interpPosY = prevPosY + (posY - prevPosY) * delta;
 
 			RenderSystem.setShaderTexture(0, BG);
 			float u = (7 - age * 8 / maxAge)*8;
 			float v = 166;
-			YttrClient.drawQuad(matrices, (int)interpPosX-4, (int)interpPosY-4, 0, u, v, 8, 8, 256, 256);
+			ctx.drawTexture(BG, (int)interpPosX-4, (int)interpPosY-4, 0, u, v, 8, 8, 256, 256);
 		}
 
 	}

@@ -1,8 +1,8 @@
 package com.unascribed.yttr.init;
 
+import com.unascribed.lib39.core.api.util.LatchHolder;
 import com.unascribed.yttr.Yttr;
 
-import net.minecraft.registry.Holder;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvent;
 
@@ -60,9 +60,9 @@ public class YSounds {
 	public static final SoundEvent REPLICATOR_REFUSE = create("replicator_refuse");
 	public static final SoundEvent REPLICATOR_VEND = create("replicator_vend");
 	public static final SoundEvent SILENCE = create("silence");
-	public static Holder<SoundEvent> SILENCE_HOLDER;
+	public static final LatchHolder<SoundEvent> SILENCE_HOLDER = LatchHolder.unset();
 	public static final SoundEvent SPECTRAL_AXE_DISAPPEAR = create("spectral_axe_disappear");
-	public static Holder<SoundEvent> SPECTRAL_AXE_DISAPPEAR_HOLDER;
+	public static final LatchHolder<SoundEvent> SPECTRAL_AXE_DISAPPEAR_HOLDER = LatchHolder.unset();
 	public static final SoundEvent DSU_OPEN = create("dsu_open");
 	public static final SoundEvent DSU_CLOSE = create("dsu_close");
 	public static final SoundEvent DROP_CAST = create("drop_cast");
@@ -83,7 +83,7 @@ public class YSounds {
 	public static final SoundEvent PAPILLONS = create("papillons");
 	public static final SoundEvent VOID_MUSIC = create("void_music");
 	public static final SoundEvent DESERT_HEAT = create("desert_heat");
-	public static Holder<SoundEvent> DESERT_HEAT_HOLDER;
+	public static final LatchHolder<SoundEvent> DESERT_HEAT_HOLDER = LatchHolder.unset();
 	public static final SoundEvent MEMORANDUM = create("memorandum");
 	public static final SoundEvent VORPALHIT1 = create("vorpalhit1");
 	public static final SoundEvent VORPALHIT2 = create("vorpalhit2");
@@ -116,22 +116,22 @@ public class YSounds {
 	public static final SoundEvent HIGH_NOTE_PLING = create("high_note.pling");
 	public static final SoundEvent HIGH_NOTE_SNARE = create("high_note.snare");
 	public static final SoundEvent HIGH_NOTE_XYLOPHONE = create("high_note.xylophone");
-	public static Holder<SoundEvent> HIGH_NOTE_BANJO_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_BASEDRUM_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_BASS_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_BELL_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_BIT_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_CHIME_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_COW_BELL_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_DIDGERIDOO_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_FLUTE_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_GUITAR_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_HARP_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_HAT_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_IRON_XYLOPHONE_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_PLING_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_SNARE_HOLDER;
-	public static Holder<SoundEvent> HIGH_NOTE_XYLOPHONE_HOLDER;
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_BANJO_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_BASEDRUM_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_BASS_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_BELL_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_BIT_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_CHIME_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_COW_BELL_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_DIDGERIDOO_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_FLUTE_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_GUITAR_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_HARP_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_HAT_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_IRON_XYLOPHONE_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_PLING_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_SNARE_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> HIGH_NOTE_XYLOPHONE_HOLDER = LatchHolder.unset();
 	
 	public static final SoundEvent LOW_NOTE_BANJO = create("low_note.banjo");
 	public static final SoundEvent LOW_NOTE_BASEDRUM = create("low_note.basedrum");
@@ -149,22 +149,22 @@ public class YSounds {
 	public static final SoundEvent LOW_NOTE_PLING = create("low_note.pling");
 	public static final SoundEvent LOW_NOTE_SNARE = create("low_note.snare");
 	public static final SoundEvent LOW_NOTE_XYLOPHONE = create("low_note.xylophone");
-	public static Holder<SoundEvent> LOW_NOTE_BANJO_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_BASEDRUM_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_BASS_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_BELL_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_BIT_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_CHIME_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_COW_BELL_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_DIDGERIDOO_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_FLUTE_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_GUITAR_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_HARP_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_HAT_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_IRON_XYLOPHONE_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_PLING_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_SNARE_HOLDER;
-	public static Holder<SoundEvent> LOW_NOTE_XYLOPHONE_HOLDER;
+	public static final LatchHolder<SoundEvent> LOW_NOTE_BANJO_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_BASEDRUM_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_BASS_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_BELL_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_BIT_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_CHIME_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_COW_BELL_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_DIDGERIDOO_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_FLUTE_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_GUITAR_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_HARP_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_HAT_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_IRON_XYLOPHONE_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_PLING_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_SNARE_HOLDER = LatchHolder.unset();
+	public static final LatchHolder<SoundEvent> LOW_NOTE_XYLOPHONE_HOLDER = LatchHolder.unset();
 	
 	
 

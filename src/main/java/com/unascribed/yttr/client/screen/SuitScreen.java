@@ -244,12 +244,12 @@ public class SuitScreen extends Screen {
 //			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
 		}
 		sr.setUp();
-		sr.drawText(matrices, "distance", 10, height-78, delta);
+		sr.drawText(ctx, "distance", 10, height-78, delta);
 		int dist = 0;
 		if (client.player != null) {
 			dist = (int)Math.sqrt(client.player.getPos().squaredDistanceTo(posX, client.player.getPos().y, posZ));
 		}
-		sr.drawText(matrices, "distance-num", dist+"m", 10, height-66, delta);
+		sr.drawText(ctx, "distance-num", dist+"m", 10, height-66, delta);
 		
 		float fastDiveT = fastDiving ? (fastDiveTicks+delta)/fastDiveTime : 0;
 		
@@ -260,11 +260,11 @@ public class SuitScreen extends Screen {
 		
 		float pressureA = (lastPressureLag+((pressureLag-lastPressureLag)*delta))/1000f;
 		
-		sr.drawText(matrices, "pressure", 10, height-46, delta);
-		sr.drawElement(matrices, "pressure-notches", 10, height-34, 0, 55, 81, 8, delta);
+		sr.drawText(ctx, "pressure", 10, height-46, delta);
+		sr.drawElement(ctx, "pressure-notches", 10, height-34, 0, 55, 81, 8, delta);
 		if (!fastDiving) {
-			sr.drawElement(matrices, "pressure-indicator", 9+((int)(pressureA*80)), height-25, 0, 63, 3, 6, delta);
-			sr.drawText(matrices, "pressure-num", pressureLag+"kpa", 10, height-16, delta);
+			sr.drawElement(ctx, "pressure-indicator", 9+((int)(pressureA*80)), height-25, 0, 63, 3, 6, delta);
+			sr.drawText(ctx, "pressure-num", pressureLag+"kpa", 10, height-16, delta);
 		}
 		
 		ItemStack chest = client.player.getEquippedStack(EquipmentSlot.CHEST);
@@ -290,17 +290,17 @@ public class SuitScreen extends Screen {
 				lowestResource = Math.min(a, lowestResource);
 				
 				if (a < 0.5f) {
-					sr.drawElement(matrices, name+"-warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
+					sr.drawElement(ctx, name+"-warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
 				}
 				
-				sr.drawText(matrices, name, width-len-16, resourceBarY, delta);
-				sr.drawBar(matrices, name, width-96, resourceBarY+12, a, true, delta);
+				sr.drawText(ctx, name, width-len-16, resourceBarY, delta);
+				sr.drawBar(ctx, name, width-96, resourceBarY+12, a, true, delta);
 				if (costs != null) {
 					int mainW = (int)(80*a);
 					int xo = 80-mainW;
 					float ca = costs.count(res)/(float)res.getMaximum();
 					RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ZERO, SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-					sr.drawElement(matrices, name+"-bar-cut", (width-97)+xo+2, resourceBarY+14, xo+2, 76, (int)(80*ca), 4, delta);
+					sr.drawElement(ctx, name+"-bar-cut", (width-97)+xo+2, resourceBarY+14, xo+2, 76, (int)(80*ca), 4, delta);
 					RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE, SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 				}
 				resourceBarY += 24;
@@ -318,7 +318,7 @@ public class SuitScreen extends Screen {
 					hasDangered = true;
 					client.getSoundManager().play(new SuitSound(YSounds.DANGER));
 				}
-				sr.drawElement(matrices, "warning", width-27, height-18, 0, 18, 11, 12, delta);
+				sr.drawElement(ctx, "warning", width-27, height-18, 0, 18, 11, 12, delta);
 			} else {
 				hasDangered = false;
 			}
@@ -328,10 +328,10 @@ public class SuitScreen extends Screen {
 		int cX = width/2;
 		int cY = height/2;
 		
-		sr.drawText(matrices, "n", cX-2, cY-95, delta);
-		sr.drawText(matrices, "e", cX+90, cY-4, delta);
-		sr.drawText(matrices, "s", cX-2, cY+83, delta);
-		sr.drawText(matrices, "w", cX-95, cY-4, delta);
+		sr.drawText(ctx, "n", cX-2, cY-95, delta);
+		sr.drawText(ctx, "e", cX+90, cY-4, delta);
+		sr.drawText(ctx, "s", cX-2, cY+83, delta);
+		sr.drawText(ctx, "w", cX-95, cY-4, delta);
 		
 		int scale = (int)(25*zoom);
 		
@@ -342,21 +342,21 @@ public class SuitScreen extends Screen {
 			int x = (int)(cX+(dX/scale))-6;
 			int y = (int)(cY+(dZ/scale))-6;
 			if (x < cX-100 || x > cX+90 || y < cY-95 || y > cY+90) continue;
-			sr.drawElement(matrices, "geyser-"+g.id, x, y, 23, 18, 12, 12, delta);
+			sr.drawElement(ctx, "geyser-"+g.id, x, y, 23, 18, 12, 12, delta);
 			if (!fastDiving && mouseX >= x && mouseX < x+12 &&
 					mouseY >= y && mouseY < y+12) {
 				mouseOver = g;
 				double d = Math.sqrt((dX * dX) + (dZ * dZ));
 				mouseOverDist = d;
-				sr.drawText(matrices, Ascii.toLowerCase(g.name), mouseX+10, mouseY+10, delta);
-				sr.drawText(matrices, "geyser-"+g.id+"-dist", "distance "+((int)d), mouseX+10, mouseY+22, delta);
+				sr.drawText(ctx, Ascii.toLowerCase(g.name), mouseX+10, mouseY+10, delta);
+				sr.drawText(ctx, "geyser-"+g.id+"-dist", "distance "+((int)d), mouseX+10, mouseY+22, delta);
 			}
 		}
 		
 		int cornerX = (width-200)/2;
 		int cornerY = (height-200)/2;
-		sr.drawElement(matrices, "map-border", cornerX, cornerY, 80, 0, 200, 200, delta);
-		sr.drawElement(matrices, "scale-indicator", cornerX+160, cornerY+185, 0, 69, 32, 6, delta);
+		sr.drawElement(ctx, "map-border", cornerX, cornerY, 80, 0, 200, 200, delta);
+		sr.drawElement(ctx, "scale-indicator", cornerX+160, cornerY+185, 0, 69, 32, 6, delta);
 		int scaleMeter = scale*32;
 		String indicator;
 		if (scaleMeter > 1000) {
@@ -364,14 +364,14 @@ public class SuitScreen extends Screen {
 		} else {
 			indicator = scaleMeter+"m";
 		}
-		sr.drawText(matrices, "scale-indicator-num", indicator, cornerX+160, cornerY+173, delta);
+		sr.drawText(ctx, "scale-indicator-num", indicator, cornerX+160, cornerY+173, delta);
 		
 		if (fastDiving) {
-			sr.drawText(matrices, "navigating", 8, 8, delta);
+			sr.drawText(ctx, "navigating", 8, 8, delta);
 		}
 		
 		if (error != null) {
-			sr.drawText(matrices, "error-"+errorId, error, (width-(error.length()*6))/2, 8, delta);
+			sr.drawText(ctx, "error-"+errorId, error, (width-(error.length()*6))/2, 8, delta);
 		}
 		
 		sr.tearDown();

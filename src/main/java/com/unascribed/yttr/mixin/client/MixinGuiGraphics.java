@@ -9,18 +9,19 @@ import com.unascribed.yttr.client.YttrClient;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.render.item.ItemRenderer;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ItemRenderer.class)
-public class MixinItemRenderer {
+@Mixin(GuiGraphics.class)
+public class MixinGuiGraphics {
 
-	@Inject(at=@At("HEAD"), method="innerRenderInGui")
+	@Inject(at=@At("HEAD"), method="drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V")
 	private void innerRenderInGuiHead(CallbackInfo ci) {
 		YttrClient.renderingGui = true;
 	}
 	
-	@Inject(at=@At("RETURN"), method="innerRenderInGui")
+	@Inject(at=@At("RETURN"), method="drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V")
 	private void innerRenderInGuiReturn(CallbackInfo ci) {
 		YttrClient.renderingGui = false;
 	}

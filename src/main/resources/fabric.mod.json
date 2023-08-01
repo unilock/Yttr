@@ -5,7 +5,7 @@
 	"name": "Yttr",
 	"description": "A mod about the Void, what has gone before, and where you'll go from here. A vanilla overhaul crossed with a \"tech mod\".",
 	"authors": [ "unascribed" ],
-	"contributors": [ "Kat", "LemmaEOF" ],
+	"contributors": [ "Kat", "LemmaEOF", "jaskarth" ],
 	"contact": {
 		"homepage": "https://unascribed.com/yttr/",
 		"sources": "https://git.sleeping.town/unascribed/Yttr",
@@ -30,10 +30,9 @@
 	"depends": {
 		"fabricloader": ">=0.7.4",
 		"fabric": "*",
-		"minecraft": ">=1.19",
+		"minecraft": ">=1.20",
 		"lib39-core": "*",
 		"lib39-lockpick": "*",
-		"lib39-fractal": "*",
 		"lib39-tunnel": "*",
 		"lib39-phantom": "*",
 		"lib39-waypoint": "*",

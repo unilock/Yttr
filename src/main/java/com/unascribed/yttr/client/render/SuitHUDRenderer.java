@@ -11,7 +11,7 @@ import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Box;
@@ -21,7 +21,7 @@ public class SuitHUDRenderer extends IHasAClient {
 	private static SuitRenderer diveReadyRenderer = new SuitRenderer();
 	private static int diveReadyTime = 0;
 	
-	public static void render(MatrixStack matrices, float delta) {
+	public static void render(GuiGraphics ctx, float delta) {
 		if (diveReadyTime > 0) {
 			if (diveReadyRenderer == null) {
 				diveReadyRenderer = new SuitRenderer();
@@ -42,18 +42,18 @@ public class SuitHUDRenderer extends IHasAClient {
 					float amt = sai.getResourceAmount(chest, res);
 					float a = amt/res.getMaximum();
 					if (a < 0.5f) {
-						diveReadyRenderer.drawElement(matrices, name+"-warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
+						diveReadyRenderer.drawElement(ctx, name+"-warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
 					}
 					if (a <= 0 && res != SuitResource.FUEL) {
 						text = "hold sneak to die";
 					}
 					
-					diveReadyRenderer.drawText(matrices, name, width-len-16, resourceBarY, delta);
-					diveReadyRenderer.drawBar(matrices, name, width-96, resourceBarY+12, a, true, delta);
+					diveReadyRenderer.drawText(ctx, name, width-len-16, resourceBarY, delta);
+					diveReadyRenderer.drawBar(ctx, name, width-96, resourceBarY+12, a, true, delta);
 					resourceBarY += 24;
 				}
 			}
-			diveReadyRenderer.drawText(matrices, text, width-16-(text.length()*6), 12, delta);
+			diveReadyRenderer.drawText(ctx, text, width-16-(text.length()*6), 12, delta);
 			diveReadyRenderer.tearDown();
 		}
 	}

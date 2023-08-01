@@ -12,6 +12,7 @@ import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.util.math.ChunkPos;
@@ -21,7 +22,7 @@ import net.minecraft.world.chunk.WorldChunk;
 public class MixinCraftingResultSlot {
 
 	@Shadow @Final
-	private CraftingInventory input;
+	private RecipeInputInventory input;
 	@Shadow @Final
 	private PlayerEntity player;
 	

@@ -24,8 +24,8 @@ public class MixinMinecraftClient {
 	@Shadow
 	public Screen currentScreen;
 	
-	@Inject(at=@At("HEAD"), method="getMusicType", cancellable=true)
-	public void getMusicType(CallbackInfoReturnable<MusicSound> ci) {
+	@Inject(at=@At("HEAD"), method="getMusic", cancellable=true)
+	public void getMusic(CallbackInfoReturnable<MusicSound> ci) {
 		if (currentScreen instanceof YttrConfigScreen) {
 			ci.setReturnValue(YttrConfigScreen.MUSIC);
 		}

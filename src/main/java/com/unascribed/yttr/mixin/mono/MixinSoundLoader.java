@@ -17,7 +17,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.sound.AudioStream;
 import net.minecraft.client.sound.SoundLoader;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceFactory;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -25,7 +25,7 @@ import net.minecraft.util.Identifier;
 public class MixinSoundLoader {
 
 	@Shadow @Final
-	private ResourceManager resourceManager;
+	private ResourceFactory resourceManager;
 	
 	@Inject(at=@At("HEAD"), method="loadStreamed", cancellable=true)
 	public void yttr$loadStreamedHead(Identifier id, boolean repeatInstantly, CallbackInfoReturnable<CompletableFuture<AudioStream>> ci) {

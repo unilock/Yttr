@@ -9,7 +9,6 @@ import com.mojang.blaze3d.platform.InputUtil.Type;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.mixin.accessor.client.AccessorInGameHud;
 import com.unascribed.yttr.mixin.accessor.client.AccessorKeyBind;
 import com.unascribed.yttr.util.ControlHintable;
@@ -32,9 +31,9 @@ public class ControlHints {
 	private static String curState;
 	private static long lastStateChange;
 
-	public static void render(GuiGraphics graphics, float tickDelta) {
+	public static void render(GuiGraphics ctx, float tickDelta) {
 		if (!YConfig.Client.controlHints) return;
-		MatrixStack matrices = graphics.getMatrices();
+		MatrixStack matrices = ctx.getMatrices();
 
 		var mc = MinecraftClient.getInstance();
 		if (mc.player != null) {
@@ -135,7 +134,7 @@ public class ControlHints {
 							int sw = mc.textRenderer.getWidth(s);
 							w += sw;
 							components.add(() -> {
-								graphics.drawShadowedText(mc.textRenderer, s, 0, 1, 0xFFFFFF|a);
+								ctx.drawShadowedText(mc.textRenderer, s, 0, 1, 0xFFFFFF|a);
 								matrices.translate(sw, 0, 0);
 							});
 						}
@@ -145,10 +144,9 @@ public class ControlHints {
 								w += 10;
 								components.add(() -> {
 									RenderSystem.setShaderColor(1/2f, 1/2f, 1/6f, af);
-									graphics.drawTexture(ICONS, 1, 1, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
-									YttrClient.drawQuad(matrices, 1, 1, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
+									ctx.drawTexture(ICONS, 1, 1, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
 									RenderSystem.setShaderColor(1, 1, 1/3f, af);
-									YttrClient.drawQuad(matrices, 0, 0, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
+									ctx.drawTexture(ICONS, 0, 0, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
 									matrices.translate(10, 0, 0);
 									RenderSystem.setShaderColor(1, 1, 1, 1);
 								});
@@ -161,11 +159,11 @@ public class ControlHints {
 								w += sw+(mouse?0:2);
 								components.add(() -> {
 									if (!mouse) {
-										graphics.fill(0, -1, sw+3, 10, 0x797928|a);
-										graphics.fill(0, -1, sw+2, 8, 0xFFFF55|a);
+										ctx.fill(0, -1, sw+3, 10, 0x797928|a);
+										ctx.fill(0, -1, sw+2, 8, 0xFFFF55|a);
 										RenderSystem.enableBlend();
 									}
-									graphics.drawShadowedText(mc.textRenderer, fs, mouse?0:1, 0, 0x000000|a);
+									ctx.drawShadowedText(mc.textRenderer, fs, mouse?0:1, 0, 0x000000|a);
 									matrices.translate(sw+2, 0, 0);
 								});
 							}
@@ -177,14 +175,14 @@ public class ControlHints {
 						int sw = mc.textRenderer.getWidth(s);
 						w += sw;
 						components.add(() -> {
-							graphics.drawShadowedText(mc.textRenderer, s, 0, 1, 0xFFFFFF|a);
+							ctx.drawShadowedText(mc.textRenderer, s, 0, 1, 0xFFFFFF|a);
 							matrices.translate(sw, 0, 0);
 						});
 					}
 					var x = (winW-w)/2;
 					matrices.push();
 						matrices.translate(x, y, 0);
-						graphics.fill(-2, -1, w+2, 11, mc.options.getTextBackgroundColor(0));
+						ctx.fill(-2, -1, w+2, 11, mc.options.getTextBackgroundColor(0));
 						RenderSystem.enableBlend();
 						for (var r : components) {
 							r.run();

@@ -323,19 +323,17 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			prof.pop();
 		});
 		
-		HudRenderCallback.EVENT.register((graphics, tickDelta) -> {
-			MatrixStack matrixStack = graphics.getMatrices();
-
+		HudRenderCallback.EVENT.register((ctx, tickDelta) -> {
 			var prof = mc.getProfiler();
 			prof.push("yttr");
 			prof.push("suit-hud");
-			SuitHUDRenderer.render(matrixStack, tickDelta);
+			SuitHUDRenderer.render(ctx, tickDelta);
 			prof.swap("rifle-hud");
-			RifleHUDRenderer.render(graphics, tickDelta);
+			RifleHUDRenderer.render(ctx, tickDelta);
 			prof.swap("shifter-ui");
-			ShifterUI.render(matrixStack, tickDelta);
+			ShifterUI.render(ctx, tickDelta);
 			prof.swap("control-hints");
-			ControlHints.render(graphics, tickDelta);
+			ControlHints.render(ctx, tickDelta);
 			prof.pop();
 			prof.pop();
 		});
@@ -360,12 +358,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				erd.scale(1+(RifleHUDRenderer.scopeA*5));
 			}
 		});
-		RecoilEvents.RENDER_CROSSHAIRS.register(matrices -> {
+		RecoilEvents.RENDER_CROSSHAIRS.register(ctx -> {
+			var matrices = ctx.getMatrices();
 			var stack = mc.player.getMainHandStack();
 			if (mc.player != null && stack.getItem() instanceof RifleItem ri) {
 				RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
 				RenderSystem.setShaderColor(1, 1, 1, 1);
-				RenderSystem.setShaderTexture(0, Yttr.id("textures/gui/rifle_crosshairs.png"));
 				int windowWidth = mc.getWindow().getScaledWidth();
 				int windowHeight = mc.getWindow().getScaledHeight();
 				int w = 15;
@@ -381,11 +379,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					case ENTITY -> 30;
 					default -> 0;
 				};
-				drawQuad(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u, 0, w, h, 45, 30);
+				var tex = Yttr.id("textures/gui/rifle_crosshairs.png");
+				ctx.drawTexture(tex, (windowWidth-w)/2, (windowHeight-h)/2, u, 0, w, h, 45, 30);
 				if (mc.player.isUsingItem() && mc.player.getActiveHand() == Hand.MAIN_HAND) {
 					int useTicks = ri.calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft());
 					float power = ri.calculatePower(useTicks);
-					IntConsumer draw = (u2) -> drawQuad(matrices, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);
+					IntConsumer draw = (u2) -> ctx.drawTexture(tex, (windowWidth-w)/2, (windowHeight-h)/2, u2, 15, w, h, 45, 30);
 					if (power >= 1.2f) {
 						draw.accept(15);
 						draw.accept(30);
@@ -670,38 +669,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return new Identifier("textures/models/armor/yttr_ultrapure_diamond_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
 		}
 		return id;
-	}
-
-	public static void drawQuad(MatrixStack matrices, int x, int y, int z, float u, float v, int width, int height, int textureWidth, int textureHeight) {
-		drawQuad(matrices, x, y, z, width, height, u, v, width, height, textureWidth, textureHeight);
-	}
-
-	public static void drawQuad(MatrixStack matrices, int x, int y, int width, int height, float u, float v, int textureWidth, int textureHeight) {
-		drawQuad(matrices, x, y, 0, width, height, u, v, width, height, textureWidth, textureHeight);
-	}
-
-	public static void drawQuad(MatrixStack matrices, int x, int y, int z, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
-		// Direct rendering ported out of GuiGraphics
-
-		int x1 = x;
-		int x2 = x + width;
-		int y1 = y;
-		int y2 = y + height;
-
-
-		float u1 = (u + 0.0F) / textureWidth;
-		float u2 = (u + regionWidth) / textureWidth;
-		float v1 = (v + 0.0F) / textureHeight;
-		float v2 = (v + regionHeight) / textureHeight;
-
-		Matrix4f matrix4f = matrices.peek().getModel();
-		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
-		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-		bufferBuilder.vertex(matrix4f, x1, y1, z).uv(u1, v1).next();
-		bufferBuilder.vertex(matrix4f, x1, y2, z).uv(u1, v2).next();
-		bufferBuilder.vertex(matrix4f, x2, y2, z).uv(u2, v2).next();
-		bufferBuilder.vertex(matrix4f, x2, y1, z).uv(u2, v1).next();
-		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 	
 }

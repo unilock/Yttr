@@ -6,7 +6,6 @@ import java.util.Set;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.compat.emi.YttrEmiPlugin;
 import com.unascribed.yttr.compat.emi.widget.RuinedInputWidget;
 import com.unascribed.yttr.compat.emi.widget.RuinedOutputWidget;
@@ -69,14 +68,15 @@ public class EmiForgottenRecipe implements EmiRecipe {
 		int w = (int)(h*aspect);
 		widgets.addDrawable(0, 0, w, h, (ctx, mouseX, mouseY, delta) -> {
 			var matrices = ctx.getMatrices();
-			RenderSystem.setShaderTexture(0, new Identifier(id.getNamespace(), "textures/gui/ruined_recipe/"+id.getPath()+".png"));
+			var tex = new Identifier(id.getNamespace(), "textures/gui/ruined_recipe/"+id.getPath()+".png");
+			var overlay = new Identifier("yttr", "textures/gui/ruined_recipe/overlay.png");
+			var border = new Identifier("yttr", "textures/gui/ruined_recipe/border.png");
 			matrices.push();
 			matrices.translate(x-(w/2f), y, 0);
-			YttrClient.drawQuad(matrices, 0, 0, 0, 0, w, h, w, h);
+			ctx.drawTexture(tex, 0, 0, 0, 0, w, h, w, h);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(SourceFactor.ZERO, DestFactor.SRC_COLOR); // multiply
-			RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/ruined_recipe/overlay.png"));
-			YttrClient.drawQuad(matrices, 0, 0, 0, 0, w, h, w, h);
+			ctx.drawTexture(overlay, 0, 0, 0, 0, w, h, w, h);
 			
 			double wFactor = 872/696D;
 			double hFactor = 500/324D;
@@ -86,8 +86,7 @@ public class EmiForgottenRecipe implements EmiRecipe {
 			matrices.scale((float)wFactor, (float)hFactor, 1);
 			matrices.translate(-w/2f, -h/2f, 0);
 			RenderSystem.defaultBlendFunc();
-			RenderSystem.setShaderTexture(0, new Identifier("yttr", "textures/gui/ruined_recipe/border.png"));
-			YttrClient.drawQuad(matrices, 0, 0, 0, 0, w, h, w, h);
+			ctx.drawTexture(border, 0, 0, 0, 0, w, h, w, h);
 			matrices.pop();
 			matrices.pop();
 		});
