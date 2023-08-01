@@ -28,6 +28,7 @@ import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.ControlHints;
 import com.unascribed.yttr.client.render.EffectorRenderer;
@@ -180,7 +181,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					"§4§lFILL YOUR SOUL WITH SOUP",
 					"Beetroot?",
 					"Beeproot?",
-					"§cwhy have you done this"
+					"§cwhy have you done this",
+					"Team effort!"
 				);
 			
 			SplashTextRegistry.registerTemporal("Happy birthday, Kat!", MonthDay.of(Month.JANUARY, 28));
@@ -206,6 +208,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
 			rm.registerReloader(reloader("yttr:clear_caches", (manager) -> {
 				TextureColorThief.clearCache();
+				CleavedBlockMeshes.era++;
 			}));
 			rm.registerReloader(reloader("yttr:detect", (manager) -> {
 				Yttr.lessCreepyAwareHopper = manager.getResource(Yttr.id("lcah-marker")).isPresent();
@@ -394,6 +397,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 						draw.accept(0);
 					}
 				}
+				RenderSystem.defaultBlendFunc();
 				return true;
 			} else {
 				rifleHitResult = null;

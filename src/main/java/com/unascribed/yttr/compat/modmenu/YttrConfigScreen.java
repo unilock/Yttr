@@ -171,7 +171,7 @@ public class YttrConfigScreen extends Screen {
 			modelView.push();
 			modelView.translate(initialMouseX, initialMouseY, 0);
 			modelView.scale(1+(sca/2), 1+(sca/2), 1);
-			modelView.translate(-initialMouseX, -initialMouseY, 0);
+			modelView.translate(-initialMouseX, -initialMouseY, -600);
 			RenderSystem.applyModelViewMatrix();
 			parent.render(ctx, -200, -200, delta);
 			modelView.pop();

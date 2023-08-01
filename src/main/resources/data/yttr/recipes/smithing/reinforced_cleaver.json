@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smithing",
+  "type": "minecraft:smithing_transform",
   "lib39:discovered_via": "minecraft:netherite_ingot",
   "base": {
     "item": "yttr:cleaver"
@@ -9,5 +9,8 @@
   },
   "result": {
     "item": "yttr:reinforced_cleaver"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import net.minecraft.network.packet.Packet;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +21,6 @@ import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
-import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -91,6 +91,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	private BlockState donor = Blocks.AIR.getDefaultState();
 	
 	public Object clientCacheData;
+	public int clientCacheEra;
 	
 	
 	private VoxelShape cachedShape;
@@ -162,9 +163,9 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	}
 
 	public void fromTagInner(NbtCompound tag) {
-		if (tag.contains("Polygons", NbtType.LIST)) {
+		if (tag.contains("Polygons", NbtElement.LIST_TYPE)) {
 			ImmutableList.Builder<Polygon> builder = ImmutableList.builder();
-			NbtList li = tag.getList("Polygons", NbtType.BYTE_ARRAY);
+			NbtList li = tag.getList("Polygons", NbtElement.BYTE_ARRAY_TYPE);
 			for (int i = 0; i < li.size(); i++) {
 				NbtElement en = li.get(i);
 				List<Vec3d> points = Lists.newArrayList();
@@ -179,7 +180,10 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		} else {
 			polygons = cube();
 		}
-		donor = NbtHelper.toBlockState(this.getWorld().filteredLookup(RegistryKeys.BLOCK), tag.getCompound("Donor"));
+		var lk = this.world != null
+				? this.world.filteredLookup(RegistryKeys.BLOCK)
+				: Registries.BLOCK.asLookup();
+		donor = NbtHelper.toBlockState(lk, tag.getCompound("Donor"));
 		clientCacheData = null;
 		cachedShape = null;
 		if (world instanceof YttrWorld) ((YttrWorld)world).yttr$scheduleRenderUpdate(pos);

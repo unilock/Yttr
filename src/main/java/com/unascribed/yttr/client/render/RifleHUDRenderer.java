@@ -168,6 +168,7 @@ public class RifleHUDRenderer extends IHasAClient {
 					ctx.drawTexture(MODES, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.ALL_VALUES.size()*16, 16);
 					if (a > 0.1f) {
 						if (ammo == -1) {
+							RenderSystem.setShaderColor(1, 1, 1, a);
 							int textCol = 0x00FFFFFF;
 							textCol |= ((int)(a*255)&0xFF)<<24;
 							ctx.drawShadowedText(mc.textRenderer, "∞", x+16-(mc.textRenderer.getWidth("∞")), y+8, textCol);
@@ -202,6 +203,7 @@ public class RifleHUDRenderer extends IHasAClient {
 				}
 			matrices.pop();
 		}
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 	}
 	
 	public static void tick() {

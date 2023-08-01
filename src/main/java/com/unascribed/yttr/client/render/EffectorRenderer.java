@@ -54,7 +54,7 @@ public class EffectorRenderer extends IHasAClient {
 			RenderSystem.enableDepthTest();
 			RenderSystem.depthFunc(GL_LEQUAL);
 			Vec3d cam = wrc.camera().getPos();
-			MatrixStack ms = new MatrixStack();
+			MatrixStack ms = wrc.matrixStack();
 			ms.translate(-cam.x, -cam.y, -cam.z);
 			BlockPos.Mutable mut = new BlockPos.Mutable();
 			List<Axis> axes = Arrays.asList(Direction.Axis.values());

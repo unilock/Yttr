@@ -36,6 +36,8 @@ public class CleavedBlockMeshes {
 	
 	private static final UVObserver uvo = new UVObserver();
 	
+	public static int era = 0;
+	
 	private static class DummySprite extends Sprite {
 
 		private static final UnsafeAllocator UA = UnsafeAllocator.INSTANCE;
@@ -83,7 +85,7 @@ public class CleavedBlockMeshes {
 	}
 	
 	public static Mesh getMesh(CleavedBlockEntity entity) {
-		if (entity.clientCacheData instanceof Mesh) return (Mesh)entity.clientCacheData;
+		if (entity.clientCacheData instanceof Mesh && entity.clientCacheEra == era) return (Mesh)entity.clientCacheData;
 		if (!RendererAccess.INSTANCE.hasRenderer()) return null;
 		MinecraftClient.getInstance().getProfiler().push("yttr:cleaved_modelgen");
 		BlendMode bm = BlendMode.fromRenderLayer(RenderLayers.getBlockLayer(entity.getDonor()));
@@ -151,6 +153,7 @@ public class CleavedBlockMeshes {
 		}
 		Mesh mesh = bldr.build();
 		entity.clientCacheData = mesh;
+		entity.clientCacheEra = era;
 		MinecraftClient.getInstance().getProfiler().pop();
 		return mesh;
 	}
