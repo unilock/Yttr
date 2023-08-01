@@ -45,7 +45,7 @@ public class CanFillerScreenHandler extends ScreenHandler {
 	
 	public CanFillerScreenHandler(Inventory canFiller, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
 		super(YHandledScreens.CAN_FILLER, syncId);
-		world = playerInv.player.world;
+		world = playerInv.player.getWorld();
 		
 		this.canFiller = canFiller;
 		this.properties = properties;

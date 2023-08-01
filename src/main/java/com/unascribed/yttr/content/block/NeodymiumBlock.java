@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block;
 import java.util.List;
 
 import com.unascribed.lib39.dessicant.api.SimpleLootBlock;
+import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mixin.accessor.AccessorVoxelShape;
@@ -30,7 +31,7 @@ import net.minecraft.util.shape.VoxelShapes.BoxConsumer;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock {
+public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock, SpecialSubItems {
 
 	public NeodymiumBlock(Settings settings) {
 		super(settings);

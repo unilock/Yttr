@@ -23,9 +23,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.CraftingCategory;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
@@ -70,7 +71,7 @@ public class MixinBlock {
 				ItemStack copy1 = stack.copy();
 				copy1.setCount(1);
 				ShatteringLogic.inv.setStack(0, copy1);
-				Optional<? extends Recipe<CraftingInventory>> recipe = world.getRecipeManager().getFirstMatch(YRecipeTypes.SHATTERING, ShatteringLogic.inv, world);
+				Optional<? extends Recipe<RecipeInputInventory>> recipe = world.getRecipeManager().getFirstMatch(YRecipeTypes.SHATTERING, ShatteringLogic.inv, world);
 				List<ItemStack> remainder = null;
 				if (!recipe.isPresent()) {
 					recipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ShatteringLogic.inv, world);
@@ -78,17 +79,17 @@ public class MixinBlock {
 				}
 				if (!recipe.isPresent()) {
 					for (StonecuttingRecipe sr : world.getRecipeManager().listAllOfType(RecipeType.STONECUTTING)) {
-						if (sr.getOutput().getCount() == 1 && ItemStack.areEqual(sr.getOutput(), copy1)) {
+						if (sr.getResult(world.getRegistryManager()).getCount() == 1 && ItemStack.areEqual(sr.getResult(world.getRegistryManager()), copy1)) {
 							ItemStack input = new ItemStack(Item.byRawId(sr.getIngredients().get(0).getMatchingItemIds().getInt(0)));
 							recipe = Optional.of(new ShapelessRecipe(sr.getId(), null,
-									input, DefaultedList.ofSize(1, Ingredient.ofStacks(sr.getOutput()))));
+									CraftingCategory.MISC, input, DefaultedList.ofSize(1, Ingredient.ofStacks(sr.getResult(world.getRegistryManager())))));
 							remainder = null;
 							break;
 						}
 					}
 				}
 				if (!recipe.isPresent()) return;
-				ItemStack result = recipe.get().craft(ShatteringLogic.inv);
+				ItemStack result = recipe.get().craft(ShatteringLogic.inv, world.getRegistryManager());
 				try {
 					ShatteringLogic.shatteringDepth++;
 					for (int i = 0; i < result.getCount(); i++) {

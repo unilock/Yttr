@@ -151,7 +151,7 @@ public class ShifterItem extends Item implements ControlHintable {
 		BlockEntity be = world.getBlockEntity(pos);
 		BlockState curState = getEffectiveBlockState(world, pos);
 		if (curState.isAir()) return;
-		int consumed = Inventories.remove(player.getInventory(), (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areNbtEqual(is, replacement), 1, true);
+		int consumed = Inventories.remove(player.getInventory(), (is) -> ItemStack.canCombine(is, replacement), 1, true);
 		if (consumed == 0) return;
 		Item i = replacement.getItem();
 		BlockState replState;
@@ -206,7 +206,7 @@ public class ShifterItem extends Item implements ControlHintable {
 				}
 			}
 			if (!(i instanceof ProjectorItem)) {
-				int rm = Inventories.remove(player.getInventory(), (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areNbtEqual(is, replacement), 1, false);
+				int rm = Inventories.remove(player.getInventory(), (is) -> ItemStack.canCombine(is, replacement), 1, false);
 				if (rm == 0) {
 					YLog.warn("Couldn't consume a replacement item after verifying it with a dry run?? Forcefully decrementing off-hand stack!");
 					ItemStack off = player.getStackInHand(Hand.OFF_HAND);

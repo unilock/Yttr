@@ -164,7 +164,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 				// scan storage, but not grid
 				for (int i = 9; i < inv.size(); i++) {
 					ItemStack is = inv.getStack(i);
-					if (!is.isEmpty() && ItemStack.areItemsEqual(stack, is) && !is.isDamaged() && !is.hasEnchantments() && !is.hasCustomName()) {
+					if (!is.isEmpty() && ItemStack.canCombine(stack, is) && !is.isDamaged() && !is.hasEnchantments() && !is.hasCustomName()) {
 						is = is.copy();
 						if (is.getCount() > 1) {
 							inv.removeStack(i, 1);
@@ -186,7 +186,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 			}
 			
 			@Override
-			protected void returnInputs(boolean bl) {
+			protected void returnInputs() {
 				for(int i = 0; i < handler.getCraftingSlotCount(); i++) {
 					if (handler.canInsertIntoSlot(i)) {
 						ItemStack is = handler.getSlot(i).getStack().copy();

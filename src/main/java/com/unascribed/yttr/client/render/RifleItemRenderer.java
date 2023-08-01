@@ -4,7 +4,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.texture.NativeImage;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.lib39.util.api.DelegatingVertexConsumer;
 import com.unascribed.yttr.Yttr;
@@ -19,7 +18,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -90,7 +88,7 @@ public class RifleItemRenderer extends IHasAClient {
 					@Override
 					public VertexConsumer color(int red, int green, int blue, int alpha) {
 						int c = ((RifleItem)stack.getItem()).getMode(stack).color;
-						return super.color(NativeImage.getBlue(c), NativeImage.getGreen(c), NativeImage.getRed(c), 255);
+						return super.color((c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF, 255);
 					}
 				}, light, overlay, chamber);
 				if (vertexConsumers instanceof Immediate) ((Immediate)vertexConsumers).draw(layer);

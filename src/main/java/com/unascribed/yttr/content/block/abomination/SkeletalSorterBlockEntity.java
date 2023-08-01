@@ -142,9 +142,9 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 				ItemStack templ = itemFrame.getHeldItemStack();
 				boolean matches;
 				if (getCachedState().get(SkeletalSorterBlock.ENGOGGLED)) {
-					matches = ItemStack.areItemsEqual(templ, heldItemMainHand) && ItemStack.areNbtEqual(templ, heldItemMainHand);
+					matches = ItemStack.canCombine(templ, heldItemMainHand);
 				} else {
-					matches = ItemStack.areItemsEqualIgnoreDamage(templ, heldItemMainHand);
+					matches = ItemStack.itemsMatch(templ, heldItemMainHand);
 				}
 				if (matches) {
 					stowing = Hand.MAIN_HAND;
@@ -188,7 +188,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity {
 						held.setCount(0);
 						success = true;
 						break;
-					} else if (ItemStack.areItemsEqual(there, held) && ItemStack.areNbtEqual(there, held) && there.getCount()+held.getCount() <= there.getMaxCount()) {
+					} else if (ItemStack.canCombine(there, held) && there.getCount()+held.getCount() <= there.getMaxCount()) {
 						there.increment(held.getCount());
 						out.setStack(i, there);
 						held.setCount(0);

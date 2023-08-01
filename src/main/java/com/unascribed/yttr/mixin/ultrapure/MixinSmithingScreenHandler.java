@@ -1,21 +1,11 @@
 package com.unascribed.yttr.mixin.ultrapure;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.unascribed.yttr.init.YItems;
-
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ForgingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SmithingScreenHandler;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
 
 @Mixin(SmithingScreenHandler.class)
 public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
@@ -24,18 +14,19 @@ public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
 		super(type, syncId, playerInventory, context);
 	}
 
-	@Inject(at=@At("TAIL"), method="updateResult")
-	public void updateResult(CallbackInfo ci) {
-		if (!output.isEmpty() && input.getStack(1).getItem() == YItems.ULTRAPURE_NETHERITE) {
-			ItemStack out = output.getStack(0);
-			if (!out.hasCustomName()) {
-				out.setCustomName(Text.translatable("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
-			}
-			if (!out.hasNbt()) {
-				out.setNbt(new NbtCompound());
-			}
-			out.getNbt().putInt("yttr:DurabilityBonus", out.getNbt().getInt("yttr:DurabilityBonus")+1);
-		}
-	}
+	// TODO
+//	@Inject(at=@At("TAIL"), method="updateResult")
+//	public void updateResult(CallbackInfo ci) {
+//		if (!output.isEmpty() && input.getStack(1).getItem() == YItems.ULTRAPURE_NETHERITE) {
+//			ItemStack out = output.getStack(0);
+//			if (!out.hasCustomName()) {
+//				out.setCustomName(Text.translatable("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
+//			}
+//			if (!out.hasNbt()) {
+//				out.setNbt(new NbtCompound());
+//			}
+//			out.getNbt().putInt("yttr:DurabilityBonus", out.getNbt().getInt("yttr:DurabilityBonus")+1);
+//		}
+//	}
 	
 }

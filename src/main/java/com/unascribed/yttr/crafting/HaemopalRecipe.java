@@ -4,29 +4,31 @@ import com.google.gson.JsonObject;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeSerializers;
 
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.CraftingCategory;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapelessRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
 public class HaemopalRecipe extends ShapelessRecipe {
 
 	public HaemopalRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> input) {
-		super(id, group, output, input);
+		super(id, group, CraftingCategory.MISC, output, input);
 	}
 
 	public HaemopalRecipe(ShapelessRecipe copy) {
-		super(copy.getId(), copy.getGroup(), copy.getOutput(), copy.getIngredients());
+		this(copy.getId(), copy.getGroup(), copy.getResult(null), copy.getIngredients());
 	}
 	
 	@Override
-	public ItemStack craft(CraftingInventory inv) {
-		var out = getOutput().copy();
+	public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager mgr) {
+		var out = getResult(mgr).copy();
 		for (var i = 0; i < inv.size(); i++) {
 			var is = inv.getStack(i);
 			if (is.isOf(YItems.EMPTY_HAEMOPAL) && is.hasNbt()) {
@@ -38,7 +40,7 @@ public class HaemopalRecipe extends ShapelessRecipe {
 	}
 	
 	@Override
-	public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
+	public DefaultedList<ItemStack> getRemainder(RecipeInputInventory inv) {
 		var li = super.getRemainder(inv);
 		for (var i = 0; i < inv.size(); i++) {
 			var is = inv.getStack(i);

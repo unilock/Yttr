@@ -35,7 +35,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.ENTITYBLOCK_ANIMATED;
+		return BlockRenderType.ANIMATED;
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 				world.playSound(null, pos, YSounds.REPLICATOR_VEND, SoundCategory.BLOCKS, 1, 1);
 				return ActionResult.SUCCESS;
 			} else if (!rbe.locked && (player.isCreative() || player.getUuid().equals(rbe.owner))) {
-				if (!ItemStack.areItemsEqual(held, rbe.item) || !ItemStack.areNbtEqual(held, rbe.item)) {
+				if (!ItemStack.canCombine(held, rbe.item)) {
 					rbe.item = held.copy();
 					world.playSound(null, pos, YSounds.REPLICATOR_UPDATE, SoundCategory.BLOCKS, 1, rbe.item.isEmpty() ? 1f : 1.25f);
 					Yttr.sync(rbe);

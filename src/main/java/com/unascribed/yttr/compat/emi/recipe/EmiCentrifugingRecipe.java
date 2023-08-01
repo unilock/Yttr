@@ -75,16 +75,12 @@ public class EmiCentrifugingRecipe implements EmiRecipe {
 		widgets.addTexture(Yttr.id("textures/gui/centrifuge.png"), 0, 0, 94, 95, 41, 8);
 		
 		widgets.addSlot(outputOrEmpty(0), 0, 31)
-			.output(true)
 			.recipeContext(this);
 		widgets.addSlot(outputOrEmpty(1), 38, 0)
-			.output(true)
 			.recipeContext(this);
 		widgets.addSlot(outputOrEmpty(2), 68, 39)
-			.output(true)
 			.recipeContext(this);
 		widgets.addSlot(outputOrEmpty(3), 30, 69)
-			.output(true)
 			.recipeContext(this);
 		
 		widgets.addSlot(input, 38, 39);

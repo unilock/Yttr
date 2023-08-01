@@ -12,7 +12,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.util.Identifier;
@@ -23,20 +24,20 @@ public class EmiShatteringRecipe implements EmiRecipe {
 	private final EmiStack output;
 	public final boolean exclusive;
 	
-	public EmiShatteringRecipe(Recipe<CraftingInventory> recipe) {
+	public EmiShatteringRecipe(Recipe<? extends RecipeInputInventory> recipe) {
 		this.id = recipe instanceof ShatteringRecipe ? recipe.getId() : Yttr.id("shattering/"+recipe.getId().getNamespace()+"/"+recipe.getId().getPath());
 		this.input = EmiIngredient.of(recipe.getIngredients().get(0));
-		this.output = EmiStack.of(recipe.getOutput());
+		this.output = EmiStack.of(recipe.getResult(MinecraftClient.getInstance().world.getRegistryManager()));
 		this.exclusive = recipe instanceof ShatteringRecipe;
 	}
 	
 	public EmiShatteringRecipe(ShatteringRecipe recipe) {
-		this((Recipe<CraftingInventory>)recipe);
+		this((Recipe<RecipeInputInventory>)recipe);
 	}
 	
 	public EmiShatteringRecipe(StonecuttingRecipe recipe) {
 		this.id = Yttr.id("shattering/"+recipe.getId().getNamespace()+"/"+recipe.getId().getPath());
-		this.input = EmiStack.of(recipe.getOutput());
+		this.input = EmiStack.of(recipe.getResult(MinecraftClient.getInstance().world.getRegistryManager()));
 		this.output = EmiIngredient.of(recipe.getIngredients().get(0)).getEmiStacks().get(0);
 		this.exclusive = true;
 	}

@@ -1,0 +1,11 @@
+{
+	"sources": [
+		{"type": "single", "resource": "yttr:block/void_flow"},
+		{"type": "single", "resource": "yttr:block/void_still"},
+		{"type": "single", "resource": "yttr:block/pure_void_flow"},
+		{"type": "single", "resource": "yttr:block/pure_void_still"},
+		{"type": "single", "resource": "yttr:block/bloque_welded"},
+		{"type": "single", "resource": "yttr:block/bloque_welded_side"},
+		{"type": "single", "resource": "yttr:block/bloque_welded_top"}
+	]
+}

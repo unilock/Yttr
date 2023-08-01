@@ -56,7 +56,7 @@ public class BloqueBlockItem extends DyedBlockItem {
 		if (context.getStack().getSubNbt("BlockEntityTag") != null) {
 			return super.place(context, state);
 		}
-		BlockPos bp = new BlockPos(context.getHitPos());
+		BlockPos bp = BlockPos.fromPosition(context.getHitPos());
 		if (context.getWorld().getBlockEntity(bp) instanceof BloqueBlockEntity be && fillIn(be, context.getHitPos(), bp, context.getSide())) {
 			return true;
 		} else {

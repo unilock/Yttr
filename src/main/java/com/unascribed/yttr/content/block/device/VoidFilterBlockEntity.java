@@ -112,7 +112,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements YTickable, Del
 			opTocks = 0;
 			for (VoidFilteringRecipe r : world.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING)) {
 				if (ThreadLocalRandom.current().nextFloat()*100 < r.getChance()) {
-					ItemStack res = r.craft(this);
+					ItemStack res = r.craft(this, world.getRegistryManager());
 					if (inv.addStack(res).isEmpty()) {
 						statQueue.add(res.getItem(), res.getCount());
 					}

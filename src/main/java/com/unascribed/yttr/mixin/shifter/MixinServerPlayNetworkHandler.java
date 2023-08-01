@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.content.item.ShifterItem;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.PickFromInventoryC2SPacket;
+import net.minecraft.network.packet.c2s.play.InventoryItemPickC2SPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -21,8 +21,8 @@ public class MixinServerPlayNetworkHandler {
 	@Shadow
 	public ServerPlayerEntity player;
 
-	@Inject(at=@At("HEAD"), method="onPickFromInventory", cancellable=true)
-	public void onPickFromInventory(PickFromInventoryC2SPacket packet, CallbackInfo ci) {
+	@Inject(at=@At("HEAD"), method="onInventoryItemPick", cancellable=true)
+	public void onInventoryItemPick(InventoryItemPickC2SPacket packet, CallbackInfo ci) {
 		if (player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof ShifterItem) {
 			if (packet.getSlot() < 0 || packet.getSlot() >= player.getInventory().size()) return;
 			ItemStack desired = player.getInventory().getStack(packet.getSlot());

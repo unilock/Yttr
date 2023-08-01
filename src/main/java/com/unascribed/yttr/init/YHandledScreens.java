@@ -33,6 +33,7 @@ import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.feature_flags.FeatureFlagBitSet;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -40,27 +41,27 @@ import net.minecraft.screen.slot.Slot;
 public class YHandledScreens {
 
 	@Screen(CentrifugeScreen.class)
-	public static final ScreenHandlerType<CentrifugeScreenHandler> CENTRIFUGE = new ScreenHandlerType<>(CentrifugeScreenHandler::new);
+	public static final ScreenHandlerType<CentrifugeScreenHandler> CENTRIFUGE = new ScreenHandlerType<>(CentrifugeScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(SuitStationScreen.class)
-	public static final ScreenHandlerType<SuitStationScreenHandler> SUIT_STATION = new ScreenHandlerType<>(SuitStationScreenHandler::new);
+	public static final ScreenHandlerType<SuitStationScreenHandler> SUIT_STATION = new ScreenHandlerType<>(SuitStationScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(VoidFilterScreen.class)
-	public static final ScreenHandlerType<VoidFilterScreenHandler> VOID_FILTER = new ScreenHandlerType<>(VoidFilterScreenHandler::new);
+	public static final ScreenHandlerType<VoidFilterScreenHandler> VOID_FILTER = new ScreenHandlerType<>(VoidFilterScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(DSUScreen.class)
-	public static final ScreenHandlerType<DSUScreenHandler> DSU = new ScreenHandlerType<>(DSUScreenHandler::new);
+	public static final ScreenHandlerType<DSUScreenHandler> DSU = new ScreenHandlerType<>(DSUScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(MagtankScreen.class)
-	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = new ScreenHandlerType<>(MagtankScreenHandler::new);
+	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = new ScreenHandlerType<>(MagtankScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(CanFillerScreen.class)
-	public static final ScreenHandlerType<CanFillerScreenHandler> CAN_FILLER = new ScreenHandlerType<>(CanFillerScreenHandler::new);
+	public static final ScreenHandlerType<CanFillerScreenHandler> CAN_FILLER = new ScreenHandlerType<>(CanFillerScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(AmmoPackScreen.class)
-	public static final ScreenHandlerType<AmmoPackScreenHandler> AMMO_PACK = new ScreenHandlerType<>(AmmoPackScreenHandler::new);
+	public static final ScreenHandlerType<AmmoPackScreenHandler> AMMO_PACK = new ScreenHandlerType<>(AmmoPackScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(InRedOscillatorScreen.class)
-	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = new ScreenHandlerType<>(InRedOscillatorScreenHandler::new);
+	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = new ScreenHandlerType<>(InRedOscillatorScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(RafterScreen.class)
-	public static final ScreenHandlerType<RafterScreenHandler> RAFTING = new ScreenHandlerType<>(RafterScreenHandler::new);
+	public static final ScreenHandlerType<RafterScreenHandler> RAFTING = new ScreenHandlerType<>(RafterScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(ProjectTableScreen.class)
-	public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE = new ScreenHandlerType<>(ProjectTableScreenHandler::new);
+	public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE = new ScreenHandlerType<>(ProjectTableScreenHandler::new, FeatureFlagBitSet.empty());
 	@Screen(SSDScreen.class)
-	public static final ScreenHandlerType<SSDScreenHandler> SSD = new ScreenHandlerType<>(SSDScreenHandler::new);
+	public static final ScreenHandlerType<SSDScreenHandler> SSD = new ScreenHandlerType<>(SSDScreenHandler::new, FeatureFlagBitSet.empty());
 	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registries.SCREEN_HANDLER_TYPE, YHandledScreens.class, ScreenHandlerType.class);

@@ -7,7 +7,7 @@ import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import dev.emi.emi.api.stack.ItemEmiStack;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.item.ItemStack;
 
 public class SuitHelmetEmiStack extends ItemEmiStack {
@@ -17,8 +17,9 @@ public class SuitHelmetEmiStack extends ItemEmiStack {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int x, int y, float delta) {
-		super.render(matrices, x, y, delta);
+	public void render(GuiGraphics ctx, int x, int y, float delta) {
+		super.render(ctx, x, y, delta);
+		var matrices = ctx.getMatrices();
 		matrices.push();
 			matrices.translate(0, 0, 200);
 			RenderSystem.setShaderTexture(0, SuitStationScreen.BG);

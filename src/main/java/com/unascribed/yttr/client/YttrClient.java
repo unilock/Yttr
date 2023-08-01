@@ -10,13 +10,9 @@ import java.time.Month;
 import java.time.MonthDay;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
-import java.util.function.Supplier;
-
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.registry.Registries;
@@ -30,7 +26,6 @@ import com.unascribed.lib39.core.api.util.LatchReference;
 import com.unascribed.lib39.deferral.api.RenderBridge;
 import com.unascribed.lib39.recoil.api.RecoilEvents;
 import com.unascribed.lib39.ripple.api.SplashTextRegistry;
-import com.unascribed.yttr.EmbeddedResourcePack;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
@@ -61,15 +56,11 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
-import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -86,10 +77,8 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
@@ -117,17 +106,12 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootDataType;
 import net.minecraft.loot.LootTables;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.pack.ResourcePack;
-import net.minecraft.resource.pack.ResourcePackProfile;
-import net.minecraft.resource.pack.ResourcePackProfile.InsertionPosition;
-import net.minecraft.resource.pack.ResourcePackProvider;
-import net.minecraft.resource.pack.ResourcePackSource;
-import net.minecraft.resource.pack.metadata.PackResourceMetadata;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -149,8 +133,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	public static final Map<Entity, SoundInstance> dropCastSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
-	private final List<Identifier> additionalSprites = Lists.newArrayList();
-	
 	private boolean hasCheckedRegistry = false;
 	private boolean firstWorldTick = true;
 	
@@ -164,12 +146,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
-			additionalSprites.forEach(registry::register);
-			registry.register(Yttr.id("block/bloque_welded"));
-			registry.register(Yttr.id("block/bloque_welded_side"));
-			registry.register(Yttr.id("block/bloque_welded_top"));
-		});
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			for (var f : VelresinBlock.Facing.values()) {
 				out.accept(new ModelIdentifier("yttr", "spread_"+f.asString(), "inventory"));
@@ -309,10 +285,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 							if (en.getValue() instanceof BloqueBlock) continue;
 							if (en.getValue().getDefaultState().isAir()) continue;
 							if (en.getValue().getLootTableId().equals(LootTables.EMPTY)) continue;
-							if (!mc.getServer().getLootManager().getTableIds().contains(en.getValue().getLootTableId())) {
-								if (en.getValue().getDroppedStacks(en.getValue().getDefaultState(), new LootContext.Builder(mc.getServer().getOverworld())
-										.parameter(LootContextParameters.TOOL, new ItemStack(Items.APPLE))
-										.parameter(LootContextParameters.ORIGIN, Vec3d.ZERO)).isEmpty()) {
+							if (!mc.getServer().getLootManager().getIds(LootDataType.LOOT_TABLES).contains(en.getValue().getLootTableId())) {
+								if (en.getValue().getDroppedStacks(en.getValue().getDefaultState(), new LootContextParameterSet.Builder(mc.getServer().getOverworld())
+										.add(LootContextParameters.TOOL, new ItemStack(Items.APPLE))
+										.add(LootContextParameters.ORIGIN, Vec3d.ZERO)).isEmpty()) {
 									YLog.error("Block "+en.getKey().getValue()+" is missing a loot table and doesn't seem to have custom drops");
 								}
 							}
@@ -427,27 +403,32 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return false;
 		});
 		
-		ResourcePackProvider prov = new ResourcePackProvider() {
-			@Override
-			public void register(Consumer<ResourcePackProfile> consumer, ResourcePackProfile.Factory factory) {
-				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
-				consumer.accept(factory.create("yttr:lcah", Text.literal("Less Creepy Aware Hopper"), false, f, new PackResourceMetadata(Text.literal("Makes the Aware Hopper less creepy."), 8),
-						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
-				f = () -> new EmbeddedResourcePack("vector");
-				consumer.accept(factory.create("yttr:vector", Text.literal("Vector Suit"), false, f, new PackResourceMetadata(Text.literal("Gives the suit HUD a more true vector aesthetic."), 8),
-						InsertionPosition.TOP, ResourcePackSource.nameAndSource("Yttr built-in")));
-			}
-		};
-		
-		AccessorResourcePackManager arpm = ((AccessorResourcePackManager)MinecraftClient.getInstance().getResourcePackManager());
-		Set<ResourcePackProvider> providers = arpm.yttr$getProviders();
-		try {
-			providers.add(prov);
-		} catch (UnsupportedOperationException e) {
-			providers = Sets.newHashSet(providers);
-			providers.add(prov);
-			arpm.yttr$setProviders(providers);
-		}
+		// TODO
+//		ResourcePackProvider prov = new ResourcePackProvider() {
+//			@Override
+//			public void register(Consumer<ResourcePackProfile> consumer) {
+//				ResourcePackFactory f = str -> new EmbeddedResourcePack("lcah");
+//				consumer.accept(ResourcePackProfile.of("yttr:lcah", Text.literal("Less Creepy Aware Hopper"), false, f,
+//						ResourceType.CLIENT_RESOURCES, InsertionPosition.TOP, nameAndSource("Yttr built-in")));
+//				f = str -> new EmbeddedResourcePack("vector");
+//				consumer.accept(ResourcePackProfile.of("yttr:vector", Text.literal("Vector Suit"), false, f,
+//						ResourceType.CLIENT_RESOURCES, InsertionPosition.TOP, nameAndSource("Yttr built-in")));
+//			}
+//			private static ResourcePackSource nameAndSource(String source) {
+//				Text text = Text.translatable(source);
+//				return ResourcePackSource.of(name -> Text.translatable("pack.nameAndSource", name, text).formatted(Formatting.GRAY), false);
+//			}
+//		};
+//
+//		AccessorResourcePackManager arpm = ((AccessorResourcePackManager)MinecraftClient.getInstance().getResourcePackManager());
+//		Set<ResourcePackProvider> providers = arpm.yttr$getProviders();
+//		try {
+//			providers.add(prov);
+//		} catch (UnsupportedOperationException e) {
+//			providers = Sets.newHashSet(providers);
+//			providers.add(prov);
+//			arpm.yttr$setProviders(providers);
+//		}
 	}
 
 	private SimpleSynchronousResourceReloadListener reloader(String idStr, Consumer<ResourceManager> cb) {
@@ -557,8 +538,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		for (Map.Entry<Fluid, Class<?>> en : fluids.entrySet()) {
 			final int[] colors = fluidColors.getOrDefault(en.getValue().getSuperclass(), white);
 			final Identifier[] spriteIds = fluidSprites.getOrDefault(en.getValue().getSuperclass(), missingno);
-			additionalSprites.add(spriteIds[0]);
-			additionalSprites.add(spriteIds[1]);
 			FluidRenderHandler frh = new FluidRenderHandler() {
 				@Override
 				public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
@@ -710,18 +689,18 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		int y2 = y + height;
 
 
-		float u1 = (u + 0.0F) / (float)textureWidth;
-		float u2 = (u + (float)regionWidth) / (float)textureWidth;
-		float v1 = (v + 0.0F) / (float)textureHeight;
-		float v2 = (v + (float)regionHeight) / (float)textureHeight;
+		float u1 = (u + 0.0F) / textureWidth;
+		float u2 = (u + regionWidth) / textureWidth;
+		float v1 = (v + 0.0F) / textureHeight;
+		float v2 = (v + regionHeight) / textureHeight;
 
 		Matrix4f matrix4f = matrices.peek().getModel();
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-		bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).uv(u1, v1).next();
-		bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).uv(u1, v2).next();
-		bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).uv(u2, v2).next();
-		bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).uv(u2, v1).next();
+		bufferBuilder.vertex(matrix4f, x1, y1, z).uv(u1, v1).next();
+		bufferBuilder.vertex(matrix4f, x1, y2, z).uv(u1, v2).next();
+		bufferBuilder.vertex(matrix4f, x2, y2, z).uv(u2, v2).next();
+		bufferBuilder.vertex(matrix4f, x2, y1, z).uv(u2, v1).next();
 		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 	

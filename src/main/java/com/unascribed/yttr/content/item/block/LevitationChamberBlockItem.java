@@ -8,12 +8,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Wearable;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class LevitationChamberBlockItem extends BlockItem implements Wearable {
+public class LevitationChamberBlockItem extends BlockItem {
 
 	public LevitationChamberBlockItem(Block block, Settings settings) {
 		super(block, settings);

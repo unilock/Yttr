@@ -6,13 +6,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.lib39.sandman.api.TicksAlwaysItem;
+import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.client.cache.SnareEntityTextureCache;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YCriteria;
-import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
@@ -32,6 +34,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -42,7 +45,6 @@ import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
@@ -86,7 +88,7 @@ import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysItem {
+public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysItem, SpecialSubItems {
 
 	private static final int maxDamage = 40960;
 	
@@ -236,7 +238,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				stack.getNbt().remove("AmbientSoundVolumes");
 				stack.getNbt().remove("AmbientSoundCategory");
 				if (hit instanceof LivingEntity) {
-					((AccessorLivingEntity)hit).yttr$playHurtSound(DamageSource.GENERIC);
+					((AccessorLivingEntity)hit).yttr$playHurtSound(world.getDamageSources().generic());
 					if (user instanceof ServerPlayerEntity) {
 						YCriteria.SNARE_LIVING_ENTITY.trigger((ServerPlayerEntity)user);
 					}
@@ -309,7 +311,9 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (type == EntityType.ITEM) {
 				return Text.translatable("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
 			} else if (type == EntityType.FALLING_BLOCK) {
-				return Text.translatable("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
+				return Text.translatable("item.yttr.snare.filled",
+						NbtHelper.toBlockState(MinecraftClient.getInstance().world.filteredLookup(RegistryKeys.BLOCK),
+								stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
 			}
 			return Text.translatable("item.yttr.snare.filled", type.getName());
 		}
@@ -430,7 +434,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type == EntityType.FALLING_BLOCK) {
 			var data = stack.getNbt().getCompound("Contents");
-			var bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
+			var bs = NbtHelper.toBlockState(MinecraftClient.getInstance().world.filteredLookup(RegistryKeys.BLOCK),
+					data.getCompound("BlockState"));
 			if (bs.isOf(Blocks.SPAWNER) && data.contains("TileEntityData", NbtElement.COMPOUND_TYPE)) {
 				var bp = BlockPos.fromPosition(pos);
 				var logic = new MobSpawnerLogic() {
@@ -462,7 +467,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			NbtCompound data = stack.getNbt().getCompound("Contents");
 			int dmg = MathHelper.ceil(data.getFloat("Health")*MathHelper.sqrt(type.getDimensions().height*type.getDimensions().width));
 			if (type == EntityType.FALLING_BLOCK) {
-				var bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
+				var bs = NbtHelper.toBlockState(MinecraftClient.getInstance().world.filteredLookup(RegistryKeys.BLOCK),
+						data.getCompound("BlockState"));
 				if (bs.isOf(Blocks.SPAWNER)) {
 					dmg += 15;
 				}
@@ -526,7 +532,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (player != null) {
 				// so that lastAttackedTime gets updated and RevengeGoal fires
 				e.age = -1;
-				e.damage(DamageSource.player(player), 0);
+				e.damage(world.getDamageSources().playerAttack(player), 0);
 				e.age = 0;
 			}
 			if (spawn) stack.getNbt().remove("Contents");
@@ -545,16 +551,13 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
-		if (group == YItemGroups.SNARE) {
-			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
-				EntityType<?> e = en.getValue();
-				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
-				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {
-					ItemStack is = new ItemStack(this);
-					is.getOrCreateSubNbt("Contents").putString("id", en.getKey().getValue().toString());
-					stacks.add(is);
-				}
+		for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registries.ENTITY_TYPE.getEntries()) {
+			EntityType<?> e = en.getValue();
+			if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
+			if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {
+				ItemStack is = new ItemStack(this);
+				is.getOrCreateSubNbt("Contents").putString("id", en.getKey().getValue().toString());
+				stacks.add(is);
 			}
 		}
 	}

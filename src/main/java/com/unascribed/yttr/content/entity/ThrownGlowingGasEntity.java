@@ -11,7 +11,6 @@ import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -78,7 +77,7 @@ public class ThrownGlowingGasEntity extends ThrownItemEntity {
 			
 			if (hitResult instanceof EntityHitResult ehr) {
 				if (ehr.getEntity() instanceof LivingEntity le && le.getGroup() == EntityGroup.UNDEAD) {
-					le.damage(DamageSource.thrownProjectile(this, getOwner()), 6);
+					le.damage(getWorld().getDamageSources().thrown(this, getOwner()), 6);
 					le.setOnFireFor(4);
 				}
 			}

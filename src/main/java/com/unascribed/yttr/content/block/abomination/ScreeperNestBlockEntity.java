@@ -18,13 +18,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -125,18 +123,17 @@ public class ScreeperNestBlockEntity extends BlockEntity implements YTickable, S
 							msg.sendTo(player);
 						}
 						for (Entity e : sw.getEntitiesByClass(Entity.class, new Box(pos).expand(0.5), e -> !e.getType().isIn(YTags.Entity.SCREEPER_IMMUNE))) {
-							e.damage(DamageSource.explosion((LivingEntity)null), 4);
+							e.damage(sw.getDamageSources().explosion(null, null), 4);
 						}
 						
 						BlockEntity be = bs.hasBlockEntity() ? world.getBlockEntity(ib.pos) : null;
-						LootContext.Builder ctx = new LootContext.Builder(sw)
-							.random(world.random)
-							.parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(ib.pos))
-							.parameter(LootContextParameters.TOOL, ItemStack.EMPTY)
-							.optionalParameter(LootContextParameters.BLOCK_ENTITY, be);
+						var ctx = new LootContextParameterSet.Builder(sw)
+							.add(LootContextParameters.ORIGIN, Vec3d.ofCenter(ib.pos))
+							.add(LootContextParameters.TOOL, ItemStack.EMPTY)
+							.addOptional(LootContextParameters.BLOCK_ENTITY, be);
 						
 						if (asplodified) {
-							ctx.parameter(LootContextParameters.EXPLOSION_RADIUS, 1f);
+							ctx.add(LootContextParameters.EXPLOSION_RADIUS, 1f);
 						}
 	
 						for (ItemStack drop : bs.getDroppedStacks(ctx)) {

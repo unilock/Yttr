@@ -2,8 +2,9 @@ package com.unascribed.yttr.content.item;
 
 import java.util.concurrent.TimeUnit;
 
+import org.joml.Vector3f;
+
 import com.unascribed.lib39.sandman.api.TicksAlwaysItem;
-import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YSounds;
 
 import net.fabricmc.api.EnvType;
@@ -24,16 +25,15 @@ import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundFromEntityS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
@@ -73,7 +73,6 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 			}
 		}, 0, 0, new Item.Settings()
 				.rarity(Rarity.UNCOMMON)
-				.group(YItemGroups.MISC)
 				.maxDamage(64));
 	}
 	
@@ -86,7 +85,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		if (world.isClient) return;
 		if (!(entity instanceof PlayerEntity) && entity.age > 0) {
-			playGlobalVanishEffect(entity.world, entity.getPos().x, entity.getBoundingBox().getCenter().y, entity.getPos().z);
+			playGlobalVanishEffect(entity.getWorld(), entity.getPos().x, entity.getBoundingBox().getCenter().y, entity.getPos().z);
 			stack.setCount(0);
 			return;
 		}
@@ -135,9 +134,9 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 		if (e instanceof ServerPlayerEntity) {
 			// the spectral axe does not actually exist, so only the person who broke it can hear/see it vanish
 			ServerPlayerEntity spe = (ServerPlayerEntity)e;
-			PlaySoundFromEntityS2CPacket spkt = new PlaySoundFromEntityS2CPacket(YSounds.SPECTRAL_AXE_DISAPPEAR, SoundCategory.PLAYERS, e, 1f, 1, 7);
+			PlaySoundFromEntityS2CPacket spkt = new PlaySoundFromEntityS2CPacket(YSounds.SPECTRAL_AXE_DISAPPEAR_HOLDER, SoundCategory.PLAYERS, e, 1f, 1, 7);
 			Vec3d hand = RifleItem.getMuzzlePos(e, true);
-			ParticleS2CPacket ppkt = new ParticleS2CPacket(new DustParticleEffect(new Vec3f(0.95f, 0.95f, 1), 0.6f), false, hand.x, hand.y, hand.z, 0.25f, 0.125f, 0.25f, 0, 20);
+			ParticleS2CPacket ppkt = new ParticleS2CPacket(new DustParticleEffect(new Vector3f(0.95f, 0.95f, 1), 0.6f), false, hand.x, hand.y, hand.z, 0.25f, 0.125f, 0.25f, 0, 20);
 			spe.networkHandler.sendPacket(spkt);
 			spe.networkHandler.sendPacket(ppkt);
 		}
@@ -146,7 +145,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 	private void playGlobalVanishEffect(World w, double x, double y, double z) {
 		w.playSound(null, x, y, z, YSounds.SPECTRAL_AXE_DISAPPEAR, SoundCategory.PLAYERS, 1, 1);
 		if (w instanceof ServerWorld) {
-			((ServerWorld)w).spawnParticles(new DustParticleEffect(new Vec3f(0.95f, 0.95f, 1), 0.6f), x, y, z, 20, 0.5f, 0.5f, 0.5f, 0);
+			((ServerWorld)w).spawnParticles(new DustParticleEffect(new Vector3f(0.95f, 0.95f, 1), 0.6f), x, y, z, 20, 0.5f, 0.5f, 0.5f, 0);
 		}
 	}
 

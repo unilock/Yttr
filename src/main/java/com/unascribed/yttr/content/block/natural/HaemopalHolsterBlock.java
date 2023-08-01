@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.sound.SoundEvents;
@@ -44,11 +43,9 @@ public class HaemopalHolsterBlock extends Block {
 		float modifier = player.canHarvest(state) ? 30 : 100;
 		if (player.age % 20 == 0) {
 			player.playSound(SoundEvents.ENTITY_PLAYER_HURT, 0.3f, 0.6f);
-			player.limbDistance = 1.5F;
 			player.timeUntilRegen = 20;
 			player.maxHurtTime = 10;
 			player.hurtTime = 6;
-			player.knockbackVelocity = -90;
 		}
 		float hardness = 60;
 		hardness += (20-player.getMaxHealth())*5;

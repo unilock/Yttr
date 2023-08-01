@@ -16,6 +16,7 @@ import com.unascribed.yttr.mixinsupport.Bogged;
 
 import net.minecraft.block.NoteBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.registry.Holder;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,9 +24,9 @@ import net.minecraft.world.World;
 @Mixin(value=NoteBlock.class, priority=900)
 public class MixinNoteBlock {
 
-	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/world/World.playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"),
+	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/world/World.playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/registry/Holder;Lnet/minecraft/sound/SoundCategory;FF)V"),
 			method="onSyncedBlockEvent", index=2)
-	private SoundEvent changeSoundEvent(SoundEvent se) {
+	private Holder<SoundEvent> changeSoundEvent(Holder<SoundEvent> se) {
 		Object self = this;
 		if (self instanceof AltNoteBlock) {
 			return ((AltNoteBlock)self).remap(se);

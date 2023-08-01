@@ -14,7 +14,6 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -132,7 +131,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 						spinTime++;
 						if (spinTime >= maxSpinTime) {
 							spinTime = 0;
-							recipe.craft(this);
+							recipe.craft(this, world.getRegistryManager());
 							needsDirty = true;
 							if (copyNbt) {
 								for (var i = 1; i < 5; i++) {

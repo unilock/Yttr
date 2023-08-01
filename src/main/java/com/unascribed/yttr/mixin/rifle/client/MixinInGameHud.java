@@ -9,17 +9,17 @@ import com.unascribed.yttr.client.render.RifleHUDRenderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.util.math.MatrixStack;
 
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public class MixinInGameHud {
 
 	@Inject(at=@At("HEAD"), method="render", cancellable=true)
-	public void render(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+	public void render(GuiGraphics ctx, float tickDelta, CallbackInfo ci) {
 		if (RifleHUDRenderer.scopeTime > 0) {
-			RifleHUDRenderer.render(matrices, tickDelta);
+			RifleHUDRenderer.render(ctx, tickDelta);
 			ci.cancel();
 		}
 	}

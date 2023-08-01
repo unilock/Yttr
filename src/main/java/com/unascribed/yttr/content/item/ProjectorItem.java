@@ -131,7 +131,7 @@ public class ProjectorItem extends Item {
 		if (ticks != 0 && ticks < 20) return;
 		if (ticks > 0) ticks -= 20;
 		BlockPos lastPos = stack.getNbt().contains("LastBlock") ? NbtHelper.toBlockPos(stack.getNbt().getCompound("LastBlock")) : null;
-		BlockPos pos = new BlockPos(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/4f, ticks/2f)));
+		BlockPos pos = BlockPos.fromPosition(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/4f, ticks/2f)));
 		if (lastPos != null) {
 			double len = Math.sqrt(lastPos.getSquaredDistance(pos));
 			double diffX = pos.getX()-lastPos.getX();
@@ -157,7 +157,7 @@ public class ProjectorItem extends Item {
 			}
 			user.fallDistance = 0;
 			if (user.getPos().y < pos.getY()+1) {
-				user.requestTeleport(user.getPos().x, pos.getY()+1, user.getPos().z);
+				user.teleport(user.getPos().x, pos.getY()+1, user.getPos().z);
 			}
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1f+(ThreadLocalRandom.current().nextFloat()/2));
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1.5f+(ThreadLocalRandom.current().nextFloat()/2));

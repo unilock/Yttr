@@ -5,8 +5,6 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.util.YTickable;
 
-import com.google.common.base.Objects;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
@@ -165,7 +163,7 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, YTi
 		}
 		for (int slot : slots) {
 			ItemStack there = inv.getStack(slot);
-			if ((there.isEmpty() || (there.isItemEqual(stack) && Objects.equal(there.getNbt(), stack.getNbt()))) && inv.isValid(slot, stack)
+			if ((there.isEmpty() || (ItemStack.canCombine(there, stack))) && inv.isValid(slot, stack)
 					&& (there.getCount()+stack.getCount()) <= there.getMaxCount()) {
 				return slot;
 			}

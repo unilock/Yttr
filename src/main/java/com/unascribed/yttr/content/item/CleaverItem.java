@@ -141,14 +141,14 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 	@Override
 	public ActionResult onDirectAttack(PlayerEntity user, Hand hand) {
 		if (requiresSneaking() && !user.isSneaking()) return ActionResult.PASS;
-		if (user.world.isClient) return ActionResult.CONSUME;
+		if (user.getWorld().isClient) return ActionResult.CONSUME;
 		ItemStack stack = user.getMainHandStack();
 		if (getCleaveBlock(stack) == null) {
 			Plane p = getLastCut(stack);
 			if (p != null) {
-				BlockHitResult bhr = raycast(user.world, user, FluidHandling.NONE);
-				if (bhr.getType() != Type.MISS && canCleave(user.world, bhr.getBlockPos(), user.world.getBlockState(bhr.getBlockPos()))) {
-					if (performWorldCleave(user.world, bhr.getBlockPos(), stack, user, p)) {
+				BlockHitResult bhr = raycast(user.getWorld(), user, FluidHandling.NONE);
+				if (bhr.getType() != Type.MISS && canCleave(user.getWorld(), bhr.getBlockPos(), user.getWorld().getBlockState(bhr.getBlockPos()))) {
+					if (performWorldCleave(user.getWorld(), bhr.getBlockPos(), stack, user, p)) {
 						YStats.add(user, YStats.BLOCKS_CLEAVED, 1);
 					}
 				}

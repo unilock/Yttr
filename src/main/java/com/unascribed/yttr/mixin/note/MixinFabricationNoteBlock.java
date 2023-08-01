@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.unascribed.yttr.content.block.note.AltNoteBlock;
 
 import net.minecraft.block.NoteBlock;
+import net.minecraft.registry.Holder;
 import net.minecraft.sound.SoundEvent;
 
 @Mixin(value=NoteBlock.class, priority=1100)
@@ -24,9 +25,9 @@ public class MixinFabricationNoteBlock {
 		return base;
 	}
 	
-	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/world/World.playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"),
+	@ModifyArg(at=@At(value="INVOKE", target="net/minecraft/world/World.playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/registry/Holder;Lnet/minecraft/sound/SoundCategory;FF)V"),
 			method="playNote", require=0)
-	private SoundEvent changeSoundEvent(SoundEvent se) {
+	private Holder<SoundEvent> changeSoundEvent(Holder<SoundEvent> se) {
 		Object self = this;
 		if (self instanceof AltNoteBlock) {
 			return ((AltNoteBlock)self).remap(se);

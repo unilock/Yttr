@@ -135,8 +135,6 @@ public class Yttr implements ModInitializer {
 		YSounds.init();
 		YFluids.init();
 		YEntities.init();
-		YWorldGen.init();
-		YBiomes.init();
 		
 		// auxillary content
 		YStatusEffects.init();
@@ -169,8 +167,6 @@ public class Yttr implements ModInitializer {
 		}
 		
 		// general initialization
-		
-		YItemGroups.init();
 		
 		DessicantControl.optIn("yttr");
 		

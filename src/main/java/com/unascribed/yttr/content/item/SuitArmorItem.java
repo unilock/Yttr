@@ -23,11 +23,11 @@ public class SuitArmorItem extends ArmorItem {
 	
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 	
-	public SuitArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+	public SuitArmorItem(ArmorMaterial material, ArmorSlot slot, Settings settings) {
 		super(material, slot, settings);
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-		builder.putAll(super.getAttributeModifiers(slot));
-		UUID id = MODIFIERS[slot.getEntitySlotId()];
+		builder.putAll(super.getAttributeModifiers(slot.getEquipmentSlot()));
+		UUID id = MODIFIERS[slot.getEquipmentSlot().getEntitySlotId()];
 		// super only does this for netherite armor for some reason, even though armormaterial has a getter for it...
 		builder.put(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(id, "Armor knockback resistance", this.knockbackResistance, EntityAttributeModifier.Operation.ADDITION));
 		builder.put(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(id, "Armor penalty", -0.4, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
@@ -40,7 +40,7 @@ public class SuitArmorItem extends ArmorItem {
 	
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-		return slot == this.slot ? this.attributeModifiers : super.getAttributeModifiers(slot);
+		return slot == getPreferredSlot() ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
 	
 	public int getResourceAmount(ItemStack stack, SuitResource resource) {

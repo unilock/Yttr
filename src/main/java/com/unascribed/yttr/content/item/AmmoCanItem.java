@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import java.util.List;
 
+import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 
 import com.google.common.base.Ascii;
@@ -22,7 +23,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class AmmoCanItem extends Item implements ItemColorProvider {
+public class AmmoCanItem extends Item implements ItemColorProvider, SpecialSubItems {
 
 	public static final int CAPACITY = 1024;
 	
@@ -65,14 +66,12 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		if (isInGroup(group)) {
-			for (RifleMode mode : RifleMode.VALUES) {
-				ItemStack stack = new ItemStack(this);
-				stack.setNbt(new NbtCompound());
-				stack.getNbt().putString("Mode", mode.name());
-				stack.getNbt().putInt("Shots", CAPACITY);
-				stacks.add(stack);
-			}
+		for (RifleMode mode : RifleMode.VALUES) {
+			ItemStack stack = new ItemStack(this);
+			stack.setNbt(new NbtCompound());
+			stack.getNbt().putString("Mode", mode.name());
+			stack.getNbt().putInt("Shots", CAPACITY);
+			stacks.add(stack);
 		}
 	}
 

@@ -1,6 +1,5 @@
 package com.unascribed.yttr.network;
 
-import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.lib39.tunnel.api.S2CMessage;
 import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
@@ -54,11 +53,10 @@ public class MessageS2CBeam extends S2CMessage {
 	@Override
 	@Environment(EnvType.CLIENT)
 	protected void handle(MinecraftClient mc, ClientPlayerEntity player) {
-		// NativeImage assumes little-endian, but our colors are big-endian, so swap red/blue
-		float a = NativeImage.getAlpha(color)/255f;
-		float r = NativeImage.getBlue(color)/255f;
-		float g = NativeImage.getGreen(color)/255f;
-		float b = NativeImage.getRed(color)/255f;
+		float a = ((color>>24)&0xFF)/255f;
+		float r = ((color>>16)&0xFF)/255f;
+		float g = ((color>> 8)&0xFF)/255f;
+		float b = ((color>> 0)&0xFF)/255f;
 		Entity ent = player.getWorld().getEntityById(entityId);
 		if (ent == null) return;
 		boolean fp = ent == player && mc.options.getPerspective() == Perspective.FIRST_PERSON;

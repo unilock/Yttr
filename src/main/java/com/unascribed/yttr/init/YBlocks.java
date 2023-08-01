@@ -96,7 +96,6 @@ import com.unascribed.yttr.util.annotate.RenderLayer;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.minecraft.block.AbstractBlock.TypedContextPredicate;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
@@ -106,23 +105,23 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.util.math.int_provider.UniformIntProvider;
 import net.minecraft.world.World;
 
 public class YBlocks {
 
-	private static final FabricBlockSettings METALLIC_SETTINGS = FabricBlockSettings.of(Material.METAL)
+	private static final FabricBlockSettings METALLIC_SETTINGS = FabricBlockSettings.create()
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL);
 
-	private static final FabricBlockSettings INRED_DEVICE_SETTINGS = FabricBlockSettings.of(Material.DECORATION)
+	private static final FabricBlockSettings INRED_DEVICE_SETTINGS = FabricBlockSettings.create()
 			.strength(0.5F, 8)
 			.breakInstantly()
 			.mapColor(MapColor.CYAN);
@@ -137,7 +136,7 @@ public class YBlocks {
 			.nonOpaque();
 	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.sounds(HOLLOW_SOUNDS);
-	private static final FabricBlockSettings GLASSY_VOID_SETTINGS = FabricBlockSettings.of(Material.STONE)
+	private static final FabricBlockSettings GLASSY_VOID_SETTINGS = FabricBlockSettings.create()
 			.strength(7)
 			.nonOpaque();
 	
@@ -148,22 +147,18 @@ public class YBlocks {
 	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
 	
 	
-	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MapColor.BLACK)
-				.allowsMovement()
-				.lightPassesThrough()
-				.notSolid()
-				.destroyedByPiston()
-				.replaceable()
-				.liquid()
-				.build()
-			)
+	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.create()
+		.mapColor(MapColor.BLACK)
+		.notSolid()
+		.pistonBehavior(PistonBehavior.DESTROY)
+		.replaceable()
+		.liquid()
 		.noCollision()
 		.strength(100)
 		.dropsNothing()
 	);
 	@RenderLayer("translucent")
-	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.of()
+	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.create()
 		.liquid()
 		.notSolid()
 		.noCollision()
@@ -171,55 +166,54 @@ public class YBlocks {
 		.strength(100)
 		.dropsNothing()
 	);
-	public static final FluidBlock CORE_LAVA = new CoreLavaFluidBlock(YFluids.CORE_LAVA, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MapColor.BRIGHT_RED)
-				.allowsMovement()
-				.lightPassesThrough()
-				.notSolid()
-				.liquid()
-				.build()
-			)
+	public static final FluidBlock CORE_LAVA = new CoreLavaFluidBlock(YFluids.CORE_LAVA, FabricBlockSettings.create()
+		.mapColor(MapColor.RED)
+		.notSolid()
+		.liquid()
 		.noCollision()
 		.strength(100)
 		.dropsNothing()
-		.luminance(bs -> 15));
+		.luminance(bs -> 15)
+		.pistonBehavior(PistonBehavior.BLOCK));
 	
 	
 	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(METALLIC_SETTINGS);
 	@RenderLayer("cutout_mipped")
-	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.of(Material.METAL)
+	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.create()
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL)
 			.nonOpaque()
 		);
 	@RenderLayer("cutout_mipped")
-	public static final ChuteBlock CHUTE = new ChuteBlock(FabricBlockSettings.of(Material.METAL)
+	public static final ChuteBlock CHUTE = new ChuteBlock(FabricBlockSettings.create()
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL)
 		);
-	public static final VoidGeyserBlock VOID_GEYSER = new VoidGeyserBlock(FabricBlockSettings.of(Material.STONE)
+	public static final VoidGeyserBlock VOID_GEYSER = new VoidGeyserBlock(FabricBlockSettings.create()
 			.strength(-1, 9000000)
 			.dropsNothing()
 		);
 	public static final DormantVoidGeyserBlock DORMANT_VOID_GEYSER = new DormantVoidGeyserBlock(FabricBlockSettings.copyOf(VOID_GEYSER)
 			.nonOpaque());
-	public static final Block BEDROCK_SMASHER = new BedrockSmasherBlock(FabricBlockSettings.of(Material.STONE)
+	public static final Block BEDROCK_SMASHER = new BedrockSmasherBlock(FabricBlockSettings.create()
 			.strength(35, 4000));
-	public static final Block RUINED_BEDROCK = new Block(FabricBlockSettings.of(Material.STONE)
+	public static final Block RUINED_BEDROCK = new Block(FabricBlockSettings.create()
 			.strength(75, 9000000)
 			.nonOpaque()
 		);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID = new GlassyVoidBlock(3, GLASSY_VOID_SETTINGS);
-	public static final Block SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
+	public static final Block SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.create()
+			.mapColor(MapColor.YELLOW)
 			.sounds(BlockSoundGroup.GRASS)
 			.strength(2)
 		);
 	public static final Block STRIPPED_SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.copyOf(SQUEEZE_LOG));
 	@RenderLayer("cutout_mipped")
-	public static final Block SQUEEZE_LEAVES = new SqueezeLeavesBlock(FabricBlockSettings.of(Material.SPONGE)
+	public static final Block SQUEEZE_LEAVES = new SqueezeLeavesBlock(FabricBlockSettings.create()
+			.mapColor(MapColor.YELLOW)
 			.sounds(BlockSoundGroup.GRASS)
 			.strength(0.2f)
 			.suffocates((bs, bv, pos) -> false)
@@ -233,7 +227,8 @@ public class YBlocks {
 			.dynamicBounds()
 		);
 	@RenderLayer("cutout_mipped")
-	public static final Block SQUEEZE_SAPLING = new SqueezeSaplingBlock(new SqueezeSaplingGenerator(), FabricBlockSettings.of(Material.SPONGE)
+	public static final Block SQUEEZE_SAPLING = new SqueezeSaplingBlock(new SqueezeSaplingGenerator(), FabricBlockSettings.create()
+			.mapColor(MapColor.YELLOW)
 			.sounds(BlockSoundGroup.GRASS)
 			.noCollision()
 			.ticksRandomly()
@@ -243,22 +238,22 @@ public class YBlocks {
 	@RenderLayer("translucent")
 	public static final Block DELICACE = new DelicaceBlock(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK));
 	@RenderLayer("cutout")
-	public static final Block LAMP = new LampBlock(FabricBlockSettings.of(Material.METAL)
+	public static final Block LAMP = new LampBlock(FabricBlockSettings.create()
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 		);
 	@RenderLayer("cutout")
-	public static final Block FIXTURE = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
+	public static final Block FIXTURE = new WallLampBlock(FabricBlockSettings.create()
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			, 12, 2, 10, 6);
 	@RenderLayer("cutout")
-	public static final Block CAGE_LAMP = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
+	public static final Block CAGE_LAMP = new WallLampBlock(FabricBlockSettings.create()
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			, 10, 2, 6, 10);
 	@RenderLayer("cutout")
-	public static final Block PANEL = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
+	public static final Block PANEL = new WallLampBlock(FabricBlockSettings.create()
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			, 14, 1, 12, 1);
@@ -268,7 +263,7 @@ public class YBlocks {
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new GlassyVoidPaneBlock(3, GLASSY_VOID_SETTINGS);
 	
-	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.of(Material.PISTON)
+	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.create()
 			.dynamicBounds()
 			.nonOpaque());
 
@@ -298,13 +293,13 @@ public class YBlocks {
 	public static final VoidCauldronBlock VOID_CAULDRON = new VoidCauldronBlock(FabricBlockSettings.copyOf(Blocks.CAULDRON)
 			.dropsLike(Blocks.CAULDRON));
 	
-	public static final Block ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
+	public static final Block ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.create()
 			.strength(4)
 			.requiresTool()
 			.sounds(BlockSoundGroup.STONE)
 		);
 	
-	public static final Block COMPRESSED_ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
+	public static final Block COMPRESSED_ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.create()
 			.strength(6)
 			.requiresTool()
 			.sounds(BlockSoundGroup.STONE)
@@ -314,11 +309,11 @@ public class YBlocks {
 	public static final VoidFilterBlock VOID_FILTER = new VoidFilterBlock(FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.resistance(4000));
 	
-	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.of()
+	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.create()
 			.strength(45, 0)
 		);
 	
-	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.of()
+	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.create()
 			.collidable(false)
 			.dropsNothing()
 			.ticksRandomly()
@@ -329,7 +324,7 @@ public class YBlocks {
 		);
 	
 	@RenderLayer("cutout")
-	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(FabricBlockSettings.of(Material.METAL)
+	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(FabricBlockSettings.create()
 			.strength(4)
 			.requiresTool()
 			.pistonBehavior(PistonBehavior.DESTROY)
@@ -343,51 +338,44 @@ public class YBlocks {
 	public static final Block BROOKITE_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.EMERALD_ORE), UniformIntProvider.create(1, 5));
 	public static final Block DEEPSLATE_BROOKITE_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_EMERALD_ORE), UniformIntProvider.create(1, 5));
 	
-	public static final RootOfContinuityBlock ROOT_OF_CONTINUITY = new RootOfContinuityBlock(FabricBlockSettings.of(Material.GLASS)
+	public static final RootOfContinuityBlock ROOT_OF_CONTINUITY = new RootOfContinuityBlock(FabricBlockSettings.create()
 			.strength(20)
 			.luminance(4)
 			.sounds(RootOfContinuityBlock.SOUND_GROUP)
 			.requiresTool());
 	
-	public static final YttriumButtonBlock YTTRIUM_BUTTON = new YttriumButtonBlock(FabricBlockSettings.of(Material.DECORATION)
+	public static final YttriumButtonBlock YTTRIUM_BUTTON = new YttriumButtonBlock(FabricBlockSettings.create()
 			.strength(1)
 			.requiresTool()
 			.sounds(BlockSoundGroup.METAL)
 			.noCollision());
 	
-	public static final Block BROOKITE_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
+	public static final Block BROOKITE_BLOCK = new Block(FabricBlockSettings.create()
 			.strength(3)
 			.requiresTool()
 			.sounds(BlockSoundGroup.NETHERITE)
 		);
 	
-	public static final AirBlock TEMPORARY_LIGHT_AIR = new TemporaryAirBlock(FabricBlockSettings.of(Material.AIR)
+	public static final AirBlock TEMPORARY_LIGHT_AIR = new TemporaryAirBlock(FabricBlockSettings.create()
 			.noCollision()
 			.air()
 			.nonOpaque()
 			.luminance(9)
 			.ticksRandomly());
 	
-	public static final AirBlock PERMANENT_LIGHT_AIR = new AirBlock(FabricBlockSettings.of(Material.AIR)
+	public static final AirBlock PERMANENT_LIGHT_AIR = new AirBlock(FabricBlockSettings.create()
 			.noCollision()
 			.air()
 			.nonOpaque()
 			.luminance(15)
 		);
 	
-	public static final FluidBlock TEMPORARY_LIGHT_WATER = new TemporaryFluidBlock(Fluids.WATER, FabricBlockSettings.of(Material.WATER)
-			.noCollision()
+	public static final FluidBlock TEMPORARY_LIGHT_WATER = new TemporaryFluidBlock(Fluids.WATER, FabricBlockSettings.copyOf(Blocks.WATER)
 			.luminance(9)
-			.strength(100)
-			.dropsNothing()
-			.ticksRandomly());
+		);
 	
-	public static final FluidBlock PERMANENT_LIGHT_WATER = new FluidBlock(Fluids.WATER, FabricBlockSettings.of(Material.WATER)
-			.noCollision()
+	public static final FluidBlock PERMANENT_LIGHT_WATER = new FluidBlock(Fluids.WATER, FabricBlockSettings.copyOf(Blocks.WATER)
 			.luminance(15)
-			.strength(100)
-			.dropsNothing()
-			.nonOpaque()
 		);
 		
 	public static final Block NETHERTUFF = new Block(FabricBlockSettings.copyOf(Blocks.NETHERRACK)
@@ -508,7 +496,7 @@ public class YBlocks {
 	public static final InRedBlock INRED_BLOCK = new InRedBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_BLOCK)
 			.mapColor(MapColor.MAGENTA)
 	);
-	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
+	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.create()
 			.strength(0F, 8F)
 			.breakInstantly()
 	);
@@ -543,7 +531,8 @@ public class YBlocks {
 	
 	public static final RafterBlock RAFTER = new RafterBlock(METALLIC_SETTINGS);
 	@RenderLayer("cutout_mipped")
-	public static final ProjectTableBlock PROJECT_TABLE = new ProjectTableBlock(FabricBlockSettings.of(Material.STONE, MapColor.PINK)
+	public static final ProjectTableBlock PROJECT_TABLE = new ProjectTableBlock(FabricBlockSettings.create()
+			.mapColor(MapColor.PINK)
 			.hardness(1.5f)
 			.sounds(BlockSoundGroup.WOOD));
 	@RenderLayer("cutout_mipped")
@@ -565,15 +554,15 @@ public class YBlocks {
 	
 	
 	public static final Block SCORCHED_OBSIDIAN = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
-			.mapColor(MapColor.DULL_RED)
+			.mapColor(MapColor.RED_TERRACOTTA)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
 	public static final Block POLISHED_SCORCHED_OBSIDIAN = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
-			.mapColor(MapColor.DULL_RED)
+			.mapColor(MapColor.RED_TERRACOTTA)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
 	public static final Block POLISHED_SCORCHED_OBSIDIAN_CAPSTONE = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
-			.mapColor(MapColor.DULL_RED)
+			.mapColor(MapColor.RED_TERRACOTTA)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
 	public static final Block POLISHED_SCORCHED_OBSIDIAN_HOLSTER = new HaemopalHolsterBlock(FabricBlockSettings.copyOf(Blocks.OBSIDIAN)
@@ -586,7 +575,7 @@ public class YBlocks {
 	public static final Block POLISHED_OBSIDIAN_CAPSTONE = new Block(FabricBlockSettings.copyOf(Blocks.OBSIDIAN));
 	
 	public static final Block SCORCHED_CRYING_OBSIDIAN = new ScorchedCryingObsidianBlock(FabricBlockSettings.copyOf(Blocks.CRYING_OBSIDIAN)
-			.mapColor(MapColor.DULL_RED)
+			.mapColor(MapColor.RED_TERRACOTTA)
 			.sounds(BlockSoundGroup.ANCIENT_DEBRIS)
 			.allowsSpawning(NOT_IN_TERMINUS));
 
@@ -595,7 +584,8 @@ public class YBlocks {
 	@RenderLayer("cutout_mipped")
 	public static final SSDBlock SSD = new SSDBlock(FabricBlockSettings.copyOf(HOLLOW_SETTINGS));
 	
-	public static final VelresinBlock VELRESIN = new VelresinBlock(FabricBlockSettings.of(Material.ORGANIC_PRODUCT, MapColor.TERRACOTTA_YELLOW)
+	public static final VelresinBlock VELRESIN = new VelresinBlock(FabricBlockSettings.create()
+			.mapColor(MapColor.YELLOW_TERRACOTTA)
 			.sounds(BlockSoundGroup.HONEY)
 			.strength(0));
 
@@ -624,20 +614,16 @@ public class YBlocks {
 	@RenderLayer("translucent")
 	public static final Block CLEAR_VOID_GLASS_PANE = new GlassyVoidPaneBlock(12, GLASSY_VOID_SETTINGS);
 	
-	public static final FluidBlock INFINITE_VOID = new InfiniteVoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MapColor.BLACK)
-				.allowsMovement()
-				.notSolid()
-				.liquid()
-				.build()
-			)
+	public static final FluidBlock INFINITE_VOID = new InfiniteVoidFluidBlock(YFluids.VOID, FabricBlockSettings.create()
+		.notSolid()
+		.liquid()
 		.pistonBehavior(PistonBehavior.BLOCK)
 		.noCollision()
 		.strength(-1)
 		.dropsNothing());
 
 	@RenderLayer("cutout_mipped")
-	public static final Block TRANSFUNGUS = new TransfungusBlock(FabricBlockSettings.of(Material.PLANT)
+	public static final Block TRANSFUNGUS = new TransfungusBlock(FabricBlockSettings.create()
 			.sounds(BlockSoundGroup.CAVE_VINES)
 			.noCollision()
 			.ticksRandomly()
@@ -646,13 +632,13 @@ public class YBlocks {
 		);
 
 	
-	public static final TransfungusSporesBlock TRANSFUNGUS_SPORES = new TransfungusSporesBlock(FabricBlockSettings.of(Material.AIR)
+	public static final TransfungusSporesBlock TRANSFUNGUS_SPORES = new TransfungusSporesBlock(FabricBlockSettings.create()
 			.noCollision()
 			.air()
 			.nonOpaque()
 		);
 	
-	public static final IRLazorBeamBlock IR_LAZOR_BEAM = new IRLazorBeamBlock(FabricBlockSettings.of(Material.AIR)
+	public static final IRLazorBeamBlock IR_LAZOR_BEAM = new IRLazorBeamBlock(FabricBlockSettings.create()
 			.collidable(false)
 			.dropsNothing()
 			.ticksRandomly()
@@ -662,7 +648,7 @@ public class YBlocks {
 		);
 	
 	@RenderLayer("cutout")
-	public static final IRLazorEmitterBlock IR_LAZOR_EMITTER = new IRLazorEmitterBlock(FabricBlockSettings.of(Material.METAL)
+	public static final IRLazorEmitterBlock IR_LAZOR_EMITTER = new IRLazorEmitterBlock(FabricBlockSettings.create()
 			.strength(4)
 			.requiresTool()
 			.pistonBehavior(PistonBehavior.DESTROY)
@@ -672,7 +658,7 @@ public class YBlocks {
 	
 
 	public static void init() {
-		Yttr.autoreg.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
+		Yttr.autoreg.autoRegister(Registries.BLOCK, YBlocks.class, Block.class);
 	}
 
 }

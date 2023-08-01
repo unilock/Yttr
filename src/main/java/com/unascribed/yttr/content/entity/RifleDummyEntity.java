@@ -4,6 +4,7 @@ import com.unascribed.yttr.init.YEntities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
 
@@ -29,7 +30,7 @@ public class RifleDummyEntity extends Entity {
 	}
 
 	@Override
-	public Packet<?> createSpawnPacket() {
+	public Packet<ClientPlayPacketListener> createSpawnPacket() {
 		throw new UnsupportedOperationException();
 	}
 

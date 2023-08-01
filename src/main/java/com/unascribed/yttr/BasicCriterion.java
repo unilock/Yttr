@@ -2,10 +2,10 @@ package com.unascribed.yttr;
 
 import com.google.gson.JsonObject;
 
+import net.minecraft.class_5258;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -23,7 +23,7 @@ public class BasicCriterion extends AbstractCriterion<BasicCriterion.Conditions>
 	}
 	
 	@Override
-	protected Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+	protected Conditions conditionsFromJson(JsonObject obj, class_5258 playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		return new BasicCriterion.Conditions(playerPredicate);
 	}
 	
@@ -32,7 +32,7 @@ public class BasicCriterion extends AbstractCriterion<BasicCriterion.Conditions>
 	}
 
 	public class Conditions extends AbstractCriterionConditions {
-		public Conditions(EntityPredicate.Extended player) {
+		public Conditions(class_5258 player) {
 			super(id, player);
 		}
 	}

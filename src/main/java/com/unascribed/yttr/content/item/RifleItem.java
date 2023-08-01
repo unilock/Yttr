@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import com.unascribed.yttr.init.*;
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.lib39.recoil.api.DirectClickItem;
 import com.unascribed.lib39.util.api.SlotReference;
 import com.unascribed.yttr.YConfig;
@@ -31,7 +30,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.inventory.Inventory;
@@ -618,16 +616,16 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		int vi = (int)v;
 		if (vi > idx) return filledColor;
 		float a = vi < idx ? 1 : 1-(v%1);
-		float rF = NativeImage.getBlue(filledColor)/255f;
-		float gF = NativeImage.getGreen(filledColor)/255f;
-		float bF = NativeImage.getRed(filledColor)/255f;
+		float rF = (((emptyColor>>16)&0xFF)/255f);
+		float gF = (((emptyColor>>8)&0xFF)/255f);
+		float bF = ((emptyColor&0xFF)/255f);
 		float rE = (((emptyColor>>16)&0xFF)/255f)+0.05f;
 		float gE = (((emptyColor>>8)&0xFF)/255f)+0.05f;
 		float bE = ((emptyColor&0xFF)/255f)+0.15f;
 		float r = rF+((rE-rF)*a);
 		float g = gF+((gE-gF)*a);
 		float b = bF+((bE-bF)*a);
-		return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
+		return 0xFF000000 | ((int)(r*255)<<16) | ((int)(g*255)<<8) | ((int)(b*255));
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class MixinLivingEntity implements SuitPiecesForJump {
 			if (!src.isTypeIn(DamageTypeTags.BYPASSES_ARMOR)) {
 				dmg /= 2;
 			}
-			if (src instanceof EntityDamageSource && self instanceof ServerPlayerEntity) {
+			if (src.getAttacker() != null && self instanceof ServerPlayerEntity) {
 				YCriteria.HIT_WITH_FULL_SUIT.trigger((ServerPlayerEntity)self);
 			}
 		}

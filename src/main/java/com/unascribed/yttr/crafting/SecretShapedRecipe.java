@@ -6,6 +6,7 @@ import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.CraftingCategory;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
@@ -14,12 +15,12 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class SecretShapedRecipe extends ShapedRecipe {
 
-	public SecretShapedRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> input, ItemStack output) {
-		super(id, group, width, height, input, output);
+	public SecretShapedRecipe(Identifier id, String group, CraftingCategory cat, int width, int height, DefaultedList<Ingredient> input, ItemStack output) {
+		super(id, group, cat, width, height, input, output);
 	}
 	
 	public SecretShapedRecipe(ShapedRecipe copy) {
-		this(copy.getId(), ((AccessorShapedRecipe)copy).yttr$getGroup(), copy.getWidth(), copy.getHeight(), copy.getIngredients(), copy.getOutput());
+		this(copy.getId(), ((AccessorShapedRecipe)copy).yttr$getGroup(), copy.getCategory(), copy.getWidth(), copy.getHeight(), copy.getIngredients(), copy.getResult(null));
 	}
 	
 	@Override

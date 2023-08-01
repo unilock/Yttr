@@ -45,9 +45,9 @@ public class MixinClientPlayNetworkHandler {
 			ci.cancel();
 		}
 		// vanilla playSoundFromEntity ignores pitch, so we do it ourselves
-		if (pkt.getSound().getId().getNamespace().equals("yttr")) {
+		if (pkt.getSound().getKey().get().getValue().getNamespace().equals("yttr")) {
 			MinecraftClient.getInstance().send(() -> {
-				MinecraftClient.getInstance().getSoundManager().play(new EntityTrackingSoundInstance(pkt.getSound(), pkt.getCategory(), pkt.getVolume(), pkt.getPitch(), world.getEntityById(pkt.getEntityId()), pkt.m_ivlhynec()));
+				MinecraftClient.getInstance().getSoundManager().play(new EntityTrackingSoundInstance(pkt.getSound().value(), pkt.getCategory(), pkt.getVolume(), pkt.getPitch(), world.getEntityById(pkt.getEntityId()), pkt.getSeed()));
 			});
 			ci.cancel();
 		}

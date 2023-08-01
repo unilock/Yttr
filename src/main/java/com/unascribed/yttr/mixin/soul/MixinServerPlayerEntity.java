@@ -24,20 +24,20 @@ public class MixinServerPlayerEntity {
 		var self = (ServerPlayerEntity)(Object)this;
 		boolean changed = false;
 		
-		int fragmentation = SoulState.get(self.getWorld()).getFragmentation(self.getUuid());
+		int fragmentation = SoulState.get(self.getServerWorld()).getFragmentation(self.getUuid());
 		if (fragmentation != yttr$lastFragmentation) {
 			yttr$lastFragmentation = fragmentation;
-			var inst = self.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+			var inst = self.getAttributes().createIfAbsent(EntityAttributes.GENERIC_MAX_HEALTH);
 			inst.removeModifier(SoulState.FRAGMENTATION_MODIFIER);
 			inst.addTemporaryModifier(new EntityAttributeModifier(SoulState.FRAGMENTATION_MODIFIER,
 					"Yttr soul fragmentation debuff", -(fragmentation*2), Operation.ADDITION));
 			changed = true;
 		}
 		
-		int impurity = SoulState.get(self.getWorld()).getImpurityMask(self.getUuid());
+		int impurity = SoulState.get(self.getServerWorld()).getImpurityMask(self.getUuid());
 		if (impurity != yttr$lastImpurity) {
 			yttr$lastImpurity = impurity;
-			var inst = self.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+			var inst = self.getAttributes().createIfAbsent(EntityAttributes.GENERIC_MAX_HEALTH);
 			inst.removeModifier(SoulState.IMPURITY_MODIFIER);
 			inst.addTemporaryModifier(new EntityAttributeModifier(SoulState.IMPURITY_MODIFIER,
 					"Yttr soul impurity debuff", -Integer.bitCount(impurity), Operation.ADDITION));

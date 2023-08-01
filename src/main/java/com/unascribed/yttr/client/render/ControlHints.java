@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import com.mojang.blaze3d.platform.InputUtil.Type;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.lib39.core.P39;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.YttrClient;
@@ -145,9 +144,8 @@ public class ControlHints {
 							if (bk.getType() == Type.MOUSE && bk.getKeyCode() >= 0 && bk.getKeyCode() <= 2) {
 								w += 10;
 								components.add(() -> {
-									RenderSystem.setShaderTexture(0, ICONS);
 									RenderSystem.setShaderColor(1/2f, 1/2f, 1/6f, af);
-									P39.rendering().drawTexture(matrices, 1, 1, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
+									graphics.drawTexture(ICONS, 1, 1, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
 									YttrClient.drawQuad(matrices, 1, 1, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);
 									RenderSystem.setShaderColor(1, 1, 1/3f, af);
 									YttrClient.drawQuad(matrices, 0, 0, 0, bk.getKeyCode()*9, 0, 9, 9, 90, 9);

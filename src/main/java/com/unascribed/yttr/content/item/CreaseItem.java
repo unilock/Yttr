@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.item;
 
+import com.unascribed.yttr.SpecialSubItems;
 import com.unascribed.yttr.util.InventoryProviderItem;
 import com.unascribed.yttr.util.ItemInventory;
 
@@ -13,7 +14,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.collection.DefaultedList;
 
-public class CreaseItem extends Item implements InventoryProviderItem {
+public class CreaseItem extends Item implements InventoryProviderItem, SpecialSubItems {
 
 	public CreaseItem(Settings settings) {
 		super(settings);
@@ -35,7 +36,7 @@ public class CreaseItem extends Item implements InventoryProviderItem {
 	}
 	
 	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> out) {
 	}
 
 }

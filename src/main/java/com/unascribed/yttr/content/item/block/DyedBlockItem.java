@@ -1,5 +1,7 @@
 package com.unascribed.yttr.content.item.block;
 
+import com.unascribed.yttr.SpecialSubItems;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
@@ -11,7 +13,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.collection.DefaultedList;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class DyedBlockItem extends BlockItem implements ItemColorProvider {
+public class DyedBlockItem extends BlockItem implements ItemColorProvider, SpecialSubItems {
 	
 	public final DyeColor color;
 
@@ -32,9 +34,7 @@ public class DyedBlockItem extends BlockItem implements ItemColorProvider {
 	
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		if (this.isInGroup(group)) {
-			stacks.add(new ItemStack(this));
-		}
+		stacks.add(new ItemStack(this));
 	}
 
 }

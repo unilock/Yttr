@@ -7,11 +7,11 @@ import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.stack.ItemEmiStack;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Axis;
 
@@ -22,7 +22,8 @@ public class BlockEmiStack extends ItemEmiStack {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int x, int y, float delta, int flags) {
+	public void render(GuiGraphics ctx, int x, int y, float delta, int flags) {
+		var matrices = ctx.getMatrices();
 		MinecraftClient client = MinecraftClient.getInstance();
 		ItemStack stack = getItemStack();
 		if ((flags & 1) != 0) {
@@ -35,18 +36,18 @@ public class BlockEmiStack extends ItemEmiStack {
 			matrices.scale(16, -16, 16);
 			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
 			matrices.push();
-			MinecraftClient.getInstance().getItemRenderer().renderItem(getItemStack(), ModelTransformationMode.NONE, light, overlay, matrices, vcp, 0);
+			MinecraftClient.getInstance().getItemRenderer().renderItem(getItemStack(), ModelTransformationMode.NONE, light, overlay, matrices, vcp, client.world, 0);
 			matrices.pop();
 			vcp.draw();
 			matrices.pop();
 		}
 
 		if ((flags & 2) != 0) {
-			client.getItemRenderer().renderGuiItemOverlay(client.textRenderer, stack, x, y, "");
+			ctx.drawItemInSlot(client.textRenderer, stack, x, y, "");
 		}
 
 		if ((flags & 8) != 0) {
-			EmiRender.renderRemainderIcon(this, matrices, x, y);
+			EmiRender.renderRemainderIcon(this, ctx, x, y);
 		}
 	}
 	

@@ -2,7 +2,6 @@ package com.unascribed.yttr.content.block.natural;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -23,10 +22,5 @@ public class CoreLavaFluidBlock extends FluidBlock {
 	@Override
 	public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
 		return new ItemStack(Items.LAVA_BUCKET);
-	}
-
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.BLOCK;
 	}
 }

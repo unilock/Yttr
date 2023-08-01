@@ -6,13 +6,12 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.advancement.criterion.PlacedBlockCriterion;
+import net.minecraft.class_5258;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,11 +39,11 @@ public class BlockCriterion extends PlacedBlockCriterion {
 	}
 
 	public void trigger(ServerPlayerEntity player, BlockPos pos, BlockState state, ItemStack stack) {
-		this.trigger(player, cond -> cond.matches(state, pos, player.getWorld(), stack));
+		this.trigger(player, cond -> cond.matches(state, pos, player.getServerWorld(), stack));
 	}
 
 	@Override
-	public PlacedBlockCriterion.Conditions conditionsFromJson(JsonObject jsonObject, EntityPredicate.Extended extended, AdvancementEntityPredicateDeserializer advancementEntityPredicateDeserializer) {
+	public PlacedBlockCriterion.Conditions conditionsFromJson(JsonObject jsonObject, class_5258 extended, AdvancementEntityPredicateDeserializer advancementEntityPredicateDeserializer) {
 		Block block = getBlock(jsonObject);
 		StatePredicate statePredicate = StatePredicate.fromJson(jsonObject.get("state"));
 		if (block != null) {
@@ -71,7 +70,7 @@ public class BlockCriterion extends PlacedBlockCriterion {
 	}
 
 	public class Conditions extends PlacedBlockCriterion.Conditions {
-		public Conditions(EntityPredicate.Extended player, @Nullable Block block, StatePredicate state, LocationPredicate location, ItemPredicate item) {
+		public Conditions(class_5258 player, @Nullable Block block, StatePredicate state, LocationPredicate location, ItemPredicate item) {
 			super(player, block, state, location, item);
 		}
 

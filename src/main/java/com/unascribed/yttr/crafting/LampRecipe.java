@@ -14,16 +14,18 @@ import com.unascribed.yttr.util.Resolvable;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.CraftingCategory;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -35,16 +37,16 @@ public class LampRecipe extends ShapedRecipe {
 	private boolean misc, important;
 	
 	public LampRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> ingredients, ItemStack output) {
-		super(id, group, width, height, ingredients, output);
+		super(id, group, CraftingCategory.REDSTONE, width, height, ingredients, output);
 	}
 	
 	public LampRecipe(ShapedRecipe copy) {
-		this(copy.getId(), ((AccessorShapedRecipe)copy).yttr$getGroup(), copy.getWidth(), copy.getHeight(), copy.getIngredients(), copy.getOutput());
+		this(copy.getId(), ((AccessorShapedRecipe)copy).yttr$getGroup(), copy.getWidth(), copy.getHeight(), copy.getIngredients(), copy.getResult(null));
 	}
 
 	@Override
-	public boolean matches(CraftingInventory inv, World world) {
-		return super.matches(inv, world) && !craft(inv).isEmpty();
+	public boolean matches(RecipeInputInventory inv, World world) {
+		return super.matches(inv, world) && !craft(inv, world.getRegistryManager()).isEmpty();
 	}
 	
 	@Override
@@ -60,8 +62,8 @@ public class LampRecipe extends ShapedRecipe {
 	}
 	
 	@Override
-	public ItemStack craft(CraftingInventory inv) {
-		ItemStack stack = getOutput().copy();
+	public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager mgr) {
+		ItemStack stack = getResult(mgr).copy();
 		boolean containsTorch = false;
 		Boolean inputLampInverted = null;
 		LampColor inputLampColor = null;

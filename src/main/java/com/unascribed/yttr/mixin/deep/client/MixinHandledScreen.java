@@ -12,9 +12,8 @@ import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
@@ -27,8 +26,8 @@ public class MixinHandledScreen {
 	
 	private ItemStack yttr$storedStack;
 	
-	@Inject(at=@At("HEAD"), method="drawSlot(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/screen/slot/Slot;)V")
-	public void drawSlotHead(MatrixStack matrices, Slot slot, CallbackInfo ci) {
+	@Inject(at=@At("HEAD"), method="drawSlot(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/screen/slot/Slot;)V")
+	public void drawSlotHead(GuiGraphics ctx, Slot slot, CallbackInfo ci) {
 		Object self = this;
 		if (self instanceof DSUScreen && slot.getMaxItemCount() == 4096 && slot.getStack().isIn(YTags.Item.DSU_HIGHSTACK) && slot.getStack().getCount() > 1) {
 			yttr$storedStack = slot.getStack();
@@ -38,8 +37,8 @@ public class MixinHandledScreen {
 		}
 	}
 	
-	@Inject(at=@At("TAIL"), method="drawSlot(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/screen/slot/Slot;)V")
-	public void drawSlotTail(MatrixStack matrices, Slot slot, CallbackInfo ci) {
+	@Inject(at=@At("TAIL"), method="drawSlot(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/screen/slot/Slot;)V")
+	public void drawSlotTail(GuiGraphics ctx, Slot slot, CallbackInfo ci) {
 		if (yttr$storedStack != null) {
 			ItemStack stack = yttr$storedStack;
 			slot.setStack(stack);
@@ -61,7 +60,7 @@ public class MixinHandledScreen {
 					int j = str.charAt(i)-'0';
 					int u = (j%5)*3;
 					int v = (j/5)*5;
-					DrawableHelper.drawTexture(matrices, x, y, 300, u, v, 3, 5, 15, 10);
+					ctx.drawTexture(YTTR$TINYNUMBERS, x, y, 300, u, v, 3, 5, 15, 10);
 					x += 4;
 				}
 			}

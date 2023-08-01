@@ -41,6 +41,7 @@ import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.content.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.content.item.block.SkeletalSorterBlockItem;
+import com.unascribed.yttr.content.item.block.SpecialBlockItem;
 import com.unascribed.yttr.content.item.potion.MercurialPotionItem;
 import com.unascribed.yttr.content.item.potion.MercurialSplashPotionItem;
 import com.unascribed.yttr.util.annotate.ConstantColor;
@@ -72,6 +73,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.item.WallStandingBlockItem;
+import net.minecraft.item.ArmorItem.ArmorSlot;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvent;
@@ -196,24 +198,20 @@ public class YItems {
 	public static final BlockItem RED_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.RED);
 	public static final BlockItem BLACK_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.BLACK);
 	
-	public static final BlockItem NEODYMIUM_SLAB = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
+	public static final BlockItem NEODYMIUM_SLAB = new SpecialBlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
 		@Override
 		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-			if (isInGroup(group)) {
-				stacks.add(new ItemStack(this));
-			}
+			stacks.add(new ItemStack(this));
 		}
 	};
-	public static final BlockItem NEODYMIUM_BLOCK = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
+	public static final BlockItem NEODYMIUM_BLOCK = new SpecialBlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
 		@Override
 		public String getTranslationKey() {
 			return "block.yttr.neodymium_block";
 		}
 		@Override
 		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-			if (isInGroup(group)) {
-				stacks.add(new ItemStack(this));
-			}
+			stacks.add(new ItemStack(this));
 		}
 		@Override
 		public void appendBlocks(Map<Block,Item> map, Item item) {};
@@ -419,16 +417,16 @@ public class YItems {
 		
 	};
 	
-	public static final SuitArmorItem SUIT_HELMET = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.HEAD, new Item.Settings()
+	public static final SuitArmorItem SUIT_HELMET = new SuitArmorItem(SUIT_MATERIAL, ArmorSlot.HELMET, new Item.Settings()
 			.fireproof());
 	
-	public static final SuitArmorItem SUIT_CHESTPLATE = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.CHEST, new Item.Settings()
+	public static final SuitArmorItem SUIT_CHESTPLATE = new SuitArmorItem(SUIT_MATERIAL, ArmorSlot.CHESTPLATE, new Item.Settings()
 			.fireproof());
 	
-	public static final SuitArmorItem SUIT_LEGGINGS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.LEGS, new Item.Settings()
+	public static final SuitArmorItem SUIT_LEGGINGS = new SuitArmorItem(SUIT_MATERIAL, ArmorSlot.LEGGINGS, new Item.Settings()
 			.fireproof());
 	
-	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.FEET, new Item.Settings()
+	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, ArmorSlot.BOOTS, new Item.Settings()
 			.fireproof());
 	
 	public static final Item ARMOR_PLATING = new Item(new Item.Settings());

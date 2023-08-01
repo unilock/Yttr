@@ -6,7 +6,7 @@ import com.unascribed.yttr.init.YRecipeTypes;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -15,12 +15,13 @@ import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class ShatteringRecipe implements Recipe<CraftingInventory> {
+public class ShatteringRecipe implements Recipe<RecipeInputInventory> {
 	private final Identifier id;
 	private final String group;
 	private final ItemStack output;
@@ -54,7 +55,7 @@ public class ShatteringRecipe implements Recipe<CraftingInventory> {
 	}
 
 	@Override
-	public ItemStack getOutput() {
+	public ItemStack getResult(DynamicRegistryManager mgr) {
 		return this.output;
 	}
 
@@ -64,7 +65,7 @@ public class ShatteringRecipe implements Recipe<CraftingInventory> {
 	}
 
 	@Override
-	public boolean matches(CraftingInventory craftingInventory, World world) {
+	public boolean matches(RecipeInputInventory craftingInventory, World world) {
 		RecipeMatcher recipeMatcher = new RecipeMatcher();
 		int i = 0;
 
@@ -80,7 +81,7 @@ public class ShatteringRecipe implements Recipe<CraftingInventory> {
 	}
 
 	@Override
-	public ItemStack craft(CraftingInventory craftingInventory) {
+	public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager mgr) {
 		return output.copy();
 	}
 	

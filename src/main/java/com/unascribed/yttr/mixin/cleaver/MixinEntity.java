@@ -35,18 +35,18 @@ public class MixinEntity implements SlopeStander {
 		yttr$slopeSteepness = 0;
 		Entity self = (Entity)(Object)this;
 		Box box = self.getBoundingBox();
-		BlockPos bpMin = new BlockPos(box.minX - 0.15, box.minY - 0.15, box.minZ - 0.15);
-		BlockPos bpMax = new BlockPos(box.maxX + 0.15, box.maxY + 0.15, box.maxZ + 0.15);
+		BlockPos bpMin = BlockPos.create(box.minX - 0.15, box.minY - 0.15, box.minZ - 0.15);
+		BlockPos bpMax = BlockPos.create(box.maxX + 0.15, box.maxY + 0.15, box.maxZ + 0.15);
 		BlockPos.Mutable mut = new BlockPos.Mutable();
-		if (self.world.isRegionLoaded(bpMin, bpMax)) {
+		if (self.getWorld().isRegionLoaded(bpMin, bpMax)) {
 			for (int x = bpMin.getX(); x <= bpMax.getX(); ++x) {
 				for (int y = bpMin.getY(); y <= bpMax.getY(); ++y) {
 					for (int z = bpMin.getZ(); z <= bpMax.getZ(); ++z) {
 						mut.set(x, y, z);
-						BlockState bs = self.world.getBlockState(mut);
+						BlockState bs = self.getWorld().getBlockState(mut);
 						if (bs.isOf(YBlocks.CLEAVED_BLOCK)) {
 							try {
-								((CleavedBlock)bs.getBlock()).onEntityNearby(bs, self.world, mut, self);
+								((CleavedBlock)bs.getBlock()).onEntityNearby(bs, self.getWorld(), mut, self);
 							} catch (Throwable t) {
 								CrashReport report = CrashReport.create(t, "[Yttr] Performing cleaved block slope adjustment");
 								CrashReportSection section = report.addElement("Block being collided with");

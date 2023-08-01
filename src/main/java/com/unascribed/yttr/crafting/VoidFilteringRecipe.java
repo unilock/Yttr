@@ -12,6 +12,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -39,14 +40,14 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack craft(Inventory inv) {
+	public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
 		return output.copy();
 	}
 
 	public boolean canFitOutput(Inventory inv) {
 		for (int i = 0; i < inv.size(); i++) {
 			ItemStack cur = inv.getStack(i);
-			if (cur.isEmpty() || (ItemStack.areItemsEqual(output, cur) && ItemStack.areNbtEqual(output, cur) && cur.getCount()+output.getCount() <= cur.getMaxCount())) return true;
+			if (cur.isEmpty() || (ItemStack.canCombine(output, cur) && cur.getCount()+output.getCount() <= cur.getMaxCount())) return true;
 		}
 		return false;
 	}
@@ -62,7 +63,7 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack getOutput() {
+	public ItemStack getResult(DynamicRegistryManager registryManager) {
 		return output;
 	}
 	

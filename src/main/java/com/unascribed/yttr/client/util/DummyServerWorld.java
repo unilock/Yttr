@@ -21,7 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.map.MapState;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -31,6 +31,7 @@ import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.unmapped.C_xmjhbbku;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.hit.BlockHitResult;
@@ -47,6 +48,7 @@ import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.LightType;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.RaycastContext;
+import net.minecraft.world.ServerWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
 import net.minecraft.world.border.WorldBorder;
@@ -57,14 +59,13 @@ import net.minecraft.world.chunk.light.LightingProvider;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Spawner;
-import net.minecraft.world.level.ServerWorldProperties;
-import net.minecraft.world.level.storage.LevelStorage.Session;
+import net.minecraft.world.storage.WorldSaveStorage.Session;
 
 public class DummyServerWorld extends ServerWorld {
 	
-	public DummyServerWorld(MinecraftServer server, Executor workerExecutor, Session session, ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime) {
-		super(server, workerExecutor, session, properties, registryKey, dimensionOptions, worldGenerationProgressListener, debugWorld, seed, spawners, shouldTickTime);
+	public DummyServerWorld(MinecraftServer minecraftServer, Executor executor, Session session, ServerWorldProperties serverWorldProperties, RegistryKey<World> registryKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean bl, long l, List<Spawner> list, boolean bl2, C_xmjhbbku c_xmjhbbku) {
 		// WILL NOT BE CALLED
+		super(minecraftServer, executor, session, serverWorldProperties, registryKey, dimensionOptions, worldGenerationProgressListener, bl, l, list, bl2, c_xmjhbbku);
 	}
 
 	public void init() {
@@ -239,11 +240,6 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public double getDismountHeight(BlockPos pos) {
 		return getDelegate().getDismountHeight(pos);
-	}
-
-	@Override
-	public int getStrongRedstonePower(BlockPos pos, Direction direction) {
-		return getDelegate().getStrongRedstonePower(pos, direction);
 	}
 
 	@Override
@@ -450,11 +446,6 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public void updateNeighborsExcept(BlockPos pos, Block sourceBlock,
 			Direction direction) {
-	}
-
-	@Override
-	public void m_asiupuuh(BlockPos sourcePos, Block sourceBlock,
-			BlockPos neighborPos) {
 	}
 
 	@Override
@@ -671,8 +662,8 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public WorldProperties getLevelProperties() {
-		return getDelegate().getLevelProperties();
+	public WorldProperties getProperties() {
+		return getDelegate().getProperties();
 	}
 
 	@Override
@@ -713,11 +704,6 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public boolean hasRain(BlockPos pos) {
 		return getDelegate().hasRain(pos);
-	}
-
-	@Override
-	public boolean hasHighHumidity(BlockPos pos) {
-		return getDelegate().hasHighHumidity(pos);
 	}
 
 	@Override

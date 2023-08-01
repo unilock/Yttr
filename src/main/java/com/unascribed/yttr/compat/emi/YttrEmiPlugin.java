@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
-
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.compat.emi.handler.ProjectTableRecipeHandler;
@@ -72,6 +70,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
@@ -116,7 +115,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		Yttr.autoreg.eachRegisterableField(YttrEmiPlugin.class, EmiRecipeCategory.class, Simple.class, (f, t, a) -> {
 			if (a == null) return;
 			try {
-				RecipeType rt = Registry.RECIPE_TYPE.get(t.id);
+				RecipeType rt = Registries.RECIPE_TYPE.get(t.id);
 				MethodHandle cons = MethodHandles.lookup().findConstructor(a.to(), MethodType.methodType(void.class, a.from()));
 				for (Recipe r : (Iterable<Recipe>)registry.getRecipeManager().listAllOfType(rt)) {
 					registry.addRecipe((EmiRecipe)cons.invoke(r));
@@ -134,7 +133,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.addRecipeHandler(YHandledScreens.PROJECT_TABLE, new ProjectTableRecipeHandler());
 		
 		List<EmiStack> pickaxes = new ArrayList<>();
-		for (var en : Registry.ITEM.getEntries()) {
+		for (var en : Registries.ITEM.getEntries()) {
 			if (YEnchantments.SHATTERING_CURSE.isAcceptableItem(new ItemStack(en.getValue()))) {
 				pickaxes.add(createShatteringPickaxe(en.getValue()));
 			}
@@ -173,7 +172,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 		registry.removeEmiStacks(EmiStack.of(YItems.CREASE));
 		registry.removeEmiStacks(EmiStack::isEmpty);
 		
-		Function<Comparison, Comparison> compareNbt = c -> c.copy().nbt(true).build();
+		var compareNbt = Comparison.compareNbt();
 		registry.setDefaultComparison(YItems.MERCURIAL_POTION, compareNbt);
 		registry.setDefaultComparison(YItems.MERCURIAL_SPLASH_POTION, compareNbt);
 		registry.setDefaultComparison(YItems.LAZOR_EMITTER, compareNbt);
@@ -189,7 +188,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			.forEach(registry::addRecipe);
 		
 		registry.getRecipeManager().listAllOfType(RecipeType.STONECUTTING).stream()
-			.filter(r -> r.getOutput().getCount() == 1 && !r.getIngredients().isEmpty())
+			.filter(r -> r.getResult(MinecraftClient.getInstance().world.getRegistryManager()).getCount() == 1 && !r.getIngredients().isEmpty())
 			.map(EmiShatteringRecipe::new)
 			.forEach(registry::addRecipe);
 		registry.getRecipeManager().listAllOfType(RecipeType.CRAFTING).stream()
@@ -204,7 +203,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 			name = name.substring(27, name.length()-4);
 			if (id.getNamespace().equals("yttr") && (name.equals("border") || name.equals("overlay"))) continue;
 			Identifier itemId = new Identifier(id.getNamespace(), name);
-			Item result = Registry.ITEM.getOrEmpty(itemId).orElse(null);
+			Item result = Registries.ITEM.getOrEmpty(itemId).orElse(null);
 			if (result != null) {
 				RuinedRecipeResourceMetadata meta = null;
 				try {
@@ -302,7 +301,7 @@ public class YttrEmiPlugin implements EmiPlugin {
 							for (ItemStack is2 : ingredients.get(j).getMatchingStacks()) {
 								permute(is2, (isp2, colorless2) -> {
 									inv.setStack(fj, isp2);
-									ItemStack result = lr.craft(inv);
+									ItemStack result = lr.craft(inv, MinecraftClient.getInstance().world.getRegistryManager());
 									if (finteresting) {
 										System.out.println(Yttr.asList(inv)+" => "+result);
 									}

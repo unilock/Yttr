@@ -152,7 +152,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 						}
 					}
 					if (world instanceof ServerWorld) {
-						((ServerWorld) world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, r.getOutput()),
+						((ServerWorld) world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, r.getResult(world.getRegistryManager())),
 								pos.getX()+0.5, pos.getY()+0.75, pos.getZ()+0.5, 20,
 								0.2, 0.1, 0.2, 0.05);
 					}

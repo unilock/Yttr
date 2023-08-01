@@ -125,7 +125,7 @@ public class ReplicatorRenderer extends IHasAClient {
 					BakedModel ours = ir.getModels().getModel(YItems.REPLICATOR);
 					Transformation undo = ours.getTransformation().gui;
 					matrices.scale(1/undo.scale.x(), 1/undo.scale.y(), 1/undo.scale.z());
-					Quaternionf q = new Quaternionf(undo.rotation.x(), undo.rotation.y(), undo.rotation.z(), true);
+					Quaternionf q = new Quaternionf().rotationXYZ(undo.rotation.x()*MathHelper.RADIANS_PER_DEGREE, undo.rotation.y()*MathHelper.RADIANS_PER_DEGREE, undo.rotation.z()*MathHelper.RADIANS_PER_DEGREE);
 					q.conjugate();
 					matrices.multiply(q);
 					matrices.translate(-undo.translation.x(), -undo.translation.y(), -undo.translation.z());

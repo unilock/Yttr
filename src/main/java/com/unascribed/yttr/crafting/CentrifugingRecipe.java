@@ -19,6 +19,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -56,7 +57,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack craft(Inventory inv) {
+	public ItemStack craft(Inventory inv, DynamicRegistryManager mgr) {
 		if (!canFitOutput(inv)) return ItemStack.EMPTY;
 		inv.removeStack(0, inputCount);
 		for (int i = 0; i < outputs.size(); i++) {
@@ -78,7 +79,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 			ItemStack out = outputs.get(i);
 			ItemStack cur = inv.getStack(i+1);
 			if (cur.isEmpty()) continue;
-			if (!ItemStack.areItemsEqual(out, cur) || !ItemStack.areNbtEqual(out, cur)) return false;
+			if (!ItemStack.canCombine(out, cur)) return false;
 			if (cur.getCount()+out.getCount() > cur.getMaxCount()) return false;
 		}
 		return true;
@@ -97,7 +98,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack getOutput() {
+	public ItemStack getResult(DynamicRegistryManager mgr) {
 		return ItemStack.EMPTY;
 	}
 	

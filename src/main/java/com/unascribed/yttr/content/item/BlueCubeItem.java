@@ -49,7 +49,7 @@ public class BlueCubeItem extends Item {
 		}
 		int n = NOTES[i%NOTES.length];
 		float pitch = (float)Math.pow(2, (n - 12) / 12.0);
-		user.playSound(SoundEvents.BLOCK_NOTE_BLOCK_GUITAR, vol, pitch);
+		user.playSound(SoundEvents.BLOCK_NOTE_BLOCK_GUITAR.value(), vol, pitch);
 	}
 
 }

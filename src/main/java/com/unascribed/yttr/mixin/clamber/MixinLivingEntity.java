@@ -18,7 +18,7 @@ public class MixinLivingEntity {
 		LivingEntity self = (LivingEntity)(Object)this;
 		if (self.getClimbingPos().isPresent()) {
 			BlockPos pos = self.getClimbingPos().get();
-			if (self.world.getBlockState(pos).isIn(YTags.Block.CLAMBER_BLOCKS)) {
+			if (self.getWorld().getBlockState(pos).isIn(YTags.Block.CLAMBER_BLOCKS)) {
 				ci.setReturnValue(false);
 			}
 		}

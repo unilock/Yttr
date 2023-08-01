@@ -13,15 +13,15 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.model.SkeletonEntityModel;
-import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<SkeletalSorterBlockEntity> {
 
@@ -150,7 +150,7 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 			matrices.scale(0.5f, 0.5f, 0.5f);
 			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-50));
 			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(40));
-			mc.getItemRenderer().renderItem(null, left, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
+			mc.getItemRenderer().renderItem(null, left, ModelTransformationMode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
 			matrices.pop();
 			
 			matrices.push();
@@ -159,7 +159,7 @@ public class SkeletalSorterBlockEntityRenderer implements BlockEntityRenderer<Sk
 			matrices.scale(0.5f, 0.5f, 0.5f);
 			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-50));
 			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-40));
-			mc.getItemRenderer().renderItem(null, right, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
+			mc.getItemRenderer().renderItem(null, right, ModelTransformationMode.FIXED, false, matrices, vertexConsumers, null, light, overlay, 0);
 			matrices.pop();
 		}
 		

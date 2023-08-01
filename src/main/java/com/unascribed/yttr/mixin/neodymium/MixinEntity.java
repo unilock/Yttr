@@ -20,7 +20,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
@@ -69,7 +68,7 @@ public class MixinEntity implements Magnetized {
 		if (receptiveBelow) {
 			Box box = self.getBoundingBox();
 			Box bottom = new Box(box.minX, box.minY-0.5, box.minZ, box.maxX, box.minY, box.maxZ);
-			if (Iterables.any(self.getWorld().m_byqkqxkz(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
+			if (Iterables.any(self.getWorld().getBlockCollisions(self, bottom), vs -> vs instanceof MagneticVoxelShape)) {
 				yttr$magnetizedBelow = true;
 			}
 		}

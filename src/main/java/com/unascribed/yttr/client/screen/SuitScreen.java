@@ -30,8 +30,8 @@ import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -147,7 +147,7 @@ public class SuitScreen extends Screen {
 		}
 		sr.tick();
 		if (client.player != null) {
-			client.player.setPos(client.player.getPos().x, client.player.world.getBottomY()-24, client.player.getPos().z);
+			client.player.setPos(client.player.getPos().x, client.player.getWorld().getBottomY()-24, client.player.getPos().z);
 			client.player.fallDistance = 0;
 			if (!Yttr.isWearingFullSuit(client.player)) {
 				client.setScreen(null);
@@ -211,7 +211,8 @@ public class SuitScreen extends Screen {
 	});
 	
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
+		var matrices = ctx.getMatrices();
 		RenderSystem.clearColor(0, 0, 0, 1);
 		RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 		if (ticks < 40) return;

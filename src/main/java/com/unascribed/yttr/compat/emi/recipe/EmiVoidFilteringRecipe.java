@@ -11,6 +11,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -25,7 +26,7 @@ public class EmiVoidFilteringRecipe implements EmiRecipe {
 	public EmiVoidFilteringRecipe(VoidFilteringRecipe r) {
 		this.id = r.getId();
 		this.chance = r.getChance();
-		this.output = EmiStack.of(r.getOutput());
+		this.output = EmiStack.of(r.getResult(MinecraftClient.getInstance().world.getRegistryManager()));
 	}
 	
 	@Override

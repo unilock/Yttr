@@ -67,7 +67,8 @@ public class EmiForgottenRecipe implements EmiRecipe {
 		double aspect = 696/324D;
 		int h = 54;
 		int w = (int)(h*aspect);
-		widgets.addDrawable(0, 0, w, h, (matrices, mouseX, mouseY, delta) -> {
+		widgets.addDrawable(0, 0, w, h, (ctx, mouseX, mouseY, delta) -> {
+			var matrices = ctx.getMatrices();
 			RenderSystem.setShaderTexture(0, new Identifier(id.getNamespace(), "textures/gui/ruined_recipe/"+id.getPath()+".png"));
 			matrices.push();
 			matrices.translate(x-(w/2f), y, 0);
@@ -93,7 +94,6 @@ public class EmiForgottenRecipe implements EmiRecipe {
 		int bX = x-(w/2);
 		int bY = y;
 		widgets.add(new RuinedOutputWidget(result, bX+90, bY+14).recipeContext(this)
-				.output(true)
 				.drawBack(false));
 		for (int i = 0; i < 9; i++) {
 			widgets.add(new RuinedInputWidget(bX+((i%3)*18), bY+((i/3)*18))
