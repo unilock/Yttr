@@ -113,7 +113,7 @@ dependencies {
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.1"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.2.1"
 	
-	include "me.luligabi:NoIndium:1.1.0+1.19"
+	include "me.luligabi:NoIndium:1.1.0+1.20"
 	
 	[
 		'core', 'lockpick', 'tunnel', 'phantom', 'waypoint', 'weld',
@@ -193,7 +193,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		versionName = 'v'+project.version
 		versionType = 'release'
 		uploadFile = remapJar
-		gameVersions = ['1.19', '1.19.1', '1.19.2']
+		gameVersions = ['1.20', '1.20.1']
 		loaders = ['fabric', 'quilt']
 		detectLoaders = false
 		changelog = file('CHANGELOG.md').text
@@ -218,9 +218,8 @@ if (System.getenv("CURSE_TOKEN")) {
 			changelogType = 'markdown'
 			changelog = file('CHANGELOG.md')
 
-			addGameVersion '1.19'
-			addGameVersion '1.19.1'
-			addGameVersion '1.19.2'
+			addGameVersion '1.20'
+			addGameVersion '1.20.1'
 			addGameVersion 'Fabric'
 			addGameVersion 'Quilt'
 
@@ -251,7 +250,7 @@ if (System.getenv("MCMODCN_COOKIE")) {
 	task mcmodcn(type: Exec) {
 		dependsOn remapJar
 
-		commandLine './mcmodcn-upload.sh', '3949', '1.19', '2,11', '', remapJar.archivePath.getPath()
+		commandLine './mcmodcn-upload.sh', '3949', '1.20', '2,11', '', remapJar.archivePath.getPath()
 	}
 }
 
@@ -259,6 +258,6 @@ if (System.getenv("GITEA_KEY")) {
 	task gitea(type: Exec) {
 		dependsOn remapJar
 
-		commandLine './gitea-upload.sh', '1.19.2', project.version, remapJar.archivePath.getPath()
+		commandLine './gitea-upload.sh', '1.20.1', project.version, remapJar.archivePath.getPath()
 	}
 }
