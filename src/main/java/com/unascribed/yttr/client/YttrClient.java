@@ -560,12 +560,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (ann != null) {
 				try {
 					Constructor<?> actualConstructor = null;
-					for (Constructor<?> cons : ann.value().getConstructors()) {
+					for (Constructor<?> cons : Class.forName("com.unascribed.yttr.client.screen.handled."+ann.value()).getConstructors()) {
 						if (cons.getParameterCount() == 3 && ScreenHandler.class.isAssignableFrom(cons.getParameterTypes()[0])) {
 							actualConstructor = cons;
 						}
 					}
-					if (actualConstructor == null) throw new RuntimeException(ann.value().getSimpleName()+" does not have a normal constructor");
+					if (actualConstructor == null) throw new RuntimeException(ann.value()+" does not have a normal constructor");
 					MethodHandle handle = MethodHandles.publicLookup().unreflectConstructor(actualConstructor);
 					// must be an anonymous class due to type unsafety; we need the rawtype
 					HandledScreens.register(type, new HandledScreens.Provider() {

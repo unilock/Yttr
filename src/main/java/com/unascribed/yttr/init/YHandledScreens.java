@@ -8,17 +8,6 @@ import java.lang.annotation.Target;
 import java.util.function.Consumer;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.screen.handled.AmmoPackScreen;
-import com.unascribed.yttr.client.screen.handled.CanFillerScreen;
-import com.unascribed.yttr.client.screen.handled.CentrifugeScreen;
-import com.unascribed.yttr.client.screen.handled.DSUScreen;
-import com.unascribed.yttr.client.screen.handled.InRedOscillatorScreen;
-import com.unascribed.yttr.client.screen.handled.MagtankScreen;
-import com.unascribed.yttr.client.screen.handled.ProjectTableScreen;
-import com.unascribed.yttr.client.screen.handled.RafterScreen;
-import com.unascribed.yttr.client.screen.handled.SSDScreen;
-import com.unascribed.yttr.client.screen.handled.SuitStationScreen;
-import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
 import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
 import com.unascribed.yttr.inventory.CanFillerScreenHandler;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
@@ -31,7 +20,6 @@ import com.unascribed.yttr.inventory.SSDScreenHandler;
 import com.unascribed.yttr.inventory.SuitStationScreenHandler;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.feature_flags.FeatureFlagBitSet;
 import net.minecraft.registry.Registries;
@@ -40,27 +28,27 @@ import net.minecraft.screen.slot.Slot;
 
 public class YHandledScreens {
 
-	@Screen(CentrifugeScreen.class)
+	@Screen("CentrifugeScreen")
 	public static final ScreenHandlerType<CentrifugeScreenHandler> CENTRIFUGE = new ScreenHandlerType<>(CentrifugeScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(SuitStationScreen.class)
+	@Screen("SuitStationScreen")
 	public static final ScreenHandlerType<SuitStationScreenHandler> SUIT_STATION = new ScreenHandlerType<>(SuitStationScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(VoidFilterScreen.class)
+	@Screen("VoidFilterScreen")
 	public static final ScreenHandlerType<VoidFilterScreenHandler> VOID_FILTER = new ScreenHandlerType<>(VoidFilterScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(DSUScreen.class)
+	@Screen("DSUScreen")
 	public static final ScreenHandlerType<DSUScreenHandler> DSU = new ScreenHandlerType<>(DSUScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(MagtankScreen.class)
+	@Screen("MagtankScreen")
 	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = new ScreenHandlerType<>(MagtankScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(CanFillerScreen.class)
+	@Screen("CanFillerScreen")
 	public static final ScreenHandlerType<CanFillerScreenHandler> CAN_FILLER = new ScreenHandlerType<>(CanFillerScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(AmmoPackScreen.class)
+	@Screen("AmmoPackScreen")
 	public static final ScreenHandlerType<AmmoPackScreenHandler> AMMO_PACK = new ScreenHandlerType<>(AmmoPackScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(InRedOscillatorScreen.class)
+	@Screen("InRedOscillatorScreen")
 	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = new ScreenHandlerType<>(InRedOscillatorScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(RafterScreen.class)
+	@Screen("RafterScreen")
 	public static final ScreenHandlerType<RafterScreenHandler> RAFTING = new ScreenHandlerType<>(RafterScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(ProjectTableScreen.class)
+	@Screen("ProjectTableScreen")
 	public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE = new ScreenHandlerType<>(ProjectTableScreenHandler::new, FeatureFlagBitSet.empty());
-	@Screen(SSDScreen.class)
+	@Screen("SSDScreen")
 	public static final ScreenHandlerType<SSDScreenHandler> SSD = new ScreenHandlerType<>(SSDScreenHandler::new, FeatureFlagBitSet.empty());
 	
 	public static void init() {
@@ -70,7 +58,7 @@ public class YHandledScreens {
 	@Retention(RUNTIME)
 	@Target(FIELD)
 	public @interface Screen {
-		Class<? extends HandledScreen<?>> value();
+		String value();
 	}
 
 	public static void addPlayerSlots(Consumer<Slot> h, PlayerInventory playerInv, int oX, int oY) {
