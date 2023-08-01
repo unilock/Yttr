@@ -3,7 +3,6 @@ package com.unascribed.yttr;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.class_5258;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.block.Block;
@@ -17,6 +16,7 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.unmapped.C_ctsfmifk;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +32,7 @@ public class PlacedBlockCriterion extends AbstractCriterion<PlacedBlockCriterion
 
 	@Override
 	public PlacedBlockCriterion.Conditions conditionsFromJson(
-		JsonObject jsonObject, class_5258 extended, AdvancementEntityPredicateDeserializer advancementEntityPredicateDeserializer
+		JsonObject jsonObject, C_ctsfmifk extended, AdvancementEntityPredicateDeserializer advancementEntityPredicateDeserializer
 	) {
 		Block block = getBlock(jsonObject);
 		StatePredicate statePredicate = StatePredicate.fromJson(jsonObject.get("state"));
@@ -69,7 +69,7 @@ public class PlacedBlockCriterion extends AbstractCriterion<PlacedBlockCriterion
 		private final LocationPredicate location;
 		private final ItemPredicate item;
 
-		public Conditions(class_5258 player, @Nullable Block block, StatePredicate state, LocationPredicate location, ItemPredicate item) {
+		public Conditions(C_ctsfmifk player, @Nullable Block block, StatePredicate state, LocationPredicate location, ItemPredicate item) {
 			super(PlacedBlockCriterion.ID, player);
 			this.block = block;
 			this.state = state;
@@ -78,7 +78,7 @@ public class PlacedBlockCriterion extends AbstractCriterion<PlacedBlockCriterion
 		}
 
 		public static PlacedBlockCriterion.Conditions block(Block block) {
-			return new PlacedBlockCriterion.Conditions(class_5258.field_24388, block, StatePredicate.ANY, LocationPredicate.ANY, ItemPredicate.ANY);
+			return new PlacedBlockCriterion.Conditions(C_ctsfmifk.field_24388, block, StatePredicate.ANY, LocationPredicate.ANY, ItemPredicate.ANY);
 		}
 
 		public boolean matches(BlockState state, BlockPos pos, ServerWorld world, ItemStack stack) {

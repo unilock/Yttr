@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.class_5258;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -15,6 +14,7 @@ import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.LocationPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.unmapped.C_ctsfmifk;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +43,7 @@ public class BlockCriterion extends PlacedBlockCriterion {
 	}
 
 	@Override
-	public PlacedBlockCriterion.Conditions conditionsFromJson(JsonObject jsonObject, class_5258 extended, AdvancementEntityPredicateDeserializer advancementEntityPredicateDeserializer) {
+	public PlacedBlockCriterion.Conditions conditionsFromJson(JsonObject jsonObject, C_ctsfmifk extended, AdvancementEntityPredicateDeserializer advancementEntityPredicateDeserializer) {
 		Block block = getBlock(jsonObject);
 		StatePredicate statePredicate = StatePredicate.fromJson(jsonObject.get("state"));
 		if (block != null) {
@@ -70,7 +70,7 @@ public class BlockCriterion extends PlacedBlockCriterion {
 	}
 
 	public class Conditions extends PlacedBlockCriterion.Conditions {
-		public Conditions(class_5258 player, @Nullable Block block, StatePredicate state, LocationPredicate location, ItemPredicate item) {
+		public Conditions(C_ctsfmifk player, @Nullable Block block, StatePredicate state, LocationPredicate location, ItemPredicate item) {
 			super(player, block, state, location, item);
 		}
 

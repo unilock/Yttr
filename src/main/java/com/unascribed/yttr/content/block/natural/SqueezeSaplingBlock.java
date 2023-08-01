@@ -34,8 +34,8 @@ public class SqueezeSaplingBlock extends SaplingBlock implements Waterloggable {
 	}
 	
 	@Override
-	public boolean canGrow(World world, RandomGenerator random, BlockPos pos, BlockState state) {
-		return state.get(WATERLOGGED) && super.canGrow(world, random, pos, state);
+	public boolean canFertilize(World world, RandomGenerator random, BlockPos pos, BlockState state) {
+		return state.get(WATERLOGGED) && super.canFertilize(world, random, pos, state);
 	}
 	
 	@Override
