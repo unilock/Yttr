@@ -26,7 +26,9 @@ public class EmiVoidFilteringRecipe implements EmiRecipe {
 	public EmiVoidFilteringRecipe(VoidFilteringRecipe r) {
 		this.id = r.getId();
 		this.chance = r.getChance();
-		this.output = EmiStack.of(r.getResult(MinecraftClient.getInstance().world.getRegistryManager()));
+		this.output = EmiStack.of(
+				r.getResult(MinecraftClient.getInstance().world.getRegistryManager())
+		).setChance(chance / 100f);
 	}
 	
 	@Override
