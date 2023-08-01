@@ -26,7 +26,7 @@ import net.minecraft.util.Identifier;
 
 public class RifleItemRenderer extends IHasAClient {
 	
-	private static final Identifier CHAMBER_TEXTURE = Yttr.id("textures/item/rifle_chamber.png");
+	private static final Identifier CHAMBER_TEXTURE = Yttr.id("textures/rifle_chamber.png");
 	
 	private static final ModelIdentifier RIFLE_BASE_MODEL = new ModelIdentifier("yttr", "rifle_base", "inventory");
 	private static final ModelIdentifier RIFLE_CHAMBER_MODEL = new ModelIdentifier("yttr", "rifle_chamber", "inventory");
