@@ -140,7 +140,7 @@ public class ShifterItem extends Item implements ControlHintable {
 			_replacement = ReplicatorBlockItem.getHeldItem(_replacement);
 		} else if (_replacement.getItem() instanceof CleaverItem) {
 			CleaverItem ci = (CleaverItem)_replacement.getItem();
-			if (!CleaverItem.canCleave(world, pos, world.getBlockState(pos))) return;
+			if (!CleaverItem.canCleave(world, player, _replacement, pos, world.getBlockState(pos))) return;
 			Plane p = ci.getLastCut(_replacement);
 			if (p != null && ci.performWorldCleave(world, pos, _replacement, player, p)) {
 				return;
@@ -185,7 +185,7 @@ public class ShifterItem extends Item implements ControlHintable {
 			}
 		}
 		replState = copySafeProperties(curState, replState);
-		if (be instanceof CleavedBlockEntity && !CleaverItem.canCleave(world, pos, replState)) return;
+		if (be instanceof CleavedBlockEntity && !CleaverItem.canCleave(world, player, _replacement, pos, replState)) return;
 		BlockSoundGroup replSg = replState.getSoundGroup();
 		world.playSound(null, pos, replSg.getPlaceSound(), SoundCategory.BLOCKS, ((replSg.getVolume()+1f)/2)*0.2f, replSg.getPitch()*0.8f);
 		if (!player.isCreative()) {

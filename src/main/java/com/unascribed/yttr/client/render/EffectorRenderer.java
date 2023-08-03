@@ -218,9 +218,18 @@ public class EffectorRenderer extends IHasAClient {
 				if (quads == null) continue;
 				ms.push();
 				ms.translate(mut.getX(), mut.getY(), mut.getZ());
+				// can't get the lighting to work. just fake it
+				float b = switch (dir.getOpposite()) {
+					case UP -> w.getSkyProperties().isDarkened() ? 0.9f : 1f;
+					case DOWN -> w.getSkyProperties().isDarkened() ? 0.9f : 0.5f;
+					case NORTH -> 0.8f;
+					case EAST -> 0.6f;
+					case SOUTH -> 0.8f;
+					case WEST -> 0.6f;
+				};
 				for (BakedQuad q : quads) {
 					int color = q.hasColor() ? mc.getBlockColors().getColor(state, w, pos, q.getColorIndex()) : -1;
-					bb.bakedQuad(ms.peek(), q, ((color >> 16)&0xFF)/255f, ((color >> 8)&0xFF)/255f, (color&0xFF)/255f, light, OverlayTexture.DEFAULT_UV);
+					bb.bakedQuad(ms.peek(), q, (((color >> 16)&0xFF)/255f)*b, (((color >> 8)&0xFF)/255f)*b, ((color&0xFF)/255f)*b, light, OverlayTexture.DEFAULT_UV);
 				}
 				ms.pop();
 			}
@@ -243,9 +252,10 @@ public class EffectorRenderer extends IHasAClient {
 	private static void drawVoidFace(World w, MatrixStack ms, VertexConsumer vc, BlockPos pos, Direction face) {
 		if (w.isPhased(pos)) return;
 		if (w.isAir(pos.offset(face))) return;
-		BakedModel model = mc.getBlockRenderManager().getModel(mc.world.getBlockState(pos));
+		var bs = mc.world.getBlockState(pos);
+		BakedModel model = mc.getBlockRenderManager().getModel(bs);
 		if (model == null) return;
-		Iterable<BakedQuad> quads = model.getQuads(null, face, mc.world.random);
+		Iterable<BakedQuad> quads = model.getQuads(bs, face, mc.world.random);
 		if (quads == null) return;
 		ms.push();
 		ms.translate(pos.getX(), pos.getY(), pos.getZ());

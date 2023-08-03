@@ -22,8 +22,9 @@ public class GlowingGasItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		var r = ThreadLocalRandom.current();
 		ItemStack itemStack = user.getStackInHand(hand);
+		if (!user.canModifyBlocks()) return TypedActionResult.pass(itemStack);
+		var r = ThreadLocalRandom.current();
 		world.playSound(null,
 			user.getX(), user.getY(), user.getZ(),
 			SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL,

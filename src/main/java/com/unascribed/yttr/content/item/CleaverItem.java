@@ -28,11 +28,13 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -76,7 +78,7 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 			BlockPos expected = getCleaveBlock(stack);
 			if (expected == null) {
 				BlockState state = world.getBlockState(pos);
-				if (!canCleave(world, pos, state)) return ActionResult.FAIL;
+				if (!canCleave(world, player, stack, pos, state)) return ActionResult.FAIL;
 				Vec3d point = findCutPoint(ctx.getHitPos().subtract(Vec3d.of(pos)));
 				if (point == null) return ActionResult.FAIL;
 				setCleaveCorner(stack, null);
@@ -97,7 +99,7 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 				Vec3d corner = getCleaveCorner(stack);
 				
 				BlockState state = world.getBlockState(pos);
-				if (!canCleave(world, pos, state)) return ActionResult.FAIL;
+				if (!canCleave(world, player, stack, pos, state)) return ActionResult.FAIL;
 				
 				Vec3d end = findCutPoint(ctx.getHitPos().subtract(Vec3d.of(pos)));
 				if (end == null) return ActionResult.FAIL;
@@ -113,9 +115,13 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 		return ActionResult.PASS;
 	}
 
-	public static boolean canCleave(World world, BlockPos pos, BlockState state) {
+	public static boolean canCleave(World world, PlayerEntity player, ItemStack stack, BlockPos pos, BlockState state) {
+		if (!player.canModifyBlocks() && !stack.canDestroy(Registries.BLOCK, new CachedBlockPosition(world, pos, false)))
+			return false;
 		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
-		//if (state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
+		// let this be on for creative ops for now
+		if (player.isCreativeLevelTwoOp() && state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
+		
 		if (state.isIn(YTags.Block.UNCLEAVABLE)) return false;
 		return !(state.getBlock() instanceof BlockEntityProvider) && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
 	}
@@ -147,7 +153,7 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 			Plane p = getLastCut(stack);
 			if (p != null) {
 				BlockHitResult bhr = raycast(user.getWorld(), user, FluidHandling.NONE);
-				if (bhr.getType() != Type.MISS && canCleave(user.getWorld(), bhr.getBlockPos(), user.getWorld().getBlockState(bhr.getBlockPos()))) {
+				if (bhr.getType() != Type.MISS && canCleave(user.getWorld(), user, stack, bhr.getBlockPos(), user.getWorld().getBlockState(bhr.getBlockPos()))) {
 					if (performWorldCleave(user.getWorld(), bhr.getBlockPos(), stack, user, p)) {
 						YStats.add(user, YStats.BLOCKS_CLEAVED, 1);
 					}

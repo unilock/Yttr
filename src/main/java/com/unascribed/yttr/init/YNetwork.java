@@ -22,6 +22,12 @@ import com.unascribed.yttr.network.MessageS2CScreeperBreak;
 import com.unascribed.yttr.network.MessageS2CSoulImpurity;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
 
+import net.minecraft.network.packet.Packet;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
+
 public class YNetwork {
 
 	public static final NetworkContext CONTEXT = NetworkContext.forChannel(Yttr.id("main"));
@@ -46,6 +52,14 @@ public class YNetwork {
 		CONTEXT.register(MessageC2STrustedRifleFire.class);
 		CONTEXT.register(MessageS2CScreeperBreak.class);
 		CONTEXT.register(MessageS2CSoulImpurity.class);
+	}
+	
+	public static void sendPacketToPlayersWatching(World world, BlockPos pos, Packet<?> packet) {
+		if (world instanceof ServerWorld sw) {
+			sw.getChunkManager().delegate
+				.getPlayersWatchingChunk(new ChunkPos(pos), false)
+				.forEach(spe -> spe.networkHandler.sendPacket(packet));
+		}
 	}
 	
 }

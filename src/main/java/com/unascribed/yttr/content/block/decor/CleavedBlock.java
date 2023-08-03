@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.SlopeStander;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
@@ -28,7 +29,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.state.StateManager;
@@ -94,6 +94,36 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	}
 	
 	@Override
+	public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
+		super.onSteppedOn(world, pos, state, entity);
+		var down = pos.down();
+		var bs = world.getBlockState(down);
+		if (bs.isIn(YTags.Block.CLEAVE_PASSTHRU)) {
+			bs.getBlock().onSteppedOn(world, down, bs, entity);
+		}
+	}
+	
+	@Override
+	public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+		super.onLandedUpon(world, state, pos, entity, fallDistance);
+		var down = pos.down();
+		var bs = world.getBlockState(down);
+		if (bs.isIn(YTags.Block.CLEAVE_PASSTHRU)) {
+			bs.getBlock().onLandedUpon(world, bs, down, entity, fallDistance);
+		}
+	}
+	
+	@Override
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		super.onEntityCollision(state, world, pos, entity);
+		var down = pos.down();
+		var bs = world.getBlockState(down);
+		if (bs.isIn(YTags.Block.CLEAVE_PASSTHRU)) {
+			bs.onEntityCollision(world, down, entity);
+		}
+	}
+	
+	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
 		BlockEntity be = builder.getOptionalParameter(LootContextParameters.BLOCK_ENTITY);
 		if (be instanceof CleavedBlockEntity) {
@@ -142,6 +172,8 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 			if (entity instanceof FlyingEntity || (entity instanceof PlayerEntity && (((PlayerEntity)entity).isFallFlying() || ((PlayerEntity)entity).getAbilities().flying))) {
 				return;
 			}
+			if (entity.getVehicle() != null) return;
+			if (entity.getType() != null && entity.getType().isIn(YTags.Entity.UNADJUSTABLE)) return;
 			List<Polygon> shape = ((CleavedBlockEntity)be).getPolygons();
 			double checkDist = 2D/CleavedBlockEntity.SHAPE_GRANULARITY;
 			Box box = entity.getBoundingBox();

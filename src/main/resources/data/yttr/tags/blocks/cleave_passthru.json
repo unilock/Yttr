@@ -1,0 +1,28 @@
+{
+	"values": [
+		{
+			"id": "engination:road",
+			"required": false
+		},
+		{
+			"id": "engination:fast_road",
+			"required": false
+		},
+		{
+			"id": "engination:ultra_fast_road",
+			"required": false
+		},
+		{
+			"id": "engination:conveyor",
+			"required": false
+		},
+		{
+			"id": "engination:fast_conveyor",
+			"required": false
+		},
+		{
+			"id": "engination:ultra_fast_conveyor",
+			"required": false
+		}
+	]
+}

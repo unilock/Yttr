@@ -13,7 +13,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.FluidDrainable;
+import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,6 +36,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult.Type;
+import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
@@ -46,6 +49,23 @@ public class EffectorItem extends Item {
 	
 	public EffectorItem(Settings settings) {
 		super(settings);
+		DispenserBlock.registerBehavior(this, new FallibleItemDispenserBehavior() {
+			@Override
+			protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+				var world = pointer.getWorld();
+				var dir = pointer.getBlockState().get(DispenserBlock.FACING);
+				var pos = pointer.getPos().offset(dir, 3);
+				boolean infiniteFuel = stack.hasNbt() && stack.getNbt().getBoolean("InfiniteFuel");
+				int fuel = infiniteFuel ? MAX_FUEL : getFuel(stack);
+				if (fuel <= 0) {
+					return stack;
+				}
+				int amt = effect(world, pos, dir, stack, null, Math.min(fuel, 32), true);
+				if (!infiniteFuel) setFuel(stack, fuel-amt);
+				YNetwork.sendPacketToPlayersWatching(world, pos, new MessageS2CEffectorHole(pos, dir, amt).toClientboundVanillaPacket());
+				return stack;
+			}
+		});
 	}
 	
 	@Override
@@ -80,7 +100,8 @@ public class EffectorItem extends Item {
 		BlockPos pos = context.getBlockPos();
 		Direction dir = context.getSide().getOpposite();
 		ItemStack stack = context.getStack();
-		int fuel = context.getPlayer().getAbilities().creativeMode ? MAX_FUEL : getFuel(stack);
+		boolean infiniteFuel = context.getPlayer().getAbilities().creativeMode || (stack.hasNbt() && stack.getNbt().getBoolean("InfiniteFuel"));
+		int fuel = infiniteFuel ? MAX_FUEL : getFuel(stack);
 		if (fuel <= 0) {
 			context.getPlayer().sendMessage(Text.translatable("tip.yttr.effector.no_fuel"), true);
 			return ActionResult.FAIL;
@@ -90,7 +111,7 @@ public class EffectorItem extends Item {
 		if (context.getPlayer() instanceof ServerPlayerEntity) {
 			YCriteria.EFFECT_BLOCK.trigger((ServerPlayerEntity)context.getPlayer(), pos, stack);
 		}
-		if (!context.getPlayer().getAbilities().creativeMode) setFuel(stack, fuel-amt);
+		if (!infiniteFuel) setFuel(stack, fuel-amt);
 		new MessageS2CEffectorHole(pos, dir, amt).sendToAllWatching(context.getPlayer());
 		return ActionResult.SUCCESS;
 	}

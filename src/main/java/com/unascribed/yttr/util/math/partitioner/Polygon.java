@@ -230,7 +230,7 @@ public class Polygon implements Iterable<DEdge> {
 		DEdge srcD = null;
 		while( (srcD = getSrcD( onDs, startOnD )) != null ) {
 			DEdge dstD = getDstD( onDs, startOnD );
-			assert( dstD != null );
+			if (dstD == null) break;
 			addBridge( srcD, dstD );
 			if( srcD.prev().prev().srcWhere() == ABOVE )
 				useSrc = srcD.prev();

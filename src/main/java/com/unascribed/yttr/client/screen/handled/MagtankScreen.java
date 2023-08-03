@@ -8,7 +8,6 @@ import com.unascribed.yttr.inventory.MagtankScreenHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
@@ -45,8 +44,7 @@ public class MagtankScreen extends HandledScreen<MagtankScreenHandler> {
 			}
 		}
 		
-		RenderSystem.setShaderTexture(0, BG);
-		graphics.drawTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+		graphics.drawTexture(BG, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
 	}
 	
 	@Override

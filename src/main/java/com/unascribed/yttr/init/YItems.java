@@ -5,8 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +47,8 @@ import com.unascribed.yttr.util.annotate.ConstantColor;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
@@ -371,7 +371,11 @@ public class YItems {
 			.maxCount(1));
 	
 	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings());
-	public static final MusicDiscItem NEODYMIUM_DISC = createMusicDisc(15, YSounds.BUZZ, new Item.Settings(), 11);
+	public static final MusicDiscItem NEODYMIUM_DISC = new MusicDiscItem(15, YSounds.BUZZ, new Item.Settings(), 11) {
+		@Override
+		@Environment(EnvType.CLIENT)
+		public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {}
+	};
 	
 	private static final ArmorMaterial SUIT_MATERIAL = new ArmorMaterial() {
 
@@ -569,11 +573,11 @@ public class YItems {
 	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
 			.maxCount(1));
 	
-	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = createMusicDisc(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 219);
-	public static final MusicDiscItem MUSIC_DISC_VOID = createMusicDisc(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 615);
-	public static final MusicDiscItem MUSIC_DISC_DESERT_HEAT = createMusicDisc(14, YSounds.DESERT_HEAT_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 421);
-	public static final MusicDiscItem MUSIC_DISC_TORUS = createMusicDisc(14, YSounds.TORUS_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 396);
-	public static final MusicDiscItem MUSIC_DISC_MEMORANDUM = createMusicDisc(14, YSounds.MEMORANDUM_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 299);
+	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 219) {};
+	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 615) {};
+	public static final MusicDiscItem MUSIC_DISC_DESERT_HEAT = new MusicDiscItem(14, YSounds.DESERT_HEAT_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 421) {};
+	public static final MusicDiscItem MUSIC_DISC_TORUS = new MusicDiscItem(14, YSounds.TORUS_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 396) {};
+	public static final MusicDiscItem MUSIC_DISC_MEMORANDUM = new MusicDiscItem(14, YSounds.MEMORANDUM_MONO, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 299) {};
 	
 	public static final Item RUBBLE = new Item(new Item.Settings()) {};
 	
@@ -616,24 +620,6 @@ public class YItems {
 		Yttr.autoreg.autoRegister(Registries.ITEM, YItems.class, Item.class);
 	}
 	
-	private static MusicDiscItem createMusicDisc(int comparatorStrength, SoundEvent sound, Item.Settings settings, int lengthInSeconds) {
-		try {
-			// 1.19.1
-			return new MusicDiscItem(comparatorStrength, sound, settings, lengthInSeconds) {};
-		} catch (NoSuchMethodError e) {
-			try {
-				// 1.19.0
-				return (MusicDiscItem)MethodHandles.privateLookupIn(MusicDiscItem.class, MethodHandles.lookup())
-						.findConstructor(MusicDiscItem.class, MethodType.methodType(void.class, int.class, SoundEvent.class, Item.Settings.class))
-						.invokeExact(comparatorStrength, sound, settings);
-			} catch (Throwable e1) {
-				var re = new RuntimeException(e1);
-				re.addSuppressed(e);
-				throw re;
-			}
-		}
-	}
-
 	@Retention(RUNTIME)
 	@Target(FIELD)
 	public @interface BuiltinRenderer {

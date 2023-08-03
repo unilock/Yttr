@@ -89,10 +89,11 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 				}
 				int ammo = getRemainingAmmo(stack);
 				int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
+				boolean canUseLooseReagents = !stack.hasNbt() || !stack.getNbt().getBoolean("CanistersOnly");
 				if (ammo <= 0) {
 					if (user.getAbilities().creativeMode) {
 						ammo = mode.shotsPerItem;
-					} else {
+					} else if (canUseLooseReagents) {
 						for (int i = 0; i < user.getInventory().size(); i++) {
 							boolean replicator = false;
 							ItemStack is = user.getInventory().getStack(i);
@@ -134,10 +135,14 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 				}
 				if (ammo <= 0) {
 					user.getWorld().playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
-					if (need > 1) {
-						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+					if (canUseLooseReagents) {
+						if (need > 1) {
+							user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+						} else {
+							user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+						}
 					} else {
-						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+						user.sendMessage(Text.translatable("tip.yttr.rifle_no_ammo", "ammo"), true);
 					}
 					return TypedActionResult.fail(stack);
 				}

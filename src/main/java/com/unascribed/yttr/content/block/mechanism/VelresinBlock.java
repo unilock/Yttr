@@ -93,7 +93,7 @@ public class VelresinBlock extends Block {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		var tgt = getTargetedFacing(hit);
-		if (tgt != null && player.canModifyAt(world, pos)) {
+		if (tgt != null && player.canModifyBlocks()) {
 			var s = player.getStackInHand(hand);
 			if (tgt != state.get(FACING)) {
 				world.playSound(player, pos, SoundEvents.BLOCK_HONEY_BLOCK_SLIDE, player.getSoundCategory(), 1, 2);

@@ -68,7 +68,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -87,6 +86,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.FallingBlockEntityRenderer;
@@ -479,7 +479,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (ann != null) {
 				try {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render.block_entity."+ann.value()), MethodType.methodType(void.class));
-					BlockEntityRendererRegistry.register(type, berd -> {
+					BlockEntityRendererFactories.register(type, berd -> {
 						try {
 							return (BlockEntityRenderer<?>)handle.invoke();
 						} catch (RuntimeException | Error e) {
@@ -595,7 +595,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		YItems.ColorProvider colProvAnn = f.getAnnotation(YItems.ColorProvider.class);
 		if (colProvAnn != null) {
 			try {
-				ColorProviderRegistry.ITEM.register((ItemColorProvider)Class.forName("com.unascribed.yttr.client."+colProvAnn.value()).newInstance(), i);
+				ColorProviderRegistry.ITEM.register((ItemColorProvider)Class.forName("com.unascribed.yttr.client."+colProvAnn.value()).getConstructor().newInstance(), i);
 			} catch (Exception e1) {
 				throw new RuntimeException(e1);
 			}

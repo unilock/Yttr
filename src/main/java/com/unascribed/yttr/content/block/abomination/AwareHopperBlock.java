@@ -25,7 +25,6 @@ import net.minecraft.block.entity.Hopper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
@@ -91,6 +90,7 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
+		if (!player.canModifyBlocks()) return ActionResult.PASS;
 		if (state.get(BLIND)) {
 			if (player.getAbilities().creativeMode) {
 				// always succeed

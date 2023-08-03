@@ -47,9 +47,10 @@ public abstract class MixinHandledScreen extends Screen {
 			for (Slot s : handler.slots) {
 				if (s.isEnabled() && s.getStack().isOf(YItems.VOID_BUCKET)) {
 					RenderSystem.setShaderColor(0.4f, 0.1f, 0.1f, 1);
-					ctx.drawTexture(Yttr.id("textures/gui/trash.png"), s.x+7, s.y+1, 0, 0, 0, 10, 10, 10, 10);
+					ctx.drawTexture(Yttr.id("textures/gui/trash.png"), s.x+7, s.y+1, 300, 0, 0, 10, 10, 10, 10);
 					RenderSystem.setShaderColor(1, 0.2f, 0.4f, 1);
-					ctx.drawTexture(Yttr.id("textures/gui/trash.png"), s.x+6, s.y, 0, 0, 0, 10, 10, 10, 10);
+					ctx.drawTexture(Yttr.id("textures/gui/trash.png"), s.x+6, s.y, 300, 0, 0, 10, 10, 10, 10);
+					RenderSystem.setShaderColor(1, 1, 1, 1);
 				}
 			}
 		}

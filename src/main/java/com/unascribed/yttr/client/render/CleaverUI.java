@@ -48,7 +48,7 @@ public class CleaverUI extends IHasAClient {
 				if (cleaving != null || tgt.getPos().squaredDistanceTo(boc.cameraX(), boc.cameraY(), boc.cameraZ()) <= 2*2) {
 					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
 					BlockState bs = wrc.world().getBlockState(pos);
-					if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
+					if (CleaverItem.canCleave(wrc.world(), mc.player, held, pos, bs)) {
 						var ms = wrc.matrixStack();
 						ms.push();
 						var dX = pos.getX()-boc.cameraX();

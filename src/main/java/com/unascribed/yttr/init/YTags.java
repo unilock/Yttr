@@ -50,6 +50,7 @@ public final class YTags {
 		public static final TagKey<net.minecraft.block.Block> TRANSFUNGUS_SLIPPERY = TagKey.of(RegistryKeys.BLOCK, Yttr.id("transfungus_slippery"));
 		public static final TagKey<net.minecraft.block.Block> TRANSFUNGUS_STICKY = TagKey.of(RegistryKeys.BLOCK, Yttr.id("transfungus_sticky"));
 		public static final TagKey<net.minecraft.block.Block> VELRESIN_STABLE = TagKey.of(RegistryKeys.BLOCK, Yttr.id("velresin_stable"));
+		public static final TagKey<net.minecraft.block.Block> CLEAVE_PASSTHRU = TagKey.of(RegistryKeys.BLOCK, Yttr.id("cleave_passthru"));
 		
 		private static void init() {}
 		
@@ -73,6 +74,7 @@ public final class YTags {
 		public static final TagKey<EntityType<?>> SCREEPER_IMMUNE = TagKey.of(RegistryKeys.ENTITY_TYPE, Yttr.id("screeper_immune"));
 		public static final TagKey<EntityType<?>> BLOODLESS = TagKey.of(RegistryKeys.ENTITY_TYPE, Yttr.id("bloodless"));
 		public static final TagKey<EntityType<?>> DISJUNCTIBLE = TagKey.of(RegistryKeys.ENTITY_TYPE, Yttr.id("disjunctible"));
+		public static final TagKey<EntityType<?>> UNADJUSTABLE = TagKey.of(RegistryKeys.ENTITY_TYPE, Yttr.id("unadjustable"));
 		
 		private static void init() {}
 		

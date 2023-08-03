@@ -36,6 +36,8 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	private int spinTime;
 	private int maxSpinTime;
 	
+	private boolean fuelLocked = false;
+	
 	private final PropertyDelegate properties = new PropertyDelegate() {
 		@Override
 		public int get(int index) {
@@ -44,6 +46,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 				case 1: return maxFuelTime;
 				case 2: return spinTime;
 				case 3: return maxSpinTime;
+				case 4: return fuelLocked ? 1 : 0;
 				default: return 0;
 			}
 		}
@@ -55,6 +58,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 				case 1: maxFuelTime = value; break;
 				case 2: spinTime = value; break;
 				case 3: maxSpinTime = value; break;
+				case 4: fuelLocked = value != 0; break;
 			}
 
 		}
@@ -168,6 +172,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 		tag.putInt("MaxFuelTime", maxFuelTime);
 		tag.putInt("SpinTime", spinTime);
 		tag.putInt("MaxSpinTime", maxSpinTime);
+		if (fuelLocked) tag.putBoolean("FuelLocked", true);
 	}
 	
 	@Override
@@ -177,6 +182,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 		maxFuelTime = tag.getInt("MaxFuelTime");
 		spinTime = tag.getInt("SpinTime");
 		maxSpinTime = tag.getInt("MaxSpinTime");
+		fuelLocked = tag.getBoolean("FuelLocked");
 	}
 	
 	public boolean isBurning() {

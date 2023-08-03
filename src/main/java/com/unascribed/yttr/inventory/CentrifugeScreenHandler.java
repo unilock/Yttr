@@ -36,7 +36,7 @@ public class CentrifugeScreenHandler extends ScreenHandler {
 	}
 	
 	public CentrifugeScreenHandler(int syncId, PlayerInventory playerInv) {
-		this(new SimpleInventory(6), syncId, playerInv, new ArrayPropertyDelegate(4));
+		this(new SimpleInventory(6), syncId, playerInv, new ArrayPropertyDelegate(5));
 	}
 	
 	public CentrifugeScreenHandler(Inventory centrifuge, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
@@ -55,7 +55,12 @@ public class CentrifugeScreenHandler extends ScreenHandler {
 		addSlot(new Slot(centrifuge, 5, 8, 86) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				return FurnaceBlockEntity.canUseAsFuel(stack);
+				return !isFuelLocked() && FurnaceBlockEntity.canUseAsFuel(stack);
+			}
+			
+			@Override
+			public boolean canTakeItems(PlayerEntity playerEntity) {
+				return !isFuelLocked();
 			}
 		});
 		
@@ -152,6 +157,10 @@ public class CentrifugeScreenHandler extends ScreenHandler {
 
 	public boolean isBurning() {
 		return properties.get(0) > 0;
+	}
+	
+	public boolean isFuelLocked() {
+		return properties.get(4) != 0;
 	}
 
 }

@@ -12,7 +12,6 @@ buildscript {
 plugins {
 	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'io.github.juuxel.loom-vineflower' version '1.11.0'
-	id 'org.quiltmc.quilt-mappings-on-loom' version '4.2.0'
 }
 
 if (System.getenv("MODRINTH_TOKEN")) {
@@ -116,11 +115,11 @@ dependencies {
 	include "me.luligabi:NoIndium:1.1.0+1.20"
 	
 	[
-		'core', 'lockpick', 'tunnel', 'phantom', 'waypoint', 'weld',
+		'aqi', 'core', 'lockpick', 'tunnel', 'phantom', 'waypoint', 'weld',
 		'sandman', 'crowbar', 'keygen', 'dessicant', 'deferral', 'machination', 'util', 'ripple',
 		'recoil', 'mesh'
 	].each { module ->
-		modApi include("com.unascribed:lib39-${module}:1.5.0-experimental3+1.20.1")
+		modApi include("com.unascribed:lib39-${module}:1.5.0-experimental5+1.20.1")
 	}
 	
 	modImplementation("com.terraformersmc:modmenu:7.2.1") {
