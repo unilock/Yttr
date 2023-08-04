@@ -251,7 +251,7 @@ public class EffectorRenderer extends IHasAClient {
 	
 	private static void drawVoidFace(World w, MatrixStack ms, VertexConsumer vc, BlockPos pos, Direction face) {
 		if (w.isPhased(pos)) return;
-		if (w.isAir(pos.offset(face))) return;
+		if (w.isAir(pos) || w.isAir(pos.offset(face))) return;
 		var bs = mc.world.getBlockState(pos);
 		BakedModel model = mc.getBlockRenderManager().getModel(bs);
 		if (model == null) return;
