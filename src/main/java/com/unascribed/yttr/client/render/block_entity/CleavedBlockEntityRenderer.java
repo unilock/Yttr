@@ -8,7 +8,6 @@ import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -19,7 +18,7 @@ public class CleavedBlockEntityRenderer implements BlockEntityRenderer<CleavedBl
 
 	@Override
 	public void render(CleavedBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if (!MinecraftClient.getInstance().options.debugEnabled) return;
+		if (true) return;
 		Random rand = new Random(entity.hashCode());
 		float r = rand.nextFloat();
 		float g = rand.nextFloat();
