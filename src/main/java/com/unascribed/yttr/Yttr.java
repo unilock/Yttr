@@ -467,4 +467,10 @@ public class Yttr implements ModInitializer {
 		return true;
 	}
 	
+	public static boolean prefersSurvivalInventory(PlayerEntity player) {
+		if (!isEnlightened(player, false)) return false;
+		var is = player.getEquippedStack(EquipmentSlot.HEAD);
+		return is.hasNbt() && is.getNbt().getBoolean("PreferSurvival");
+	}
+	
 }
