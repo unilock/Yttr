@@ -3,6 +3,7 @@ package com.unascribed.yttr.client.render.block_entity;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.lib39.util.api.DelegatingVertexConsumer;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.render.LowSodiumItemRenderer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.content.block.big.DSUBlock;
 import com.unascribed.yttr.content.block.big.DSUBlockEntity;
@@ -151,7 +152,7 @@ public class DSUBlockEntityRenderer implements BlockEntityRenderer<DSUBlockEntit
 							matrices.translate(x*3, y*6, 0);
 							matrices.translate(1.5, 1.5, -0.015);
 							matrices.scale(3, -3, -0.01f);
-							MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformationMode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
+							LowSodiumItemRenderer.renderItem(item, ModelTransformationMode.GUI, light, overlay, matrices, layer -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 								@Override
 								public void bakedQuad(Entry matrixEntry, BakedQuad quad, float red, float green, float blue, int light, int overlay) {
 									super.bakedQuad(new Entry(matrixEntry.getModel(), nmat2), quad, red, green, blue, light, overlay);
