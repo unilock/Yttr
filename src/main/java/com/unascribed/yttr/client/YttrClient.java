@@ -332,7 +332,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (Yttr.isEnlightened(mc.player, true)) {
 				if (mc.options.dropKey.wasPressed()) {
 					var pos = mc.player.raycast(256, 0, false).getPos();
-					new MessageC2SCreativeBlink(pos.x, pos.y, pos.z).sendToServer();
+					new MessageC2SCreativeBlink(pos.x, mc.player.isSneaking() ? mc.player.getY() : pos.y, pos.z).sendToServer();
 				}
 				if (mc.options.swapHandsKey.isPressed() != noclipping) {
 					noclipping = !noclipping;
