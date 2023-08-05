@@ -1,13 +1,16 @@
 package com.unascribed.yttr.client.cache;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.texture.NativeImage;
 import com.unascribed.yttr.client.util.UVObserver;
-import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
@@ -17,6 +20,7 @@ import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.model.BakedModel;
@@ -36,7 +40,11 @@ public class CleavedBlockMeshes {
 	
 	private static final UVObserver uvo = new UVObserver();
 	
-	public static int era = 0;
+	public record UniqueShapeKey(BlockState donor, ImmutableSet<Polygon> polys) {}
+	
+	private static final ConcurrentMap<UniqueShapeKey, Mesh> sharedMeshCache = new ConcurrentHashMap<>();
+	
+	public static volatile int era = 0;
 	
 	private static class DummySprite extends Sprite {
 
@@ -84,23 +92,29 @@ public class CleavedBlockMeshes {
 		
 	}
 	
-	public static Mesh getMesh(CleavedBlockEntity entity) {
-		if (entity.clientCacheData instanceof Mesh && entity.clientCacheEra == era) return (Mesh)entity.clientCacheData;
+	public static void clearCache() {
+		era++;
+		sharedMeshCache.clear();
+	}
+	
+	public static Mesh getMesh(UniqueShapeKey usk) {
+		Mesh cached = sharedMeshCache.get(usk);
+		if (cached != null) return cached;
 		if (!RendererAccess.INSTANCE.hasRenderer()) return null;
 		MinecraftClient.getInstance().getProfiler().push("yttr:cleaved_modelgen");
-		BlendMode bm = BlendMode.fromRenderLayer(RenderLayers.getBlockLayer(entity.getDonor()));
-		BakedModel donor = MinecraftClient.getInstance().getBlockRenderManager().getModel(entity.getDonor());
+		BlendMode bm = BlendMode.fromRenderLayer(RenderLayers.getBlockLayer(usk.donor()));
+		BakedModel donor = MinecraftClient.getInstance().getBlockRenderManager().getModel(usk.donor());
 		Renderer r = RendererAccess.INSTANCE.getRenderer();
-		RenderMaterial mat = r.materialFinder().blendMode(0, bm).find();
+		RenderMaterial mat = r.materialFinder().blendMode(bm).find();
 		MeshBuilder bldr = r.meshBuilder();
 		QuadEmitter qe = bldr.getEmitter();
 		RandomGenerator rand = new Xoroshiro128PlusPlusRandom(7);
-		BakedQuad firstNullQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), null, rand), null);
+		BakedQuad firstNullQuad = Iterables.getFirst(donor.getQuads(usk.donor(), null, rand), null);
 		Sprite particle = donor.getParticleSprite();
-		for (Polygon p : entity.getPolygons()) {
+		for (Polygon p : usk.polys()) {
 			Plane plane = p.plane();
 			Direction face = findClosestFace(plane.normal());
-			BakedQuad firstQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), face, rand), firstNullQuad);
+			BakedQuad firstQuad = Iterables.getFirst(donor.getQuads(usk.donor(), face, rand), firstNullQuad);
 			Sprite sprite;
 			int tintIndex = -1;
 			if (firstQuad == null) {
@@ -135,6 +149,7 @@ public class CleavedBlockMeshes {
 					if (de == p.first()) continue;
 					// each triangle is a degenerate quad
 					// it'd be nice to find a solution that doesn't involve doing this, but whatever
+					// is quadrangulation a thing??
 					qe.nominalFace(face);
 					qe.pos(0, (float)origin.x, (float)origin.y, (float)origin.z);
 					qe.pos(1, (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z);
@@ -143,8 +158,8 @@ public class CleavedBlockMeshes {
 					for (int i = 0; i < 4; i++) {
 						qe.normal(i, (float)plane.normal().x, (float)plane.normal().y, (float)plane.normal().z);
 					}
-					qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
-					qe.spriteColor(0, c, c, c, c);
+					qe.spriteBake(sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
+					qe.color(c, c, c, c);
 					qe.material(mat);
 					qe.colorIndex(tintIndex);
 					qe.emit();
@@ -152,9 +167,8 @@ public class CleavedBlockMeshes {
 			}
 		}
 		Mesh mesh = bldr.build();
-		entity.clientCacheData = mesh;
-		entity.clientCacheEra = era;
 		MinecraftClient.getInstance().getProfiler().pop();
+		sharedMeshCache.putIfAbsent(usk, mesh);
 		return mesh;
 	}
 
@@ -169,9 +183,9 @@ public class CleavedBlockMeshes {
 			i += (invert ? -1 : 1);
 		}
 		if (p.nPoints() == 3) emit(sprite, qe, plane, p.first(), i);
-		qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
+		qe.spriteBake(sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
 		int c = -1;//p.nPoints() == 3 ? 0x00FFFF : 0x00FF00;
-		qe.spriteColor(0, c, c, c, c);
+		qe.color(c, c, c, c);
 	}
 
 	private static void emit(Sprite sprite, QuadEmitter qe, Plane plane, DEdge de, int i) {

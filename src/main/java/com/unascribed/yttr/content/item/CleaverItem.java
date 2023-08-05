@@ -1,6 +1,5 @@
 package com.unascribed.yttr.content.item;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +20,7 @@ import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -126,10 +126,10 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 		return !(state.getBlock() instanceof BlockEntityProvider) && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
 	}
 
-	public static List<Polygon> getShape(World world, BlockPos pos) {
+	public static ImmutableSet<Polygon> getShape(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CleavedBlockEntity) {
-			return Lists.newArrayList(Iterables.transform(((CleavedBlockEntity)be).getPolygons(), Polygon::copy));
+			return ImmutableSet.copyOf(Iterables.transform(((CleavedBlockEntity)be).getPolygons(), Polygon::copy));
 		}
 		return CleavedBlockEntity.cube();
 	}
@@ -175,8 +175,8 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 	
 	public boolean performWorldCleave(World world, BlockPos pos, ItemStack stack, PlayerEntity player, Plane plane) {
 		BlockState state = world.getBlockState(pos);
-		List<Polygon> shape = getShape(world, pos);
-		List<Polygon> result = performCleave(plane, shape, false);
+		var shape = getShape(world, pos);
+		var result = performCleave(plane, shape, false);
 		if (!result.isEmpty()) {
 			world.playSound(null, pos, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
 			SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
@@ -207,7 +207,7 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 		return false;
 	}
 	
-	public static List<Polygon> performCleave(Plane plane, List<Polygon> polygonsIn, boolean invert) {
+	public static ImmutableSet<Polygon> performCleave(Plane plane, ImmutableSet<Polygon> polygonsIn, boolean invert) {
 		List<Polygon> above = Lists.newArrayList();
 		List<Polygon> on = Lists.newArrayList();
 		List<Polygon> below = Lists.newArrayList();
@@ -222,8 +222,7 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 		} else {
 			out = above;
 		}
-		if (out.isEmpty()) return out;
-		if (out.size() < 3) return Collections.emptyList();
+		if (out.size() < 3) return ImmutableSet.of();
 		
 		List<Vec3d> joinerPoints = Lists.newArrayList();
 		for (Polygon polygon : out) {
@@ -238,8 +237,8 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 			out.add(p);
 		}
 
-		if (out.equals(polygonsIn)) return Collections.emptyList();
-		return out;
+		if (out.equals(polygonsIn)) return ImmutableSet.of();
+		return ImmutableSet.copyOf(out);
 	}
 	
 	@Override

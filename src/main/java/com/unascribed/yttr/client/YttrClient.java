@@ -57,6 +57,9 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
+import com.unascribed.yttr.mixinsupport.Clippy;
+import com.unascribed.yttr.network.MessageC2SCreativeBlink;
+import com.unascribed.yttr.network.MessageC2SCreativeNoClip;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
@@ -144,6 +147,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	private HitResult rifleHitResult;
 	private long lastRifleHitUpdate;
+	
+	private boolean noclipping;
 
 	@Override
 	public void onInitializeClient() {
@@ -208,7 +213,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
 			rm.registerReloader(reloader("yttr:clear_caches", (manager) -> {
 				TextureColorThief.clearCache();
-				CleavedBlockMeshes.era++;
+				CleavedBlockMeshes.clearCache();
 			}));
 			rm.registerReloader(reloader("yttr:detect", (manager) -> {
 				Yttr.lessCreepyAwareHopper = manager.getResource(Yttr.id("lcah-marker")).isPresent();
@@ -324,6 +329,20 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				((AccessorClientPlayerInteractionManager)mc.interactionManager).yttr$setBlockBreakingCooldown(0);
 			}
 			prof.pop();
+			if (Yttr.isEnlightened(mc.player, true)) {
+				if (mc.options.dropKey.wasPressed()) {
+					var pos = mc.player.raycast(256, 0, false).getPos();
+					new MessageC2SCreativeBlink(pos.x, pos.y, pos.z).sendToServer();
+				}
+				if (mc.options.swapHandsKey.isPressed() != noclipping) {
+					noclipping = !noclipping;
+					((Clippy)mc.player).yttr$setNoClip(noclipping);
+					new MessageC2SCreativeNoClip(noclipping).sendToServer();
+				}
+			} else if (mc.player != null && noclipping) {
+				noclipping = false;
+				mc.player.noClip = false;
+			}
 		});
 		
 		HudRenderCallback.EVENT.register((ctx, tickDelta) -> {

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
+import com.unascribed.yttr.content.block.decor.CleavedBlockEntity.CleavedMeshTarget;
 import com.unascribed.yttr.util.YLog;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
@@ -41,15 +43,24 @@ public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
-		if (attachment instanceof Mesh) {
-			try {
-				context.meshConsumer().accept((Mesh)attachment);
-			} catch (ClassCastException e) {
-				// XXX Temporary BC23 workaround for a crash in Too Many Origins with Create
-				YLog.warn("Caught an exception while meshing a cleaved block. This isn't good! Please go see what's happening at "+pos+" (but that's probably a fake coordinate inside a Create contraption...) Good luck!", e);
+		try {
+			if (attachment instanceof Mesh m) {
+				m.outputTo(context.getEmitter());
+			} else if (attachment instanceof CleavedMeshTarget tgt) {
+				Mesh mesh = (Mesh)tgt.cachedMesh;
+				if (mesh == null || tgt.era != CleavedBlockMeshes.era) {
+					mesh = CleavedBlockMeshes.getMesh(tgt.key);
+					tgt.cachedMesh = mesh;
+					tgt.era = CleavedBlockMeshes.era;
+				} else {
+				}
+				mesh.outputTo(context.getEmitter());
+			} else {
+				MinecraftClient.getInstance().getBakedModelManager().getMissingModel().emitBlockQuads(blockView, state, pos, randomSupplier, context);
 			}
-		} else {
-			context.bakedModelConsumer().accept(MinecraftClient.getInstance().getBakedModelManager().getMissingModel());
+		} catch (ClassCastException e) {
+			// XXX Temporary BC23 workaround for a crash in Too Many Origins with Create
+			YLog.warn("Caught an exception while meshing a cleaved block. This isn't good! Please go see what's happening at "+pos+" (but that's probably a fake coordinate inside a Create contraption...) Good luck!", e);
 		}
 	}
 

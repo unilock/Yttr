@@ -174,7 +174,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 			}
 			if (entity.getVehicle() != null) return;
 			if (entity.getType() != null && entity.getType().isIn(YTags.Entity.UNADJUSTABLE)) return;
-			List<Polygon> shape = ((CleavedBlockEntity)be).getPolygons();
+			var shape = ((CleavedBlockEntity)be).getPolygons();
 			double checkDist = 2D/CleavedBlockEntity.SHAPE_GRANULARITY;
 			Box box = entity.getBoundingBox();
 			double x = box.getCenter().x;

@@ -1,7 +1,5 @@
 package com.unascribed.yttr.client.render;
 
-import java.util.List;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
@@ -162,9 +160,9 @@ public class CleaverUI extends IHasAClient {
 							RenderSystem.enablePolygonOffset();
 							RenderSystem.disableCull();
 							RenderSystem.polygonOffset(-3, -3);
-							List<Polygon> shape = CleaverItem.getShape(wrc.world(), pos);
+							var shape = CleaverItem.getShape(wrc.world(), pos);
 							Plane plane = new Plane(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ));
-							List<Polygon> cleave = CleaverItem.performCleave(plane, shape, true);
+							var cleave = CleaverItem.performCleave(plane, shape, true);
 							RenderSystem.setShader(GameRenderer::getPositionColorShader);
 							vc.begin(DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
 							var mat = ms.peek().getModel();
@@ -195,12 +193,14 @@ public class CleaverUI extends IHasAClient {
 				wrc.matrixStack().push();
 				BlockPos pos = boc.blockPos();
 				wrc.matrixStack().translate(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-				List<Polygon> polys = ((CleavedBlockEntity)be).getPolygons();
-				// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
-				// TODO why does the line happen? is the joiner polygon invalid?
-				// I think it *is*, because enabling multi-cuts causes game crashes if the cut intersects the joiner polygon
+				var polys = ((CleavedBlockEntity)be).getPolygons();
 				VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
-				for (Polygon pg : polys.subList(0, polys.size()-1)) {
+				int i = 0;
+				for (Polygon pg : polys) {
+					// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
+					// TODO why does the line happen? is the joiner polygon invalid?
+					// I think it *is*, because enabling multi-cuts causes corrupted models if the cut intersects the joiner polygon
+					if (i == polys.size()-2) break;
 					pg.forEachDEdge((de) -> {
 						YttrClient.addLine(wrc.matrixStack(), vc,
 								(float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z,
@@ -208,6 +208,7 @@ public class CleaverUI extends IHasAClient {
 								0, 0, 0, 0.4f,
 								0, 0, 0, 0.4f);
 					});
+					i++;
 				}
 				wrc.matrixStack().pop();
 				return false;

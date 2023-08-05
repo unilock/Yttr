@@ -3,6 +3,8 @@ package com.unascribed.yttr.init;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.network.MessageC2SAttack;
+import com.unascribed.yttr.network.MessageC2SCreativeBlink;
+import com.unascribed.yttr.network.MessageC2SCreativeNoClip;
 import com.unascribed.yttr.network.MessageC2SDivePos;
 import com.unascribed.yttr.network.MessageC2SDiveTo;
 import com.unascribed.yttr.network.MessageC2SOscillatorShift;
@@ -52,6 +54,8 @@ public class YNetwork {
 		CONTEXT.register(MessageC2STrustedRifleFire.class);
 		CONTEXT.register(MessageS2CScreeperBreak.class);
 		CONTEXT.register(MessageS2CSoulImpurity.class);
+		CONTEXT.register(MessageC2SCreativeBlink.class);
+		CONTEXT.register(MessageC2SCreativeNoClip.class);
 	}
 	
 	public static void sendPacketToPlayersWatching(World world, BlockPos pos, Packet<?> packet) {

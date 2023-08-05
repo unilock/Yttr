@@ -459,5 +459,12 @@ public class Yttr implements ModInitializer {
 		if (repl != null) return repl;
 		return orig;
 	}
+
+	public static boolean isEnlightened(PlayerEntity player, boolean requireEmptyHands) {
+		if (player == null) return false;
+		if (!player.isCreative() || !player.getEquippedStack(EquipmentSlot.HEAD).isOf(YItems.GOGGLES)) return false;
+		if (requireEmptyHands) return player.getMainHandStack().isEmpty() && player.getOffHandStack().isEmpty();
+		return true;
+	}
 	
 }

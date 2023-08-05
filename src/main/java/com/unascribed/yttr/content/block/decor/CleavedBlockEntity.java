@@ -2,6 +2,8 @@ package com.unascribed.yttr.content.block.decor;
 
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.registry.Registries;
@@ -9,13 +11,13 @@ import net.minecraft.registry.RegistryKeys;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
+import com.unascribed.yttr.client.cache.CleavedBlockMeshes.UniqueShapeKey;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 import com.unascribed.yttr.util.math.partitioner.Where;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import net.fabricmc.api.EnvType;
@@ -39,10 +41,18 @@ import net.minecraft.util.shape.VoxelShape;
 
 public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
 
-	public static int SHAPE_GRANULARITY = 8;
+	public class CleavedMeshTarget {
+
+		public volatile UniqueShapeKey key;
+		public Object cachedMesh;
+		public volatile int era;
+		
+	}
+
+	public static int SHAPE_GRANULARITY = 10;
 	
-	public static List<Polygon> cube() {
-		return Lists.newArrayList(
+	public static ImmutableSet<Polygon> cube() {
+		return ImmutableSet.of(
 			new Polygon(
 				new Vec3d(0, 0, 0),
 				new Vec3d(1, 0, 0),
@@ -87,12 +97,12 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		);
 	}
 	
-	private List<Polygon> polygons = cube();
+	private ImmutableSet<Polygon> polygons = cube();
 	private BlockState donor = Blocks.AIR.getDefaultState();
 	
-	public Object clientCacheData;
-	public int clientCacheEra;
-	
+	private final CleavedMeshTarget target = new CleavedMeshTarget();
+
+	private static final ConcurrentMap<ImmutableSet<Polygon>, VoxelShape> sharedShapeCache = new ConcurrentHashMap<>();
 	
 	private VoxelShape cachedShape;
 	
@@ -100,20 +110,26 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		super(YBlockEntities.CLEAVED_BLOCK, pos, state);
 	}
 	
-	public List<Polygon> getPolygons() {
+	public ImmutableSet<Polygon> getPolygons() {
 		return polygons;
 	}
 	
 	public void setPolygons(Iterable<Polygon> polygons) {
-		this.polygons = ImmutableList.copyOf(polygons);
+		this.polygons = ImmutableSet.copyOf(polygons);
 		fromTagInner(toTagInner(new NbtCompound()));
 		cachedShape = null;
+		target.cachedMesh = null;
 		markDirty();
 		Yttr.sync(this);
 	}
 	
 	public VoxelShape getShape() {
 		if (cachedShape != null) return cachedShape;
+		var cachedShared = sharedShapeCache.get(polygons);
+		if (cachedShared != null) {
+			cachedShape = cachedShared;
+			return cachedShared;
+		}
 		world.getProfiler().push("yttr:cleaved_shapegen");
 		final int acc = SHAPE_GRANULARITY;
 		
@@ -132,7 +148,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 							new Vec3d((x+0.9)/acc, (y+0.9)/acc, (z+0.9)/acc),
 					};
 					int outsideCount = 0;
-					glass: for (Polygon p : polygons) {
+					for (Polygon p : polygons) {
 						for (Vec3d point : points) {
 							if (p.plane().whichSide(point) == Where.ABOVE) {
 								outsideCount++;
@@ -148,6 +164,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 
 		VoxelShape shape = new SimpleVoxelShape(voxels).simplify();
 		cachedShape = shape;
+		sharedShapeCache.putIfAbsent(polygons, shape);
 		world.getProfiler().pop();
 		return shape;
 	}
@@ -164,7 +181,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 
 	public void fromTagInner(NbtCompound tag) {
 		if (tag.contains("Polygons", NbtElement.LIST_TYPE)) {
-			ImmutableList.Builder<Polygon> builder = ImmutableList.builder();
+			ImmutableSet.Builder<Polygon> builder = ImmutableSet.builder();
 			NbtList li = tag.getList("Polygons", NbtElement.BYTE_ARRAY_TYPE);
 			for (int i = 0; i < li.size(); i++) {
 				NbtElement en = li.get(i);
@@ -184,8 +201,8 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 				? this.world.filteredLookup(RegistryKeys.BLOCK)
 				: Registries.BLOCK.asLookup();
 		donor = NbtHelper.toBlockState(lk, tag.getCompound("Donor"));
-		clientCacheData = null;
 		cachedShape = null;
+		target.cachedMesh = null;
 		if (world instanceof YttrWorld) ((YttrWorld)world).yttr$scheduleRenderUpdate(pos);
 	}
 	
@@ -240,7 +257,8 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	@Override
 	@Environment(EnvType.CLIENT)
 	public @Nullable Object getRenderAttachmentData() {
-		return CleavedBlockMeshes.getMesh(this);
+		target.key = new UniqueShapeKey(donor, polygons);
+		return target;
 	}
 	
 
