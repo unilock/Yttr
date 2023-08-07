@@ -194,6 +194,7 @@ public class YBlocks {
 	public static final VoidGeyserBlock VOID_GEYSER = new VoidGeyserBlock(FabricBlockSettings.create()
 			.strength(-1, 9000000)
 			.dropsNothing()
+			.solid()
 		);
 	public static final DormantVoidGeyserBlock DORMANT_VOID_GEYSER = new DormantVoidGeyserBlock(FabricBlockSettings.copyOf(VOID_GEYSER)
 			.nonOpaque());
