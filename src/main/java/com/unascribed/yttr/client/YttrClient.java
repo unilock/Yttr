@@ -63,6 +63,7 @@ import com.unascribed.yttr.network.MessageC2SCreativeNoClip;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import net.fabricmc.api.ClientModInitializer;
@@ -73,6 +74,7 @@ import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -87,6 +89,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -136,6 +139,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	public static final Map<Entity, SoundInstance> dropCastSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
+
+	public static final VertexFormat POSITION_NORMAL = new VertexFormat(ImmutableMap.of(
+			"Position", VertexFormats.POSITION_ELEMENT,
+			"Normal", VertexFormats.NORMAL_ELEMENT));
+	
+	public static ShaderProgram positionNormalShader;
 	
 	private boolean hasCheckedRegistry = false;
 	private boolean firstWorldTick = true;
@@ -368,6 +377,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(PlatformsRenderer::renderWorld);
 		DynamicBlockModelProvider.init();
+		
+		CoreShaderRegistrationCallback.EVENT.register(ctx -> {
+			ctx.register(Yttr.id("position_normal"), POSITION_NORMAL, it -> positionNormalShader = it);
+		});
 
 		EntityRendererRegistry.register(YEntities.SLIPPING_TRANSFUNGUS, FallingBlockEntityRenderer::new);
 		EntityRendererRegistry.register(YEntities.THROWN_GLOWING_GAS, FlyingItemEntityRenderer::new);

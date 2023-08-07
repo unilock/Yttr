@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.ReplicatorShapes;
+import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
@@ -18,13 +22,16 @@ import com.unascribed.yttr.util.math.Interp;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import static org.lwjgl.opengl.GL11.GL_LEQUAL;
+import static org.lwjgl.opengl.GL11.GL_LESS;
+
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -35,15 +42,9 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.*;
 import net.minecraft.util.profiler.Profiler;
 import org.joml.Quaternionf;
-
-import static com.unascribed.lib39.deferral.api.RenderBridge.*;
 
 public class ReplicatorRenderer extends IHasAClient {
 
@@ -102,7 +103,7 @@ public class ReplicatorRenderer extends IHasAClient {
 	}
 	
 	public static void render(MatrixStack matrices, float tickDelta, int seed, ItemStack item, BlockPos pos, int ticks, Camera cam, int pass, float detail) {
-		if (pass < 2 || pass == -1) {
+		if (pass < 2) {
 			matrices.push();
 			matrices.translate(0.5, 0.5, 0.5);
 			if (ticks+tickDelta < 5) {
@@ -145,23 +146,21 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.pop();
 			}
 			
-			if (pass == 1 && canUseCompatFunctions()) {
-				int solid1 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
-				int solid2 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
+			if (pass == 1 && YttrClient.positionNormalShader != null) {
+				var solid1 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
+				var solid2 = ReplicatorShapes.ALL.get(rand.nextInt(ReplicatorShapes.ALL.size()));
 
-				glDepthMask(false);
-				glEnable(GL_DEPTH_TEST);
-				glDepthFunc(GL_LESS);
-				glPushMCMatrix(matrices);
-				glEnable(GL_RESCALE_NORMAL);
-				glEnable(GL_BLEND);
-				glEnable(GL_COLOR_MATERIAL);
-				glDisable(GL_TEXTURE_2D);
-				glDefaultBlendFunc();
+				RenderSystem.depthMask(false);
+				RenderSystem.enableDepthTest();
+				RenderSystem.depthFunc(GL_LESS);
+				RenderSystem.enableBlend();
+				RenderSystem.defaultBlendFunc();
+				RenderSystem.disableCull();
+				matrices.push();
 				
-				glRotatef(t*(rand.nextFloat()*2), 0, 1, 0);
-				glRotatef(t*(rand.nextFloat()*2), 1, 0, 0);
-				glRotatef(t*(rand.nextFloat()*2), 0, 0, 1);
+				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(t*(rand.nextFloat()*2)));
+				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(t*(rand.nextFloat()*2)));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(t*(rand.nextFloat()*2)));
 				
 				float xSo = (rand.nextFloat()*0.65f);
 				float ySo = (rand.nextFloat()*0.65f);
@@ -169,70 +168,72 @@ public class ReplicatorRenderer extends IHasAClient {
 				if (cam == null) {
 					xSo = ySo = zSo = 0;
 				}
-				glScalef(1.4f-xSo, 1.4f-ySo, 1.4f-zSo);
-				glScalef(0.5f, 0.5f, 0.5f);
+				matrices.scale(1.4f-xSo, 1.4f-ySo, 1.4f-zSo);
+				matrices.scale(0.5f, 0.5f, 0.5f);
 		
-				glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE, SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 				float r = rand.nextFloat()/2;
 				float g = rand.nextFloat()/2;
 				float b = (0.25f+(rand.nextFloat()*0.75f))/2;
-				glDisable(GL_LIGHTING);
-				glPushMatrix();
+				var mv = RenderSystem.getModelViewStack();
+				mv.push();
+				mv.multiplyMatrix(matrices.peek().getModel());
+				mv.push();
 				for (int i = 0; i < Math.ceil((MinecraftClient.isFancyGraphicsOrBetter() ? 6 : 1)*detail); i++) {
-					glColor4f(r, g, b, i == 0 ? 0.4f : (0.1f/detail));
-					glCallList(solid1);
+					RenderSystem.setShaderColor(r, g, b, i == 0 ? 0.2f : (0.025f/detail));
+					solid1.bind();
+					solid1.draw(mv.peek().getModel(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 					float s = 1+(0.05f/detail);
-					glScalef(s, s, s);
+					mv.scale(s, s, s);
 				}
-				glPopMatrix();
+				mv.pop();
 				
-				glScalef(0.9f-(rand.nextFloat()*0.25f), 0.9f-(rand.nextFloat()*0.25f), 0.9f-(rand.nextFloat()*0.25f));
+				mv.scale(0.9f-(rand.nextFloat()*0.25f), 0.9f-(rand.nextFloat()*0.25f), 0.9f-(rand.nextFloat()*0.25f));
 
-				glDefaultBlendFunc();
-				glEnable(GL_LIGHTING);
-				glCopyMCLight();
-				glColor4f(rand.nextFloat(), 0.25f+(rand.nextFloat()*0.75f), rand.nextFloat(), 0.25f);
-				glCallList(solid2);
+				RenderSystem.defaultBlendFunc();
+				RenderSystem.setShaderColor(rand.nextFloat(), 0.25f+(rand.nextFloat()*0.75f), rand.nextFloat(), 0.125f);
+				solid2.bind();
+				solid2.draw(mv.peek().getModel(), RenderSystem.getProjectionMatrix(), YttrClient.positionNormalShader);
+				mv.pop();
 				
-				glEnable(GL_TEXTURE_2D);
-				glDisable(GL_RESCALE_NORMAL);
-				glDisable(GL_BLEND);
-				glDisable(GL_LIGHTING);
-				glDisable(GL_COLOR_MATERIAL);
-				glColor4f(1, 1, 1, 1);
-				glPopMCMatrix();
-				glDepthFunc(GL_LEQUAL);
-				glDepthMask(true);
+				VertexBuffer.unbind();
+				
+				RenderSystem.disableBlend();
+				RenderSystem.setShaderColor(1, 1, 1, 1);
+				RenderSystem.depthFunc(GL_LEQUAL);
+				RenderSystem.depthMask(true);
+				RenderSystem.enableCull();
+				matrices.pop();
 			}
 			matrices.pop();
 		}
-		
-		if (pass == 2 && !item.isEmpty() && !mc.options.hudHidden && mc.crosshairTarget.getType() == Type.BLOCK) {
-			BlockHitResult bhr = (BlockHitResult)mc.crosshairTarget;
-			if (bhr.getBlockPos().equals(pos)) {
-				RenderSystem.enableBlend();
-				RenderSystem.defaultBlendFunc();
-//				RenderSystem.disableLighting();
-				matrices.push();
-				matrices.translate(0.5, 0.5, 0.5);
-				if (cam != null) matrices.multiply(cam.getRotation());
-				matrices.scale(-0.0125F, -0.0125F, 0.01f);
-				matrices.translate(0, -50, -400);
 
-				List<OrderedText> tip = Lists.transform(Screen.getTooltipFromItem(mc, item), Text::asOrderedText);
-				int width = 0;
-				int height = tip.size()*8;
-				for (OrderedText ot : tip) {
-					width = Math.max(width, mc.textRenderer.getWidth(ot));
-				}
-				matrices.translate(-(width+16)/2f, -height, 0);
-				GuiGraphics graphics = setupGraphicsState(matrices);
-				graphics.drawOrderedTooltip(mc.textRenderer, tip, 0, 0);
-				
-				matrices.pop();
-				RenderSystem.disableBlend();
-			}
-		}
+		// completely broken on 1.20
+//		if (pass == 2 && !item.isEmpty() && !mc.options.hudHidden && mc.crosshairTarget.getType() == Type.BLOCK) {
+//			BlockHitResult bhr = (BlockHitResult)mc.crosshairTarget;
+//			if (bhr.getBlockPos().equals(pos)) {
+//				RenderSystem.enableBlend();
+//				RenderSystem.defaultBlendFunc();
+//				matrices.push();
+//				matrices.translate(0.5, 0.5, 0.5);
+//				if (cam != null) matrices.multiply(cam.getRotation());
+//				matrices.scale(-0.0125F, -0.0125F, 0.5f);
+//				matrices.translate(0, -50, -400);
+//
+//				List<OrderedText> tip = Lists.transform(Screen.getTooltipFromItem(mc, item), Text::asOrderedText);
+//				int width = 0;
+//				int height = tip.size()*8;
+//				for (OrderedText ot : tip) {
+//					width = Math.max(width, mc.textRenderer.getWidth(ot));
+//				}
+//				matrices.translate(-(width+16)/2f, -height, 0);
+//				GuiGraphics graphics = setupGraphicsState(matrices);
+//				graphics.drawOrderedTooltip(mc.textRenderer, tip, 0, 0);
+//
+//				matrices.pop();
+//				RenderSystem.disableBlend();
+//			}
+//		}
 	}
 
 	private static GuiGraphics setupGraphicsState(MatrixStack stack) {
@@ -243,14 +244,14 @@ public class ReplicatorRenderer extends IHasAClient {
 		wrc.profiler().swap("yttr:replicators");
 		if (!replicators.isEmpty() || !removing.isEmpty()) {
 			renderList.clear();
-			renderList.addAll(replicators);
 			renderList.addAll(removing);
 			wrc.profiler().push("prepare");
-			for (ReplicatorBlockEntity rbe : renderList) {
+			for (ReplicatorBlockEntity rbe : replicators) {
 				if (rbe.clientAge < 1) continue;
 				double dist = rbe.getPos().getSquaredDistanceToCenter(wrc.camera().getPos());
 				if (dist < 64*64 && wrc.frustum().isVisible(new Box(rbe.getPos()))) {
 					rbe.distTmp = dist;
+					renderList.add(rbe);
 				}
 			}
 			wrc.profiler().swap("sort");
@@ -260,7 +261,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			matrices.push();
 			Vec3d cam = wrc.camera().getPos();
 			matrices.translate(-cam.x, -cam.y, -cam.z);
-			for (int pass = 0; pass < 3; pass++) {
+			for (int pass = 0; pass < 2; pass++) {
 				wrc.profiler().push("pass"+pass);
 				for (ReplicatorBlockEntity rbe : renderList) {
 					matrices.push();
