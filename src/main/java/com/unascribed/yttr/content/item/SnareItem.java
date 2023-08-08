@@ -35,7 +35,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -313,7 +312,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				return Text.translatable("item.yttr.snare.filled", ItemStack.fromNbt(stack.getNbt().getCompound("Contents").getCompound("Item")).getName());
 			} else if (type == EntityType.FALLING_BLOCK) {
 				return Text.translatable("item.yttr.snare.filled",
-						NbtHelper.toBlockState(MinecraftClient.getInstance().world.filteredLookup(RegistryKeys.BLOCK),
+						NbtHelper.toBlockState(Registries.BLOCK.asLookup(),
 								stack.getNbt().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
 			}
 			return Text.translatable("item.yttr.snare.filled", type.getName());
@@ -435,8 +434,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type == EntityType.FALLING_BLOCK) {
 			var data = stack.getNbt().getCompound("Contents");
-			var bs = NbtHelper.toBlockState(MinecraftClient.getInstance().world.filteredLookup(RegistryKeys.BLOCK),
-					data.getCompound("BlockState"));
+			var bs = NbtHelper.toBlockState(world.filteredLookup(RegistryKeys.BLOCK), data.getCompound("BlockState"));
 			if (bs.isOf(Blocks.SPAWNER) && data.contains("TileEntityData", NbtElement.COMPOUND_TYPE)) {
 				var bp = BlockPos.fromPosition(pos);
 				var logic = new MobSpawnerLogic() {
@@ -468,7 +466,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			NbtCompound data = stack.getNbt().getCompound("Contents");
 			int dmg = MathHelper.ceil(data.getFloat("Health")*MathHelper.sqrt(type.getDimensions().height*type.getDimensions().width));
 			if (type == EntityType.FALLING_BLOCK) {
-				var bs = NbtHelper.toBlockState(MinecraftClient.getInstance().world.filteredLookup(RegistryKeys.BLOCK),
+				var bs = NbtHelper.toBlockState(world.filteredLookup(RegistryKeys.BLOCK),
 						data.getCompound("BlockState"));
 				if (bs.isOf(Blocks.SPAWNER)) {
 					dmg += 15;
