@@ -187,7 +187,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 				double correction;
 				double fudge = 0.2;
 				if (entity.isSprinting()) {
-					fudge = 0.5;
+					fudge = 0.3;
 				}
 				var smallbox = entity.getBoundingBox().expand(-0.2, fudge, -0.2);
 				var bigbox = entity.getBoundingBox().expand(fudge, -0.1, fudge);
