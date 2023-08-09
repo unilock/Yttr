@@ -165,8 +165,6 @@ public class YConfig {
 	}
 	
 	public static final class Client {
-		@Key("client.slope-smoothing")
-		public static boolean slopeSmoothing = true;
 		@Key("client.force-opengl-core")
 		public static Trilean forceOpenGLCore = Trilean.AUTO;
 		@Key("client.config-color")

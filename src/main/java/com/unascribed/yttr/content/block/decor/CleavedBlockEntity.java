@@ -14,9 +14,8 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.cache.CleavedBlockMeshes.UniqueShapeKey;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
+import com.unascribed.yttr.util.math.opengjk.OpenGJK;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
-import com.unascribed.yttr.util.math.partitioner.Where;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
@@ -49,7 +48,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		
 	}
 
-	public static int SHAPE_GRANULARITY = 10;
+	public static int SHAPE_GRANULARITY = 8;
 	
 	public static ImmutableSet<Polygon> cube() {
 		return ImmutableSet.of(
@@ -99,6 +98,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 	
 	private ImmutableSet<Polygon> polygons = cube();
 	private BlockState donor = Blocks.AIR.getDefaultState();
+	private Boolean axisAligned;
 	
 	private final CleavedMeshTarget target = new CleavedMeshTarget();
 
@@ -114,11 +114,32 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		return polygons;
 	}
 	
+	public boolean isAxisAligned() {
+		Boolean v = axisAligned;
+		if (v == null) {
+			v = true;
+			for (var p : getPolygons()) {
+				var normal = p.plane().normal();
+				int unaligned = 0;
+				if (Math.abs(normal.getX()) > 0.001) unaligned++;
+				if (Math.abs(normal.getY()) > 0.001) unaligned++;
+				if (Math.abs(normal.getZ()) > 0.001) unaligned++;
+				if (unaligned != 1) {
+					v = false;
+					break;
+				}
+			}
+			axisAligned = v;
+		}
+		return v;
+	}
+	
 	public void setPolygons(Iterable<Polygon> polygons) {
 		this.polygons = ImmutableSet.copyOf(polygons);
 		fromTagInner(toTagInner(new NbtCompound()));
 		cachedShape = null;
 		target.cachedMesh = null;
+		axisAligned = null;
 		markDirty();
 		Yttr.sync(this);
 	}
@@ -133,29 +154,16 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 		world.getProfiler().push("yttr:cleaved_shapegen");
 		final int acc = SHAPE_GRANULARITY;
 		
+		var pt = CleavedBlock.polygonsToPolytope(polygons);
+		var pt2 = new OpenGJK.Polytope();
 		BitSetVoxelSet voxels = new BitSetVoxelSet(acc, acc, acc);
 		for (int x = 0; x < acc; x++) {
 			for (int y = 0; y < acc; y++) {
 				for (int z = 0; z < acc; z++) {
-					Vec3d[] points = {
-							new Vec3d((x+0.1)/acc, (y+0.1)/acc, (z+0.1)/acc),
-							new Vec3d((x+0.9)/acc, (y+0.1)/acc, (z+0.1)/acc),
-							new Vec3d((x+0.1)/acc, (y+0.1)/acc, (z+0.9)/acc),
-							new Vec3d((x+0.9)/acc, (y+0.1)/acc, (z+0.9)/acc),
-							new Vec3d((x+0.1)/acc, (y+0.9)/acc, (z+0.1)/acc),
-							new Vec3d((x+0.9)/acc, (y+0.9)/acc, (z+0.1)/acc),
-							new Vec3d((x+0.1)/acc, (y+0.9)/acc, (z+0.9)/acc),
-							new Vec3d((x+0.9)/acc, (y+0.9)/acc, (z+0.9)/acc),
-					};
-					int outsideCount = 0;
-					for (Polygon p : polygons) {
-						for (Vec3d point : points) {
-							if (p.plane().whichSide(point) == Where.ABOVE) {
-								outsideCount++;
-							}
-						}
-					}
-					if (outsideCount < 4) {
+					double min = 0.4;
+					double max = 0.6;
+					CleavedBlock.boxToPolytope((x+min)/acc, (y+min)/acc, (z+min)/acc, (x+max)/acc, (y+max)/acc, (z+max)/acc, pt2);
+					if (OpenGJK.compute_minimum_distance(pt, pt2, new OpenGJK.Simplex()) < 0.001) {
 						voxels.set(x, y, z);
 					}
 				}
@@ -201,6 +209,7 @@ public class CleavedBlockEntity extends BlockEntity implements RenderAttachmentB
 				? this.world.filteredLookup(RegistryKeys.BLOCK)
 				: Registries.BLOCK.asLookup();
 		donor = NbtHelper.toBlockState(lk, tag.getCompound("Donor"));
+		axisAligned = null;
 		cachedShape = null;
 		target.cachedMesh = null;
 		if (world instanceof YttrWorld) ((YttrWorld)world).yttr$scheduleRenderUpdate(pos);

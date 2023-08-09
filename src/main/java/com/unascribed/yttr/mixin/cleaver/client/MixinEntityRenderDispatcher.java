@@ -22,8 +22,10 @@ public class MixinEntityRenderDispatcher {
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/client/render/entity/EntityRenderer.render(Lnet/minecraft/entity/Entity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"),
 			method="render")
 	public void render(Entity entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		double yO = MathHelper.lerp(tickDelta, ((SlopeStander)entity).yttr$getLastYOffset(), ((SlopeStander)entity).yttr$getYOffset());
-		matrices.translate(0, yO, 0);
+		if (entity instanceof SlopeStander ss) {
+			double yO = MathHelper.lerp(tickDelta, ss.yttr$getLastYOffset(), ss.yttr$getYOffset());
+			matrices.translate(0, yO, 0);
+		}
 	}
 	
 }

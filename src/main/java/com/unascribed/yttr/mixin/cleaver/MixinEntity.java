@@ -9,6 +9,8 @@ import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixinsupport.SlopeStander;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.crash.CrashException;
@@ -18,42 +20,42 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 @Mixin(Entity.class)
+@Environment(EnvType.CLIENT)
 public class MixinEntity implements SlopeStander {
 
 	private double yttr$yOffset;
 	private double yttr$lastYOffset;
-	private float yttr$slopeSteepness;
+	private boolean yttr$lastOnGround;
+	private boolean yttr$checkingCleaveCollision;
 	
 	@Inject(at=@At("HEAD"), method="baseTick")
 	public void baseTick(CallbackInfo ci) {
 		yttr$lastYOffset = yttr$yOffset;
+		yttr$lastOnGround = ((Entity)(Object)this).isOnGround();
 	}
 	
-	@Inject(at=@At("HEAD"), method="checkBlockCollision")
+	@Inject(at=@At("TAIL"), method="checkBlockCollision")
 	protected void checkBlockCollision(CallbackInfo ci) {
+		if (yttr$checkingCleaveCollision) return;
 		yttr$yOffset = 0;
-		yttr$slopeSteepness = 0;
 		Entity self = (Entity)(Object)this;
-		Box box = self.getBoundingBox();
-		BlockPos bpMin = BlockPos.create(box.minX - 0.15, box.minY - 0.15, box.minZ - 0.15);
-		BlockPos bpMax = BlockPos.create(box.maxX + 0.15, box.maxY + 0.15, box.maxZ + 0.15);
-		BlockPos.Mutable mut = new BlockPos.Mutable();
-		if (self.getWorld().isRegionLoaded(bpMin, bpMax)) {
-			for (int x = bpMin.getX(); x <= bpMax.getX(); ++x) {
-				for (int y = bpMin.getY(); y <= bpMax.getY(); ++y) {
-					for (int z = bpMin.getZ(); z <= bpMax.getZ(); ++z) {
-						mut.set(x, y, z);
-						BlockState bs = self.getWorld().getBlockState(mut);
-						if (bs.isOf(YBlocks.CLEAVED_BLOCK)) {
-							try {
-								((CleavedBlock)bs.getBlock()).onEntityNearby(bs, self.getWorld(), mut, self);
-							} catch (Throwable t) {
-								CrashReport report = CrashReport.create(t, "[Yttr] Performing cleaved block slope adjustment");
-								CrashReportSection section = report.addElement("Block being collided with");
-								CrashReportSection.addBlockInfo(section, self.getWorld(), mut, bs);
-								throw new CrashException(report);
-							}
-						}
+		if (self.getWorld().isClient) {
+			Box box = self.getBoundingBox();
+			for (var bp : BlockPos.iterateOutwards(self.getBlockPos(), 1, 1, 1)) {
+				BlockState bs = self.getWorld().getBlockState(bp);
+				if (box.intersects(bp.getX()-0.5, bp.getY()-0.5, bp.getZ()-0.5, bp.getX()+1.5, bp.getY()+1.5, bp.getZ()+1.5) && bs.isOf(YBlocks.CLEAVED_BLOCK)) {
+					try {
+						yttr$checkingCleaveCollision = true;
+						((CleavedBlock)bs.getBlock()).onEntityNearby(bs, self.getWorld(), bp, self);
+						yttr$lastOnGround = self.isOnGround();
+						break;
+					} catch (Throwable t) {
+						CrashReport report = CrashReport.create(t, "[Yttr] Performing cleaved block slope adjustment");
+						CrashReportSection section = report.addElement("Block being collided with");
+						CrashReportSection.addBlockInfo(section, self.getWorld(), bp, bs);
+						throw new CrashException(report);
+					} finally {
+						yttr$checkingCleaveCollision = false;
 					}
 				}
 			}
@@ -74,15 +76,10 @@ public class MixinEntity implements SlopeStander {
 	public double yttr$getLastYOffset() {
 		return yttr$lastYOffset;
 	}
-
+	
 	@Override
-	public float yttr$getSlopeSteepness() {
-		return yttr$slopeSteepness;
-	}
-
-	@Override
-	public void yttr$setSlopeSteepness(float steepness) {
-		yttr$slopeSteepness = steepness;
+	public boolean yttr$wasOnGround() {
+		return yttr$lastOnGround;
 	}
 
 }

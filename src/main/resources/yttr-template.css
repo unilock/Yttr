@@ -27,12 +27,6 @@
 
 #client {
 	/*
-	 * If set to "on", cleaved slopes will try to feel smooth. Kind of buggy, but when it works it's
-	 * awesome.
-	 */
-	slope-smoothing: var(client.slope-smoothing);
-	
-	/*
 	 * If set to "on", force-disables OpenGL compatibility mode. "auto" acts as "on" on macOS, and
 	 * "off" everywhere else.
 	 *

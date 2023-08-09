@@ -1,15 +1,16 @@
 package com.unascribed.yttr.content.block.decor;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
-import com.unascribed.yttr.YConfig;
-import com.unascribed.yttr.init.YBlocks;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.SlopeStander;
-import com.unascribed.yttr.util.math.partitioner.DEdge;
+import com.unascribed.yttr.util.math.opengjk.OpenGJK;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
-import com.unascribed.yttr.util.math.partitioner.Where;
+
+import com.google.common.collect.Iterables;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -40,6 +41,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -81,6 +83,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		if (noCollisionBox.get()) return VoxelShapes.empty();
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CleavedBlockEntity) {
 			return ((CleavedBlockEntity) be).getShape();
@@ -165,91 +168,150 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 		return super.getPickStack(world, pos, state);
 	}
 	
+	public static final ThreadLocal<Boolean> noCollisionBox = ThreadLocal.withInitial(() -> false);
+	
 	public void onEntityNearby(BlockState state, World world, BlockPos pos, Entity entity) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof CleavedBlockEntity) {
+		if (be instanceof CleavedBlockEntity && entity instanceof SlopeStander ss) {
 			// we don't check onGround as then you "unsnap" while going down a slope and it looks really bad
-			if (entity instanceof FlyingEntity || (entity instanceof PlayerEntity && (((PlayerEntity)entity).isFallFlying() || ((PlayerEntity)entity).getAbilities().flying))) {
+			if (entity instanceof FlyingEntity || (entity instanceof PlayerEntity pe && (pe.isFallFlying() || pe.getAbilities().flying))) {
 				return;
 			}
 			if (entity.getVehicle() != null) return;
 			if (entity.getType() != null && entity.getType().isIn(YTags.Entity.UNADJUSTABLE)) return;
-			var shape = ((CleavedBlockEntity)be).getPolygons();
-			double checkDist = 2D/CleavedBlockEntity.SHAPE_GRANULARITY;
-			Box box = entity.getBoundingBox();
-			double x = box.getCenter().x;
-			double y = box.minY;
-			double z = box.getCenter().z;
-			int signum = -1;
-			if (box.minY < pos.getY()) {
-//				y = box.maxY;
-//				signum = 1;
-				return;
-			}
-			Polygon relevant = null;
-			for (Polygon p : shape) {
-				Vec3d normal = p.plane().normal();
-				if ((normal.x == 0 && normal.y == 0) ||
-						(normal.x == 0 && normal.z == 0) ||
-						(normal.z == 0 && normal.y == 0)) {
-					// flat face, does not need adjustment
-					continue;
+
+			float acc = 1f/CleavedBlockEntity.SHAPE_GRANULARITY;
+			try {
+				noCollisionBox.set(true);
+				// TODO this probably isn't efficient, but it works
+				double correction;
+				double fudge = 0.2;
+				if (entity.isSprinting()) {
+					fudge = 0.5;
 				}
-				relevant = p;
-				break;
-			}
-			x -= pos.getX();
-			y -= pos.getY();
-			z -= pos.getZ();
-			if (relevant == null) return;
-			double pMinY = 200;
-			double pMaxY = -200;
-			for (DEdge edge : relevant) {
-				pMinY = Math.min(pMinY, edge.srcPoint().y);
-				pMaxY = Math.max(pMaxY, edge.srcPoint().y);
-			}
-			if (y > pMaxY+0.05 || y < pMinY-0.05) return;
-			double origY = y;
-			y -= (checkDist*signum);
-			int steps = 64;
-			boolean found = false;
-			Vec3d up = new Vec3d(0, 1, 0);
-			float steepness = 0;
-			double dist = checkDist*4;
-			for (int i = 0; i < steps; i++) {
-				y += (dist/steps)*signum;
-				Vec3d vec = new Vec3d(x, y, z);
-				if (relevant.plane().whichSide(vec) != Where.ABOVE) {
-					found = true;
-					steepness = (float)(1-relevant.plane().normal().dotProduct(up));
-					break;
-				}
-			}
-			if (found) {
-				SlopeStander ss = ((SlopeStander)entity);
-				BlockPos below = entity.getBlockPos().down();
-				BlockState belowState = world.getBlockState(below);
-				if (!belowState.isOf(YBlocks.CLEAVED_BLOCK)) {
-					VoxelShape belowShape = belowState.getCollisionShape(world, below);
-					Vec3d point = new Vec3d(x+pos.getX(), y+pos.getY(), z+pos.getZ());
-					for (Box b : belowShape.getBoundingBoxes()) {
-						if (b.offset(below).contains(point)) {
-							// colliding with a non-cleaved block; avoid causing the player to seem to clip into normal blocks
-							return;
+				var smallbox = entity.getBoundingBox().expand(-0.2, fudge, -0.2);
+				var bigbox = entity.getBoundingBox().expand(fudge, -0.1, fudge);
+				boolean fullCollision = false;
+				double minAdjustment = Float.POSITIVE_INFINITY;
+				double minAdjustmentAbs = Float.POSITIVE_INFINITY;
+				var player = new OpenGJK.Polytope();
+				for (var bp : BlockPos.iterateOutwards(pos, 1, 1, 1)) {
+					var bs = world.getBlockState(bp);
+					if (bs.isOf(this) && world.getBlockEntity(bp) instanceof CleavedBlockEntity cbe) {
+						if (cbe.isAxisAligned()) {
+							// This shape is not interesting. Minecraft can handle it just fine.
+							// Our attempts to fudge it will make things worse.
+							continue;
+						}
+						var poly = polygonsToPolytope(cbe.getPolygons());
+						int steps = 16;
+						for (int j = 0; j < steps; j++) {
+							double ofs = (acc*2)-(((double)j/steps)*(acc*4));
+							double aofs = Math.abs(ofs);
+							boxToPolytope(-bp.getX(), ofs-bp.getY(), -bp.getZ(), bigbox, player);
+							double coll = OpenGJK.compute_minimum_distance(player, poly, new OpenGJK.Simplex());
+							if (coll < 0.0001) {
+								if (aofs < minAdjustmentAbs) {
+									boxToPolytope(-bp.getX(), ofs-bp.getY(), -bp.getZ(), smallbox, player);
+									if (!entity.isOnGround()) {
+										fullCollision = OpenGJK.compute_minimum_distance(player, poly, new OpenGJK.Simplex()) < 0.0001;
+									}
+									minAdjustment = ofs;
+									minAdjustmentAbs = aofs;
+								}
+								break;
+							}
 						}
 					}
 				}
-				if (YConfig.Client.slopeSmoothing) {
-					double yO = y-origY;
-					if (ss.yttr$getYOffset() == 0 || ss.yttr$getYOffset() < yO) {
-						ss.yttr$setYOffset(yO);
+				if (Double.isFinite(minAdjustment)) {
+					correction = minAdjustment;
+					if (fullCollision) {
+						entity.setOnGround(true); // for better animations
 					}
+				} else {
+					correction = 0;
 				}
-				ss.yttr$setSlopeSteepness(Math.max(ss.yttr$getSlopeSteepness(), steepness));
+				while (Math.abs(correction) > 0.001 && !Iterables.isEmpty(world.getBlockCollisions(entity, entity.getBoundingBox().offset(0, correction, 0)))) {
+					correction /= 2;
+				}
+				if (Math.abs(correction) < 0.001) correction = 0;
+				ss.yttr$setYOffset(correction);
+			} finally {
+				noCollisionBox.set(false);
 			}
+			
 		}
 	}
+
+	public static OpenGJK.Polytope polygonsToPolytope(Iterable<Polygon> polygons) {
+		var pt = new OpenGJK.Polytope();
+		var points = new LinkedHashSet<Vec3d>();
+		for (var poly : polygons) {
+			for (var edge : poly) {
+				points.add(edge.srcPoint());
+				points.add(edge.dstPoint());
+			}
+		}
+		pt.coord = points.stream()
+				.map(v -> new double[] {v.x, v.y, v.z})
+				.toArray(double[][]::new);
+		return pt;
+	}
+
+	@CanIgnoreReturnValue
+	public static OpenGJK.Polytope boxToPolytope(double x1, double y1, double z1, double x2, double y2, double z2, OpenGJK.Polytope cur) {
+		var pt = cur == null ? new OpenGJK.Polytope() : cur;
+		if (pt.coord == null || pt.coord.length != 8) {
+			pt.coord = new double[8][3];
+		}
+		
+		pt.coord[0][0] = x1;
+		pt.coord[0][1] = y1;
+		pt.coord[0][2] = z1;
+		
+		pt.coord[1][0] = x2;
+		pt.coord[1][1] = y1;
+		pt.coord[1][2] = z1;
+		
+		pt.coord[2][0] = x1;
+		pt.coord[2][1] = y1;
+		pt.coord[2][2] = z2;
+		
+		pt.coord[3][0] = x2;
+		pt.coord[3][1] = y1;
+		pt.coord[3][2] = z2;
+		
+		pt.coord[4][0] = x1;
+		pt.coord[4][1] = y2;
+		pt.coord[4][2] = z1;
+		
+		pt.coord[5][0] = x2;
+		pt.coord[5][1] = y2;
+		pt.coord[5][2] = z1;
+		
+		pt.coord[6][0] = x1;
+		pt.coord[6][1] = y2;
+		pt.coord[6][2] = z2;
+		
+		pt.coord[7][0] = x2;
+		pt.coord[7][1] = y2;
+		pt.coord[7][2] = z2;
+		
+		return pt;
+	}
 	
+	@CanIgnoreReturnValue
+	public static OpenGJK.Polytope boxToPolytope(double ox, double oy, double oz, Box box, OpenGJK.Polytope cur) {
+		double x1 = box.minX+ox;
+		double y1 = box.minY+oy;
+		double z1 = box.minZ+oz;
+		double x2 = box.maxX+ox;
+		double y2 = box.maxY+oy;
+		double z2 = box.maxZ+oz;
+		return boxToPolytope(x1, y1, z1, x2, y2, z2, cur);
+	}
+
 	@Override
 	@Environment(EnvType.CLIENT)
 	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {

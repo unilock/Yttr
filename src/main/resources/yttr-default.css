@@ -6,7 +6,6 @@
 }
 
 #client {
-	slope-smoothing: on;
 	force-opengl-core: auto;
 	config-color: teal;
 	control-hints: on;
