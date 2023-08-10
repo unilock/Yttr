@@ -10,6 +10,7 @@ import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YDamageTypes;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mechanics.VoidLogic;
 import com.unascribed.yttr.util.AdventureHelper;
@@ -26,6 +27,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -153,6 +155,11 @@ public enum RifleMode {
 		
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), user.getPos())) {
+				user.getWorld().playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.VOID, SoundCategory.PLAYERS, 4, 1);
+				user.damage(user.getDamageSources().create(YDamageTypes.VOID_RIFLE, user), 144);
+				return;
+			}
 			if (!(user instanceof PlayerEntity)) return;
 			VoidLogic.doVoid((PlayerEntity)user, user.getWorld(), user.getPos(), 12);
 		}
