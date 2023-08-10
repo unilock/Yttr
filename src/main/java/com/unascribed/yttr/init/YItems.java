@@ -151,6 +151,7 @@ public class YItems {
 	public static final BlockItem SSD = createBlockItem(YBlocks.SSD);
 	public static final BlockItem VELRESIN = createBlockItem(YBlocks.VELRESIN);
 	public static final BlockItem TRANSFUNGUS = createBlockItem(YBlocks.TRANSFUNGUS);
+	public static final BlockItem TINT = createBlockItem(YBlocks.TINT);
 	
 	public static final BlockItem BLACK_VOID_GLASS = createBlockItem(YBlocks.BLACK_VOID_GLASS);
 	public static final BlockItem GRAY_VOID_GLASS = createBlockItem(YBlocks.GRAY_VOID_GLASS);

@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "yttr:block/tint_00"
+    },
+    "level=1": {
+      "model": "yttr:block/tint_01"
+    },
+    "level=10": {
+      "model": "yttr:block/tint_10"
+    },
+    "level=11": {
+      "model": "yttr:block/tint_11"
+    },
+    "level=12": {
+      "model": "yttr:block/tint_12"
+    },
+    "level=13": {
+      "model": "yttr:block/tint_13"
+    },
+    "level=14": {
+      "model": "yttr:block/tint_14"
+    },
+    "level=15": {
+      "model": "yttr:block/tint_15"
+    },
+    "level=2": {
+      "model": "yttr:block/tint_02"
+    },
+    "level=3": {
+      "model": "yttr:block/tint_03"
+    },
+    "level=4": {
+      "model": "yttr:block/tint_04"
+    },
+    "level=5": {
+      "model": "yttr:block/tint_05"
+    },
+    "level=6": {
+      "model": "yttr:block/tint_06"
+    },
+    "level=7": {
+      "model": "yttr:block/tint_07"
+    },
+    "level=8": {
+      "model": "yttr:block/tint_08"
+    },
+    "level=9": {
+      "model": "yttr:block/tint_09"
+    }
+  }
+}

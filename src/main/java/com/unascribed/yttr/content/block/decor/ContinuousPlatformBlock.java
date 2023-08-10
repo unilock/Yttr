@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.decor;
 
 import com.unascribed.yttr.init.YFluids;
+import com.unascribed.yttr.init.YGameRules;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 
@@ -193,7 +194,9 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		if (state.get(AGE) != Age.IMMORTAL) {
-			world.scheduleBlockTick(pos, this, 200+world.random.nextInt(40));
+			int ticks = world.getGameRules().getInt(YGameRules.PLATFORM_DECAY_TICKS);
+			int slew = world.getGameRules().getInt(YGameRules.PLATFORM_DECAY_SLEW);
+			world.scheduleBlockTick(pos, this, ticks+(slew <= 0 ? 0 : world.random.nextInt(slew)));
 		}
 	}
 	

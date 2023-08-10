@@ -10,6 +10,7 @@ import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.LogFluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.util.AdventureHelper;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
@@ -145,10 +146,14 @@ public class ProjectorItem extends Item {
 				double y = lastPos.getY()+(diffY*t);
 				double z = lastPos.getZ()+(diffZ*t);
 				mut.set(x, y, z);
-				createPlatform(world, mut, true);
+				if (AdventureHelper.canUse(user, stack, world, mut)) {
+					createPlatform(world, mut, true);
+				}
 			}
 		} else {
-			createPlatform(world, pos, false);
+			if (AdventureHelper.canUse(user, stack, world, pos)) {
+				createPlatform(world, pos, false);
+			}
 		}
 		stack.getNbt().put("LastBlock", NbtHelper.fromBlockPos(pos));
 		if (ticks == 0) {

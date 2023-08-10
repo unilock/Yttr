@@ -12,6 +12,7 @@ import com.unascribed.yttr.init.YDamageTypes;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mechanics.VoidLogic;
+import com.unascribed.yttr.util.AdventureHelper;
 
 import com.google.common.collect.ImmutableList;
 
@@ -19,7 +20,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,17 +34,17 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
 	DAMAGE(Formatting.RED, 0xFF0000, () -> Items.REDSTONE, 12, 2) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			boolean canUse = AdventureHelper.canUse(user, stack, user.getWorld(), hit.getPos());
 			if (hit instanceof EntityHitResult) {
-				int damage = (int)Math.ceil(power*14);
+				int damage = canUse ? (int)Math.ceil(power*14) : 0;
 				((EntityHitResult) hit).getEntity().damage(user.getDamageSources().create(YDamageTypes.RIFLE, new RifleDummyEntity(user.getWorld()), user), damage);
 			}
-			if (power > 1.2f) {
+			if (power > 1.2f && canUse) {
 				user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, World.ExplosionSourceType.NONE);
 			}
 		}
@@ -52,12 +52,14 @@ public enum RifleMode {
 	EXPLODE(Formatting.GRAY, 0xAAAAAA, () -> Items.GUNPOWDER, 1, 1) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), hit.getPos())) return;
 			user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user),
 					null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2,
 							YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? World.ExplosionSourceType.NONE : power > 1.2 ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.BLOCK);
 		}
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), user.getPos())) return;
 			user.getWorld().createExplosion(null, user.getDamageSources().explosion(user, user),
 					null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false,
 					YConfig.Rifle.allowExplode == TrileanSoft.SOFT ? World.ExplosionSourceType.NONE : World.ExplosionSourceType.BLOCK);
@@ -70,12 +72,13 @@ public enum RifleMode {
 	TELEPORT(Formatting.LIGHT_PURPLE, 0xFF00FF, () -> Items.CHORUS_FRUIT, 3, 1.5f) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			boolean canUse = AdventureHelper.canUse(user, stack, user.getWorld(), hit.getPos());
 			if (hit.getType() == Type.MISS) return;
-			if (power > 1.1f) {
+			if (power > 1.1f && canUse) {
 				user.getWorld().createExplosion(user, user.getPos().x, user.getPos().y, user.getPos().z, 1*power, World.ExplosionSourceType.NONE);
 			}
 			user.teleport(hit.getPos().x, hit.getPos().y, hit.getPos().z);
-			if (power > 1.2f) {
+			if (power > 1.2f && canUse) {
 				user.damage(user.getDamageSources().explosion(user, user), 4);
 				user.getWorld().createExplosion(user, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, World.ExplosionSourceType.NONE);
 			}
@@ -96,6 +99,7 @@ public enum RifleMode {
 	FIRE(Formatting.GOLD, 0xFFAA00, () -> Items.BLAZE_POWDER, 2, 2) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), hit.getPos())) return;
 			if (hit instanceof EntityHitResult) {
 				Entity e = ((EntityHitResult) hit).getEntity();
 				e.setFireTicks((int)(200*power));
@@ -142,6 +146,7 @@ public enum RifleMode {
 	VOID(Formatting.BLACK, 0x000000, () -> YItems.VOID_BUCKET, 1, 0.75f) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), hit.getPos())) return;
 			if (!(user instanceof PlayerEntity)) return;
 			VoidLogic.doVoid((PlayerEntity)user, user.getWorld(), hit.getPos(), Math.round(7.5f*power)+1);
 		}
@@ -161,6 +166,7 @@ public enum RifleMode {
 	LIGHT(Formatting.YELLOW, 0xFFFF00, () -> Items.GLOWSTONE_DUST, 8, 2f) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), hit.getPos())) return;
 			Vec3d start = RifleItem.getMuzzlePos(user, false);
 			double len = Math.sqrt(start.squaredDistanceTo(hit.getPos()));
 			double diffX = hit.getPos().x-start.x;
@@ -191,6 +197,7 @@ public enum RifleMode {
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			user.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 300));
+			if (!AdventureHelper.canUse(user, stack, user.getWorld(), user.getPos())) return;
 			for (BlockPos bp : BlockPos.iterate(user.getBlockPos().add(-2, -2, -2), user.getBlockPos().add(2, 2, 2))) {
 				illuminate(user.getWorld(), bp, false);
 			}

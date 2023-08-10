@@ -157,6 +157,7 @@ public class Yttr implements ModInitializer {
 		BlockNetworkManager.registerNetworkType(id("filter"), FilterNetwork.TYPE);
 		
 		// conditional content
+		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			try {
 				YttrTrinketsCompat.init();
@@ -166,10 +167,14 @@ public class Yttr implements ModInitializer {
 			}
 		}
 		
-		// general initialization
+		// psuedoregistries
+		
 		YItemGroups.init();
+		YGameRules.init();
 		
 		DessicantControl.optIn("yttr");
+
+		// events
 		
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
 			if (player instanceof ServerPlayerEntity) {

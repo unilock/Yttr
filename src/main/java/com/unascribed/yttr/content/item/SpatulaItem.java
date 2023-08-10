@@ -43,6 +43,7 @@ public class SpatulaItem extends ShovelItem {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		PlayerEntity p = context.getPlayer();
+		if (p == null || !p.canModifyBlocks()) return ActionResult.FAIL;
 		BlockPos pos = context.getBlockPos();
 		World w = context.getWorld();
 		if (pos.getY() < p.getY()) return ActionResult.FAIL;

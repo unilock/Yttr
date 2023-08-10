@@ -7,6 +7,7 @@ import com.unascribed.yttr.content.block.CustomShapeBlock;
 import com.unascribed.yttr.content.block.NeodymiumBlock;
 import com.unascribed.yttr.content.block.TemporaryAirBlock;
 import com.unascribed.yttr.content.block.TemporaryFluidBlock;
+import com.unascribed.yttr.content.block.TintBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.ScreeperNestBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
@@ -657,6 +658,15 @@ public class YBlocks {
 			.requiresTool()
 			.pistonBehavior(PistonBehavior.DESTROY)
 			.sounds(BlockSoundGroup.METAL)
+		);
+
+	
+	public static final TintBlock TINT = new TintBlock(FabricBlockSettings.create()
+			.noCollision()
+			.replaceable()
+			.strength(-1.0F, 3600000.8F)
+			.dropsNothing()
+			.nonOpaque()
 		);
 	
 	

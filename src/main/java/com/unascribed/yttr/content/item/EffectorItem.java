@@ -8,6 +8,7 @@ import net.minecraft.entity.damage.DamageSource;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
+import com.unascribed.yttr.util.AdventureHelper;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -71,6 +72,7 @@ public class EffectorItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
+		if (!user.canModifyBlocks()) return TypedActionResult.pass(stack);
 		if (getFuel(stack) >= MAX_FUEL) return TypedActionResult.pass(stack);
 		BlockHitResult hr = raycast(world, user, FluidHandling.SOURCE_ONLY);
 		if (hr.getType() == Type.BLOCK) {
@@ -90,13 +92,17 @@ public class EffectorItem extends Item {
 	
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
+		if (context.getPlayer() == null) return ActionResult.PASS;
 		World world = context.getWorld();
-		BlockHitResult hr = raycast(world, context.getPlayer(), FluidHandling.SOURCE_ONLY);
-		if (hr.getType() == Type.BLOCK) {
-			FluidState fs = world.getFluidState(hr.getBlockPos());
-			if (fs.isIn(YTags.Fluid.VOID) && fs.isSource()) return ActionResult.PASS;
+		if (context.getPlayer().canModifyBlocks()) {
+			BlockHitResult hr = raycast(world, context.getPlayer(), FluidHandling.SOURCE_ONLY);
+			if (hr.getType() == Type.BLOCK) {
+				FluidState fs = world.getFluidState(hr.getBlockPos());
+				if (fs.isIn(YTags.Fluid.VOID) && fs.isSource()) return ActionResult.PASS;
+			}
 		}
 		if (!(world instanceof ServerWorld)) return ActionResult.SUCCESS;
+		if (!AdventureHelper.canUse(context.getPlayer(), context.getStack(), world, context.getBlockPos())) return ActionResult.FAIL;
 		BlockPos pos = context.getBlockPos();
 		Direction dir = context.getSide().getOpposite();
 		ItemStack stack = context.getStack();

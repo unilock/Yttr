@@ -81,6 +81,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
+import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
@@ -117,6 +118,7 @@ import net.minecraft.loot.LootDataType;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -251,6 +253,18 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		ModelPredicateProviderRegistry.register(Yttr.id("has_block_entity"), (stack, world, entity, seed) -> {
 			return stack.getSubNbt("BlockEntityTag") != null ? 1 : 0;
+		});
+		ModelPredicateProviderRegistry.register(YItems.TINT, new Identifier("level"), (stack, world, entity, seed) -> {
+			var nbt = stack.getSubNbt("BlockStateTag");
+			try {
+				if (nbt != null) {
+					NbtElement ele = nbt.get(LightBlock.LEVEL_15.getName());
+					if (ele != null) {
+						return Integer.parseInt(ele.asString()) / 16f;
+					}
+				}
+			} catch (NumberFormatException e) {}
+			return 1;
 		});
 		
 

@@ -1,0 +1,24 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "yttr:item/tint"
+  },
+  "overrides": [
+    { "predicate": { "level": 0.0000 }, "model": "yttr:item/tint_00" },
+    { "predicate": { "level": 0.0625 }, "model": "yttr:item/tint_01" },
+    { "predicate": { "level": 0.1250 }, "model": "yttr:item/tint_02" },
+    { "predicate": { "level": 0.1875 }, "model": "yttr:item/tint_03" },
+    { "predicate": { "level": 0.2500 }, "model": "yttr:item/tint_04" },
+    { "predicate": { "level": 0.3125 }, "model": "yttr:item/tint_05" },
+    { "predicate": { "level": 0.3750 }, "model": "yttr:item/tint_06" },
+    { "predicate": { "level": 0.4375 }, "model": "yttr:item/tint_07" },
+    { "predicate": { "level": 0.5000 }, "model": "yttr:item/tint_08" },
+    { "predicate": { "level": 0.5625 }, "model": "yttr:item/tint_09" },
+    { "predicate": { "level": 0.6250 }, "model": "yttr:item/tint_10" },
+    { "predicate": { "level": 0.6875 }, "model": "yttr:item/tint_11" },
+    { "predicate": { "level": 0.7500 }, "model": "yttr:item/tint_12" },
+    { "predicate": { "level": 0.8125 }, "model": "yttr:item/tint_13" },
+    { "predicate": { "level": 0.8750 }, "model": "yttr:item/tint_14" },
+    { "predicate": { "level": 0.9375 }, "model": "yttr:item/tint_15" }
+  ]
+}
