@@ -15,6 +15,7 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
+import com.unascribed.yttr.util.AdventureHelper;
 import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
@@ -117,6 +118,8 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 
 	public static boolean canCleave(World world, PlayerEntity player, ItemStack stack, BlockPos pos, BlockState state) {
 		if (!player.canModifyBlocks() && !stack.canDestroy(Registries.BLOCK, new CachedBlockPosition(world, pos, false)))
+			return false;
+		if (!AdventureHelper.canUseLoose(player, stack, world, pos))
 			return false;
 		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
 		// let this be on for creative ops for now

@@ -19,9 +19,25 @@ public class AdventureHelper {
 	}
 	
 	public static boolean canUse(LivingEntity user, ItemStack stack, World world, double x, double y, double z) {
+		return _canUse(user, stack, world, x, y, z, false);
+	}
+
+	public static boolean canUseLoose(LivingEntity user, ItemStack stack, World world, Vec3i pos) {
+		return canUseLoose(user, stack, world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
+	}
+	
+	public static boolean canUseLoose(LivingEntity user, ItemStack stack, World world, Vec3d pos) {
+		return canUseLoose(user, stack, world, pos.x, pos.y, pos.z);
+	}
+	
+	public static boolean canUseLoose(LivingEntity user, ItemStack stack, World world, double x, double y, double z) {
+		return _canUse(user, stack, world, x, y, z, true);
+	}
+	
+	private static boolean _canUse(LivingEntity user, ItemStack stack, World world, double x, double y, double z, boolean loose) {
 		if (user instanceof PlayerEntity player) {
 			if (player.canModifyBlocks()) return true;
-			boolean anyChecks = false;
+			boolean anyChecks = loose;
 			boolean anyObjections = false;
 			if (stack.hasNbt() && stack.getNbt().contains("CanUseInDim", NbtElement.STRING_TYPE)) {
 				anyChecks = true;
