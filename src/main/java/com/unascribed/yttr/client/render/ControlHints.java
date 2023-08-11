@@ -163,7 +163,7 @@ public class ControlHints {
 										ctx.fill(0, -1, sw+2, 8, 0xFFFF55|a);
 										RenderSystem.enableBlend();
 									}
-									ctx.drawShadowedText(mc.textRenderer, fs, mouse?0:1, 0, 0x000000|a);
+									ctx.drawText(mc.textRenderer, fs, mouse?0:1, 0, 0x000000|a, false);
 									matrices.translate(sw+2, 0, 0);
 								});
 							}

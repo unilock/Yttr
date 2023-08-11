@@ -20,6 +20,7 @@ import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
+import com.unascribed.yttr.util.AdventureHelper;
 import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.math.partitioner.Plane;
@@ -136,6 +137,7 @@ public class ShifterItem extends Item implements ControlHintable {
 		if (!(_world instanceof ServerWorld)) return;
 		ServerWorld world = (ServerWorld) _world;
 		if (_replacement.isEmpty()) return;
+		if (!AdventureHelper.canUse(player, shifter, world, pos)) return;
 		if (_replacement.getItem() instanceof ReplicatorBlockItem) {
 			_replacement = ReplicatorBlockItem.getHeldItem(_replacement);
 		} else if (_replacement.getItem() instanceof CleaverItem) {
