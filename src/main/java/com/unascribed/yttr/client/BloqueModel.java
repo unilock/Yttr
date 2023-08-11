@@ -51,6 +51,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
+		if (!(blockView instanceof RenderAttachedBlockView)) return;
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
 		if (attachment instanceof RenderData data) {
 			DyeColor[] colors = data.colors();

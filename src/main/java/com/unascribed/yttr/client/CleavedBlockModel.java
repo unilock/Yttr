@@ -42,6 +42,7 @@ public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
+		if (!(blockView instanceof RenderAttachedBlockView)) return;
 		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
 		try {
 			if (attachment instanceof Mesh m) {
