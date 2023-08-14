@@ -2,18 +2,23 @@ package com.unascribed.yttr.content.item;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.Age;
-import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.LogFluid;
+import com.unascribed.yttr.content.block.decor.ContinuousPlatformBlock.PlatformLog;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.util.AdventureHelper;
+import com.unascribed.yttr.util.ControlHintable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,6 +27,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -32,9 +38,10 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 
-public class ProjectorItem extends Item {
+public class ProjectorItem extends Item implements ControlHintable {
 
 	public ProjectorItem(Settings settings) {
 		super(settings);
@@ -48,7 +55,7 @@ public class ProjectorItem extends Item {
 				if (i > 64) break;
 				BlockPos pos = mut.toImmutable();
 				Yttr.delayedServerTasks.add(new DelayedTask(i*2, () -> {
-					createPlatform(w, pos, false);
+					createPlatform(null, w, pos, false);
 					w.playSound(null, pos, YSounds.PROJECT, SoundCategory.BLOCKS, 1.2f, 0.5f+(ThreadLocalRandom.current().nextFloat()/2));
 				}));
 				mut.move(face);
@@ -91,7 +98,7 @@ public class ProjectorItem extends Item {
 		return ActionResult.PASS;
 	}
 	
-	protected void createPlatform(World world, BlockPos origin, boolean speedy) {
+	protected void createPlatform(@Nullable PlayerEntity player, World world, BlockPos origin, boolean speedy) {
 		BlockPos.Mutable pos = origin.mutableCopy();
 		if (world instanceof ServerWorld) {
 			((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 1.5, 0.5, 1.5, 0.05);
@@ -101,9 +108,11 @@ public class ProjectorItem extends Item {
 			for (int z = -1; z <= 1; z++) {
 				pos.set(origin).move(x, 0, z);
 				BlockState bs = world.getBlockState(pos);
-				if (canReplace(bs)) {
+				// check isBlockBreakingRestricted for compatibility with warding/protection mods
+				// we have our own adventure handling, so always check survival
+				if (canReplace(bs) && (player == null || !player.isBlockBreakingRestricted(world, pos, GameMode.SURVIVAL))) {
 					world.setBlockState(pos, YBlocks.CONTINUOUS_PLATFORM.getDefaultState()
-							.with(ContinuousPlatformBlock.LOGGED, LogFluid.by(world.getFluidState(pos).getFluid()))
+							.with(ContinuousPlatformBlock.LOGGED, PlatformLog.by(bs))
 							.with(ContinuousPlatformBlock.SPEEDY, speedy));
 				}
 			}
@@ -132,7 +141,7 @@ public class ProjectorItem extends Item {
 		if (ticks != 0 && ticks < 20) return;
 		if (ticks > 0) ticks -= 20;
 		BlockPos lastPos = stack.getNbt().contains("LastBlock") ? NbtHelper.toBlockPos(stack.getNbt().getCompound("LastBlock")) : null;
-		BlockPos pos = BlockPos.fromPosition(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/4f, ticks/2f)));
+		BlockPos pos = BlockPos.fromPosition(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/3f, ticks/2f)));
 		if (lastPos != null) {
 			double len = Math.sqrt(lastPos.getSquaredDistance(pos));
 			double diffX = pos.getX()-lastPos.getX();
@@ -147,18 +156,18 @@ public class ProjectorItem extends Item {
 				double z = lastPos.getZ()+(diffZ*t);
 				mut.set(x, y, z);
 				if (AdventureHelper.canUse(user, stack, world, mut)) {
-					createPlatform(world, mut, true);
+					createPlatform(user instanceof PlayerEntity pe ? pe : null, world, mut, true);
 				}
 			}
 		} else {
 			if (AdventureHelper.canUse(user, stack, world, pos)) {
-				createPlatform(world, pos, false);
+				createPlatform(user instanceof PlayerEntity pe ? pe : null, world, pos, false);
 			}
 		}
 		stack.getNbt().put("LastBlock", NbtHelper.fromBlockPos(pos));
 		if (ticks == 0) {
-			if (user.fallDistance > 20 && user instanceof ServerPlayerEntity) {
-				YCriteria.PROJECT_WITH_LONG_FALL.trigger((ServerPlayerEntity)user);
+			if (user.fallDistance > 20 && user instanceof ServerPlayerEntity spe) {
+				YCriteria.PROJECT_WITH_LONG_FALL.trigger(spe);
 			}
 			user.fallDistance = 0;
 			if (user.getPos().y < pos.getY()+1) {
@@ -188,6 +197,22 @@ public class ProjectorItem extends Item {
 				((PlayerEntity)user).getItemCooldownManager().set(this, 250-remainingUseTicks);
 			}
 		}
+	}
+	
+	@Override
+	public String getState(PlayerEntity player, ItemStack stack, boolean fHeld) {
+		if (player.isUsingItem() && player.getItemUseTime() > 20) return "using";
+		if (player.canModifyBlocks() || stack.canPlaceOn(Registries.BLOCK, new CachedBlockPosition(player.getWorld(), player.getBlockPos(), false) {
+			@Override
+			public BlockState getBlockState() {
+				return YBlocks.CONTINUOUS_PLATFORM.getDefaultState();
+			}
+			@Override
+			public BlockEntity getBlockEntity() {
+				return null;
+			}
+		})) return "normal";
+		return "limited";
 	}
 	
 }

@@ -168,7 +168,8 @@ public class CleavedBlockMeshes {
 		}
 		Mesh mesh = bldr.build();
 		MinecraftClient.getInstance().getProfiler().pop();
-		sharedMeshCache.putIfAbsent(usk, mesh);
+		// TODO revisit this later. it's causing cleaved blocks to render the entire atlas sometimes
+//		sharedMeshCache.putIfAbsent(usk, mesh);
 		return mesh;
 	}
 

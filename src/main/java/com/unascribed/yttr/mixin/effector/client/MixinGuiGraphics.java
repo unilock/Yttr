@@ -27,8 +27,8 @@ public class MixinGuiGraphics {
 			float dmg = YItems.EFFECTOR.getFuel(stack);
 			float maxDmg = EffectorItem.MAX_FUEL;
 			int w = Math.round(dmg * 13 / maxDmg);
-			ctx.fill(RenderLayer.getGuiOverlay(), x + 2, y + 13, x + 13, y + 14, 0xFFFFFFFF);
-			ctx.fill(RenderLayer.getGuiOverlay(), x + 2, y + 13, x + w, y + 14, 0xFF000000);
+			ctx.fill(RenderLayer.getGuiOverlay(), x + 2, y + 13, x + 2 + 13, y + 14, 100, 0xFFFFFFFF);
+			ctx.fill(RenderLayer.getGuiOverlay(), x + 2, y + 13, x + 2 + w, y + 14, 100, 0xFF000000);
 		}
 	}
 	

@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.network.MessageS2CSoulImpurity;
+import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.world.SoulState;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -42,7 +43,11 @@ public class MixinServerPlayerEntity {
 			inst.addTemporaryModifier(new EntityAttributeModifier(SoulState.IMPURITY_MODIFIER,
 					"Yttr soul impurity debuff", -Integer.bitCount(impurity), Operation.ADDITION));
 			changed = true;
-			new MessageS2CSoulImpurity(impurity).sendTo(self);
+			try {
+				new MessageS2CSoulImpurity(impurity).sendTo(self);
+			} catch (Throwable t) {
+				YLog.warn("Error while trying to sync soul status", t);
+			}
 		}
 		
 		if (changed && self.getHealth() > self.getMaxHealth()) {

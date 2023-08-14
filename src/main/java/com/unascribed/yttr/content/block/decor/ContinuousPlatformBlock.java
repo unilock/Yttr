@@ -13,6 +13,8 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LightBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.Entity;
@@ -66,27 +68,41 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 		}
 	}
 	
-	public enum LogFluid implements StringIdentifiable {
+	public enum PlatformLog implements StringIdentifiable {
 		AIR(Fluids.EMPTY),
 		WATER(Fluids.WATER),
 		LAVA(Fluids.LAVA),
-		VOID(YFluids.VOID)
+		VOID(YFluids.VOID),
+		// HACK FOR BLANKETCON
+		LIGHT3(Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, 3).with(LightBlock.WATERLOGGED, false)),
 		;
 		private final String name;
+		public final BlockState block;
 		public final Fluid fluid;
-		LogFluid(Fluid fluid) {
+		
+		PlatformLog(BlockState block, Fluid fluid) {
 			name = Ascii.toLowerCase(name());
+			this.block = fluid == null ? block : fluid.getDefaultState().getBlockState();
 			this.fluid = fluid;
+		}
+		
+		PlatformLog(Fluid fluid) {
+			this(null, fluid);
+		}
+		PlatformLog(BlockState block) {
+			this(block, null);
 		}
 		@Override
 		public String asString() {
 			return name;
 		}
 		
-		public static LogFluid by(Fluid f) {
-			for (LogFluid lf : values()) {
-				if (lf.fluid == f) {
-					return lf;
+		public static PlatformLog by(BlockState bs) {
+			var f = bs.getFluidState().getFluid();
+			for (PlatformLog pl : values()) {
+				if (pl == AIR) continue;
+				if (pl.fluid == null ? pl.block == bs : pl.fluid == f) {
+					return pl;
 				}
 			}
 			return AIR;
@@ -95,18 +111,18 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	
 	private static final VoxelShape STEPLADDER = VoxelShapes.combine(
 				createCuboidShape(0, 0, 0, 16, 8, 16),
-				createCuboidShape(0.1, 8, 0.1, 15.9, 16, 15.9),
+				createCuboidShape(0.3, 8, 0.3, 15.7, 16, 15.7),
 			BooleanBiFunction.OR);
 	
 	public static final EnumProperty<Age> AGE = EnumProperty.of("age", Age.class);
-	public static final EnumProperty<LogFluid> LOGGED = EnumProperty.of("logged", LogFluid.class);
+	public static final EnumProperty<PlatformLog> LOGGED = EnumProperty.of("logged", PlatformLog.class);
 	public static final BooleanProperty SPEEDY = BooleanProperty.of("speedy");
 	
 	public ContinuousPlatformBlock(Settings settings) {
 		super(FabricBlockSettings.copyOf(settings)
 				.dropsNothing()
-				.luminance(bs -> Math.max(8, bs.get(LOGGED).fluid.getDefaultState().getBlockState().getLuminance())));
-		setDefaultState(getDefaultState().with(AGE, Age._0).with(LOGGED, LogFluid.AIR).with(SPEEDY, false));
+				.luminance(bs -> Math.max(8, bs.get(LOGGED).block.getLuminance())));
+		setDefaultState(getDefaultState().with(AGE, Age._0).with(LOGGED, PlatformLog.AIR).with(SPEEDY, false));
 	}
 	
 	@Override
@@ -145,7 +161,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		if (state.get(AGE) == Age.IMMORTAL) return;
 		if (state.get(AGE) == Age._3) {
-			world.setBlockState(pos, state.get(LOGGED).fluid.getDefaultState().getBlockState());
+			world.setBlockState(pos, state.get(LOGGED).block);
 		} else {
 			world.setBlockState(pos, state.cycle(AGE));
 		}
@@ -153,7 +169,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return getDefaultState().with(AGE, Age.IMMORTAL).with(LOGGED, LogFluid.by(ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid()));
+		return getDefaultState().with(AGE, Age.IMMORTAL).with(LOGGED, PlatformLog.by(ctx.getWorld().getBlockState(ctx.getBlockPos())));
 	}
 
 	@Override
@@ -202,7 +218,8 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(LOGGED).fluid.getDefaultState();
+		var l = state.get(LOGGED);
+		return l.fluid == null ? Fluids.EMPTY.getDefaultState() : l.fluid.getDefaultState();
 	}
 	
 }

@@ -189,8 +189,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 				if (entity.isSprinting()) {
 					fudge = 0.3;
 				}
-				var smallbox = entity.getBoundingBox().expand(-0.2, fudge, -0.2);
-				var bigbox = entity.getBoundingBox();
+				var box = entity.getBoundingBox().expand(-0.2, fudge, -0.2);
 				boolean fullCollision = false;
 				double minAdjustment = Float.POSITIVE_INFINITY;
 				double minAdjustmentAbs = Float.POSITIVE_INFINITY;
@@ -208,11 +207,11 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 						for (int j = 0; j < steps; j++) {
 							double ofs = (acc*2)-(((double)j/steps)*(acc*4));
 							double aofs = Math.abs(ofs);
-							boxToPolytope(-bp.getX(), ofs-bp.getY(), -bp.getZ(), bigbox, player);
+							boxToPolytope(-bp.getX(), ofs-bp.getY(), -bp.getZ(), box, player);
 							double coll = OpenGJK.compute_minimum_distance(player, poly, new OpenGJK.Simplex());
 							if (coll < 0.0001) {
 								if (aofs < minAdjustmentAbs) {
-									boxToPolytope(-bp.getX(), ofs-bp.getY(), -bp.getZ(), smallbox, player);
+									boxToPolytope(-bp.getX(), ofs-bp.getY(), -bp.getZ(), box, player);
 									if (!entity.isOnGround()) {
 										fullCollision = OpenGJK.compute_minimum_distance(player, poly, new OpenGJK.Simplex()) < 0.0001;
 									}

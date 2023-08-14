@@ -20,7 +20,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.spongepowered.include.com.google.gson.internal.UnsafeAllocator;
@@ -51,7 +51,7 @@ public class SnareEntityTextureCache {
 		NbtCompound data = stack.getNbt().getCompound("Contents");
 		if (!textureCache.asMap().containsKey(data)) {
 			if (type == EntityType.FALLING_BLOCK) {
-				BlockState bs = NbtHelper.toBlockState(dummyWorld.get().filteredLookup(RegistryKeys.BLOCK), data.getCompound("BlockState"));
+				BlockState bs = NbtHelper.toBlockState(Registries.BLOCK.asLookup(), data.getCompound("BlockState"));
 				BakedModel bm = MinecraftClient.getInstance().getBlockRenderManager().getModel(bs);
 				Identifier id = bm.getParticleSprite().getId();
 				textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));

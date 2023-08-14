@@ -1,6 +1,5 @@
 package com.unascribed.yttr;
 
-import java.lang.reflect.Field;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +29,6 @@ import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
-import com.unascribed.yttr.util.annotate.RegisteredAs;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 import com.unascribed.yttr.world.ScorchedGenerator;
@@ -38,7 +36,6 @@ import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 import com.unascribed.yttr.world.WastelandPopulator;
 import com.unascribed.yttr.world.network.FilterNetwork;
 
-import com.google.common.base.Ascii;
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Lists;
@@ -246,20 +243,6 @@ public class Yttr implements ModInitializer {
 			resourcesNeeded.add(sr, sr.getConsumptionPerBlock(900)*distanceI);
 		}
 		return resourcesNeeded;
-	}
-
-	private static Identifier deriveId(Field f, RegisteredAs ann) {
-		Identifier id;
-		if (ann != null) {
-			if (ann.value().contains(":")) {
-				id = new Identifier(ann.value());
-			} else {
-				id = id(ann.value());
-			}
-		} else {
-			id = id(Ascii.toLowerCase(f.getName()));
-		}
-		return id;
 	}
 
 	/**

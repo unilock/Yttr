@@ -246,6 +246,7 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 	}
 
 	public void changeMode(PlayerEntity user, RifleMode mode) {
+		if (!mode.isEnabled()) return;
 		if (user.isUsingItem()) return;
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasNbt() && stack.getNbt().getBoolean("ModeLocked")) return;
@@ -296,7 +297,15 @@ public class RifleItem extends Item implements ItemColorProvider, DirectClickIte
 		if (YConfig.General.trustPlayers) {
 			if (world.isClient) {
 				world.playSoundFromEntity(user, user, YSounds.RIFLE_CHARGE_CANCEL, user.getSoundCategory(), 1, 1);
-				playFireSoundAndSetCooldown(user, calculatePower(calcAdjustedUseTime(stack, remainingUseTicks)));
+
+				int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
+				float power = calculatePower(useTicks);
+				RifleMode mode = getMode(stack);
+				if (!mode.canFire(user, stack, power)) {
+					user.playSound(YSounds.RIFLE_FIRE_DUD, 1, 1);
+				} else {
+					playFireSoundAndSetCooldown(user, calculatePower(calcAdjustedUseTime(stack, remainingUseTicks)));
+				}
 				new MessageC2STrustedRifleFire(remainingUseTicks).sendToServer();
 			}
 		} else {
