@@ -323,7 +323,6 @@ public class YBlocks {
 			.strength(0, 10000)
 			.luminance(bs -> 13)
 			.pistonBehavior(PistonBehavior.DESTROY)
-			.air()
 		);
 	
 	@RenderLayer("cutout")
