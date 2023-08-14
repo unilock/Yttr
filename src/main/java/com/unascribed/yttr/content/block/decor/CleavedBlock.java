@@ -190,7 +190,7 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 					fudge = 0.3;
 				}
 				var smallbox = entity.getBoundingBox().expand(-0.2, fudge, -0.2);
-				var bigbox = entity.getBoundingBox().expand(fudge, -0.1, fudge);
+				var bigbox = entity.getBoundingBox();
 				boolean fullCollision = false;
 				double minAdjustment = Float.POSITIVE_INFINITY;
 				double minAdjustmentAbs = Float.POSITIVE_INFINITY;
