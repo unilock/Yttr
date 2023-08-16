@@ -21,6 +21,7 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
+import com.unascribed.yttr.util.AdventureHelper;
 import com.unascribed.yttr.util.YLog;
 
 import com.google.common.base.Charsets;
@@ -119,6 +120,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			end = ehr.getPos();
 			hit = ehr.getEntity();
 		}
+		if (!AdventureHelper.canUse(user, stack, world, end)) return TypedActionResult.fail(stack);
 		if (stack.hasNbt() && stack.getNbt().contains("Contents")) {
 			if (world.isClient) return TypedActionResult.success(stack, false);
 			boolean miss = ehr == null && hr.getType() == Type.MISS;
