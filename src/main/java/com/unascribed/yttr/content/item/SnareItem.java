@@ -36,6 +36,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -84,6 +85,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.World;
@@ -199,6 +201,12 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				BlockEntity be = world.getBlockEntity(hr.getBlockPos());
 				if ((be == null || bs.isIn(YTags.Block.SNAREABLE)) && !bs.isIn(YTags.Block.UNSNAREABLE)) {
 					if (bs.getHardness(world, hr.getBlockPos()) >= 0) {
+						// warding/protection mods
+						if (user.isBlockBreakingRestricted(world, hr.getBlockPos(), GameMode.SURVIVAL)) return TypedActionResult.fail(stack);
+						// CanPlaceOn support
+						if (!stack.canPlaceOn(Registries.BLOCK, new CachedBlockPosition(world, hr.getBlockPos(), false))) return TypedActionResult.fail(stack);
+						// refine CanUseInBox to the center of the block to help with literal edge cases
+						if (!AdventureHelper.canUse(user, stack, world, hr.getBlockPos())) return TypedActionResult.fail(stack);
 						toDelete = hr.getBlockPos();
 						boolean waterlogged = bs.getBlock() instanceof Waterloggable && bs.get(Properties.WATERLOGGED);
 						deleteState = waterlogged ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState();
