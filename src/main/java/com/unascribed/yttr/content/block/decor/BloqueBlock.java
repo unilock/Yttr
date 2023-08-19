@@ -25,7 +25,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -33,7 +32,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -46,7 +44,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -100,15 +97,7 @@ public class BloqueBlock extends Block implements Waterloggable, BlockEntityProv
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		if (world.getBlockEntity(pos) instanceof BloqueBlockEntity be) {
-			VoxelShape vs = VoxelShapes.empty();
-			for (int i = 0; i < SLOTS; i++) {
-				if (be.get(i) != null) {
-					vs = VoxelShapes.combine(vs, VOXEL_SHAPES[i], BooleanBiFunction.OR);
-				}
-			}
-			if (vs != VoxelShapes.empty()) {
-				return vs;
-			}
+			return be.getVoxelShape();
 		}
 		return VoxelShapes.cuboid(0.2, 0.2, 0.2, 0.8, 0.8, 0.8);
 	}

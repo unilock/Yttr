@@ -20,10 +20,14 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+
 import org.joml.Vector3f;
 
 public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
@@ -105,8 +109,25 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	private final Adjacency[] adjacency = new Adjacency[SLOTS];
 	private int welds;
 	
+	private VoxelShape shapeCache;
+	
 	public BloqueBlockEntity(BlockPos pos, BlockState state) {
 		super(YBlockEntities.BLOQUE, pos, state);
+	}
+
+	public VoxelShape getVoxelShape() {
+		if (shapeCache != null) return shapeCache;
+		VoxelShape vs = VoxelShapes.empty();
+		for (int i = 0; i < SLOTS; i++) {
+			if (get(i) != null) {
+				vs = VoxelShapes.combine(vs, VOXEL_SHAPES[i], BooleanBiFunction.OR);
+			}
+		}
+		if (vs == VoxelShapes.empty()) {
+			// so buggy bloques can still be removed
+			vs = VoxelShapes.cuboid(0.2, 0.2, 0.2, 0.8, 0.8, 0.8);
+		}
+		return shapeCache = vs;
 	}
 	
 	public void set(int slot, @Nullable DyeColor color) {
@@ -117,6 +138,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 		if (!isWelded()) {
 			world.addSyncedBlockEvent(getPos(), getCachedState().getBlock(), slot, color == null ? -1 : color.getId());
 		}
+		shapeCache = null;
 		markDirty();
 	}
 	
@@ -306,6 +328,7 @@ public class BloqueBlockEntity extends BlockEntity implements RenderAttachmentBl
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
+		shapeCache = null;
 		byte[] bys = nbt.getByteArray("Colors");
 		Arrays.fill(colors, null);
 		for (int i = 0; i < Math.min(bys.length, colors.length); i++) {
