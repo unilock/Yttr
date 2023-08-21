@@ -13,6 +13,8 @@ import java.util.function.Consumer;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.unascribed.yttr.util.YLog;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.util.math.Vec3d;
@@ -226,16 +228,22 @@ public class Polygon implements Iterable<DEdge> {
 			List<Polygon> above, List<Polygon> below)
 	{
 		sortDEdges( onDs, cut.normal().crossProduct(plane().normal()) );
+		int panic = 300;
 		int startOnD = 0;
 		DEdge srcD = null;
 		while( (srcD = getSrcD( onDs, startOnD )) != null ) {
+			if (panic-- <= 0) {
+				YLog.error("BAILING ON INFINITE MULTICLEAVE");
+				return;
+			}
 			DEdge dstD = getDstD( onDs, startOnD );
 			if (dstD == null) break;
 			addBridge( srcD, dstD );
-			if( srcD.prev().prev().srcWhere() == ABOVE )
+			if( srcD.prev().prev().srcWhere() == ABOVE ) {
 				useSrc = srcD.prev();
-				else if( dstD.dstWhere() == BELOW )
-					useSrc = dstD;
+			} else if( dstD.dstWhere() == BELOW ) {
+				useSrc = dstD;
+			}
 		}
 		// Collect new Polygons:
 			for( int i = 0; i < onDs.size(); ++i ) {
