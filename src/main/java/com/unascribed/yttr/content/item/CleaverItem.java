@@ -117,14 +117,18 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 	}
 
 	public static boolean canCleave(World world, PlayerEntity player, ItemStack stack, BlockPos pos, BlockState state) {
-		if (!player.canModifyBlocks() && !stack.canDestroy(Registries.BLOCK, new CachedBlockPosition(world, pos, false)))
+		if (!player.canModifyBlocks() && !stack.canDestroy(Registries.BLOCK, new CachedBlockPosition(world, pos, false))) {
 			return false;
+		}
 		if (!AdventureHelper.canUseLoose(player, stack, world, pos))
 			return false;
 		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
 		// let this be on for creative ops for now
 		if (player.isCreativeLevelTwoOp() && state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
-		
+		return canCleaveContextless(world, stack, pos, state);
+	}
+	
+	public static boolean canCleaveContextless(World world, ItemStack stack, BlockPos pos, BlockState state) {
 		if (state.isIn(YTags.Block.UNCLEAVABLE)) return false;
 		return !(state.getBlock() instanceof BlockEntityProvider) && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
 	}

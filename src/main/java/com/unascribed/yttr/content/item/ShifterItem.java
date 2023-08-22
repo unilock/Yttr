@@ -35,6 +35,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -45,6 +46,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
@@ -187,7 +189,25 @@ public class ShifterItem extends Item implements ControlHintable {
 			}
 		}
 		replState = copySafeProperties(curState, replState);
-		if (be instanceof CleavedBlockEntity && !CleaverItem.canCleave(world, player, _replacement, pos, replState)) return;
+		if (be instanceof CleavedBlockEntity cbe) {
+			if (!CleaverItem.canCleaveContextless(world, _replacement, pos, replState)) {
+				return;
+			}
+			if (!player.canModifyBlocks()) {
+				if (!shifter.canDestroy(Registries.BLOCK, new CachedBlockPosition(world, pos, false) {
+					@Override
+					public BlockEntity getBlockEntity() {
+						return null;
+					}
+					@Override
+					public BlockState getBlockState() {
+						return cbe.getDonor();
+					}
+				})) {
+					return;
+				}
+			}
+		}
 		BlockSoundGroup replSg = replState.getSoundGroup();
 		world.playSound(null, pos, replSg.getPlaceSound(), SoundCategory.BLOCKS, ((replSg.getVolume()+1f)/2)*0.2f, replSg.getPitch()*0.8f);
 		if (!player.isCreative()) {

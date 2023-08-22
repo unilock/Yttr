@@ -38,7 +38,7 @@ public class CleavedBlockMeshes {
 
 	private static final MatrixStack IDENTITY = new MatrixStack();
 	
-	private static final UVObserver uvo = new UVObserver();
+	private static final ThreadLocal<UVObserver> uvo = ThreadLocal.withInitial(UVObserver::new);
 	
 	public record UniqueShapeKey(BlockState donor, ImmutableSet<Polygon> polys) {}
 	
@@ -120,6 +120,7 @@ public class CleavedBlockMeshes {
 			if (firstQuad == null) {
 				sprite = particle;
 			} else {
+				var uvo = CleavedBlockMeshes.uvo.get();
 				uvo.reset();
 				uvo.bakedQuad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
 				sprite = DummySprite.create(uvo.getMinU(), uvo.getMinV(), uvo.getMaxU(), uvo.getMaxV());
