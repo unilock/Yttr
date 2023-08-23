@@ -323,9 +323,9 @@ public class ScreeperNestBlockEntity extends BlockEntity implements YTickable, S
 	}
 	
 	public static boolean matches(BlockState a, BlockState b) {
-		if (a.isIn(YTags.Block.SCREEPER_NEST_LENIENT)) return a.getBlock() == b.getBlock();
 		if (a == b) return true;
 		if (isAccessory(a, b)) return true;
+		if (a.isIn(YTags.Block.SCREEPER_NEST_LENIENT)) return a.getBlock() == b.getBlock();
 		return false;
 	}
 	
