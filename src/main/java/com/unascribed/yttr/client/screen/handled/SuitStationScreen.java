@@ -12,7 +12,6 @@ import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mechanics.SuitResource;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -41,13 +40,6 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 	@Override
 	protected void drawForeground(GuiGraphics graphics, int mouseX, int mouseY) {
 		super.drawForeground(graphics, mouseX, mouseY);
-		
-		if (isEntireSuitPresent()) {
-			RenderSystem.setShaderTexture(0, BG);
-			LampColor color = LampBlockItem.getColor(handler.getSlot(0).getStack());
-			RenderSystem.setShaderColor(((color.glowColor>>16)&0xFF)/255f, ((color.glowColor>>8)&0xFF)/255f, (color.glowColor&0xFF)/255f, 1);
-			graphics.drawTexture(BG, 129, 9, 231, 0, 16, 16, 256, 256);
-		}
 	}
 
 	@Override
@@ -103,6 +95,10 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 			
 			graphics.drawTexture(BG, x+153, y+9, 201, 0, 10, 70, 256, 256);
 			graphics.drawTexture(BG, x+168, y+9, 201, 0, 10, 70, 256, 256);
+			
+			LampColor color = LampBlockItem.getColor(handler.getSlot(0).getStack());
+			RenderSystem.setShaderColor(((color.glowColor>>16)&0xFF)/255f, ((color.glowColor>>8)&0xFF)/255f, (color.glowColor&0xFF)/255f, 1);
+			graphics.drawTexture(BG, x+129, y+9, 300, 231, 0, 16, 16, 256, 256);
 		} else {
 			graphics.drawTexture(BG, x+152, y+8, 201, 84, 12, 72, 256, 256);
 			graphics.drawTexture(BG, x+167, y+8, 201, 84, 12, 72, 256, 256);
@@ -116,6 +112,8 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 		int fluxH = (handler.getFluxLeft()*14)/handler.getMaxFluxLeft();
 		int fluxRH = 14-fluxH;
 		graphics.drawTexture(BG, x+78, y+46+fluxRH, 215, 70+fluxRH, 14, fluxH, 256, 256);
+		
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 	}
 	
 	private boolean isEntireSuitPresent() {
