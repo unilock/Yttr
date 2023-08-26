@@ -3,6 +3,7 @@ package com.unascribed.yttr.network;
 import com.unascribed.lib39.tunnel.api.C2SMessage;
 import com.unascribed.lib39.tunnel.api.NetworkContext;
 import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YNetwork;
@@ -43,7 +44,7 @@ public class MessageC2SDivePos extends C2SMessage {
 			int lastUpdate = diver.yttr$getLastDivePosUpdate();
 			int diff = ticks-lastUpdate;
 			diver.yttr$setLastDivePosUpdate(ticks);
-			if (lastUpdate != 0 && diff < 4) {
+			if (!YConfig.General.trustPlayers && lastUpdate != 0 && diff < 4) {
 				YLog.warn("{} is updating their dive pos too quickly!", player.getName().getString());
 				new MessageS2CDivePos(diver.yttr$getDivePos().x, diver.yttr$getDivePos().z).sendTo(player);
 				return;
@@ -59,7 +60,7 @@ public class MessageC2SDivePos extends C2SMessage {
 				moveSpeed /= sr.getSpeedDivider(sai.getResourceAmount(is, sr) <= 0);
 			}
 			int max = (moveSpeed+1)*diff;
-			if (distSq > max*max) {
+			if (!YConfig.General.trustPlayers && distSq > max*max) {
 				YLog.warn("{} dove too quickly! {}, {}", player.getName().getString(), x-diver.yttr$getDivePos().x, z-diver.yttr$getDivePos().z);
 				new MessageS2CDivePos(diver.yttr$getDivePos().x, diver.yttr$getDivePos().z).sendTo(player);
 				return;

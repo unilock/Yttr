@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +46,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 	private boolean yttr$isNoGravityFromDiving = false;
 	private int yttr$lastDivePosUpdate;
 	private Vec2i yttr$divePos;
-	private int yttr$fastDiveTime;
+	private long yttr$fastDiveFinishNanos;
 	private BlockPos yttr$fastDiveTarget;
 	
 	private final Set<UUID> yttr$knownGeysers = Sets.newHashSet();
@@ -96,8 +95,8 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 			self.fallDistance = 0;
 			if (yttr$fastDiveTarget != null) {
 				BlockPos pos = yttr$fastDiveTarget;
-				if (yttr$fastDiveTime > 0) {
-					yttr$fastDiveTime--;
+				long diveTimeLeft = yttr$fastDiveFinishNanos-System.nanoTime();
+				if (diveTimeLeft > 0) {
 					if (pos.getSquaredDistanceToCenter(self.getPos()) > 5000*5000) {
 						YCriteria.DIVE_FAR.trigger(self);
 					}
@@ -153,8 +152,8 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 			if (yttr$fastDiveTarget != null) {
 				yttr$fastDiveTarget = null;
 			}
-			if (yttr$fastDiveTime != 0) {
-				yttr$fastDiveTime = 0;
+			if (yttr$fastDiveFinishNanos != 0) {
+				yttr$fastDiveFinishNanos = 0;
 			}
 		}
 	}
@@ -174,7 +173,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 		if (yttr$isNoGravityFromDiving) nbt.putBoolean("yttr:NoGravityFromDiving", yttr$isNoGravityFromDiving);
 		if (yttr$divePos != null) nbt.put("yttr:DivePos", yttr$divePos.toTag());
 		if (yttr$fastDiveTarget != null) nbt.put("yttr:FastDiveTarget", NbtHelper.fromBlockPos(yttr$fastDiveTarget));
-		if (yttr$fastDiveTime != 0) nbt.putInt("yttr:FastDiveTime", yttr$fastDiveTime);
+		if (yttr$fastDiveFinishNanos != 0) nbt.putLong("yttr:FastDiveNanosRemaining", yttr$fastDiveFinishNanos-System.nanoTime());
 		
 		if (!yttr$knownGeysers.isEmpty()) {
 			NbtList li = new NbtList();
@@ -192,7 +191,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 		yttr$isNoGravityFromDiving = nbt.getBoolean("yttr:NoGravityFromDiving");
 		yttr$divePos = Vec2i.fromTag(nbt.get("yttr:DivePos"));
 		yttr$fastDiveTarget = nbt.contains("yttr:FastDiveTarget", NbtType.COMPOUND) ? NbtHelper.toBlockPos(nbt.getCompound("yttr:FastDiveTarget")) : null;
-		yttr$fastDiveTime = nbt.getInt("yttr:FastDiveTime");
+		if (nbt.contains("yttr:FastDiveTime")) {
+			yttr$setFastDiveTime(nbt.getInt("yttr:FastDiveTime"));
+		} else if (nbt.contains("yttr:FastDiveNanosRemaining")) {
+			yttr$fastDiveFinishNanos = System.nanoTime()+nbt.getLong("yttr:FastDiveNanosRemaining");
+		} else {
+			yttr$fastDiveFinishNanos = 0;
+		}
 		
 		yttr$knownGeysers.clear();
 		NbtList li = nbt.getList("yttr:KnownGeysers", NbtType.INT_ARRAY);
@@ -254,13 +259,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 	}
 
 	@Override
-	public int yttr$getFastDiveTime() {
-		return yttr$fastDiveTime;
+	public long yttr$getFastDiveFinishNanos() {
+		return yttr$fastDiveFinishNanos;
 	}
-
+	
 	@Override
-	public void yttr$setFastDiveTime(int i) {
-		yttr$fastDiveTime = i;
+	public void yttr$setFastDiveFinishNanos(long nanos) {
+		this.yttr$fastDiveFinishNanos = nanos;
 	}
 
 	@Override
