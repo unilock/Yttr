@@ -138,8 +138,8 @@ public class ProjectorItem extends Item implements ControlHintable {
 		if (world.isClient) return;
 		if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 		int ticks = getMaxUseTime(stack)-remainingUseTicks;
-		if (ticks != 0 && ticks < 20) return;
-		if (ticks > 0) ticks -= 20;
+		if (ticks != 0 && ticks < 10) return;
+		if (ticks > 0) ticks -= 10;
 		BlockPos lastPos = stack.getNbt().contains("LastBlock") ? NbtHelper.toBlockPos(stack.getNbt().getCompound("LastBlock")) : null;
 		BlockPos pos = BlockPos.fromPosition(user.getPos().subtract(0, 1, 0).add(user.getRotationVector().multiply(ticks/2f, ticks/3f, ticks/2f)));
 		if (lastPos != null) {
