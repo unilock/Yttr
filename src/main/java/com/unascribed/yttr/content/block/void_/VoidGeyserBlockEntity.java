@@ -78,7 +78,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements YTickable {
 		
 		seen.clear();
 		for (ServerPlayerEntity p : world.getEntitiesByClass(ServerPlayerEntity.class, new Box(pos).expand(5), e -> e instanceof DiverPlayer)) {
-			Yttr.discoverGeyser(id, p);
+			Yttr.discoverGeyser(id, p, true);
 			if (Yttr.isWearingFullSuit(p) && p.isSneaking() && Yttr.isStandingOnDivingPlate(p)) {
 				if (sneakTimers.compute(p.getUuid(), (u, mi) -> {
 					if (mi != null) {

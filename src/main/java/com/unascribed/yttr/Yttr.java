@@ -319,15 +319,18 @@ public class Yttr implements ModInitializer {
 		new MessageS2CDive((int)p.getPos().x, (int)p.getPos().z, geysers).sendTo(p);
 	}
 
-	public static void discoverGeyser(UUID id, ServerPlayerEntity player) {
-		if (!(player instanceof DiverPlayer)) return;
+	public static boolean discoverGeyser(UUID id, ServerPlayerEntity player, boolean notify) {
+		if (!(player instanceof DiverPlayer)) return false;
 		DiverPlayer diver = (DiverPlayer)player;
 		Set<UUID> knownGeysers = diver.yttr$getKnownGeysers();
 		if (!knownGeysers.contains(id)) {
 			Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
-			if (g == null) return;
+			if (g == null) return false;
 			knownGeysers.add(id);
 			new MessageS2CDiscoveredGeyser(g).sendTo(player);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

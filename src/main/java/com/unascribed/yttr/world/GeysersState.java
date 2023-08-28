@@ -49,6 +49,10 @@ public class GeysersState extends PersistentState {
 		markDirty();
 	}
 	
+	public Set<Geyser> getGeysers() {
+		return geysers;
+	}
+	
 	public @Nullable Geyser getGeyser(UUID id) {
 		return geysersById.get(id);
 	}

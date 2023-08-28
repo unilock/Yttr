@@ -129,7 +129,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Di
 				GeysersState gs = GeysersState.get(self.getServerWorld());
 				for (Geyser g : gs.getGeysersInRange(yttr$divePos.x, yttr$divePos.z, 64)) {
 					if (!yttr$knownGeysers.contains(g.id)) {
-						Yttr.discoverGeyser(g.id, self);
+						Yttr.discoverGeyser(g.id, self, true);
 						YCriteria.DISCOVER_GEYSER.trigger(self);
 					}
 				}

@@ -76,6 +76,7 @@ public class SuitRenderer {
 	public void tearDown() {
 		RenderSystem.disableBlend();
 		RenderSystem.defaultBlendFunc();
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 	}
 	
 	public void tick() {

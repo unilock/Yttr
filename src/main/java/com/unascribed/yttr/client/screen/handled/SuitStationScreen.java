@@ -99,6 +99,7 @@ public class SuitStationScreen extends HandledScreen<SuitStationScreenHandler> {
 			LampColor color = LampBlockItem.getColor(handler.getSlot(0).getStack());
 			RenderSystem.setShaderColor(((color.glowColor>>16)&0xFF)/255f, ((color.glowColor>>8)&0xFF)/255f, (color.glowColor&0xFF)/255f, 1);
 			graphics.drawTexture(BG, x+129, y+9, 300, 231, 0, 16, 16, 256, 256);
+			RenderSystem.setShaderColor(1, 1, 1, 1);
 		} else {
 			graphics.drawTexture(BG, x+152, y+8, 201, 84, 12, 72, 256, 256);
 			graphics.drawTexture(BG, x+167, y+8, 201, 84, 12, 72, 256, 256);
