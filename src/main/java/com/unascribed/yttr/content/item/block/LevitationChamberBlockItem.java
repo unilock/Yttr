@@ -1,7 +1,7 @@
 package com.unascribed.yttr.content.item.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.DispenserBlock;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;

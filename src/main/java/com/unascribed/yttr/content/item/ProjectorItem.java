@@ -16,7 +16,7 @@ import com.unascribed.yttr.util.AdventureHelper;
 import com.unascribed.yttr.util.ControlHintable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.DispenserBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.LivingEntity;

@@ -4,7 +4,7 @@ import static com.unascribed.yttr.content.block.decor.BloqueBlock.*;
 
 import java.util.Arrays;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;

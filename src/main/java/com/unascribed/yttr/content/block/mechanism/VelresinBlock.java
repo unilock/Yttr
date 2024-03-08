@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
