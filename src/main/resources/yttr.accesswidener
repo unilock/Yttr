@@ -7,7 +7,6 @@ accessible method net/minecraft/client/util/math/MatrixStack$Entry <init> (Lorg/
 accessible method net/minecraft/util/shape/VoxelShape <init> (Lnet/minecraft/util/shape/VoxelSet;)V
 
 mutable field net/minecraft/world/World isClient Z
-mutable field net/minecraft/resource/pack/ResourcePackManager providers Ljava/util/Set;
 
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible class net/minecraft/village/TradeOffers$SellItemFactory

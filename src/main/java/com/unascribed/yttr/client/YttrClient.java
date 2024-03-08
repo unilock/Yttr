@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import com.mojang.blaze3d.vertex.*;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -451,33 +453,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			}
 			return false;
 		});
-		
-		// TODO
-//		ResourcePackProvider prov = new ResourcePackProvider() {
-//			@Override
-//			public void register(Consumer<ResourcePackProfile> consumer) {
-//				ResourcePackFactory f = str -> new EmbeddedResourcePack("lcah");
-//				consumer.accept(ResourcePackProfile.of("yttr:lcah", Text.literal("Less Creepy Aware Hopper"), false, f,
-//						ResourceType.CLIENT_RESOURCES, InsertionPosition.TOP, nameAndSource("Yttr built-in")));
-//				f = str -> new EmbeddedResourcePack("vector");
-//				consumer.accept(ResourcePackProfile.of("yttr:vector", Text.literal("Vector Suit"), false, f,
-//						ResourceType.CLIENT_RESOURCES, InsertionPosition.TOP, nameAndSource("Yttr built-in")));
-//			}
-//			private static ResourcePackSource nameAndSource(String source) {
-//				Text text = Text.translatable(source);
-//				return ResourcePackSource.of(name -> Text.translatable("pack.nameAndSource", name, text).formatted(Formatting.GRAY), false);
-//			}
-//		};
-//
-//		AccessorResourcePackManager arpm = ((AccessorResourcePackManager)MinecraftClient.getInstance().getResourcePackManager());
-//		Set<ResourcePackProvider> providers = arpm.yttr$getProviders();
-//		try {
-//			providers.add(prov);
-//		} catch (UnsupportedOperationException e) {
-//			providers = Sets.newHashSet(providers);
-//			providers.add(prov);
-//			arpm.yttr$setProviders(providers);
-//		}
+
+		ResourceManagerHelper.registerBuiltinResourcePack(Yttr.id("lcah"), FabricLoader.getInstance().getModContainer("yttr").orElseThrow(), ResourcePackActivationType.NORMAL);
+		ResourceManagerHelper.registerBuiltinResourcePack(Yttr.id("vector"), FabricLoader.getInstance().getModContainer("yttr").orElseThrow(), ResourcePackActivationType.NORMAL);
 	}
 
 	private SimpleSynchronousResourceReloadListener reloader(String idStr, Consumer<ResourceManager> cb) {
