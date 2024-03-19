@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.ultrapure;
+package com.unascribed.yttr.mixin.ultrapure.client;
 
 import com.unascribed.yttr.client.YttrClient;
 import net.minecraft.client.render.VertexConsumerProvider;
