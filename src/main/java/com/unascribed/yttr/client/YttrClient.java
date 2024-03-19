@@ -454,8 +454,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return false;
 		});
 
-		ResourceManagerHelper.registerBuiltinResourcePack(Yttr.id("lcah"), FabricLoader.getInstance().getModContainer("yttr").orElseThrow(), ResourcePackActivationType.NORMAL);
-		ResourceManagerHelper.registerBuiltinResourcePack(Yttr.id("vector"), FabricLoader.getInstance().getModContainer("yttr").orElseThrow(), ResourcePackActivationType.NORMAL);
+		ResourceManagerHelper.registerBuiltinResourcePack(Yttr.id("lcah"), FabricLoader.getInstance().getModContainer("yttr").orElseThrow(), Text.literal("Less Creepy Aware Hopper"), ResourcePackActivationType.NORMAL);
+		ResourceManagerHelper.registerBuiltinResourcePack(Yttr.id("vector"), FabricLoader.getInstance().getModContainer("yttr").orElseThrow(), Text.literal("Vector Suit"), ResourcePackActivationType.NORMAL);
 	}
 
 	private SimpleSynchronousResourceReloadListener reloader(String idStr, Consumer<ResourceManager> cb) {
