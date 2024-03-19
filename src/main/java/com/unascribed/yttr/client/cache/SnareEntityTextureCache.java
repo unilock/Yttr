@@ -53,12 +53,12 @@ public class SnareEntityTextureCache {
 			if (type == EntityType.FALLING_BLOCK) {
 				BlockState bs = NbtHelper.toBlockState(Registries.BLOCK.asLookup(), data.getCompound("BlockState"));
 				BakedModel bm = MinecraftClient.getInstance().getBlockRenderManager().getModel(bs);
-				Identifier id = bm.getParticleSprite().getId();
+				Identifier id = bm.getParticleSprite().getContents().getId();
 				textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
 			} else if (type == EntityType.ITEM) {
 				ItemStack item = ItemStack.fromNbt(data.getCompound("Item"));
 				BakedModel bm = MinecraftClient.getInstance().getItemRenderer().getModels().getModel(item);
-				Identifier id = bm.getParticleSprite().getId();
+				Identifier id = bm.getParticleSprite().getContents().getId();
 				textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
 			} else {
 				EntityRenderer renderer = ((AccessorEntityRendererDispatcher)MinecraftClient.getInstance().getEntityRenderDispatcher()).yttr$getRenderers().get(type);
