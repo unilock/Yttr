@@ -813,9 +813,8 @@
 	"tag.yttr.substituted_quartz": "Quartz",
 	"tag.yttr.substituted_redstone": "Redstone",
 	"tag.yttr.substituted_yttrium": "Yttrium",
-	
+
 	"emi.category.yttr.void_filtering": "Void Filtering",
-	"emi.category.yttr.piston_smashing": "Piston Smashing",
 	"emi.category.yttr.centrifuging": "Centrifuging",
 	"emi.category.yttr.soaking": "Soaking",
 	"emi.category.yttr.continuity_gifts": "Gifts",
@@ -832,9 +831,7 @@
 	
 	"emi.category.yttr.continuity_gifts.chance": "%s%%",
 	"emi.category.yttr.continuity_gifts.chance.tooltip": "Chance of any one specific item",
-	
-	"emi.category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
-	
+
 	"tooltip.yttr.suit_helmet_hud": "HUD Color: %s",
 	
 	"trinkets.slot.feet.sole": "Sole",
