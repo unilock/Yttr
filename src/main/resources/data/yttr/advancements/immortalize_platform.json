@@ -19,12 +19,26 @@
 		"use_projector_on_platform": {
 			"trigger": "minecraft:item_used_on_block",
 			"conditions": {
-				"location": {
-					"block": { "block": "yttr:continuous_platform" }
-				},
-				"item": {
-					"items": ["yttr:projector"]
-				}
+				"location": [
+					{
+						"condition": "minecraft:location_check",
+						"predicate": {
+							"block": {
+								"blocks": [
+									"yttr:continuous_platform"
+								]
+							}
+						}
+					},
+					{
+						"condition": "minecraft:match_tool",
+						"predicate": {
+							"items": [
+								"yttr:projector"
+							]
+						}
+					}
+				]
 			}
 		}
 	}
