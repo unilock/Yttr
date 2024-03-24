@@ -128,11 +128,12 @@ public class Yttr implements ModInitializer {
 		// base content
 		YBlocks.init();
 		YBlockEntities.init();
-		YWorldGen.init();
 		YItems.init();
 		YSounds.init();
 		YFluids.init();
 		YEntities.init();
+		YWorldGen.init();
+		YBiomes.init();
 		
 		// auxillary content
 		YStatusEffects.init();
