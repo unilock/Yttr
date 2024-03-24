@@ -1,22 +1,25 @@
 package com.unascribed.yttr.mixin.scorched;
 
+import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YBiomes;
 import net.minecraft.registry.Holder;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.VanillaDynamicRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MultiNoiseBiomeSource.class)
-public class MixinMultiNoiseBiomeSource {
+public abstract class MixinMultiNoiseBiomeSource {
+    @Shadow
+    protected abstract MultiNoiseUtil.ParameterRangeList<Holder<Biome>> getBiomeEntries();
+
     @Unique
     private boolean yttr$doSetScorchedBiomes = true;
     @Unique
@@ -40,10 +43,17 @@ public class MixinMultiNoiseBiomeSource {
         }
     }
 
-    public void yttr$setScorchedBiomes() {
-        var provider = VanillaDynamicRegistries.createLookup();
-        var lookup = provider.getLookupOrThrow(RegistryKeys.BIOME); // this crashes. why?
-        yttr$scorchedSummit = lookup.getHolder(YBiomes.SCORCHED_SUMMIT).orElse(null);
-        yttr$scorchedTerminus = lookup.getHolder(YBiomes.SCORCHED_TERMINUS).orElse(null);
+    @Unique
+    private void yttr$setScorchedBiomes() {
+        this.getBiomeEntries().getEntries().stream().map(Pair::getSecond).forEach(holder -> {
+            if (holder.isBound()) {
+                if (holder.isRegistryKey(YBiomes.SCORCHED_SUMMIT)) {
+                    yttr$scorchedSummit = holder;
+                }
+                if (holder.isRegistryKey(YBiomes.SCORCHED_TERMINUS)) {
+                    yttr$scorchedTerminus = holder;
+                }
+            }
+        });
     }
 }
