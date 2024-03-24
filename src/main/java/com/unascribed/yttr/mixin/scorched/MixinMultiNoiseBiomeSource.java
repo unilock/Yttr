@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MultiNoiseBiomeSource.class)
+// lower priority for TerraBlender compat
+@Mixin(value = MultiNoiseBiomeSource.class, priority = 100)
 public abstract class MixinMultiNoiseBiomeSource {
     @Shadow
     protected abstract MultiNoiseUtil.ParameterRangeList<Holder<Biome>> getBiomeEntries();
