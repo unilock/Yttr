@@ -11,6 +11,7 @@ public class YBiomes {
     public static final RegistryKey<Biome> SCORCHED_SUMMIT = key("scorched_summit");
     public static final RegistryKey<Biome> SCORCHED_TERMINUS = key("scorched_terminus");
 
+    // This ensures the biomes will never generate naturally
     private static final MultiNoiseUtil.NoiseHypercube OUT_OF_RANGE = MultiNoiseUtil.createNoiseHypercube(3.01f, 3.01f, 3.01f, 3.01f, 3.01f, 3.01f, 3.01f);
 
     public static void init() {
