@@ -19,21 +19,21 @@ import net.minecraft.text.Text;
 @Mixin(InGameHud.class)
 public class MixinInGameHud {
 
-	@Shadow
-	private ItemStack currentStack;
-	
-	@ModifyVariable(at=@At(value="INVOKE_ASSIGN", target="net/minecraft/text/MutableText.formatted(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/MutableText;"),
-			method="renderHeldItemTooltip", ordinal=0)
-	public MutableText modifyTooltip(MutableText orig) {
-		if (currentStack != null && currentStack.getItem() == YItems.REPLICATOR) {
-			ItemStack held = ReplicatorBlockItem.getHeldItem(currentStack);
-			if (!held.isEmpty()) {
-				return Text.translatable("block.yttr.replicator.holding",
-						held.getName().copyContentOnly().formatted(held.getRarity().formatting),
-						currentStack.getName().copyContentOnly().formatted(currentStack.getRarity().formatting));
-			}
-		}
-		return orig;
-	}
+//	@Shadow
+//	private ItemStack currentStack;
+//
+//	@ModifyVariable(at=@At(value="INVOKE_ASSIGN", target="net/minecraft/text/MutableText.formatted(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/MutableText;"),
+//			method="renderHeldItemTooltip", ordinal=0)
+//	public MutableText modifyTooltip(MutableText orig) {
+//		if (currentStack != null && currentStack.getItem() == YItems.REPLICATOR) {
+//			ItemStack held = ReplicatorBlockItem.getHeldItem(currentStack);
+//			if (!held.isEmpty()) {
+//				return Text.translatable("block.yttr.replicator.holding",
+//						held.getName().copyContentOnly().formatted(held.getRarity().formatting),
+//						currentStack.getName().copyContentOnly().formatted(currentStack.getRarity().formatting));
+//			}
+//		}
+//		return orig;
+//	}
 	
 }
