@@ -22,8 +22,8 @@ public interface AccessorParticleManager {
 	@Accessor("particles")
 	Map<ParticleTextureSheet, Queue<Particle>> yttr$getParticles();
 	
-	@Accessor("factories")
-	Int2ObjectMap<ParticleFactory<?>> yttr$getFactories();
+//	@Accessor("factories")
+//	Int2ObjectMap<ParticleFactory<?>> yttr$getFactories();
 	
 	@Accessor("spriteAwareFactories")
 	Map<Identifier, Object> yttr$getSpriteAwareFactories();

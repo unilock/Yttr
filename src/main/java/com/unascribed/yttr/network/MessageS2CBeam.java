@@ -5,10 +5,10 @@ import com.unascribed.lib39.tunnel.api.S2CMessage;
 import com.unascribed.lib39.tunnel.api.annotation.field.MarshalledAs;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YNetwork;
+import com.unascribed.yttr.mixin.accessor.client.AccessorParticleManager;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.Perspective;
@@ -67,7 +67,7 @@ public class MessageS2CBeam extends S2CMessage {
 		double diffZ = endZ-start.z;
 		int count = (int)(len*14);
 		DustParticleEffect eff = new DustParticleEffect(new Vector3f(r, g, b), 0.2f);
-		SpriteProvider sprites = ((ParticleManagerAccessor)mc.particleManager).getSpriteAwareFactories().get(Registries.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
+		SpriteProvider sprites = (SpriteProvider) ((AccessorParticleManager)mc.particleManager).yttr$getSpriteAwareFactories().get(Registries.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
 		for (int i = 0; i < count; i++) {
 			double t = (i/(double)count);
 			double x = start.x+(diffX*t);

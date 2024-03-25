@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client.particle;
 
-import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
+import com.unascribed.yttr.mixin.accessor.client.AccessorParticleManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.BlockLeakParticle;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -18,7 +18,7 @@ public class FallingDelicaceParticle extends BlockLeakParticle {
 		maxAge = 100;
 		setColor(0.998f, 0.564f, 0.994f);
 		setColorAlpha(0.5f);
-		SpriteProvider sprites = ((ParticleManagerAccessor)MinecraftClient.getInstance().particleManager).getSpriteAwareFactories().get(Registries.PARTICLE_TYPE.getKey(ParticleTypes.FALLING_HONEY).get().getValue());
+		SpriteProvider sprites = (SpriteProvider) ((AccessorParticleManager)MinecraftClient.getInstance().particleManager).yttr$getSpriteAwareFactories().get(Registries.PARTICLE_TYPE.getKey(ParticleTypes.FALLING_HONEY).get().getValue());
 		setSprite(sprites);
 	}
 	
