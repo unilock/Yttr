@@ -1,5 +1,6 @@
 package com.unascribed.yttr.mixin.diving;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,12 +20,13 @@ public class MixinEntity {
 		}
 	}
 	
-	@Inject(at=@At("RETURN"), method="getJumpVelocityMultiplier", cancellable=true)
-	protected void getJumpVelocityMultiplier(CallbackInfoReturnable<Float> ci) {
+	@ModifyReturnValue(at=@At("RETURN"), method="getJumpVelocityMultiplier")
+	protected float getJumpVelocityMultiplier(float original) {
 		if (this instanceof SuitPiecesForJump && ((SuitPiecesForJump)this).yttr$getSuitPiecesForJump() > 1) {
 			float m = 1-(0.2f*((SuitPiecesForJump)this).yttr$getSuitPiecesForJump());
-			ci.setReturnValue(ci.getReturnValueF()*m);
+			return original*m;
 		}
+		return original;
 	}
 	
 	

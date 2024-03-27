@@ -1,9 +1,8 @@
 package com.unascribed.yttr.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.client.screen.handled.RafterScreen;
 
@@ -16,12 +15,13 @@ import net.minecraft.screen.slot.Slot;
 @Mixin(HandledScreen.class)
 public class MixinHandledScreen {
 
-	@Inject(at=@At("RETURN"), method="getSlotAt", cancellable=true)
-	private void getSlotAt(double x, double y, CallbackInfoReturnable<Slot> ci) {
+	@ModifyReturnValue(at=@At("RETURN"), method="getSlotAt")
+	private Slot getSlotAt(Slot original, double x, double y) {
 		Object self = this;
-		if (ci.getReturnValue() == null && self instanceof RafterScreen) {
-			ci.setReturnValue(((RafterScreen)self).getAltSlotAt(x, y));
+		if (original == null && self instanceof RafterScreen) {
+			return ((RafterScreen)self).getAltSlotAt(x, y);
 		}
+		return original;
 	}
 	
 }

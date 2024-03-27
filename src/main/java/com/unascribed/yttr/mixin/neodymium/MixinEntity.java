@@ -1,12 +1,12 @@
 package com.unascribed.yttr.mixin.neodymium;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.unascribed.yttr.init.YDamageTypes;
 import net.minecraft.registry.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.content.block.NeodymiumBlock.MagneticVoxelShape;
 import com.unascribed.yttr.init.YSounds;
@@ -104,16 +104,18 @@ public class MixinEntity implements Magnetized {
 		return stack.isIn(tag);
 	}
 
-	@Inject(at=@At("RETURN"), method="getJumpVelocityMultiplier", cancellable=true)
-	protected void getJumpVelocityMultiplier(CallbackInfoReturnable<Float> ci) {
-		if (yttr$magnetizedBelow) ci.setReturnValue(ci.getReturnValueF()*0.1f);
-		if (yttr$magnetizedAbove) ci.setReturnValue(0f);
+	@ModifyReturnValue(at=@At("RETURN"), method="getJumpVelocityMultiplier")
+	protected float getJumpVelocityMultiplier(float original) {
+		if (yttr$magnetizedBelow) return original*0.1f;
+		if (yttr$magnetizedAbove) return 0f;
+		return original;
 	}
 
-	@Inject(at=@At("RETURN"), method="getVelocityMultiplier", cancellable=true)
-	protected void getVelocityMultiplier(CallbackInfoReturnable<Float> ci) {
-		if (yttr$magnetizedBelow) ci.setReturnValue(ci.getReturnValueF()*0.2f);
-		if (yttr$magnetizedAbove) ci.setReturnValue(ci.getReturnValueF()*0.1f);
+	@ModifyReturnValue(at=@At("RETURN"), method="getVelocityMultiplier")
+	protected float getVelocityMultiplier(float original) {
+		if (yttr$magnetizedBelow) return original*0.2f;
+		if (yttr$magnetizedAbove) return original*0.1f;
+		return original;
 	}
 	
 	@Inject(at=@At("HEAD"), method="playStepSound")
