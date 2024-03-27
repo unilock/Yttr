@@ -1,12 +1,12 @@
 package com.unascribed.yttr.mixin.replicator;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YItems;
@@ -35,8 +35,8 @@ public class MixinDropperBlock {
 	}
 	
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/entity/DispenserBlockEntity.setStack(ILnet/minecraft/item/ItemStack;)V", shift=Shift.AFTER),
-			method="dispense", locals=LocalCapture.CAPTURE_FAILHARD)
-	public void afterSetStack(ServerWorld serverWorld, BlockPos pos, CallbackInfo ci, BlockPointerImpl ptr, DispenserBlockEntity dbe, int slot) {
+			method="dispense")
+	public void afterSetStack(ServerWorld serverWorld, BlockPos pos, CallbackInfo ci, @Local DispenserBlockEntity dbe, @Local int slot) {
 		if (yttr$savedStack != null) {
 			dbe.setStack(slot, yttr$savedStack);
 			yttr$savedStack = null;

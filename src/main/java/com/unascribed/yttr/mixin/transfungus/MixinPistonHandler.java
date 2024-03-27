@@ -2,13 +2,13 @@ package com.unascribed.yttr.mixin.transfungus;
 
 import java.util.List;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.unascribed.yttr.content.entity.SlippingTransfungusEntity;
 import com.unascribed.yttr.init.YBlocks;
@@ -36,9 +36,8 @@ public class MixinPistonHandler {
 	@Shadow @Final
 	private Direction pistonFacing;
 	
-	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/piston/PistonHandler.isBlockSticky(Lnet/minecraft/block/BlockState;)Z"), method="tryMove", cancellable=true,
-			locals=LocalCapture.CAPTURE_FAILHARD)
-	public void tryMoveDirect(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, BlockState state) {
+	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/piston/PistonHandler.isBlockSticky(Lnet/minecraft/block/BlockState;)Z"), method="tryMove", cancellable=true)
+	public void tryMoveDirect(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, @Local BlockState state) {
 		BlockState movingState = world.getBlockState(pos);
 		if (movingState.isOf(YBlocks.TRANSFUNGUS)) {
 			var afterPos = pos.offset(dir);
@@ -71,9 +70,8 @@ public class MixinPistonHandler {
 		}
 	}
 	
-	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/BlockState.getPistonBehavior()Lnet/minecraft/block/piston/PistonBehavior;"), method="tryMove", cancellable=true,
-			locals=LocalCapture.CAPTURE_FAILHARD)
-	public void tryMoveBetween(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, BlockState state, int i, int j, int k, BlockPos moving) {
+	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/BlockState.getPistonBehavior()Lnet/minecraft/block/piston/PistonBehavior;"), method="tryMove", cancellable=true)
+	public void tryMoveBetween(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, @Local(index = 7) BlockPos moving) {
 		BlockState movingState = world.getBlockState(moving);
 		if (movingState.isOf(YBlocks.TRANSFUNGUS)) {
 			var afterPos = moving.offset(dir);

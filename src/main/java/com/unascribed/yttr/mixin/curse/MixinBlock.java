@@ -5,13 +5,13 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YRecipeTypes;
@@ -57,9 +57,8 @@ public class MixinBlock {
 	}
 	
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/entity/ItemEntity.setToDefaultPickupDelay()V", shift=Shift.AFTER),
-			method="dropStack(Lnet/minecraft/world/World;Ljava/util/function/Supplier;Lnet/minecraft/item/ItemStack;)V", cancellable=true,
-			locals=LocalCapture.CAPTURE_FAILHARD)
-	private static void dropStack(World world, Supplier<ItemEntity> sup, ItemStack stack, CallbackInfo ci, ItemEntity entity) {
+			method="dropStack(Lnet/minecraft/world/World;Ljava/util/function/Supplier;Lnet/minecraft/item/ItemStack;)V", cancellable=true)
+	private static void dropStack(World world, Supplier<ItemEntity> sup, ItemStack stack, CallbackInfo ci, @Local ItemEntity entity) {
 		if (ShatteringLogic.isShattering) {
 			if (ShatteringLogic.shatteringDepth > 0) {
 				entity.setVelocity(entity.getPos().subtract(Vec3d.ofCenter(entity.getBlockPos())).normalize().multiply(0.2));
