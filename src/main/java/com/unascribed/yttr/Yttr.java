@@ -126,6 +126,7 @@ public class Yttr implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		// base content
+		YAttributes.init();
 		YBlocks.init();
 		YBlockEntities.init();
 		YItems.init();

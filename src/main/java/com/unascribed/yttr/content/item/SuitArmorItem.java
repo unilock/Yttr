@@ -2,8 +2,8 @@ package com.unascribed.yttr.content.item;
 
 import java.util.UUID;
 
+import com.unascribed.yttr.init.YAttributes;
 import com.unascribed.yttr.mechanics.SuitResource;
-import com.unascribed.yttr.util.FakeEntityAttribute;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -34,7 +34,7 @@ public class SuitArmorItem extends ArmorItem {
 		builder.put(EntityAttributes.GENERIC_FLYING_SPEED, new EntityAttributeModifier(id, "Armor penalty", -0.4, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
 		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(id, "Armor penalty", -0.15, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
 		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(id, "Armor penalty", -0.15, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
-		builder.put(new FakeEntityAttribute("attribute.name.yttr.jump_height"), new EntityAttributeModifier(id, "Armor penalty", -0.2, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+		builder.put(YAttributes.JUMP_HEIGHT, new EntityAttributeModifier(id, "Armor penalty", -0.2, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
 		this.attributeModifiers = builder.build();
 	}
 	
