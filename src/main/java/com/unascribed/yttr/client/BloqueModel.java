@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
@@ -51,8 +50,8 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<RandomGenerator> randomSupplier, RenderContext context) {
-		if (!(blockView instanceof RenderAttachedBlockView)) return;
-		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
+		if (blockView == null) return;
+		Object attachment = blockView.getBlockEntityRenderData(pos);
 		if (attachment instanceof RenderData data) {
 			DyeColor[] colors = data.colors();
 			Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
@@ -340,7 +339,7 @@ public class BloqueModel implements UnbakedModel, BakedModel, FabricBakedModel {
 				}
 			}
 		} else {
-			context.fallbackConsumer().accept(MinecraftClient.getInstance().getBakedModelManager().getMissingModel());
+			MinecraftClient.getInstance().getBakedModelManager().getMissingModel().emitBlockQuads(blockView, state, pos, randomSupplier, context);
 		}
 	}
 
