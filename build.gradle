@@ -10,7 +10,7 @@ buildscript {
 	}
 }
 plugins {
-	id 'fabric-loom' version '1.5-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 }
 
 if (System.getenv("MODRINTH_TOKEN")) {
@@ -105,7 +105,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
 	modImplementation "com.unascribed:ears-api:1.4.6"
-	modImplementation "dev.emi:emi-fabric:1.1.2+1.20.1"
+	modImplementation "dev.emi:emi-fabric:1.1.4+1.20.1"
 	
 	modImplementation "dev.emi:trinkets:3.7.1"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.2"
