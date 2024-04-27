@@ -71,7 +71,7 @@ public class MixinPistonHandler {
 	}
 	
 	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/BlockState.getPistonBehavior()Lnet/minecraft/block/piston/PistonBehavior;"), method="tryMove", cancellable=true)
-	public void tryMoveBetween(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, @Local(index = 7) BlockPos moving) {
+	public void tryMoveBetween(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, @Local(ordinal = 1) BlockPos moving) {
 		BlockState movingState = world.getBlockState(moving);
 		if (movingState.isOf(YBlocks.TRANSFUNGUS)) {
 			var afterPos = moving.offset(dir);
