@@ -1,7 +1,5 @@
 package com.unascribed.yttr.content.item;
 
-import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.FallingBlockEntity;
@@ -56,7 +54,7 @@ public class SpatulaItem extends ShovelItem {
 			fbe.velocityModified = true;
 			p.getWorld().playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, p.getSoundCategory(), 1, 1.25f);
 			p.getWorld().playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, p.getSoundCategory(), 1, 1.75f);
-			w.playSound(null, pos, ((AccessorBlockSoundGroup)bs.getSoundGroup()).yttr$getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1);
+			w.playSound(null, pos, bs.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1);
 			p.getItemCooldownManager().set(this, 10);
 			context.getStack().damage(1, p, (t) -> p.sendEquipmentBreakStatus(context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND));
 		}

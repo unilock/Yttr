@@ -14,7 +14,6 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.AdventureHelper;
 import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
@@ -186,7 +185,7 @@ public class CleaverItem extends Item implements DirectClickItem, ControlHintabl
 		var result = performCleave(plane, shape, false);
 		if (!result.isEmpty()) {
 			world.playSound(null, pos, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
-			SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
+			SoundEvent breakSound = state.getSoundGroup().getBreakSound();
 			if (breakSound != null) {
 				world.playSound(null, pos, breakSound, SoundCategory.BLOCKS, 0.5f, 1f);
 			}

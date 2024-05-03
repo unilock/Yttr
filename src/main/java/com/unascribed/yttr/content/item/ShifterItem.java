@@ -19,7 +19,6 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
-import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.AdventureHelper;
 import com.unascribed.yttr.util.ControlHintable;
 import com.unascribed.yttr.util.YLog;
@@ -180,7 +179,7 @@ public class ShifterItem extends Item implements ControlHintable {
 		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, world.getBlockEntity(pos), player, shifter);
 		if (curState.getHardness(world, pos) < 0 && !curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) return;
 		BlockSoundGroup curSg = curState.getSoundGroup();
-		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
+		world.playSound(null, pos, curSg.getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
 		if (bhr != null && be == null) {
 			world.setBlockState(pos, curState.getFluidState().getBlockState(), 0, 0);
 			BlockState refinedReplState = replState.getBlock().getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
