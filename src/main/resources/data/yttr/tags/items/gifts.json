@@ -44,6 +44,7 @@
 		"minecraft:furnace_minecart",
 		"minecraft:scute",
 		"minecraft:structure_void",
-		"minecraft:chorus_flower"
+		"minecraft:chorus_flower",
+		"#minecraft:tools"
 	]
 }

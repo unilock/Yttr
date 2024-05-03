@@ -1,6 +1,5 @@
 package com.unascribed.yttr.content.item;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,7 +15,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ToolItem;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -126,11 +124,6 @@ public class DropOfContinuityItem extends Item {
 			.forEach(possibilities::add);
 		Registries.BLOCK.getTag(YTags.Block.GIFTS).get().stream()
 			.map(re -> re.value().asItem())
-			.forEach(possibilities::add);
-		// the gifts tag used to include all the fabric tool tags but those are gone now
-		Registries.ITEM.getEntries().stream()
-			.map(Map.Entry::getValue)
-			.filter(i -> i instanceof ToolItem)
 			.forEach(possibilities::add);
 		Registries.ITEM.getTag(YTags.Item.NOT_GIFTS).get().stream()
 			.map(re -> re.value())
