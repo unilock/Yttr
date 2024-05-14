@@ -16,17 +16,20 @@
 		"hidden": true
 	},
 	"criteria": {
-		"summit": {
-			"trigger": "minecraft:location",
-			"conditions": {
-				"location": {
-					"biome": "yttr:scorched_summit"
-				}
-			}
-		},
-		"levitation": {
+		"yttr:levitation_in_summit": {
 			"trigger": "minecraft:effects_changed",
 			"conditions": {
+				"player": [
+					{
+						"condition": "minecraft:entity_properties",
+						"entity": "this",
+						"predicate": {
+							"location": {
+								"biome": "yttr:scorched_summit"
+							}
+						}
+					}
+				],
 				"effects": {
 					"minecraft:levitation": { "amplifier": { "min": 2 } }
 				}
