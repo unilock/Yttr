@@ -1,5 +1,6 @@
 package com.unascribed.yttr.init;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import net.fabricmc.fabric.api.biome.v1.NetherBiomes;
 import net.minecraft.registry.RegistryKey;
@@ -16,8 +17,10 @@ public class YBiomes {
     private static final MultiNoiseUtil.NoiseHypercube OUT_OF_RANGE = MultiNoiseUtil.createNoiseHypercube(3.01f, 3.01f, 3.01f, 3.01f, 3.01f, 3.01f, 3.01f);
 
     public static void init() {
-        NetherBiomes.addNetherBiome(SCORCHED_SUMMIT, OUT_OF_RANGE);
-        NetherBiomes.addNetherBiome(SCORCHED_TERMINUS, OUT_OF_RANGE);
+        if (YConfig.WorldGen.scorched) {
+            NetherBiomes.addNetherBiome(SCORCHED_SUMMIT, OUT_OF_RANGE);
+            NetherBiomes.addNetherBiome(SCORCHED_TERMINUS, OUT_OF_RANGE);
+        }
     }
 
     public static RegistryKey<Biome> key(String path) {
