@@ -2,6 +2,7 @@ package com.unascribed.yttr.mixin.worldgen;
 
 import com.google.common.collect.Streams;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YBiomes;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixin.accessor.AccessorChunkGeneratorSettings;
@@ -35,6 +36,7 @@ public class MixinMinecraftServer {
 
     @Inject(method = "createWorlds", at = @At("RETURN"))
     private void yttr$onCreateWorlds(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci, @Local Registry<DimensionOptions> registry) {
+        if (!YConfig.WorldGen.wasteland) return;
         SurfaceRules.MaterialRule[] rulesType = new SurfaceRules.MaterialRule[0];
 
         for (World world : worlds.values()) {
