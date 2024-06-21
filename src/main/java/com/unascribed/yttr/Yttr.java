@@ -18,6 +18,7 @@ import com.unascribed.lib39.crowbar.api.WorldGenerationEvents;
 import com.unascribed.lib39.dessicant.api.DessicantControl;
 import com.unascribed.lib39.mesh.api.BlockNetworkManager;
 import com.unascribed.lib39.util.api.SlotReference;
+import com.unascribed.yttr.compat.TerrablenderCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.conditional.YTrinkets;
@@ -158,6 +159,13 @@ public class Yttr implements ModInitializer {
 		
 		// conditional content
 		
+		if (FabricLoader.getInstance().isModLoaded("terrablender")) {
+			try {
+				TerrablenderCompat.init();
+			} catch (Throwable t) {
+				YLog.warn("Failed to load TerraBlender compat", t);
+			}
+		}
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			try {
 				YttrTrinketsCompat.init();

@@ -3,7 +3,6 @@ package com.unascribed.yttr.mixin.worldgen;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YBiomes;
-import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixin.accessor.AccessorChunkGeneratorSettings;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -40,10 +39,7 @@ public class MixinMinecraftServer {
 
                     ((AccessorChunkGeneratorSettings) (Object) chunkGeneratorSettings).yttr$setSurfaceRule(
                             SurfaceRules.sequence(
-                                    SurfaceRules.condition(
-                                            SurfaceRules.biome(YBiomes.WASTELAND),
-                                            SurfaceRules.block(YBlocks.WASTELAND_DIRT.getDefaultState())
-                                    ),
+                                    YBiomes.WASTELAND_RULE,
                                     chunkGeneratorSettings.surfaceRule()
                             )
                     );
