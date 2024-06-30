@@ -528,6 +528,21 @@
 		"sounds": [ "yttr:small_explode" ],
 		"subtitle": "subtitles.yttr.small_explode"
 	},
+	"cloak": {
+		"sounds": [ "yttr:cloak" ],
+		"subtitle": "subtitles.yttr.cloak"
+	},
+	"uncloak": {
+		"sounds": [ "yttr:uncloak" ],
+		"subtitle": "subtitles.yttr.uncloak"
+	},
+	"cloak_loop": {
+		"sounds": [ "yttr:cloak_loop" ]
+	},
+	"cloak_expire": {
+		"sounds": [ "yttr:silence" ],
+		"subtitle": "subtitles.yttr.cloak_expire"
+	},
 	
 	"low_note.basedrum": {
 		"sounds": [

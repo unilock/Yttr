@@ -16,6 +16,8 @@ aware_hopper_scream.ogg:
 buzz.ogg: https://freesound.org/people/Ev-Dawg/sounds/337434/
 centrifuge1.ogg: https://freesound.org/people/TheMinkman/sounds/359135/
 centrifuge2.ogg: https://freesound.org/people/TheMinkman/sounds/359134/
+cloak_loop.ogg: https://freesound.org/people/LittleRobotSoundFactory/sounds/274169/
+cloak.ogg: https://freesound.org/people/mariannadeoliveira/sounds/532162/
 craft_aware_hopper.ogg:
 	Vanilla Minecraft block/enchantment_table/enchant1
 	Vanilla Minecraft block/pumpkin/carve1
@@ -94,6 +96,7 @@ small_zap.ogg: https://freesound.org/people/LittleRobotSoundFactory/sounds/27420
 spectral_axe_disappear.ogg: https://freesound.org/people/tigersound/sounds/9081/
 thud.ogg: https://freesound.org/people/yummy9987/sounds/494931/
 torus.xm.bz2: https://modarchive.org/index.php?request=view_by_moduleid&query=141548
+uncloak.ogg: https://freesound.org/people/mariannadeoliveira/sounds/532162/
 use_plate.ogg: https://freesound.org/people/jasonLON/sounds/125404/
 void.ogg: https://freesound.org/people/univ_lyon3/sounds/540744/
 void.xm.bz2: https://modarchive.org/index.php?request=view_by_moduleid&query=141674

@@ -617,6 +617,9 @@ public class YItems {
 	@ColorProvider("ContinuityItemColorProvider")
 	public static final LatchReference<Item> PLATFORMS = YLatches.create();
 	
+	@ColorProvider("ContinuityItemColorProvider")
+	public static final LatchReference<Item> DIFFRACTOR = YLatches.create();
+	
 	public static void init() {
 		Yttr.autoreg.autoRegister(Registries.ITEM, YItems.class, Item.class);
 	}

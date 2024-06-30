@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import com.mojang.blaze3d.vertex.*;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -165,9 +166,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+		ModelLoadingPlugin.register((ctx) -> {
 			for (var f : VelresinBlock.Facing.values()) {
-				out.accept(new ModelIdentifier("yttr", "spread_"+f.asString(), "inventory"));
+				ctx.addModels(new ModelIdentifier("yttr", "spread_"+f.asString(), "inventory"));
 			}
 		});
 		if (RenderBridge.canUseCompatFunctions()) {
@@ -237,10 +238,11 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-				out.accept(new ModelIdentifier("yttr", "ammo_pack_model", "inventory"));
-				out.accept(new ModelIdentifier("yttr", "ammo_pack_seg_model", "inventory"));
-				out.accept(new ModelIdentifier("yttr", "platforms_model", "inventory"));
+			ModelLoadingPlugin.register((ctx) -> {
+				ctx.addModels(new ModelIdentifier("yttr", "ammo_pack_model", "inventory"));
+				ctx.addModels(new ModelIdentifier("yttr", "ammo_pack_seg_model", "inventory"));
+				ctx.addModels(new ModelIdentifier("yttr", "platforms_model", "inventory"));
+				ctx.addModels(new ModelIdentifier("yttr", "diffractor_model", "inventory"));
 			});
 		}
 		
@@ -353,6 +355,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (mc.player != null && mc.player.isCreative() && mc.player.getStackInHand(Hand.MAIN_HAND).getItem() == YItems.SHIFTER) {
 				((AccessorClientPlayerInteractionManager)mc.interactionManager).yttr$setBlockBreakingCooldown(0);
 			}
+			prof.swap("diffractor");
+			DiffractorClientLogic.tick();
 			prof.pop();
 			if (Yttr.isEnlightened(mc.player, true)) {
 				if (mc.options.dropKey.wasPressed()) {
@@ -381,6 +385,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			ShifterUI.render(ctx, tickDelta);
 			prof.swap("control-hints");
 			ControlHints.render(ctx, tickDelta);
+			prof.swap("diffractor-hud");
+			DiffractorClientLogic.render(ctx, tickDelta);
 			prof.pop();
 			prof.pop();
 		});

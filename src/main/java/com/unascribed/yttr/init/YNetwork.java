@@ -9,6 +9,7 @@ import com.unascribed.yttr.network.MessageC2SDivePos;
 import com.unascribed.yttr.network.MessageC2SDiveTo;
 import com.unascribed.yttr.network.MessageC2SOscillatorShift;
 import com.unascribed.yttr.network.MessageC2SRifleMode;
+import com.unascribed.yttr.network.MessageC2SSetCloaked;
 import com.unascribed.yttr.network.MessageC2SShifterMode;
 import com.unascribed.yttr.network.MessageC2STrustedRifleFire;
 import com.unascribed.yttr.network.MessageS2CAnimateFastDive;
@@ -21,6 +22,7 @@ import com.unascribed.yttr.network.MessageS2CDivePos;
 import com.unascribed.yttr.network.MessageS2CDivePressure;
 import com.unascribed.yttr.network.MessageS2CEffectorHole;
 import com.unascribed.yttr.network.MessageS2CScreeperBreak;
+import com.unascribed.yttr.network.MessageS2CSetCloaked;
 import com.unascribed.yttr.network.MessageS2CSoulImpurity;
 import com.unascribed.yttr.network.MessageS2CVoidBall;
 
@@ -54,6 +56,8 @@ public class YNetwork {
 		CONTEXT.register(MessageC2STrustedRifleFire.class);
 		CONTEXT.register(MessageS2CScreeperBreak.class);
 		CONTEXT.register(MessageS2CSoulImpurity.class);
+		CONTEXT.register(MessageC2SSetCloaked.class);
+		CONTEXT.register(MessageS2CSetCloaked.class);
 		CONTEXT.register(MessageC2SCreativeBlink.class);
 		CONTEXT.register(MessageC2SCreativeNoClip.class);
 	}

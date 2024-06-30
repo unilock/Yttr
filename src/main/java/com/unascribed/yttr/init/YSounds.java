@@ -96,6 +96,10 @@ public class YSounds {
 	public static final SoundEvent MAGNET_STEP = create("magnet_step");
 	public static final SoundEvent TORUS = create("torus");
 	public static final SoundEvent SMALL_EXPLODE = create("small_explode");
+	public static final SoundEvent CLOAK = create("cloak");
+	public static final SoundEvent UNCLOAK = create("uncloak");
+	public static final SoundEvent CLOAK_LOOP = create("cloak_loop");
+	public static final SoundEvent CLOAK_EXPIRE = create("cloak_expire");
 	public static final SoundEvent DESERT_HEAT_MONO = create("desert_heat_mono");
 	public static final SoundEvent MEMORANDUM_MONO = create("memorandum_mono");
 	public static final SoundEvent TORUS_MONO = create("torus_mono");

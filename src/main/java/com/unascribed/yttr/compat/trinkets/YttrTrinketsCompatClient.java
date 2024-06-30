@@ -2,6 +2,7 @@ package com.unascribed.yttr.compat.trinkets;
 
 import com.unascribed.yttr.client.render.AmmoPackRenderer;
 import com.unascribed.yttr.client.render.CuprosteelCoilRenderer;
+import com.unascribed.yttr.client.render.DiffractorRenderer;
 import com.unascribed.yttr.client.render.PlatformsRenderer;
 import com.unascribed.yttr.init.YItems;
 
@@ -13,6 +14,7 @@ public class YttrTrinketsCompatClient {
 		TrinketRendererRegistry.registerRenderer(YItems.CUPROSTEEL_COIL.get(), CuprosteelCoilRenderer::render);
 		TrinketRendererRegistry.registerRenderer(YItems.AMMO_PACK.get(), AmmoPackRenderer::render);
 		TrinketRendererRegistry.registerRenderer(YItems.PLATFORMS.get(), PlatformsRenderer::render);
+		TrinketRendererRegistry.registerRenderer(YItems.DIFFRACTOR.get(), DiffractorRenderer::render);
 	}
 	
 }

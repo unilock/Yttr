@@ -3,6 +3,10 @@
 		{
 			"id": "yttr:ammo_pack",
 			"required": false
+		},
+		{
+			"id": "yttr:diffractor",
+			"required": false
 		}
 	]
 }
