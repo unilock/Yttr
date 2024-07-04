@@ -16,7 +16,10 @@ public class YBiomes {
 
     public static final SurfaceRules.MaterialRule WASTELAND_RULE = SurfaceRules.condition(
             SurfaceRules.biome(YBiomes.WASTELAND),
-            SurfaceRules.block(YBlocks.WASTELAND_DIRT.getDefaultState())
+            SurfaceRules.condition(
+                    SurfaceRules.abovePreliminarySurface(),
+                    SurfaceRules.block(YBlocks.WASTELAND_DIRT.getDefaultState())
+            )
     );
 
     // This ensures the biomes will never generate naturally
